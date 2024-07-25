@@ -1,25 +1,26 @@
-import { getUsers } from '@/lib/db';
-import { UsersTable } from './users-table';
-import { Search } from './search';
 
-export default async function IndexPage({
-  searchParams
-}: {
-  searchParams: { q: string; offset: string };
-}) {
-  const search = searchParams.q ?? '';
-  const offset = searchParams.offset ?? 0;
-  const { users, newOffset } = await getUsers(search, Number(offset));
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { Suspense } from 'react';
+
+const VideoPlayer = dynamic(() => import('@/components/video-player'), { ssr: false })
+export default async function IndexPage() {
 
   return (
     <main className="flex flex-1 flex-col p-4 md:p-6">
-      <div className="flex items-center mb-8">
-        <h1 className="font-semibold text-lg md:text-2xl">Users</h1>
-      </div>
-      <div className="w-full mb-4">
-        <Search value={searchParams.q} />
-      </div>
-      <UsersTable users={users} offset={newOffset} />
+        <Link href='dashboard'>dashboard</Link>
+        <Suspense fallback={<p>Loading video...</p>}>
+          <VideoPlayer option={{url: 'https://filesamples.com/samples/video/mkv/sample_1280x720_surfing_with_audio.mkv',}}
+            style={{
+                width: '600px',
+                height: '400px',
+                margin: '60px auto 0',
+            }}
+        //getInstance={(art) => console.info(art)}
+          />
+          
+        </Suspense>
+       
     </main>
   );
 }

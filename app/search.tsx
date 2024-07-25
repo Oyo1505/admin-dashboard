@@ -13,7 +13,7 @@ export function Search(props: { value?: string }) {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    console.log('value', value);
+    
     if (value === undefined) {
       return;
     } else if (value) {
@@ -25,7 +25,7 @@ export function Search(props: { value?: string }) {
     startTransition(() => {
       // All navigations are transitions automatically
       // But wrapping this allow us to observe the pending state
-      router.replace(`/?${params.toString()}`);
+      router.replace(`/dashboard?${params.toString()}`);
     });
   }, [router, value]);
 
