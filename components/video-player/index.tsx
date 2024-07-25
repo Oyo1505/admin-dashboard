@@ -8,6 +8,11 @@ type Props = {
   subtitles?:string
   option?: any
   getInstance?:any
+  style: {
+    width: string;
+    height: string;
+    margin: string;
+  };
 }
 const videoConfig = {
   file: {
@@ -24,7 +29,7 @@ const videoConfig = {
 };
 
 const VideoPlayer = ({ option, getInstance, ...rest }:Props) => {
-  const artRef = useRef();
+  const artRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
       const art = new Artplayer({
