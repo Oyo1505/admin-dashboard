@@ -16,9 +16,7 @@ export default async function IndexPage() {
                 height: '400px',
                 margin: '60px auto 0',
             }}
-        //getInstance={(art) => console.info(art)}
           />
-          
         </Suspense>
        
     </main>

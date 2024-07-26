@@ -1,8 +1,7 @@
-
 "use client"
 import ReactPlayer from 'react-player'
 import Artplayer from 'artplayer';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 type Props = {
   src?:string
   subtitles?:string
@@ -14,23 +13,10 @@ type Props = {
     margin: string;
   };
 }
-const videoConfig = {
-  file: {
-    tracks: [
-      {
-        kind: "subtitles",
-        src: "https://gist.githubusercontent.com/matibzurovski/d690d5c14acbaa399e7f0829f9d6888e/raw/63578ca30e7430be1fa4942d4d8dd599f78151c7/example.srt",
-        srcLang: "en",
-        label: "English",
-        
-      },
-    ],
-  },
-};
+
 
 const VideoPlayer = ({ option, getInstance, ...rest }:Props) => {
   const artRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
       const art = new Artplayer({
           ...option,
@@ -113,23 +99,38 @@ const VideoPlayer = ({ option, getInstance, ...rest }:Props) => {
           },
       ],    
       });
-
-      if (getInstance && typeof getInstance === 'function') {
-          getInstance(art);
-      }
-
+      setTimeout(() => {
+        art.url = option.url;
+    }, 1000);
+    console.log(art)
       return () => {
           if (art && art.destroy) {
               art.destroy(false);
           }
       };
-  }, []);
+  }, [option]);
+
+  const videoConfig = {
+    file: {
+      attributes: { crossOrigin: 'anonymous' },
+      tracks: [
+        {
+          default: true,
+          kind: 'captions',
+          srcLang: 'en',
+          src:'https://gist.githubusercontent.com/matibzurovski/d690d5c14acbaa399e7f0829f9d6888e/raw/63578ca30e7430be1fa4942d4d8dd599f78151c7/example.srt',
+          label: 'English',
+          mode: 'showing',
+        },
+      ],
+    },
+  };
 
   return (
     <div>
       <ReactPlayer 
       controls 
-      url={'https://filesamples.com/samples/video/mkv/sample_1280x720_surfing_with_audio.mkv'} 
+      url={[{src:'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'}]} 
       config={videoConfig}
       />
 
