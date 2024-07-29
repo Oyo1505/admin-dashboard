@@ -14,7 +14,7 @@ const Page = async ({
   const session = await auth()
 
   const search = searchParams.q ?? '';
-  const offset = searchParams.offset ?? 20 as number;
+  const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset)
   if(!session?.user) return redirect('/')
   return (

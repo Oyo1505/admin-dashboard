@@ -18,9 +18,9 @@ export function UsersTable({
   offset,
   sessionUser
 }: {
-  users: SelectUser[];
-  offset: number | null;
-  sessionUser: SelectUser
+  users?: SelectUser[];
+  offset?: number | null;
+  sessionUser?: SelectUser
 }) {
   const router = useRouter();
 
