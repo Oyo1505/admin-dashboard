@@ -1,7 +1,6 @@
-import { Logo, SettingsIcon, UsersIcon, VercelLogo } from "@/components/icons";
+import {SettingsIcon, UsersIcon, VercelLogo } from "@/components/icons";
 import { NavItem } from "app/nav-item";
-import { User } from "app/user";
-import Link from "next/link";
+
 
 
 export const metadata = {
@@ -29,10 +28,6 @@ export default function RootLayout({
             <NavItem href="/settings">
               <SettingsIcon className="h-4 w-4" />
               Settings
-            </NavItem>
-            <NavItem href="https://vercel.com/templates/next.js/admin-dashboard-tailwind-postgres-react-nextjs">
-              <VercelLogo className="h-4 w-4" />
-              Deploy
             </NavItem>
           </nav>
         </div>

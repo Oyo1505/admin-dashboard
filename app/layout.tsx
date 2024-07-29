@@ -2,18 +2,20 @@ import './globals.css';
 import Link from 'next/link';
 import { Analytics } from '@vercel/analytics/react';
 import { User } from './user';
+import { auth } from '@/lib/auth';
 
 export const metadata = {
-  title: 'Next.js App Router + NextAuth + Tailwind CSS',
+  title: '0y0Flix',
   description:
-    'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, and Prettier.'
+    'Mes goûts > vos goûts'
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth()
   return (
     <html lang="en" className="h-full bg-gray-50">
       <body>
@@ -23,6 +25,7 @@ export default function RootLayout({
               >
                 Home
               </Link>
+              {session && <Link href='dashboard'>Dashboard</Link> }
               <User />
             </header>
             {children}

@@ -20,7 +20,15 @@ const users = pgTable('users', {
   email: varchar('email', { length: 50 })
 });
 
-export type SelectUser = typeof users.$inferSelect;
+export type SelectUser = {
+  id:string 
+  name:string
+  email:string
+  image:string
+  accounts?:any
+  sessions?: any
+  role:'USER'| 'ADMIN'
+}
 
 export async function getUsers(
   search: string,

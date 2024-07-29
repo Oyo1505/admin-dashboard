@@ -27,7 +27,7 @@ export function useInfiniteScroll(onIntersect: () => void) {
     }
 
     return () => obs.disconnect();
-  }, [onIntersect]);
+  }, [onIntersect, observer]);
 
   return sentinelRef;
 }
