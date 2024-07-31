@@ -1,0 +1,34 @@
+{
+  "AppLayout": {
+    "home": "Accueil",
+    "logout": "Déconnexion",
+    "profile": "Profile"
+  },
+  "HomePage": {
+    "title": "Accueil"
+  },
+  "LocaleSwitcher": {
+    "fr": "Français",
+    "jp": "日本",
+    "en": "English",
+    "label": "Language",
+    "HomePage": "Accueil"
+  },
+  "LoginPage": {
+    "email": "Email",
+    "invalidCredentials": "Please check your credentials.",
+    "invalidEmail": "Please enter a valid email address.",
+    "invalidPassword": "Please enter a password.",
+    "login": "Se connecter",
+    "password": "Mot de passe",
+    "title": "Bienvenue"
+  },
+  "ProfilePage": {
+    "title": "Profile"
+  },
+  "Menu": {
+    "home": "Accueil",
+    "dashboard": "Espace Personnel",
+    "logout": "Déconnexion"
+  }
+}

@@ -10,7 +10,6 @@ export default async function middleware(req: NextRequest) {
   if (path === "/") {
     return NextResponse.next();
   }
-  
 
   const session = await getToken({
     req,
