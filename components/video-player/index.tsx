@@ -77,7 +77,7 @@ const VideoPlayer = ({ option, getInstance, ...rest }:Props) => {
       setTimeout(() => {
         art.url = option.url;
     }, 1000);
-    console.log(art)
+
       return () => {
           if (art && art.destroy) {
               art.destroy(false);

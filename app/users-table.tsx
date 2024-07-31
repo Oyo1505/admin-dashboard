@@ -9,18 +9,18 @@ import {
   Table
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { SelectUser } from '@/lib/db';
 import { useRouter } from 'next/navigation';
 import { deleteUserById } from './dashboard/action';
+import { User } from '@/models/user/user';
 
 export function UsersTable({
   users,
   offset,
   sessionUser
 }: {
-  users?: SelectUser[];
+  users?: User[] | undefined;
   offset?: number | null;
-  sessionUser?: SelectUser
+  sessionUser: User
 }) {
   const router = useRouter();
 
@@ -41,7 +41,7 @@ export function UsersTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((user) => (
+            {users?.map((user) => (
               <UserRow key={user.id} user={user} sessionUser={sessionUser} />
             ))}
           </TableBody>
@@ -60,7 +60,7 @@ export function UsersTable({
   );
 }
 
-function UserRow({ user, sessionUser }: { user: SelectUser, sessionUser:SelectUser }) {
+function UserRow({ user, sessionUser }: { user: User, sessionUser:User }) {
   const userId = user.id;
   const deleteUser = async () => {
     await deleteUserById(userId)
