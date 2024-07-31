@@ -10,9 +10,11 @@ export default async function middleware(req: NextRequest) {
   if (path === "/") {
     return NextResponse.next();
   }
+  
 
   const session = await getToken({
     req,
+    //@ts-ignore
     secret: process.env.NEXTAUTH_SECRET,
   });
   
