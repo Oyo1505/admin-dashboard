@@ -1,5 +1,4 @@
 import { auth } from '@/lib/auth';
-import { getUsers } from '@/lib/db';
 import { Search } from 'app/search'
 import { UsersTable } from 'app/users-table'
 import { redirect } from 'next/navigation';
@@ -12,7 +11,6 @@ const Page = async ({
   searchParams: { q: string; offset: string };
 }) => {
   const session = await auth()
-
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset)

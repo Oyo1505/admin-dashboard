@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import ButtonLogout from '@/components/ui/components/button-logout/button-logout';
 import { auth, signIn, signOut } from '@/lib/auth';
 import Image from 'next/image';
 
@@ -21,14 +22,7 @@ export async function User() {
 
   return (
     <div className="flex items-center gap-4">
-      <form
-        action={async () => {
-          'use server';
-          await signOut();
-        }}
-      >
-        <Button variant="outline">Sign Out</Button>
-      </form>
+      <ButtonLogout />
       <Image
         className="h-8 w-8 rounded-full"
         src={user.image!}
