@@ -23,7 +23,7 @@ const Page = async ({
   <div className="w-full mb-4">
     <Search value={searchParams.q} />
   </div>
-   <UsersTable users={users} offset={newOffset} sessionUser={session?.user} />
+   <UsersTable users={users} offset={newOffset} sessionUser={session?.user} /> 
   </div>
   )
 }

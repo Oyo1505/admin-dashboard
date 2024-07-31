@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { deleteUserById } from './dashboard/action';
-import { User } from 'next-auth';
+import { User } from '@/models/user/user';
 
 
 export function UsersTable({
@@ -19,9 +19,9 @@ export function UsersTable({
   offset,
   sessionUser
 }: {
-  users?: User[] | undefined;
+  users?: any[];
   offset?: number | null;
-  sessionUser: User
+  sessionUser: any
 }) {
   const router = useRouter();
 
@@ -62,9 +62,9 @@ export function UsersTable({
 }
 
 function UserRow({ user, sessionUser }: { user: User, sessionUser:User }) {
-  const userId = user?.id;
+  const userId = user.id;
   const deleteUser = async () => {
-     await deleteUserById(userId)
+    userId && await deleteUserById(userId)
   }
 
   return (

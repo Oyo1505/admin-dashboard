@@ -1,8 +1,8 @@
 'use client'
 import { useSession } from "next-auth/react"
 import useUserStore from '@/store/user/user-store'
-import React, { useEffect } from 'react'
-import { cp } from "fs"
+import { useEffect } from 'react'
+
 
 const useAuthStatus = () => {
   const {user, fetch, removeUser} = useUserStore((state) => state)
@@ -15,7 +15,7 @@ const useAuthStatus = () => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      if (session && Object.keys(user).length === 0) {
+      if (session && session?.user?.email && Object.keys(user).length === 0) {
        await fetch(session?.user?.email);
       }
     

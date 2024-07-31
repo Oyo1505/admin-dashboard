@@ -1,8 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { PrismaClient } from "@prisma/client";
+import { JWT } from "next-auth/jwt";
 
 const prisma = new PrismaClient()
 
@@ -20,15 +21,15 @@ const GOOGLE_AUTHORIZATION_URL =
  * `accessToken` and `accessTokenExpires`. If an error occurs,
  * returns the old token and an error property
  */
-async function refreshAccessToken(token) {
+async function refreshAccessToken(token:JWT) {
   try {
     const url =
       "https://oauth2.googleapis.com/token?" +
       new URLSearchParams({
-        client_id: process.env.GOOGLE_CLIENT_ID,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        client_id: process.env.GOOGLE_CLIENT_ID as string,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
         grant_type: "refresh_token",
-        refresh_token: token.refreshToken,
+        refresh_token: token.refreshToken as string,
       })
 
     const response = await fetch(url, {
@@ -70,6 +71,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
   session: { strategy: "jwt", maxAge: 60 * 30 },
   callbacks: {
     async jwt({ token, account, profile }) {
+      const tokenExpiresAt  = token.expires_at as number
       if (account) {
         // First login, save the `access_token`, `refresh_token`, and other
         // details into the JWT
@@ -87,7 +89,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
           refresh_token: account.refresh_token,
           user: userProfile,
         }
-      } else if (Date.now() < token.expires_at * 1000) {
+      } else if (Date.now() < tokenExpiresAt * 1000) {
         // Subsequent logins, if the `access_token` is still valid, return the JWT
         return token
       } else {
@@ -99,9 +101,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
           // at their `/.well-known/openid-configuration` endpoint.
           // i.e. https://accounts.google.com/.well-known/openid-configuration
           const response = await refreshAccessToken(token)
- 
-          const responseTokens = await response.json()
- 
+
+          //@ts-ignore
+          const responseTokens = await response.json() 
+          //@ts-ignore
           if (!response.ok) throw responseTokens
  
           return {
@@ -124,7 +127,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       //generer l'erreur ReferenceError: location is not defined coté server
       return baseUrl
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any, token: any}) {
       session.accessToken = token.accessToken;
       session.idToken = token.idToken;
       session.refreshToken = token.refreshToken;
