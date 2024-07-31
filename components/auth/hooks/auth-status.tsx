@@ -18,7 +18,6 @@ const useAuthStatus = () => {
       if (session && session?.user?.email && Object.keys(user).length === 0) {
        await fetch(session?.user?.email);
       }
-    
     };
 
     fetchSession();

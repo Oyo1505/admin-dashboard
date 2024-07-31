@@ -22,7 +22,8 @@ export async function User() {
 
   return (
     <div className="flex items-center gap-4">
-      <ButtonLogout />
+        <ButtonLogout>Sign Out</ButtonLogout>
+    
       <Image
         className="h-8 w-8 rounded-full"
         src={user.image!}

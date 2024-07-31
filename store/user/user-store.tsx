@@ -1,5 +1,6 @@
 import { getUserConnected } from '@/components/auth/action/action'
 import { User } from 'next-auth';
+import { signOut } from 'next-auth/react';
 import { create } from 'zustand'
 import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
 
@@ -28,7 +29,10 @@ const useUserStore = create<UserStore>()(
         const { user } = await getUserConnected(email);
         set({ user });
       },
-      removeUser: () => set({ user: {} }),
+      removeUser: async () =>{ 
+        await signOut();
+        set({ user: {} })
+      },
     }),
     persistOptions
   )
