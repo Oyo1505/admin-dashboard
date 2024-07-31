@@ -12,5 +12,8 @@ export async function getUserLocale() {
 }
 
 export async function setUserLocale(locale: Locale) {
-  cookies().set(COOKIE_NAME, locale);
+  cookies().set(COOKIE_NAME, locale, {
+    sameSite: 'none',
+    secure: true
+  });
 }

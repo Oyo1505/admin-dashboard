@@ -1,15 +1,19 @@
 'use client'
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { Button } from '../../button'
 import useUserStore from '@/store/user/user-store'
+import { useTranslations } from 'next-intl'
 
-const ButtonLogout = ({children}: {children: ReactElement}) => {
+const ButtonLogout = () => {
+  
   const { removeUser } = useUserStore((state: any) => state)
+  const t = useTranslations('Menu');
+
   const onClick = async () => {
     removeUser()
   }
   return (
-    <Button onClick={onClick}>{children}</Button>
+    <Button onClick={onClick}>{t('logout')}</Button>
   )
 }
 

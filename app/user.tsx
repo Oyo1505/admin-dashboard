@@ -22,7 +22,7 @@ export async function User() {
 
   return (
     <div className="flex items-center gap-4">
-        <ButtonLogout>Sign Out</ButtonLogout>
+        <ButtonLogout />
     
       <Image
         className="h-8 w-8 rounded-full"
