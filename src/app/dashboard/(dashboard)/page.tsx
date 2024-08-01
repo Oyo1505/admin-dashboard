@@ -4,14 +4,15 @@ import { getUsersWithPageParam } from '../../../components/dashboard/action';
 import { redirect } from 'next/navigation';
 import  Search  from '@/app/search';
 import UsersTable from '@/app/users-table';
-import { getSession } from 'next-auth/react';
+import { auth } from '@/lib/auth';
 
 const Page = async ({
   searchParams
 }: {
   searchParams: { q: string; offset: string };
 }) => {
-  const session = await getSession()
+  const session = await auth()
+
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset)
