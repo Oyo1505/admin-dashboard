@@ -1,12 +1,10 @@
 
+import React from 'react'
+import { getUsersWithPageParam } from '../../../components/dashboard/action';
 import { redirect } from 'next/navigation';
-import React, { use } from 'react'
-import {getUsersWithPageParam} from '../action';
-import { auth } from '@/lib/auth';
-import { Search } from '../../search';
-import { UsersTable } from '../../users-table';
+import  Search  from '@/app/search';
+import UsersTable from '@/app/users-table';
 import { getSession } from 'next-auth/react';
-
 
 const Page = async ({
   searchParams

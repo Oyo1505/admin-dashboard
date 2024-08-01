@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/components/table/table';
 import { Button } from '@/components/ui/components/button/button';
 import { useRouter } from 'next/navigation';
-import { deleteUserById } from './dashboard/action';
+import { deleteUserById } from '../components/dashboard/action';
 import { User } from '@/models/user/user';
 
 
-export function UsersTable({
+ const UsersTable = ({
   users,
   offset,
   sessionUser
@@ -22,7 +22,7 @@ export function UsersTable({
   users?: any[];
   offset?: number | null;
   sessionUser: any
-}) {
+}) => {
   const router = useRouter();
 
   function onClick() {
@@ -90,3 +90,5 @@ function UserRow({ user, sessionUser }: { user: User, sessionUser:User }) {
     </TableRow>
   );
 }
+
+export default UsersTable

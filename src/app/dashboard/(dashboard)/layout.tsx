@@ -7,7 +7,7 @@ export const metadata = {
     'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, and Prettier.'
 };
 
-export default function RootLayout({
+export default function Layout({
   children
 }: {
   children: React.ReactNode;
@@ -27,7 +27,6 @@ export default function RootLayout({
               <SettingsIcon className="h-4 w-4" />
               Settings
             </NavItem>
-        
           </nav>
         </div>
       </div>

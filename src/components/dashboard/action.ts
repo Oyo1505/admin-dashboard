@@ -1,5 +1,6 @@
 "use server"
 import prisma from "@/lib/prisma";
+import { URL_DASHBOARD } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 export const getUsersWithPageParam = async (search:string, pageParam:number)=> {
@@ -46,7 +47,7 @@ export const deleteUserById =  async (id:string)=> {
         id
       },
     })
-    revalidatePath('/dashboard')
+    revalidatePath(URL_DASHBOARD)
     return {status: 200 };
   } catch (error) {
     console.log(error)

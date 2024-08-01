@@ -5,7 +5,7 @@ import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
 import { useRouter } from 'next/navigation';
 import { useTransition, useEffect, useRef, useState } from 'react';
 
-export function Search(props: { value?: string }) {
+ const  Search = (props: { value?: string }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(props.value);
@@ -46,3 +46,4 @@ export function Search(props: { value?: string }) {
     </div>
   );
 }
+export default Search
