@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from "next-auth/jwt";
+import { URL_HOME } from '@/shared/route';
 export { auth as middleware } from '@/lib/auth';
 
 export default async function middleware(req: NextRequest) {
@@ -18,9 +19,9 @@ export default async function middleware(req: NextRequest) {
   });
   
   if (!session && path === "/protected") {
-    return NextResponse.redirect(new URL("/login", req.url));
-  } else if (session && (path === "/login" || path === "/register")) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/", req.url));
+  } else if (session) {
+    return NextResponse.redirect(new URL('/', req.url));
   }
   return NextResponse.next();
 }

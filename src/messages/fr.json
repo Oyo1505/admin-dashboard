@@ -14,14 +14,11 @@
     "label": "Language",
     "HomePage": "Accueil"
   },
-  "LoginPage": {
-    "email": "Email",
-    "invalidCredentials": "Please check your credentials.",
-    "invalidEmail": "Please enter a valid email address.",
-    "invalidPassword": "Please enter a password.",
-    "login": "Se connecter",
-    "password": "Mot de passe",
-    "title": "Bienvenue"
+  "LandingPage": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "welcome":"Bienvenue !",
+    "title": "Connectez-vous avec Google"
   },
   "ProfilePage": {
     "title": "Profile"
@@ -31,5 +28,11 @@
     "dashboard": "Espace Personnel",
     "movies": "Films",
     "logout": "Déconnexion"
+  },
+  "MoviesPage": {
+ 
+  },
+  "Dashboard": {
+ 
   }
 }

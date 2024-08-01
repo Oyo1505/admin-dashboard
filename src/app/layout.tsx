@@ -1,5 +1,6 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
+
 import { SessionProvider } from "next-auth/react"
 import {NextIntlClientProvider} from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
@@ -24,8 +25,8 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="h-full bg-gray-50">
-      <body>
+    <html lang={locale} >
+      <body className="h-full bg-gray-50 font-semibold">
         <SessionProvider session={session} >
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic />

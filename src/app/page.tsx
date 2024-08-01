@@ -1,4 +1,5 @@
 
+import LandingPage from '@/components/auth/components/landing-page/landing-page';
 import { useTranslations } from 'next-intl';
 //import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
@@ -9,7 +10,7 @@ export default function IndexPage() {
   const t = useTranslations('HomePage');
 
   return (
-    <main className="flex flex-1 flex-col p-4 md:p-6">
+    <main className="h-full">
         <Suspense fallback={<p>Loading video...</p>}>
           {/* <VideoPlayer option={{url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',}}
             style={{
@@ -19,8 +20,8 @@ export default function IndexPage() {
             }}
           /> */}
           {/* {session && 'tes'} */}
-          <div>fdsf</div>
         </Suspense>
+        <LandingPage />
     </main>
   );
 }

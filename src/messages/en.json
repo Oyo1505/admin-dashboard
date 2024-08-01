@@ -14,14 +14,11 @@
     "label": "Language",
     "HomePage": "ホーム"
   },
-  "LoginPage": {
-    "email": "Email",
-    "invalidCredentials": "Please check your credentials.",
-    "invalidEmail": "Please enter a valid email address.",
-    "invalidPassword": "Please enter a password.",
-    "login": "Sign in",
-    "password": "Password",
-    "title": "Welcome back"
+ "LandingPage": {
+    "login": "Login",
+    "logout": "Logout",
+    "welcome":"Welcome !",
+    "title": "Sign in with Google"
   },
   "ProfilePage": {
     "title": "Profile"
@@ -31,5 +28,11 @@
     "dashboard": "Dashboard",
     "movies": "Movies",
     "logout": "Logout"
+  },
+  "MoviesPage": {
+ 
+  },
+  "Dashboard": {
+ 
   }
 }
