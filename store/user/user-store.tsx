@@ -1,4 +1,6 @@
-import { getUserConnected } from '@/components/auth/action/action'
+
+
+import { getUserConnected } from '@/components/auth/action/action';
 import { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { create } from 'zustand'

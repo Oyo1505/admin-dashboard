@@ -1,0 +1,35 @@
+{
+  "AppLayout": {
+    "home": "ホーム",
+    "logout": "ログアウト",
+    "profile": "プロフィール"
+  },
+  "HomePage": {
+    "title": "ホーム"
+  },
+  "LocaleSwitcher": {
+    "fr": "Français",
+    "jp": "日本",
+    "en": "English",
+    "label": "Language",
+    "HomePage": "ホーム"
+  },
+  "LoginPage": {
+    "email": "メールアドレス",
+    "invalidCredentials": "ログイン情報が正しくありません。",
+    "invalidEmail": "有効なメールアドレスを入力してください。",
+    "invalidPassword": "パスワードを入力してください。",
+    "login": "ログイン",
+    "password": "パスワード",
+    "title": "ようこそ"
+  },
+  "ProfilePage": {
+    "title": "プロフィール"
+  },
+  "Menu": {
+    "home": "ホーム",
+    "dashboard": "ダッシュボード",
+    "movies": "映画",
+    "logout": "ログアウト"
+  }
+}
