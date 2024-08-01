@@ -14,14 +14,11 @@
     "label": "Language",
     "HomePage": "ホーム"
   },
-  "LoginPage": {
-    "email": "メールアドレス",
-    "invalidCredentials": "ログイン情報が正しくありません。",
-    "invalidEmail": "有効なメールアドレスを入力してください。",
-    "invalidPassword": "パスワードを入力してください。",
+  "LandingPage": {
     "login": "ログイン",
-    "password": "パスワード",
-    "title": "ようこそ"
+    "logout": "ログアウト",
+    "welcome":"歡迎 !",
+    "title": "Google に接続"
   },
   "ProfilePage": {
     "title": "プロフィール"
@@ -31,5 +28,11 @@
     "dashboard": "ダッシュボード",
     "movies": "映画",
     "logout": "ログアウト"
+  },
+  "MoviesPage": {
+ 
+  },
+  "Dashboard": {
+ 
   }
 }

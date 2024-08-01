@@ -1,7 +1,6 @@
 import NextAuth, { User } from "next-auth";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-
 import { PrismaClient } from "@prisma/client";
 import { JWT } from "next-auth/jwt";
 
@@ -123,10 +122,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
         }
       }
     },
-    async redirect({baseUrl}) {
-      //generer l'erreur ReferenceError: location is not defined coté server
-      return baseUrl
-    },
     async session({ session, token }: { session: any, token: any}) {
       session.accessToken = token.accessToken;
       session.idToken = token.idToken;
@@ -134,7 +129,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       session.error = token.error;
       session.expiresAt = token.expiresAt
       session.user = token.user
-   
       return session
     }
   },

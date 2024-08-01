@@ -1,8 +1,9 @@
 
 
 import { getUserConnected } from '@/components/auth/action/action';
+import { URL_BASE, URL_HOME } from '@/shared/route';
 import { User } from 'next-auth';
-import { signOut } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import { create } from 'zustand'
 import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
 
@@ -10,9 +11,11 @@ import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
 // Définir l'interface pour le store utilisateur
 interface UserStore {
   user: User | {};
+  connected:boolean
   setUser: (user: User) => void;
-  fetch: (email: string) => Promise<void>;
-  removeUser: () => void;
+  fetchUser: (email: string) => Promise<void>;
+  logout: () => void;
+  login: () => void;
 }
 
 // Définir les options de persistance
@@ -26,14 +29,19 @@ const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       user: {},
+      connected: false,
       setUser: (user: User) => set({ user }),
-      fetch: async (email: string) => {
+      fetchUser: async (email: string) => {
         const { user } = await getUserConnected(email);
-        set({ user });
+        set({ user, connected: true });
       },
-      removeUser: async () =>{ 
-        await signOut();
-        set({ user: {} })
+      login: async ()=> {
+        await signIn('google', { callbackUrl: URL_HOME });
+        
+      },
+      logout: async () =>{ 
+        await signOut({ callbackUrl: URL_BASE});
+        set({ user: {}, connected: false, })
       },
     }),
     persistOptions

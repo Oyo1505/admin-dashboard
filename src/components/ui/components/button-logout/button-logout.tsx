@@ -6,12 +6,13 @@ import useUserStore from 'store/user/user-store'
 
 const ButtonLogout = () => {
   
-  const { removeUser } = useUserStore((state: any) => state)
+  const { logout } = useUserStore((state: any) => state)
   const t = useTranslations('Menu');
-
+  
   const onClick = async () => {
-    removeUser()
+    logout()
   }
+
   return (
     <Button onClick={onClick}>{t('logout')}</Button>
   )
