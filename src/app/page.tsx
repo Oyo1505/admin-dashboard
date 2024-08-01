@@ -7,8 +7,7 @@ import { Suspense } from 'react';
 
 export default function IndexPage() {
   const t = useTranslations('HomePage');
-  // const session = await auth()
-  // console.log(session)
+
   return (
     <main className="flex flex-1 flex-col p-4 md:p-6">
         <Suspense fallback={<p>Loading video...</p>}>
