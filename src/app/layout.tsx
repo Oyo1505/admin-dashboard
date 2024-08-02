@@ -7,6 +7,8 @@ import { getLocale, getMessages } from 'next-intl/server';
 import LayoutLogic from '../components/layout/components/layout-logic';
 import MenuHeader from '../components/layout/components/menu-header/menu-header';
 import { auth } from '@/lib/auth';
+import Container from '@/components/ui/components/container/container';
+import { ReactElement } from 'react';
 
 
 export const metadata = {
@@ -18,7 +20,7 @@ export const metadata = {
 export default async function RootLayout({
   children
 }: {
-  children: React.ReactNode;
+  children: ReactElement;
 }) {
   const session = await auth()
   const locale = await getLocale();
@@ -26,12 +28,15 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} >
+
       <body className="h-full bg-gray-50 font-semibold">
         <SessionProvider session={session} >
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic />
           <MenuHeader session={session}/>
+          <Container >
             {children}
+          </Container>
          <Analytics />
         </NextIntlClientProvider>
         </SessionProvider>

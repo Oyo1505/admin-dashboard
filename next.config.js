@@ -7,6 +7,7 @@ const withNextIntl = createNextIntlPlugin();
 const withVideos = require('next-videos')
 
 const nextConfig = {
+  pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
   images: {
     remotePatterns: [
       {
