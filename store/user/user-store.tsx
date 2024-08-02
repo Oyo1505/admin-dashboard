@@ -9,8 +9,13 @@ import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
 
 
 // Définir l'interface pour le store utilisateur
+
+interface IUser extends User {
+  role : 'ADMIN' | 'USER'
+}
+
 interface UserStore {
-  user: User | {};
+  user: IUser | {};
   connected:boolean
   setUser: (user: User) => void;
   fetchUser: (email: string) => Promise<void>;
@@ -32,7 +37,9 @@ const useUserStore = create<UserStore>()(
       connected: false,
       setUser: (user: User) => set({ user }),
       fetchUser: async (email: string) => {
+   
         const { user } = await getUserConnected(email);
+        console.log(user)
         set({ user, connected: true });
       },
       login: async ()=> {

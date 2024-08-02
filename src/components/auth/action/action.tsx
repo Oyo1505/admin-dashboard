@@ -7,7 +7,7 @@ export const getUserConnected = async (email:string): Promise<{ user?: User | un
     const user = await prisma.user.findUnique({
       where:{email}
     })
-    return {user : user ? user : {} }
+    return {user : user ? user : {}, status:200 }
   } catch (error) {
     console.log(error)
     return {

@@ -5,6 +5,9 @@ import { redirect } from 'next/navigation';
 import  Search  from '@/app/search';
 import UsersTable from '@/app/users-table';
 import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { URL_DASHBOARD } from '@/shared/route';
+
 
 const Page = async ({
   searchParams
@@ -12,10 +15,10 @@ const Page = async ({
   searchParams: { q: string; offset: string };
 }) => {
   const session = await auth()
-
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset)
+
   if(!session?.user) return redirect('/')
   return (
     <div>    
@@ -25,7 +28,7 @@ const Page = async ({
   <div className="w-full mb-4">
     <Search value={searchParams.q} />
   </div>
-   <UsersTable users={users} offset={newOffset} sessionUser={session?.user} /> 
+       <UsersTable users={users} offset={newOffset} sessionUser={session?.user} /> 
   </div>
   )
 }

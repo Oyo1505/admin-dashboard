@@ -6,7 +6,7 @@ interface IMovie{
 
 const MovieSingle: FC<IMovie> = ({movie}) => {
   return (
-    <div>MovieSingle</div>
+    <div>{movie?.title}</div>
   )
 }
 
