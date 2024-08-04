@@ -1,7 +1,7 @@
 import MenuDashboard from "@/components/layout/components/menu-dashboard/menu-dashboard";
 
 export const metadata = {
-  title: 'Next.js App Router + NextAuth + Tailwind CSS',
+  title: 'Dashboard',
   description:
     'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, and Prettier.'
 };

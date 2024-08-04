@@ -51,6 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   role          UserRole     @default(USER) 
+  favoriteMovies  Movie[]  @relation("UserFavoriteMovies")
 }
 
 model VerificationToken {
@@ -59,6 +60,14 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Movie {
+  id       String    @id @default(cuid())
+  title    String 
+  image    String
+  link     String     @unique
+  favoritedBy User[] @relation("UserFavoriteMovies")
 }
 
 enum UserRole {

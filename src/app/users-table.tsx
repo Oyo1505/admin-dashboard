@@ -1,5 +1,4 @@
 'use client';
-
 import {
   TableHead,
   TableRow,
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/components/button/button';
 import { useRouter } from 'next/navigation';
 import { deleteUserById } from '../components/dashboard/action';
 import { User } from '@/models/user/user';
+import useUserStore from 'store/user/user-store';
 
 
  const UsersTable = ({
@@ -26,7 +26,7 @@ import { User } from '@/models/user/user';
   const router = useRouter();
 
   function onClick() {
-    router.replace(`/?offset=${offset}`);
+    router.replace(`/dashboard/users?offset=${offset}`);
   }
 
   return (
@@ -63,6 +63,7 @@ import { User } from '@/models/user/user';
 
 function UserRow({ user, sessionUser }: { user: User, sessionUser:User }) {
   const userId = user.id;
+  const { user:userConnected } = useUserStore(state => state)
   const deleteUser = async () => {
     userId && await deleteUserById(userId)
   }
@@ -73,7 +74,7 @@ function UserRow({ user, sessionUser }: { user: User, sessionUser:User }) {
       <TableCell className="font-medium">{user.name}</TableCell>
       <TableCell className="hidden md:table-cell">{user.email}</TableCell>
       <TableCell>{user.role}</TableCell>
-      {userId !==  sessionUser?.id && sessionUser?.role === 'ADMIN' && 
+      {userId !==  userConnected?.id && userConnected?.role === 'ADMIN' && 
             <TableCell>
             <Button
               className="w-full"

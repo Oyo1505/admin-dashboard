@@ -33,6 +33,14 @@
  
   },
   "Dashboard": {
- 
+    "welcome": "Welcome",
+    "continue" : "Continue Watching",
+    "users":"Users"
+  },
+  "DashboardNav": {
+    "users":"Users",
+    "add-movie":"Add movie",
+    "favorite":"Favorite",
+    "settings":"Settings"
   }
 }

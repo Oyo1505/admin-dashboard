@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 import useUserStore from "store/user/user-store"
 
 
-const useAuthStatus = () => {
-  const {user, fetchUser} = useUserStore((state) => state)
+const useAuthStatus = async () => {
+  const {user, fetchUser, connected} = useUserStore((state) => state)
   const {  data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -15,13 +15,14 @@ const useAuthStatus = () => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      if (session && session?.user?.email && Object.keys(user).length === 0) {
-       await fetchUser(session?.user?.email);
+      try {
+        session && session?.user?.email &&  await fetchUser(session?.user?.email);  
+      } catch (error) {
+        console.log(error)
       }
     };
-
-    fetchSession();
-  }, [fetchUser, session, user]);
+    if (connected && Object.keys(user).length === 0) fetchSession();
+  }, [fetchUser, session, connected, user]);
 
   return;
 }

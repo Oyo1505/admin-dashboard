@@ -33,6 +33,13 @@
  
   },
   "Dashboard": {
- 
+    "welcome": "Bienvenue",
+    "continue" : "Reprise de vos vidéo en cours"
+  },
+  "DashboardNav": {
+    "users":"Utilisateurs",
+    "add-movie":"Ajouter film",
+    "favorite":"Favoris",
+    "settings":"Paramètres"
   }
 }

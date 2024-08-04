@@ -1,7 +1,7 @@
 import { User } from '@/app/user';
 import Container from '@/components/ui/components/container/container';
 import LocaleSwitcher from '@/components/ui/components/LocaleSwitcher/locale-switcher';
-import { URL_HOME, URL_MOVIES } from '@/shared/route';
+import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import React from 'react'
@@ -24,7 +24,7 @@ const MenuHeader = ({session}: {session: any}) => {
       >
         {t('movies')}
       </Link>
-      <Link  className='hover:text-red-600' href='dashboard'>{t('dashboard')}</Link> 
+      <Link  className='hover:text-red-600' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
       </>}
       <User />
       <LocaleSwitcher />
