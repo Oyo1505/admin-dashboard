@@ -66,6 +66,8 @@ model Movie {
   id       String    @id @default(cuid())
   title    String 
   image    String
+  idGoogleDive String?     @unique
+  tags       String[]
   link     String     @unique
   favoritedBy User[] @relation("UserFavoriteMovies")
 }

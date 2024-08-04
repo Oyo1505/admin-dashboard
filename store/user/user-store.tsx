@@ -17,7 +17,7 @@ interface IUser extends User {
 interface UserStore {
   user: IUser;
   connected:boolean
-  setUser: (user: User) => void;
+  setUser: (user: User, connected: boolean) => void;
   fetchUser: (email: string) => Promise<void>;
   logout: () => void;
   login: () => void;
@@ -41,7 +41,7 @@ const useUserStore = create<UserStore>()(
         role: 'USER',
       },
       connected: false,
-      setUser: (user: User) => set({ user }),
+      setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
         const { user } = await getUserConnected(email);
         set({ user});

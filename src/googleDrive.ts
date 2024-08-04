@@ -41,12 +41,12 @@ export const getData = async () => {
   const drive = google.drive({ version: "v3", auth })
   try {
     const res = await drive.files.get({fileId: "1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD"})
-    const test = await drive.files.list({q: "mimeType='video/mp4' and '1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD' in parents"})
+    const movies = await drive.files.list({q: "mimeType='video/mp4' and '1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD' in parents"})
+    
+    //const movies = await drive.files.get({fileId: "1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD"})
+    
     const files = res.data
-
-    console.log(test)
-
-    return files
+    return { files, movie : movies.data}
   } catch (error: any) {
     console.error("Error fetching files:", error.message)
     return null

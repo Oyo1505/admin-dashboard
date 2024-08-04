@@ -4,10 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import React from 'react'
 import { addMovieToDb } from '../../action'
 import { IMovie } from '@/models/movie/movie'
-// import {
-//   useQuery,
-// } from '@tanstack/react-query'
-// import { useSession } from 'next-auth/react'
+
 
 const MovieTable = ({movies}: {movies: IMovie[]}) => {
   // const { data: session } = useSession();
