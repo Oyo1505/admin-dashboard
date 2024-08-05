@@ -6,8 +6,8 @@ import { getToken } from "next-auth/jwt";
 export default async function middleware(req: NextRequest) {
   // Get the pathname of the request (e.g. /, /protected)
   const path = req.nextUrl.pathname;
-  const headers = new Headers(req.headers);
-  headers.set("x-current-path",path);
+  // const headers = new Headers(req.headers);
+  // headers.set("x-current-path",path);
   // If it's the root path, just render it
   if (path === "/") {
     return NextResponse.next();
@@ -18,7 +18,7 @@ export default async function middleware(req: NextRequest) {
     //@ts-ignore
     secret: process.env.AUTH_SECRET,
   });
-  
+
   if (!session) {
     return NextResponse.redirect(new URL("/", req.url));
   } 

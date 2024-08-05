@@ -1,5 +1,4 @@
 "use client"
-import ReactPlayer from 'react-player'
 import Artplayer from 'artplayer';
 import { useEffect, useRef, useState } from 'react';
 type Props = {

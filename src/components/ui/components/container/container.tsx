@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils'
-import React, { ReactElement } from 'react'
+import React, { ReactNode } from 'react'
 
 interface Props {
   className? : string
-  children: ReactElement
+  children: ReactNode
 }
 
 const Container = ({className, children}: Props) => {

@@ -4,7 +4,7 @@ const createNextIntlPlugin = require('next-intl/plugin');
  
 const withNextIntl = createNextIntlPlugin();
  
-const withVideos = require('next-videos')
+const withVideos = require('next-videos');
 
 const nextConfig = {
   pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
@@ -21,8 +21,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com'
+      },
+      {
+        protocol: 'https',
+        hostname : 'fr.web.img6.acsta.net'
       }
-    
     ]
   }
 };

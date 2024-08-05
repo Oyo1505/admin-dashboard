@@ -1,11 +1,12 @@
 'use client'
 import { useSession } from "next-auth/react"
+import { usePathname } from "next/navigation"
 import { useEffect } from 'react'
 import useUserStore from "store/user/user-store"
 
-
-const useAuthStatus = () => {
-  const {user, fetchUser} = useUserStore((state) => state)
+const useAuthStatus = async () => {
+  const {user, fetchUser, connected, setUser} = useUserStore((state) => state)
+  const pathname = usePathname()
   const {  data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -15,13 +16,15 @@ const useAuthStatus = () => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      if (session && session?.user?.email && Object.keys(user).length === 0) {
-       await fetchUser(session?.user?.email);
+      try {
+        session && session?.user?.email &&  await fetchUser(session?.user?.email);  
+      } catch (error) {
+        console.log(error)
       }
     };
-
-    fetchSession();
-  }, [fetchUser, session, user]);
+    if (connected && Object.keys(user).length === 0) fetchSession();
+   else if (!session && pathname !== '/') setUser({}, false);
+  }, [fetchUser, session, connected, user, setUser, pathname]);
 
   return;
 }

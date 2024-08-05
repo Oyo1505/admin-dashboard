@@ -59,13 +59,19 @@ async function refreshAccessToken(token:JWT) {
     }
   }
 }
-
+const scopes = ['https://www.googleapis.com/auth/drive', 'openid', 'email', 'profile']
 export const { handlers, auth, signIn, signOut } = NextAuth ({
   adapter: PrismaAdapter(prisma),
   providers : [Google({
-    clientId:process.env.GOOGLE_ID,
-    clientSecret: process.env.GOOGLE_SECRET,
-    authorization: { params: { access_type: "offline", prompt: "consent" } },
+    clientId:process.env.NEXT_PUBLIC_GOOGLE_ID,
+    clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET,
+    authorization: {  
+      params: {
+      access_type: 'offline',
+      prompt: 'consent',
+
+      //scope: scopes,
+    }, },
 })],
   session: { strategy: "jwt", maxAge: 60 * 30 },
   callbacks: {
@@ -81,8 +87,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
           email: profile?.email,
           image: token?.picture,
         }
- 
+      
         return {
+          id_token : account.id_token,
           access_token: account.access_token,
           expires_at: account.expires_at,
           refresh_token: account.refresh_token,
@@ -123,12 +130,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       }
     },
     async session({ session, token }: { session: any, token: any}) {
-      session.accessToken = token.accessToken;
-      session.idToken = token.idToken;
-      session.refreshToken = token.refreshToken;
+ 
+      session.accessToken = token.access_token;
+      session.idToken = token.id_token;
+      session.refreshToken = token.refresh_token;
       session.error = token.error;
-      session.expiresAt = token.expiresAt
+      session.expiresAt = token.expires_at
       session.user = token.user
+  
       return session
     }
   },

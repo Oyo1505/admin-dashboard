@@ -25,7 +25,7 @@ import { useTransition, useEffect, useRef, useState } from 'react';
     startTransition(() => {
       // All navigations are transitions automatically
       // But wrapping this allow us to observe the pending state
-      router.replace(`/dashboard?${params.toString()}`);
+      router.replace(`/dashboard/users?${params.toString()}`);
     });
   }, [router, value]);
 

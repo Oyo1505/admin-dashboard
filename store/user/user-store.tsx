@@ -11,13 +11,13 @@ import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
 // Définir l'interface pour le store utilisateur
 
 interface IUser extends User {
-  role : 'ADMIN' | 'USER'
+  role? : 'ADMIN' | 'USER'
 }
 
 interface UserStore {
-  user: IUser | {};
+  user: IUser;
   connected:boolean
-  setUser: (user: User) => void;
+  setUser: (user: User, connected: boolean) => void;
   fetchUser: (email: string) => Promise<void>;
   logout: () => void;
   login: () => void;
@@ -33,22 +33,26 @@ const persistOptions: PersistOptions<UserStore> = {
 const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      user: {},
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        image:'',
+        role: 'USER',
+      },
       connected: false,
-      setUser: (user: User) => set({ user }),
+      setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
-   
         const { user } = await getUserConnected(email);
-        console.log(user)
-        set({ user, connected: true });
+        set({ user});
       },
       login: async ()=> {
         await signIn('google', { callbackUrl: URL_HOME });
-        
+        set({ connected: true });
       },
       logout: async () =>{ 
-        await signOut({ callbackUrl: URL_BASE});
         set({ user: {}, connected: false, })
+        await signOut({ callbackUrl: URL_BASE});
       },
     }),
     persistOptions
