@@ -57,28 +57,69 @@ export const deleteUserById =  async (id:string)=> {
     }
   }
 } 
+export const getAllMovies =  async ()=> {
+  
+  try {
+
+   const movieInDb = await prisma.movie.findMany()
+
+    return {movieInDb, status: 200 };
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
 
 export const addMovieToDb =  async (movie:IMovie)=> {
   
-  try {
-  const link = `${URL_MOVIES}/test-1`
+    try {
+      
    const movieInDb = await prisma.movie.findUnique({
       where:{
-        link
+        idGoogleDive: movie.idGoogleDive
       }
     })
     if(movieInDb){
       return {status: 409, message :'Le film existe déjà' };
     }
+    console.log(movieInDb)
     await prisma.movie.create({
       data: {
-        title: movie.title,
-        image: 'test.jpg',
-        link: `${URL_MOVIES}/test-1`,
+        title: movie.title ?? 'Nouveau film',
+        link: `${movie?.link}`,
+        image: `${movie?.link}`,
+        idGoogleDive: movie.idGoogleDive,
+        year: 2010,
+        genre: movie?.genre ? movie?.genre.split(' ') : [],
+        country: movie.country,
+        synopsis: movie.synopsis,
+        trailer: movie.trailer,
+ 
       },
     })
-    revalidatePath(URL_ADD_MOVIE)
+ 
     return {status: 200 };
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const deleteMovieById =  async (id:string)=> {
+  
+  try {
+   
+ const data = await prisma.movie.delete({
+      where: {
+        id,
+      },
+    });
+    revalidatePath(URL_ADD_MOVIE)
+    return { status: 200 };
   } catch (error) {
     console.log(error)
     return {

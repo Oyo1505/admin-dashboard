@@ -1,23 +1,20 @@
 'use client'
-import { Button } from '@/components/ui/components/button/button'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/components/table/table'
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/components/table/table'
 import React from 'react'
-import { addMovieToDb } from '../../action'
-import { IMovie } from '@/models/movie/movie'
+import { IMovie, IMovieFileGoogleDrive } from '@/models/movie/movie'
+import MovieRow from '../movie-row/movie-row'
+import { useQuery } from '@tanstack/react-query'
+import { getAllMovies } from '../../action'
 
+const MovieTable = ({movies, createMovie}: {movies: IMovieFileGoogleDrive[], createMovie: Function}) => {
+  const {data} = useQuery({
+    queryKey: ['movies'],
+    queryFn: async () => await getAllMovies()
+  })
 
-const MovieTable = ({movies}: {movies: IMovie[]}) => {
-  // const { data: session } = useSession();
-
-  // const { isPending, error, data } = useQuery({
-  //   queryKey: ['test'],
-  //   queryFn: () =>fetch(`https://www.googleapis.com/drive/v3/files?q=mimeType='video/mp4' and '1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD' in parents`, {
-  //       method: 'GET',
-  //       headers: {
-  //         Authorization: `Bearer ${session?.accessToken}`,
-  //       },
-  //     }).then(res =>  console.log(res.json()))
-  // });
+  const filteredMoviesNotAdded = movies.filter(testMovie => !data?.movieInDb?.some(dataMovie => dataMovie.idGoogleDive === testMovie.id));
+  
+  const filteredMoviesAdded = data?.movieInDb?.filter(testMovie => movies?.some(dataMovie => dataMovie.id === testMovie.idGoogleDive));
  
   return (
     <div className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6'>
@@ -25,44 +22,35 @@ const MovieTable = ({movies}: {movies: IMovie[]}) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="max-w-[150px]">Film</TableHead>
+              <TableHead className="max-w-[150px]">Film non ajouté</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {movies?.map((movie) => (
-              <MovieRow key={movie?.id} movie={movie} />
-            ))}
+            {filteredMoviesNotAdded ? filteredMoviesNotAdded?.map((movie) => (
+              <MovieRow key={movie?.id} movie={movie} createMovie={createMovie}  btnText={'Ajouter'} />
+            )): 'Aucun Film'}
+          
           </TableBody>
         </Table>
       </form>
+    {filteredMoviesAdded &&   filteredMoviesAdded?.length > 0 && <>      
+      <form className="border shadow-sm rounded-lg mt-4">
+      <Table >
+          <TableHeader>
+            <TableRow>
+              <TableHead className="max-w-[150px]">Film Ajouté</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredMoviesAdded ? filteredMoviesAdded?.map((movie) => (
+              <MovieRow key={movie?.id} movie={movie} createMovie={() => console.log('createMovie')} btnText={'Editer'} />
+            )): 'Aucun Film'}
+          
+          </TableBody>
+        </Table>
+      </form>
+      </>}
     </div>
   )
-}
-
-async function MovieRow({ movie }: { movie:IMovie}) {
-
-  const addMovie = async () => {
-    movie && await addMovieToDb(movie)
-  }  
-  
-  return (
-     <>
-            
-    <TableRow>
-      <TableCell className="font-medium">{movie.title}</TableCell>
-            <TableCell>
-            <Button
-              className="w-full"
-              size="sm"
-              variant="outline"
-              formAction={addMovie}
-            >
-              Ajouter
-            </Button>
-          </TableCell>
-      </TableRow>
-
-      </>
-  );
 }
 export default MovieTable

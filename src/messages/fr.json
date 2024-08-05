@@ -42,5 +42,16 @@
     "add-movie":"Ajouter film",
     "favorite":"Favoris",
     "settings":"Paramètres"
+  },
+  "AddMovie": {
+    "title":"Ajouter un film",
+    "titleMovie": "Titre du Film",
+    "year": "Année",
+    "genre": "Genre",
+    "country": "Pays",
+    "trailer": "Bande-annonce",
+    "synopsis": "Synopsis",
+    "link": "Lien",
+    "save": "Enregistrer"
   }
 }

@@ -43,5 +43,16 @@
     "add-movie":"Add movie",
     "favorite":"Favorite",
     "settings":"Settings"
+  },
+  "AddMovie": {
+    "title": "Add Movie",
+    "titleMovie": "Title Movie",
+    "year": "Year",
+    "genre": "Genre",
+    "country": "Country",
+    "trailer": "Trailer",
+    "synopsis": "Synopsis",
+    "link": "Link",
+    "save": "Save"
   }
 }

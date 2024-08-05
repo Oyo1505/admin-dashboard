@@ -41,11 +41,11 @@ export const getData = async () => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth })
   try {
-    const res = await drive.files.get({fileId: "1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD"})
+    // const res = await drive.files.get({fileId: "1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD"})
     const movies = await drive.files.list({q: "mimeType='video/mp4' and '1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD' in parents"})
         
-    const files = res.data
-    return { files, movie : movies.data}
+   // const files = res.data
+    return {  movies : movies.data.files}
   } catch (error: any) {
     console.error("Error fetching files:", error.message)
     return null
