@@ -38,6 +38,7 @@
     "users":"Users"
   },
   "DashboardNav": {
+    "dashboard":"Dashboard",
     "users":"Users",
     "add-movie":"Add movie",
     "favorite":"Favorite",

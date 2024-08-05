@@ -37,6 +37,7 @@
     "continue" : "続きを見る"
   },
   "DashboardNav": {
+    "dashboard":"ダッシュボード",
     "users":"ユーザー",
     "add-movie":"映画を追加",
     "favorite":"お気に入り",

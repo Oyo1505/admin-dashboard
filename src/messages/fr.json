@@ -37,6 +37,7 @@
     "continue" : "Reprise de vos vidéo en cours"
   },
   "DashboardNav": {
+    "dashboard":"Espace Personnel",
     "users":"Utilisateurs",
     "add-movie":"Ajouter film",
     "favorite":"Favoris",

@@ -3,3 +3,10 @@ export interface IMovie {
   title:string
   sources: string[]
 }
+
+export interface IMovieFileGoogleDrive {
+  kind: string,
+  id: string,
+  name: string,
+  mimeType: string
+}
