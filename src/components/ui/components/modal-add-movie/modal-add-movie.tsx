@@ -4,11 +4,43 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/button';
 import { IMovie } from '@/models/movie/movie';
 import { useTranslations } from 'next-intl';
+import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 
-
-const DialogAddMovie = ({movie, createMovie}:{ movie:IMovie, createMovie:any}) => {
+const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
-  const [formData, setFormData] = React.useState<any>({title: movie?.title ?? '', link: movie?.link ?? '', year: movie?.year ?? new Date().getFullYear(), genre: movie?.genre ?? '', trailer: movie?.trailer ?? '', synopsis: movie?.synopsis ?? '', country: movie?.country ?? '', idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""});
+
+  const [formData, setFormData] = React.useState<any>({
+    id : movie?.id,
+    title: movie?.title ?? '', 
+    link: movie?.link ?? '', 
+    year: movie?.year ?? new Date().getFullYear(), 
+    genre: movie?.genre ?? '', 
+    trailer: movie?.trailer ?? '', 
+    synopsis: movie?.synopsis ?? '', 
+    country: movie?.country ?? '', 
+    idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
+  });
+
+  const  createMovie= async () => {
+    const rawFormData = {
+      title: formData.title,
+      idGoogleDive: formData.idGoogleDive,
+      releaseDate: Date.now(),
+      year: formData.year,
+      genre: formData.genre,
+      country: formData.country,
+      synopsis: formData.synopsis,
+      trailer: formData.trailer,
+      link: formData.link,
+    }
+    await addMovieToDb(rawFormData)
+    setIsOpen(false)
+  }
+ 
+  const onClickEditMovie = async () => {
+     await editMovieToDb(formData as any)
+     setIsOpen(false)
+  }
 
 return(
     <Dialog.Portal>
@@ -16,9 +48,7 @@ return(
       <Dialog.Title>FIlm</Dialog.Title>
       <Dialog.Description>Tesxt</Dialog.Description>
       <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-        <form action={ async () => {
-          await createMovie(formData)
-        }}>
+        <form>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="title">
           {t('titleMovie')}
@@ -137,13 +167,18 @@ return(
               value={formData?.idGoogleDive}
             />
           }
-        <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="280" allow="autoplay"></iframe>
+        <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="50" allow="autoplay"></iframe>
         <div className="mt-[25px] flex justify-end">
          
-            <button className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none">
-           {t('save')}
-            </button> 
-          
+            <Button 
+              size="sm"
+              variant="outline"
+              formAction={editMovie ? onClickEditMovie : createMovie}
+              className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+            >
+               {t('save')}
+            </Button> 
+            
         </div>
         <Dialog.Close asChild>
           <button

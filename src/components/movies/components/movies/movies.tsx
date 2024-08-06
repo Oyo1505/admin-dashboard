@@ -15,7 +15,7 @@ const Movies = ({movies}:IMovie) => {
       {movies && movies?.length > 0 ? movies?.map((movie, index) => 
       <Link className='flex flex-col gap-3 justify-start items-center'
         key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
-        href={`${URL_MOVIES}/${movie?.title.toLowerCase().replaceAll(' ', '-')}`} >
+        href={`${URL_MOVIES}/${movie?.id}`} >
           <Image className='object-fill' src={'https://fr.web.img6.acsta.net/img/f5/4c/f54c3310f101fe8ae4bba9e566bca1b5.jpg'} width={150} height={250} alt='movie' />
           {movie?.title} 
       </Link> ) : 'Pas de film disponible'}

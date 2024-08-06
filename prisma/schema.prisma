@@ -51,17 +51,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   role          UserRole     @default(USER) 
-  favoriteMovies  Movie[]  @relation("UserFavoriteMovies")
+favoriteMovies UserFavoriteMovies[]
 }
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
 model Movie {
   id       String    @id @default(cuid())
   title    String 
@@ -75,8 +66,28 @@ model Movie {
   country  String?
   synopsis  String?
   trailer  String?
-  favoritedBy User[] @relation("UserFavoriteMovies")
+  favoriteMovies UserFavoriteMovies[]
 }
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model UserFavoriteMovies {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  movieId   String
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie     Movie   @relation(fields: [movieId], references: [id], onDelete: Cascade)  
+
+  @@unique([userId, movieId])
+}
+
 
 enum UserRole {
   USER

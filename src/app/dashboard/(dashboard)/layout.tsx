@@ -1,4 +1,5 @@
 import MenuDashboard from "@/components/layout/components/menu-dashboard/menu-dashboard";
+import { Suspense } from "react";
 
 export const metadata = {
   title: 'Dashboard',
@@ -12,6 +13,7 @@ export default function Layout({
   children: React.ReactNode;
 }) { 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
     <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -22,6 +24,6 @@ export default function Layout({
       {children}
     </div>
   </div>
-
+  </Suspense>
   );
 }

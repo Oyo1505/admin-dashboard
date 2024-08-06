@@ -1,22 +1,19 @@
 'use client'
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/components/table/table'
-import React from 'react'
-import { IMovie, IMovieFileGoogleDrive } from '@/models/movie/movie'
+import React, { Suspense } from 'react'
+import {IMovie, IMovieFileGoogleDrive } from '@/models/movie/movie'
 import MovieRow from '../movie-row/movie-row'
-import { useQuery } from '@tanstack/react-query'
-import { getAllMovies } from '../../action'
 
-const MovieTable = ({movies, createMovie}: {movies: IMovieFileGoogleDrive[], createMovie: Function}) => {
-  const {data} = useQuery({
-    queryKey: ['movies'],
-    queryFn: async () => await getAllMovies()
-  })
+const MovieTable = ({movies, movieInDb}: {movies: IMovieFileGoogleDrive[] | undefined, movieInDb: IMovie[] }) => {
 
-  const filteredMoviesNotAdded = movies.filter(testMovie => !data?.movieInDb?.some(dataMovie => dataMovie.idGoogleDive === testMovie.id));
+
+  const filteredMoviesNotAdded = movies?.filter(testMovie => !movieInDb?.some(dataMovie => dataMovie.idGoogleDive === testMovie.id));
   
-  const filteredMoviesAdded = data?.movieInDb?.filter(testMovie => movies?.some(dataMovie => dataMovie.id === testMovie.idGoogleDive));
+  const filteredMoviesAdded = movieInDb?.filter(testMovie => movies?.some(dataMovie => dataMovie.id === testMovie.idGoogleDive));
  
   return (
+    <Suspense  fallback={<p>Chargement...</p>}>
+
     <div className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6'>
         <form className="border shadow-sm rounded-lg">
         <Table>
@@ -27,8 +24,8 @@ const MovieTable = ({movies, createMovie}: {movies: IMovieFileGoogleDrive[], cre
           </TableHeader>
           <TableBody>
             {filteredMoviesNotAdded ? filteredMoviesNotAdded?.map((movie) => (
-              <MovieRow key={movie?.id} movie={movie} createMovie={createMovie}  btnText={'Ajouter'} />
-            )): 'Aucun Film'}
+              <MovieRow key={movie?.id} movie={movie}  editMovie={false} btnText={'Ajouter'} />
+            )): 'Aucun Film'} 
           
           </TableBody>
         </Table>
@@ -43,7 +40,7 @@ const MovieTable = ({movies, createMovie}: {movies: IMovieFileGoogleDrive[], cre
           </TableHeader>
           <TableBody>
             {filteredMoviesAdded ? filteredMoviesAdded?.map((movie) => (
-              <MovieRow key={movie?.id} movie={movie} createMovie={() => console.log('createMovie')} btnText={'Editer'} />
+              <MovieRow key={movie?.id} movie={movie}  editMovie={true} btnText={'Editer'} />
             )): 'Aucun Film'}
           
           </TableBody>
@@ -51,6 +48,7 @@ const MovieTable = ({movies, createMovie}: {movies: IMovieFileGoogleDrive[], cre
       </form>
       </>}
     </div>
+    </Suspense>
   )
 }
 export default MovieTable

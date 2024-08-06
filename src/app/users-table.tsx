@@ -17,11 +17,9 @@ import useUserStore from 'store/user/user-store';
  const UsersTable = ({
   users,
   offset,
-  sessionUser
 }: {
   users?: any[];
   offset?: number | null;
-  sessionUser: any
 }) => {
   const router = useRouter();
 
@@ -43,7 +41,7 @@ import useUserStore from 'store/user/user-store';
           </TableHeader>
           <TableBody>
             {users?.map((user) => (
-              <UserRow key={user.id} user={user} sessionUser={sessionUser} />
+              <UserRow key={user.id} user={user} />
             ))}
           </TableBody>
         </Table>
@@ -61,9 +59,10 @@ import useUserStore from 'store/user/user-store';
   );
 }
 
-function UserRow({ user, sessionUser }: { user: User, sessionUser:User }) {
+function UserRow({ user }: { user: User }) {
   const userId = user.id;
-  const { user:userConnected } = useUserStore(state => state)
+  const { user:userConnected } = useUserStore(state => state);
+  
   const deleteUser = async () => {
     userId && await deleteUserById(userId)
   }

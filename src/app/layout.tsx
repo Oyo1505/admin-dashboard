@@ -1,6 +1,5 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
-
 import { SessionProvider } from "next-auth/react"
 import {NextIntlClientProvider} from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
@@ -8,8 +7,8 @@ import LayoutLogic from '../components/layout/components/layout-logic';
 import MenuHeader from '../components/layout/components/menu-header/menu-header';
 import { auth, handlers } from '@/lib/auth';
 import Container from '@/components/ui/components/container/container';
-import { ReactElement } from 'react';
-import getServerSession from "next-auth"
+import { ReactElement, Suspense } from 'react';
+
 
 export const metadata = {
   title: '0y0Flix',
@@ -34,9 +33,11 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
           <MenuHeader session={session}/>
-          <Container >
-            {children}
-          </Container>
+          <Suspense fallback={<p>Loading...</p>}>
+            <Container >
+              {children}
+            </Container>
+          </Suspense>
           </LayoutLogic>
          <Analytics />
         </NextIntlClientProvider>
