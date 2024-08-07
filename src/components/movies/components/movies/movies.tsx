@@ -1,21 +1,21 @@
 import React from 'react'
 import Link from 'next/link'
 import { URL_MOVIES } from '@/shared/route'
-import Image from 'next/image'
+import Image from 'next/image';
+import { User } from 'next-auth';
+import { IMovie } from '@/models/movie/movie';
 
-interface IMovie {
-  movies: any[]
-}
- 
-const Movies = ({movies}:IMovie) => {
+
+const Movies = ({movies}:{movies?:IMovie[]}) => {
 
   return (
     <div className='mt-7'>
       <div className='flex flex-row gap-4 items-start flex-wrap justify-start'>
       {movies && movies?.length > 0 ? movies?.map((movie, index) => 
+      movie?.title &&
       <Link className='flex flex-col gap-3 justify-start items-center'
         key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
-        href={`${URL_MOVIES}/${movie?.title.toLowerCase().replaceAll(' ', '-')}`} >
+        href={`${URL_MOVIES}/${movie?.id}`} >
           <Image className='object-fill' src={'https://fr.web.img6.acsta.net/img/f5/4c/f54c3310f101fe8ae4bba9e566bca1b5.jpg'} width={150} height={250} alt='movie' />
           {movie?.title} 
       </Link> ) : 'Pas de film disponible'}

@@ -42,5 +42,16 @@
     "add-movie":"映画を追加",
     "favorite":"お気に入り",
     "settings":"設定"
+  },
+  "AddMovie": {
+    "title":"映画を追加",
+    "titleMovie": "タイトル",
+    "year": "年",
+    "genre": "ジャンル",
+    "country": "国",
+    "trailer": "トレーラー",
+    "synopsis": "概要",
+    "link": "リンク",
+    "save": "保存"
   }
 }

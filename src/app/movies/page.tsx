@@ -1,10 +1,12 @@
 import Movies from '@/components/movies/components/movies/movies'
 import React from 'react'
 
-import moviesJson from '../../assets/json/movies.json'
+import { getAllMovies } from '@/components/dashboard/action'
+
  const Page = async  () => {
+  const { movieInDb } = await getAllMovies();
   return (
-    <Movies movies={moviesJson.categories[0].videos} />
+    <Movies movies={movieInDb} />
   )
 }
 
