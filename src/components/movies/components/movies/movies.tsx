@@ -1,18 +1,18 @@
 import React from 'react'
 import Link from 'next/link'
 import { URL_MOVIES } from '@/shared/route'
-import Image from 'next/image'
+import Image from 'next/image';
+import { User } from 'next-auth';
+import { IMovie } from '@/models/movie/movie';
 
-interface IMovie {
-  movies: any[]
-}
- 
-const Movies = ({movies}:IMovie) => {
+
+const Movies = ({movies}:{movies?:IMovie[]}) => {
 
   return (
     <div className='mt-7'>
       <div className='flex flex-row gap-4 items-start flex-wrap justify-start'>
       {movies && movies?.length > 0 ? movies?.map((movie, index) => 
+      movie?.title &&
       <Link className='flex flex-col gap-3 justify-start items-center'
         key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
         href={`${URL_MOVIES}/${movie?.id}`} >

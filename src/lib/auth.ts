@@ -20,6 +20,9 @@ const prisma = new PrismaClient()
  * `accessToken` and `accessTokenExpires`. If an error occurs,
  * returns the old token and an error property
  */
+
+const emailAuthorized = ['oyo150589@gmail.com', 'rigoulet.henri.pierre@gmail.com', 'henri-pierre.rigoulet@latelier.co']
+
 async function refreshAccessToken(token:JWT) {
   try {
     const url =
@@ -59,7 +62,6 @@ async function refreshAccessToken(token:JWT) {
     }
   }
 }
-const scopes = ['https://www.googleapis.com/auth/drive', 'openid', 'email', 'profile']
 export const { handlers, auth, signIn, signOut } = NextAuth ({
   adapter: PrismaAdapter(prisma),
   providers : [Google({
@@ -69,12 +71,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       params: {
       access_type: 'offline',
       prompt: 'consent',
-
-      //scope: scopes,
     }, },
 })],
   session: { strategy: "jwt", maxAge: 60 * 30 },
   callbacks: {
+    async signIn({ user }) {
+ 
+      if(user?.email && !emailAuthorized.includes(user?.email)) return false
+      return true
+    },
     async jwt({ token, account, profile }) {
       const tokenExpiresAt  = token.expires_at as number
       if (account) {

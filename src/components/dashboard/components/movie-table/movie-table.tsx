@@ -1,10 +1,10 @@
 'use client'
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/components/table/table'
 import React, { Suspense } from 'react'
-import {IMovie, IMovieFileGoogleDrive } from '@/models/movie/movie'
+import { IMovie, } from '@/models/movie/movie'
 import MovieRow from '../movie-row/movie-row'
 
-const MovieTable = ({movies, movieInDb}: {movies: IMovieFileGoogleDrive[] | undefined, movieInDb: IMovie[] }) => {
+const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInDb: IMovie[] }) => {
 
 
   const filteredMoviesNotAdded = movies?.filter(testMovie => !movieInDb?.some(dataMovie => dataMovie.idGoogleDive === testMovie.id));
