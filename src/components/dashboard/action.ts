@@ -40,14 +40,14 @@ export const getUsersWithPageParam = async (search:string, pageParam:number)=> {
 };
 
 export const deleteUserById =  async (id:string)=> {
-  
+  console.log('delete')
   try {
     await prisma.user.delete({
       where:{
         id
       },
     })
-    console.log('delete')
+   
     return { status: 200 };
   } catch (error) {
     console.log(error)
