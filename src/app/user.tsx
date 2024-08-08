@@ -1,8 +1,7 @@
 
 import Image from 'next/image';
-import { Button } from '../components/ui/components/button/button';
 import ButtonLogout from '../components/ui/components/button-logout/button-logout';
-import { auth, signIn } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export async function User() {
   const session = await auth();

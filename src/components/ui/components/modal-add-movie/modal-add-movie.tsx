@@ -16,6 +16,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     year: movie?.year ?? new Date().getFullYear(), 
     genre: movie?.genre ?? '', 
     trailer: movie?.trailer ?? '', 
+    duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '', 
     country: movie?.country ?? '', 
     idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
@@ -27,6 +28,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       idGoogleDive: formData.idGoogleDive,
       releaseDate: Date.now(),
       year: formData.year,
+      duration : formData.duration,
       genre: formData.genre,
       country: formData.country,
       synopsis: formData.synopsis,
@@ -113,6 +115,21 @@ return(
             value={formData?.genre}
             onChange={(e) => {
               setFormData({...formData, genre: e.target.value})
+            }}
+          />
+        </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11 text-right text-[15px]" htmlFor="duration">
+          {t('duration')}
+          </label>
+          <input
+            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="duration"
+            type='number'
+            name='duration'
+            value={formData?.duration}
+            onChange={(e) => {
+              setFormData({...formData, duration: e.target.value})
             }}
           />
         </fieldset>

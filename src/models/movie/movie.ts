@@ -3,9 +3,11 @@ import { User } from "next-auth"
 export interface IMovie {
   id: string
   title: string
+  movieId?: string | null
   image: string
   idGoogleDive: string | null
   tags: string[]
+  duration?: number | null
   link: string
   releaseDate: string | null
   year: number | null

@@ -7,8 +7,8 @@ import useUserStore from "store/user/user-store"
 const useAuthStatus = async () => {
   const {user, fetchUser, connected, setUser} = useUserStore((state) => state)
   const pathname = usePathname()
-  const {  data: session } = useSession()
-
+  const {  data: session,  } = useSession()
+ 
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -17,7 +17,7 @@ const useAuthStatus = async () => {
         console.log(error)
       }
     };
-    if (connected && Object.keys(user).length === 0) fetchSession();
+    if (session && Object.keys(user).length === 0)  fetchSession();
    else if (!session && pathname !== '/') {
     setUser({}, false)
     redirect('/')

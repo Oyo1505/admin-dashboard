@@ -17,7 +17,7 @@
   "LandingPage": {
     "login": "ログイン",
     "logout": "ログアウト",
-    "welcome":"歡迎 !",
+    "welcome":"ヌーベルバーグへようこそ！",
     "title": "Google に接続"
   },
   "ProfilePage": {
@@ -52,6 +52,22 @@
     "trailer": "トレーラー",
     "synopsis": "概要",
     "link": "リンク",
-    "save": "保存"
+    "save": "保存",
+    "duration": "時間"
+  },
+  "MoviePage": {
+    "duration": "時間",
+    "release": "発売日",
+    "genre": "ジャンル",
+    "country": "国",
+    "synopsis": "概要",
+    "trailer": "トレーラー",
+    "year": "年",
+    "addToFavorite": "お気に入りに追加",
+    "removeFromFavorite": "お気に入りから削除"
+  },
+  "SettingsPage": {
+    "anyHelp": "ご協力が必要ですか？",
+    "deleteAccount": "アカウントを削除"
   }
 }

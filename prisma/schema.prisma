@@ -51,12 +51,13 @@ model User {
   accounts      Account[]
   sessions      Session[]
   role          UserRole     @default(USER) 
-favoriteMovies UserFavoriteMovies[]
+  favoriteMovies UserFavoriteMovies[]
 }
 model Movie {
   id       String    @id @default(cuid())
   title    String 
   image    String
+  duration Int?
   idGoogleDive String?     @unique
   tags       String[]
   link     String     @unique
@@ -67,6 +68,7 @@ model Movie {
   synopsis  String?
   trailer  String?
   favoriteMovies UserFavoriteMovies[]
+  createdAt DateTime @default(now())
 }
 
 model VerificationToken {
