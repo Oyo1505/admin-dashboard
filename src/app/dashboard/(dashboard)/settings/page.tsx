@@ -6,12 +6,11 @@ export default async function SettingsPage() {
     return (
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
         <div className="flex items-center">
-        <Title type='h1' translationTheme='DashboardNav' translationText='settings' />
-
+          <Title type='h1' translationTheme='DashboardNav' translationText='settings' />
         </div>
         <div>
-          <Title translationTheme="SettingsPage" type='h2' translationText='anyHelp' />
-          <ButtonDeleteAccount translationTheme="SettingsPage" translationText='deleteAccount' />
+          <Title translationTheme="SettingsPage" type='h3' translationText='deleteAccount' />
+          <ButtonDeleteAccount className='mt-4' translationTheme="SettingsPage" translationText='deleteAccount' />
         </div>
         <div>
           <Title translationTheme="SettingsPage" type='h3' translationText='anyHelp' />
@@ -32,7 +31,7 @@ export default async function SettingsPage() {
                 </defs>
                 </svg>
             </button>
-            Oyo1505
+              <span className='text-sm'>Oyo1505</span>
             </a>
         </div>
       </main>

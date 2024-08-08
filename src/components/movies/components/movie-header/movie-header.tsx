@@ -16,7 +16,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const t = useTranslations('MoviePage')
   const {user} = useUserStore((state) => state)
   return (
-    <div className='w-full lg:w-1/2'>
+    <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <h1 className='text-3xl font-bold'>{movie?.title}</h1>
     <div>
       <span>{t('release')}: {movie?.year}</span>
@@ -26,7 +26,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
     </div>
       {movie?.tags &&<div>{movie?.tags?.map(tag => <span key={tag}>{tag}</span>)}</div> }
       <div className='mt-6 font-normal italic'> {t('synopsis')}: {movie?.synopsis}</div>
-      <div className='mt-6 font-normal italic'> <form><Button formAction={() => user?.id && addOrRemoveToFavorite(user?.id ,movie?.id) }  >{ isFavorite ? t('removeFromFavorite') : t('addToFavorite')}</Button></form></div>
+      <div className='mt-10 font-normal italic'> <form><Button formAction={() => user?.id && addOrRemoveToFavorite(user?.id ,movie?.id) }  >{ isFavorite ? t('removeFromFavorite') : t('addToFavorite')}</Button></form></div>
   </div>
   )
 }

@@ -6,7 +6,7 @@ import React from 'react'
 import { useSession } from 'next-auth/react';
 import useUserStore from 'store/user/user-store';
 
-const ButtonDeleteAccount = ({ translationTheme, translationText }: { translationTheme: string, translationText: string }) => {
+const ButtonDeleteAccount = ({ translationTheme, translationText, className}: { translationTheme: string, translationText: string, className:string }) => {
   const {logout} = useUserStore(state => state);
   const t = useTranslations(translationTheme);
   const {data: session} = useSession();
@@ -19,6 +19,7 @@ const ButtonDeleteAccount = ({ translationTheme, translationText }: { translatio
   return (
     <form>
     <Button 
+    className={className}
     formAction={deleteUser}>
       {t(translationText)}
     </Button>

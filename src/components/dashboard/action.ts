@@ -176,7 +176,7 @@ export const deleteMovieById =  async (id:string)=> {
 export const getFavoriteMovies =  async (id:string)=> {
   
   try {
-    const movie = await prisma.userFavoriteMovies.findMany({
+    const movies = await prisma.userFavoriteMovies.findMany({
       where: {
         userId: id
       },
@@ -184,7 +184,7 @@ export const getFavoriteMovies =  async (id:string)=> {
         movie: true
       }
     });
-    return { movie, status: 200 };
+    return { movies , status: 200 };
   
   } catch (error) {
     console.log(error)
