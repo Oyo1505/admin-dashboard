@@ -1,24 +1,32 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import { URL_MOVIES } from '@/shared/route'
 import Image from 'next/image';
-import { User } from 'next-auth';
 import { IMovie } from '@/models/movie/movie';
+import { useRouter } from 'next/navigation';
+import imageDefault from '../../../../assets/image/default-placeholder.png'
 
 
-const Movies = ({movies}:{movies?:IMovie[]}) => {
+const Movies = ({movies, offset, newOffset}:{movies?:IMovie[], offset?:number, newOffset?:number}) => {
+ 
+  const router = useRouter();
+  function onClick() {
+    router.replace(`/movies/search?offset=${offset}`);
+  }
 
   return (
     <div className='mt-7'>
       <div className='flex flex-row gap-4 items-start flex-wrap justify-start'>
       {movies && movies?.length > 0 ? movies?.map((movie, index) => 
       movie?.title &&
-      <Link className='flex flex-col gap-3 justify-start items-center'
+      <Link prefetch className='w-1/6 flex flex-col gap-3 justify-start items-center hover:scale-105 transition-all duration-300'
         key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
         href={`${URL_MOVIES}/${movie?.id}`} >
-          <Image className='object-fill' src={'https://fr.web.img6.acsta.net/img/f5/4c/f54c3310f101fe8ae4bba9e566bca1b5.jpg'} width={150} height={250} alt='movie' />
-          {movie?.title} 
+          <Image className='object-fill' src={movie?.image ? movie?.image : imageDefault} width={200} height={150} alt='movie' />
+          <div className='w-full text-center text-ellipsis whitespace-nowrap overflow-hidden'>{movie?.title}</div>
       </Link> ) : 'Pas de film disponible'}
+      
       </div>
     </div>
   )

@@ -33,18 +33,12 @@ const persistOptions: PersistOptions<UserStore> = {
 const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        image:'',
-        role: 'USER',
-      },
+      user: {},
       connected: false,
       setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
-        const { user } = await getUserConnected(email);
-        set({ user});
+        const {user} = await getUserConnected(email);
+        set({  user: user, connected: true });
       },
       login: async ()=> {
         await signIn('google', { callbackUrl: URL_HOME });

@@ -25,6 +25,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname : 'fr.web.img6.acsta.net'
+      },
+      {
+        protocol: 'https',
+        hostname : 'media.senscritique.com'
       }
     ]
   }

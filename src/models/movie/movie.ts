@@ -6,6 +6,7 @@ export interface IMovie {
   image: string
   idGoogleDive: string | null
   tags: string[]
+  duration?: number | null
   link: string
   releaseDate: string | null
   year: number | null

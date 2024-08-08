@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { IMovie } from "@/models/movie/movie";
 import { URL_ADD_MOVIE, URL_USERS } from "@/shared/route";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/dist/server/api-utils";
 
 export const getUsersWithPageParam = async (search:string, pageParam:number)=> {
 
@@ -46,8 +47,8 @@ export const deleteUserById =  async (id:string)=> {
         id
       },
     })
-    revalidatePath(URL_USERS)
-    return {status: 200 };
+    console.log('delete')
+    return { status: 200 };
   } catch (error) {
     console.log(error)
     return {
@@ -88,6 +89,7 @@ export const addMovieToDb =  async (movie:any)=> {
         title: movie.title ?? 'Nouveau film',
         link: movie?.link,
         image: movie?.link,
+        duration: Number(movie.duration),
         idGoogleDive: movie.idGoogleDive,
         year: movie.year,
         genre: movie?.genre ? movie?.genre.split(' ') : [],
@@ -129,6 +131,7 @@ export const editMovieToDb =  async (movie:IMovie)=> {
       title: movie.title,
       link: movie?.link,
       image: movie?.link,
+      duration:  Number(movie.duration),
       idGoogleDive: movie.idGoogleDive,
       year: Number(movie.year),
       genre:[],
@@ -161,6 +164,28 @@ export const deleteMovieById =  async (id:string)=> {
       revalidatePath('/dashboard/add-movie')
     return { status: 200 };
    }
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+
+export const getFavoriteMovies =  async (id:string)=> {
+  
+  try {
+    const movie = await prisma.userFavoriteMovies.findMany({
+      where: {
+        userId: id
+      },
+      include: {
+        movie: true
+      }
+    });
+    return { movie, status: 200 };
+  
   } catch (error) {
     console.log(error)
     return {

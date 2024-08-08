@@ -17,7 +17,7 @@
  "LandingPage": {
     "login": "Login",
     "logout": "Logout",
-    "welcome":"Welcome !",
+    "welcome":"Welcome to Nūberu Bāgu !",
     "title": "Sign in with Google"
   },
   "ProfilePage": {
@@ -53,6 +53,22 @@
     "trailer": "Trailer",
     "synopsis": "Synopsis",
     "link": "Link",
-    "save": "Save"
+    "save": "Save",
+    "duration": "Duration"
+  },
+  "MoviePage": {
+    "duration": "Duration",
+    "release": "Release date",
+    "genre": "Genre",
+    "country": "Country",
+    "synopsis": "Synopsis",
+    "trailer": "Trailer",
+    "year": "Year",
+    "addToFavorite": "Add to favorites",
+    "removeFromFavorite": "Remove from favorites"
+  },
+  "SettingsPage": {
+    "anyHelp": "Any help you need?",
+    "deleteAccount": "Delete my account"
   }
 }

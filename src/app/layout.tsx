@@ -5,13 +5,13 @@ import {NextIntlClientProvider} from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import LayoutLogic from '../components/layout/components/layout-logic';
 import MenuHeader from '../components/layout/components/menu-header/menu-header';
-import { auth, handlers } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import Container from '@/components/ui/components/container/container';
 import { ReactElement, Suspense } from 'react';
 
 
 export const metadata = {
-  title: '0y0Flix',
+  title: 'Nūberu Bāgu',
   description:
     'Mes goûts > vos goûts'
 };
