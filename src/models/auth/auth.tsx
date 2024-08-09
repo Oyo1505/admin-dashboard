@@ -5,3 +5,7 @@ export type Session = {
   expires:Date
 }
 
+export type EmailAuthorized = {
+  email: string;
+  id?: string;
+}

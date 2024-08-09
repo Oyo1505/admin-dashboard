@@ -7,6 +7,9 @@ import { auth } from '@/lib/auth';
 import { getUsersWithPageParam } from '@/components/dashboard/action';
 import { getAuthorizedEmails } from '@/components/auth/action/action';
 import FormAddEmailAuthrizedEmail from '@/components/auth/components/form-add-email-authorized/form-add-email-authorized';
+import { EmailAuthrizedEmailRow } from '@/components/dashboard/components/email-user-authorized-row/email-user-authorized-row';
+import Title from '@/components/ui/components/title/title';
+
 
 const Page = async ({
   searchParams
@@ -17,7 +20,7 @@ const Page = async ({
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset)
-  const { userauthorizedEmails } = await getAuthorizedEmails()
+  const { mails } = await getAuthorizedEmails()
   
   if(!session?.user) return redirect('/')
   return (
@@ -29,9 +32,13 @@ const Page = async ({
     <Search value={searchParams.q} />
   </div>
     <UsersTable users={users} offset={newOffset}  /> 
-      {userauthorizedEmails?.map(item => <div key={item?.id}>{item.email}</div>)}
-    <FormAddEmailAuthrizedEmail />
-    
+    <div>
+      <Title type='h3' translationText='emailAuthorized' translationTheme='Dashboard' className='text-lg font-semibold mb-6' />
+      {mails?.map((item: any) => (
+          <EmailAuthrizedEmailRow key={item?.id} email={item?.email} />
+        ))}
+      <FormAddEmailAuthrizedEmail />
+      </div>
   </div>
   )
 }

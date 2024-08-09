@@ -39,7 +39,10 @@
   },
   "Dashboard": {
     "welcome": "Bienvenue",
-    "continue" : "Reprise de vos vidéo en cours"
+    "continue" : "Reprise de vos vidéo en cours",
+    "emailAuthorized":"Email autorisé",
+    "addButton":"Ajouter",
+    "deleteButton":"Supprimer"
   },
   "DashboardNav": {
     "dashboard":"Espace Personnel",
@@ -70,7 +73,8 @@
     "trailer": "Bande-annonce",
     "year": "Année",
     "addToFavorite": "Ajouter aux favoris",
-    "removeFromFavorite": "Retirer des favoris"
+    "removeFromFavorite": "Retirer des favoris",
+    "originalTitle": "Titre original"
   },
   "SettingsPage": {
     "title": "Settings" ,
