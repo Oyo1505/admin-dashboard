@@ -79,7 +79,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()
       const usersEmail = mails?.map((item: any) => item?.email)
-    
+      
        if(user?.email && !usersEmail?.includes(user?.email)) return false
       return true
     },
@@ -138,7 +138,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       }
     },
     async redirect({ url }) {
-      return process.env.NEXTAUTH_URL && `${process.env.NEXTAUTH_URL}` 
+      return process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}` : url
     },
     async session({ session, token }: { session: any, token: any}) {
  
