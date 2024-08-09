@@ -8,7 +8,7 @@ const useAuthStatus = async () => {
   const {user, fetchUser, connected, setUser} = useUserStore((state) => state)
   const pathname = usePathname()
   const {  data: session,  } = useSession()
- 
+  console.log(session)
   useEffect(() => {
     const fetchSession = async () => {
       try {
