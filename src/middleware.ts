@@ -23,9 +23,9 @@ export default async function middleware(req: NextRequest) {
     salt: 'authjs.session-token',
   });
   console.log(session)
-  if (!session) {
-    return NextResponse.redirect(new URL("/", req.url));
-  } 
+  // if (!session) {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // } 
   return NextResponse.next();
 }
 
