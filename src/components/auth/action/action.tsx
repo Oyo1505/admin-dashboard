@@ -43,15 +43,15 @@ export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:num
   }
 }
 
-export const getAuthorizedEmails = async ( ): Promise<{ status?:number | undefined, mails?:string[] | undefined }> => {
+export const getAuthorizedEmails = async ( ): Promise<{ status?:number | undefined, mails?:any[] | undefined }> => {
   try {
     const userauthorizedEmails = await prisma.authorizedEmail.findMany() 
   
     if (!userauthorizedEmails) {
       return { status: 400 };
     }
-    const emailList = userauthorizedEmails.map((item) => item.email).filter((email): email is string => email !== null);
-    return {mails:emailList, status:200 }
+
+    return {mails:userauthorizedEmails, status:200 }
   } catch (error) {
     console.log(error)
     return {

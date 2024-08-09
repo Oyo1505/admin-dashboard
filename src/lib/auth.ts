@@ -77,8 +77,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
   session: { strategy: "jwt", maxAge: 60 * 30 },
   callbacks: {
     async signIn({ user }) {
-      const { mails} = await getAuthorizedEmails()
+      const { mails } = await getAuthorizedEmails()
       const usersEmail = mails?.map((item: any) => item?.email)
+    
        if(user?.email && !usersEmail?.includes(user?.email)) return false
       return true
     },
