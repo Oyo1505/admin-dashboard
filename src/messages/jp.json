@@ -39,7 +39,10 @@
   },
   "Dashboard": {
     "welcome": "ようこそ",
-    "continue" : "続きを見る"
+    "continue" : "続きを見る",
+    "emailAuthorized":"Email 承認済み",
+    "addButton":"追加",
+    "deleteButton":"削除"
   },
   "DashboardNav": {
     "dashboard":"ダッシュボード",
@@ -59,7 +62,7 @@
     "link": "リンク",
     "save": "保存",
     "duration": "時間",
-   "originalTitle": "オリジナルタイトル"
+    "originalTitle": "原題"
   },
   "MoviePage": {
     "duration": "時間",
@@ -70,7 +73,8 @@
     "trailer": "トレーラー",
     "year": "年",
     "addToFavorite": "お気に入りに追加",
-    "removeFromFavorite": "お気に入りから削除"
+    "removeFromFavorite": "お気に入りから削除",
+      "originalTitle": "原題 "
   },
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",

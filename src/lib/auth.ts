@@ -77,8 +77,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
   session: { strategy: "jwt", maxAge: 60 * 30 },
   callbacks: {
     async signIn({ user }) {
-      const { userauthorizedEmails} = await getAuthorizedEmails()
-      const usersEmail = userauthorizedEmails?.map(item => item?.email)
+      const { mails} = await getAuthorizedEmails()
+      const usersEmail = mails?.map((item: any) => item?.email)
        if(user?.email && !usersEmail?.includes(user?.email)) return false
       return true
     },
@@ -135,6 +135,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
           return { ...token, error: "RefreshAccessTokenError" as const }
         }
       }
+    },
+    async redirect({ url }) {
+      return process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}` : url
     },
     async session({ session, token }: { session: any, token: any}) {
  

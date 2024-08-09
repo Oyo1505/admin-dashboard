@@ -40,7 +40,10 @@
   "Dashboard": {
     "welcome": "Welcome",
     "continue" : "Continue Watching",
-    "users":"Users"
+    "users":"Users",
+    "emailAuthorized":"Email Authorized",
+    "addButton":"Add",
+    "deleteButton":"Delete"
   },
   "DashboardNav": {
     "dashboard":"Dashboard",
@@ -71,7 +74,8 @@
     "trailer": "Trailer",
     "year": "Year",
     "addToFavorite": "Add to favorites",
-    "removeFromFavorite": "Remove from favorites"
+    "removeFromFavorite": "Remove from favorites",
+    "originalTitle": "Original Title"
   },
   "SettingsPage": {
     "anyHelp": "Any help you need?",
