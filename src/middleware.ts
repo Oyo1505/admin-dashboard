@@ -16,7 +16,7 @@ export default async function middleware(req: NextRequest) {
   const session = await getToken({
     req,
     //@ts-ignore
-    secret: process.env.AUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET ,
   });
 
   if (!session) {
