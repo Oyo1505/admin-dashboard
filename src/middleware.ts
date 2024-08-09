@@ -12,13 +12,17 @@ export default async function middleware(req: NextRequest) {
   if (path === "/") {
     return NextResponse.next();
   }
+  const secret = process.env.NEXTAUTH_SECRET;
 
+  if (!secret) {
+    return NextResponse.json({ message: "NEXTAUTH_SECRET is not set" });
+  }
   const session = await getToken({
     req,
-    //@ts-ignore
-    secret: process.env.NEXTAUTH_SECRET ,
+    secret,
+    salt: 'authjs.session-token',
   });
-
+  console.log(session)
   if (!session) {
     return NextResponse.redirect(new URL("/", req.url));
   } 
