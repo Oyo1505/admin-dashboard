@@ -11,10 +11,11 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
 
   const [formData, setFormData] = React.useState<any>({
     id : movie?.id,
-    title: movie?.title ?? '', 
+    title: movie?.title ?? '',
+    originalTitle: movie?.originalTitle ?? '',
     link: movie?.link ?? '', 
     year: movie?.year ?? new Date().getFullYear(), 
-    genre: movie?.genre ?? '', 
+    genre: movie?.genre?.join(' ') ?? '', 
     trailer: movie?.trailer ?? '', 
     duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '', 
@@ -27,9 +28,10 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       title: formData.title,
       idGoogleDive: formData.idGoogleDive,
       releaseDate: Date.now(),
+      originalTitle: formData.originalTitle,
       year: formData.year,
       duration : formData.duration,
-      genre: formData.genre,
+      genre: formData.genre.split(' '),
       country: formData.country,
       synopsis: formData.synopsis,
       trailer: formData.trailer,
@@ -40,7 +42,21 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   }
  
   const onClickEditMovie = async () => {
-     await editMovieToDb(formData as any)
+    const rawFormData = {
+      id: formData.id,
+      idGoogleDive: formData.idGoogleDive,
+      originalTitle: formData.originalTitle,
+      title: formData.title,
+      releaseDate: Date.now(),
+      year: formData.year,
+      duration : formData.duration,
+      genre: formData?.genre?.split(' '),
+      country: formData.country,
+      synopsis: formData.synopsis,
+      trailer: formData.trailer,
+      link: formData.link,
+    }
+     await editMovieToDb(rawFormData as any)
      setIsOpen(false)
   }
 
@@ -60,9 +76,24 @@ return(
             id="title"
             required
             name='title'
-            value={formData?.title}
+            value={formData?.title?.trimStart().trimEnd()}
             onChange={(e) => {
               setFormData({...formData, title: e.target.value})
+            }}
+          />
+        </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
+          {t('originalTitle')}
+          </label>
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="originalTitle"
+            required
+            name='originalTitle'
+            value={formData?.originalTitle?.trimStart().trimEnd()}
+            onChange={(e) => {
+              setFormData({...formData, originalTitle: e.target.value})
             }}
           />
         </fieldset>
@@ -112,6 +143,7 @@ return(
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="genre"
             name='genre'
+            type='text'
             value={formData?.genre}
             onChange={(e) => {
               setFormData({...formData, genre: e.target.value})

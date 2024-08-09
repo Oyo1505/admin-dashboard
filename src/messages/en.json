@@ -5,7 +5,12 @@
     "profile": "Profile"
   },
   "HomePage": {
-    "title": "Home"
+    "title": "Home",
+    "lastFiveMovies": "Last movies",
+    "ACountry": "A country...",
+    "AHeart": "Check out these movies",
+    "MyTopTen": "My top 10",
+    "Akind": "A Genre..."
   },
   "LocaleSwitcher": {
     "fr": "Français",
@@ -54,7 +59,8 @@
     "synopsis": "Synopsis",
     "link": "Link",
     "save": "Save",
-    "duration": "Duration"
+    "duration": "Duration",
+    "originalTitle": "Original Title"
   },
   "MoviePage": {
     "duration": "Duration",

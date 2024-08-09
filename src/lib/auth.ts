@@ -3,6 +3,7 @@ import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import { JWT } from "next-auth/jwt";
+import { getAuthorizedEmails } from "@/components/auth/action/action";
 
 const prisma = new PrismaClient()
 
@@ -76,8 +77,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
   session: { strategy: "jwt", maxAge: 60 * 30 },
   callbacks: {
     async signIn({ user }) {
- 
-      if(user?.email && !emailAuthorized.includes(user?.email)) return false
+      const { userauthorizedEmails} = await getAuthorizedEmails()
+      const usersEmail = userauthorizedEmails?.map(item => item?.email)
+       if(user?.email && !usersEmail?.includes(user?.email)) return false
       return true
     },
     async jwt({ token, account, profile }) {

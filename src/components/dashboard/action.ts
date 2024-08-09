@@ -40,7 +40,7 @@ export const getUsersWithPageParam = async (search:string, pageParam:number)=> {
 };
 
 export const deleteUserById =  async (id:string)=> {
-  console.log('delete')
+
   try {
     await prisma.user.delete({
       where:{
@@ -74,7 +74,7 @@ export const getAllMovies =  async ()=> {
 export const addMovieToDb =  async (movie:any)=> {
   
     try {
-      console.log('add')
+  
    const movieInDb = await prisma.movie.findUnique({
       where:{
         idGoogleDive: movie.idGoogleDive
@@ -89,10 +89,11 @@ export const addMovieToDb =  async (movie:any)=> {
         title: movie.title ?? 'Nouveau film',
         link: movie?.link,
         image: movie?.link,
+        originalTitle: movie.originalTitle,
         duration: Number(movie.duration),
         idGoogleDive: movie.idGoogleDive,
-        year: movie.year,
-        genre: movie?.genre ? movie?.genre.split(' ') : [],
+        year: Number(movie.year),
+        genre: movie?.genre ? movie?.genre : [],
         country: movie.country,
         synopsis: movie.synopsis,
         trailer: movie.trailer,
@@ -112,8 +113,8 @@ export const addMovieToDb =  async (movie:any)=> {
 export const editMovieToDb =  async (movie:IMovie)=> {
   
   try {
-    console.log('edit')
- const movieInDb = await prisma.movie.findUnique({
+
+  const movieInDb = await prisma.movie.findUnique({
     where:{
       id: movie.id
     }
@@ -131,10 +132,11 @@ export const editMovieToDb =  async (movie:IMovie)=> {
       title: movie.title,
       link: movie?.link,
       image: movie?.link,
+      originalTitle: movie.originalTitle,
       duration:  Number(movie.duration),
       idGoogleDive: movie.idGoogleDive,
       year: Number(movie.year),
-      genre:[],
+      genre:movie.genre,
       country: movie.country,
       synopsis: movie.synopsis,
       trailer: movie.trailer,

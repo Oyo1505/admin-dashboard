@@ -5,7 +5,12 @@
     "profile": "プロフィール"
   },
   "HomePage": {
-    "title": "ホーム"
+    "title": "ホーム",
+    "lastFiveMovies": "最近の映画",
+    "ACountry": "国...",
+    "AHeart": "これらの映画は必見です",
+    "MyTopTen": "私のトップ10",
+    "Akind": "ジャンル..."
   },
   "LocaleSwitcher": {
     "fr": "Français",
@@ -53,7 +58,8 @@
     "synopsis": "概要",
     "link": "リンク",
     "save": "保存",
-    "duration": "時間"
+    "duration": "時間",
+   "originalTitle": "オリジナルタイトル"
   },
   "MoviePage": {
     "duration": "時間",

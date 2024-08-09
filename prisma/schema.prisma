@@ -53,9 +53,11 @@ model User {
   role          UserRole     @default(USER) 
   favoriteMovies UserFavoriteMovies[]
 }
+
 model Movie {
   id       String    @id @default(cuid())
   title    String 
+  originalTitle String?
   image    String
   duration Int?
   idGoogleDive String?     @unique
@@ -90,6 +92,10 @@ model UserFavoriteMovies {
   @@unique([userId, movieId])
 }
 
+model AuthorizedEmail {
+  id            String    @id @default(cuid())
+  email         String?   @unique
+}
 
 enum UserRole {
   USER
