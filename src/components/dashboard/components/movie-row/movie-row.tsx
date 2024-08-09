@@ -27,12 +27,10 @@ function MovieRow({ movie, btnText, editMovie}: { movie:IMovie , btnText: string
             </Button>
             </Dialog.Trigger>
           </TableCell>
-          <TableCell>
-             
-              <Button formAction={onClickDeleteMovie}  className="text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none">
-                Supprimer
-              </Button>
-            
+          <TableCell> 
+            <Button formAction={onClickDeleteMovie}  className="text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none">
+               Supprimer
+            </Button>
           </TableCell>
         </TableRow>
         <DialogAddMovie  movie={movie} editMovie={editMovie}  setIsOpen={setIsOpen} />

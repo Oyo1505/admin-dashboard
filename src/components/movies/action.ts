@@ -2,6 +2,15 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+
+function extractUniqueGenres(data: any[]) {
+  const allGenres = data.flatMap(item => item.genre);
+  
+  const uniqueGenres = [...new Set(allGenres)];
+  return uniqueGenres;
+}
+
+
 export const getMovieDetail =  async (id:string)=> {
   try {
   const movieInDb = await prisma.movie.findUnique({
@@ -21,6 +30,91 @@ export const getMovieDetail =  async (id:string)=> {
     }
   }
 } 
+
+export const getLastFiveMovies =  async ()=> {
+  try {
+    const moviesInDb = await prisma.movie.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: 5
+     })
+    
+   
+  if (!moviesInDb) {
+    return { status: 404, message: 'Pas de films' };
+  }
+  return {movies : moviesInDb, status: 200 };
+} catch (error) {
+  console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const getMoviesByARandomCountry = async () => {
+  const uniqueCountries = await prisma.movie.findMany({
+    select: {
+      country: true,
+    },
+    distinct: ['country'],
+    
+  });
+  if (!uniqueCountries) {
+    return { status: 400, message: 'Pas de pays' };
+  }
+  const getARadomCountry = uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
+ 
+  const movies = await prisma.movie.findMany({
+    where: {
+      country:  getARadomCountry.country
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: 5
+   });
+  
+   if (!movies) {
+    return { status: 400, message: 'Pas de films' };
+  }
+  return { status: 200, movies, country: getARadomCountry.country};
+}
+
+export const getMoviesByARandomGenre = async () => {
+
+  const uniqueGenres = await prisma.movie.findMany({
+    select: {
+      genre: true,
+    },
+    distinct: ['genre'],
+  });
+
+  if (!uniqueGenres) {
+    return { status: 400, message: 'Pas de genre' };
+  }
+
+  const result = extractUniqueGenres(uniqueGenres);
+  const randomGenre = result[Math.floor(Math.random() * result.length)];
+  const movies = await prisma.movie.findMany({
+    where: {
+      genre: {
+        has: randomGenre,
+      },
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: 5
+   });
+  
+   if (!movies) {
+    return { status: 400, message: 'Pas de films' };
+  }
+  return { status: 200, movies, genre: randomGenre};
+}
+
 
 
 export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | undefined) => {

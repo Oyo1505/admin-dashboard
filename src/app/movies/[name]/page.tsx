@@ -20,38 +20,37 @@ const Page = async ({params}:any) => {
 
   return (  
   <div className='h-screen pt-6 flex flex-col justify-start items-start'>
-  
   <Suspense fallback={<p>Loading video...</p>}>
-  <div className='justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col '>
-  {movie && 
-  <div className='lg:w-1/2 w-full'>
-      {movie?.idGoogleDive && 
-      <Iframe 
-        url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} 
-        className='w-full md:w-[400px] lg:w-full h-[250px] lg:h-[450px]'   
-        width="auto" 
-        height="450px"  />}
+      <div className='justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col '>
+      {movie && 
+      <div className='lg:w-1/2 w-full'>
+          {movie?.idGoogleDive && 
+          <Iframe 
+            url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} 
+            className='w-full md:w-[400px] lg:w-full h-[250px] lg:h-[450px]'   
+            width="auto" 
+            height="450px"  />}
 
-      {
-      //TODO: add video player when I got a NAS
-      /* <VideoPlayer option={{url:movie?.sources[0]}}
-      style={{
-          width: '600px',
-          height: '400px',
-          margin: '60px auto 0',
-      }}
-    /> */}
-     </div>
-  }
-  <MovieHeader movie={movie} isFavorite={isFavorite ? true : false}/>
- </div>
+          {
+          //TODO: add video player when I got a NAS
+          /* <VideoPlayer option={{url:movie?.sources[0]}}
+          style={{
+              width: '600px',
+              height: '400px',
+              margin: '60px auto 0',
+          }}
+        /> */}
+        </div>
+      }
+      <MovieHeader movie={movie} isFavorite={isFavorite ? true : false}/>
+    </div>
   </Suspense>
-  {movie && movie?.trailer && 
-   <div className='mt-14'>
-   <Title translationTheme='MoviePage' translationText='trailer' type='h2' />
-   <VideoPlayerYoutube movie={movie?.trailer} />  
- </div>
- }
+    {movie && movie?.trailer && 
+        <div className='mt-14'>
+        <Title translationTheme='MoviePage' translationText='trailer' type='h2' />
+        <VideoPlayerYoutube movie={movie?.trailer} />  
+      </div>
+    }
 
 </div>
   )

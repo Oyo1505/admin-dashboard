@@ -28,7 +28,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} >
 
-      <body className="h-full bg-gray-50 font-semibold">
+      <body className="h-full mb-14 bg-gray-50 font-semibold">
         <SessionProvider session={session} >
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
@@ -43,7 +43,6 @@ export default async function RootLayout({
         </NextIntlClientProvider>
         </SessionProvider>
       </body>
-   
     </html>
   );
 }

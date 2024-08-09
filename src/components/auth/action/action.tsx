@@ -1,6 +1,8 @@
 "use server"
 import prisma from "@/lib/prisma";
+import { URL_USERS } from "@/shared/route";
 import { User } from "next-auth";
+import { revalidatePath } from "next/cache";
 
 export const getUserConnected = async (email:string): Promise<{ user?: User | undefined, status?:number | undefined }> => {
   try {
@@ -8,6 +10,46 @@ export const getUserConnected = async (email:string): Promise<{ user?: User | un
       where:{email}
     })
     return {user : user ? user : {}, status:200 }
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+}
+
+export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:number | undefined, message?:string | undefined }> => {
+  try {
+
+    const user = await prisma.authorizedEmail.findUnique({
+      where:{email}
+    })
+    if(!user){
+      await prisma.authorizedEmail.create({
+        data:{
+          email: email,
+        }
+      })
+      revalidatePath(URL_USERS)
+      return {status:200}
+    }
+    return {message:'User Already authorized', status:409 }
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+}
+
+export const getAuthorizedEmails = async ( ): Promise<{ status?:number | undefined, userauthorizedEmails?:string[] | undefined }> => {
+  try {
+    const userauthorizedEmails = await prisma.authorizedEmail.findMany()
+  
+    if(!userauthorizedEmails){
+      return {status:400}
+    }
+    return {userauthorizedEmails:userauthorizedEmails, status:200 }
   } catch (error) {
     console.log(error)
     return {
