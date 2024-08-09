@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
   const session = await getToken({
     req,
     secret,
-    salt: "next-auth.session-token",
+    salt: 'authjs.session-token',
   });
   console.log(session)
   if (!session) {
