@@ -1,4 +1,4 @@
-export const URL_BASE = process.env.NEXT_PUBLIC_BASE_URL
+export const URL_BASE = '/'
 
 export const URL_HOME = '/home'
 
