@@ -139,7 +139,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       }
     },
     async redirect({ url }) {
-      return process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}` : url
+     
+      return process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}/home` : url
     },
     async session({ session, token }: { session: any, token: any}) {
  
