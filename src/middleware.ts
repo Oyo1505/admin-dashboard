@@ -19,13 +19,13 @@ export default async function middleware(req: NextRequest) {
   const session = await getToken({
     req,
     secret,
-    salt: '__Secure-authjs.session-token',
-    cookieName: "__Secure-authjs.session-token",
+    salt: process.env.NEXTAUTH_ENV === 'production' ? '__Secure-authjs.session-token' : 'authjs.session-token',
+    cookieName: process.env.NEXTAUTH_ENV === 'production' ? '__Secure-authjs.session-token' : 'authjs.session-token',
     secureCookie: true,
   });
-  console.log(req.url, secret, session)
+ 
   if (!session) {
-    NextResponse.json({ message: session});
+    
     return NextResponse.redirect(new URL("/", req.url));
   } 
   return NextResponse.next();

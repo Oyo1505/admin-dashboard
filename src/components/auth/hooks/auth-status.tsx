@@ -12,7 +12,6 @@ const useAuthStatus = async () => {
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        console.log(session)
         session && session?.user?.email &&  await fetchUser(session?.user?.email);  
       } catch (error) {
         console.log(error)
