@@ -5,12 +5,20 @@ import Title from '@/components/ui/components/title/title'
 import React from 'react'
 
 const Page =  async() => {
-  const moviesLastFive = await getLastFiveMovies()
-  const { movies: moviesByARandomCountry, country } = await getMoviesByARandomCountry()
-  const {movies:moviesByARandomGenre, genre} = await getMoviesByARandomGenre()
-  const {movies:favorites} = await getFavoriteMovies("clzl1br370003zt5x1ipm2ojv")
+  
+  const [
+    moviesLastFive,
+    { movies: moviesByARandomCountry, country },
+    { movies: moviesByARandomGenre, genre },
+    { movies: favorites }
+  ] = await Promise.all([
+    getLastFiveMovies(),
+    getMoviesByARandomCountry(),
+    getMoviesByARandomGenre(),
+    getFavoriteMovies("clzl1br370003zt5x1ipm2ojv")
+  ]);
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
- 
+
   return (
     <div className='flex flex-col mt-6 gap-4 md:gap-8'>
       <div>
