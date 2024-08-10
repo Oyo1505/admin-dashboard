@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from "next-auth/jwt";
-//export { auth as middleware } from '@/lib/auth';
 
 export default async function middleware(req: NextRequest) {
   // Get the pathname of the request (e.g. /, /protected)
