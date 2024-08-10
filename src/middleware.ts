@@ -9,9 +9,9 @@ export default async function middleware(req: NextRequest) {
   // const headers = new Headers(req.headers);
   // headers.set("x-current-path",path);
   // If it's the root path, just render it
-  // if (path === "/") {
-  //   return NextResponse.next();
-  // }
+  if (path === "/") {
+    return NextResponse.next();
+  }
   const secret = process.env.NEXTAUTH_SECRET;
 
   if (!secret) {
@@ -22,7 +22,7 @@ export default async function middleware(req: NextRequest) {
     secret,
     salt: 'authjs.session-token',
   });
-  console.log(session)
+
   if (!session) {
     return NextResponse.redirect(new URL("/", req.url));
   } 
