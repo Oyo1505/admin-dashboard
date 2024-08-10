@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from "next-auth/jwt";
-
 //export { auth as middleware } from '@/lib/auth';
 
 export default async function middleware(req: NextRequest) {
@@ -15,16 +14,16 @@ export default async function middleware(req: NextRequest) {
   const secret = process.env.NEXTAUTH_SECRET;
 
   if (!secret) {
-    return NextResponse.json({ message: "NEXTAUTH_SECRET is not set" });
+    return 
   }
   const session = await getToken({
     req,
     secret,
-    salt: 'authjs.session-token',
+    salt: '__Secure-authjs.session-token',
   });
-
+  console.log(req.url, secret, session)
   if (!session) {
-    console.log("session")
+    NextResponse.json({ message: session});
     return NextResponse.redirect(new URL("/", req.url));
   } 
   return NextResponse.next();
