@@ -19,8 +19,8 @@ export default async function middleware(req: NextRequest) {
   const session = await getToken({
     req,
     secret,
-    salt: 'authjs.session-token',
-    cookieName: "authjs.session-token",
+    salt: '__Secure-authjs.session-token',
+    cookieName: "__Secure-authjs.session-token",
     secureCookie: true,
   });
   console.log(req.url, secret, session)
