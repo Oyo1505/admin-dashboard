@@ -21,6 +21,7 @@ export default async function middleware(req: NextRequest) {
     secret,
     salt: 'authjs.session-token',
     cookieName: "authjs.session-token",
+    secureCookie: true,
   });
   console.log(req.url, secret, session)
   if (!session) {
