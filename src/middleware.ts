@@ -24,6 +24,7 @@ export default async function middleware(req: NextRequest) {
   });
 
   if (!session) {
+    console.log("session")
     return NextResponse.redirect(new URL("/", req.url));
   } 
   return NextResponse.next();
