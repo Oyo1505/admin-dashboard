@@ -5,11 +5,28 @@ import { Button } from '../button/button';
 import { IMovie } from '@/models/movie/movie';
 import { useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
+import { language } from 'googleapis/build/src/apis/language';
+
+interface IMovieForm {
+  title: string | undefined
+  originalTitle: string | undefined
+  link: string | undefined
+  year: number
+  genre: string | undefined
+  trailer: string | undefined
+  synopsis: string | undefined
+  duration: number | undefined
+  country: string | undefined
+  langage: string | undefined
+  subtitles: string[] 
+  id: string | undefined
+  idGoogleDive: string | undefined
+}
 
 const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
 
-  const [formData, setFormData] = React.useState<any>({
+  const [formData, setFormData] = React.useState<IMovieForm>({
     id : movie?.id,
     title: movie?.title ?? '',
     originalTitle: movie?.originalTitle ?? '',
@@ -19,7 +36,9 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     trailer: movie?.trailer ?? '', 
     duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '', 
-    country: movie?.country ?? '', 
+    country: movie?.country ?? '',
+    langage: movie?.language ?? '',
+    subtitles: movie?.subtitles ?? [],
     idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
   });
 
@@ -28,10 +47,12 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       title: formData.title,
       idGoogleDive: formData.idGoogleDive,
       releaseDate: Date.now(),
+      subtitles: formData.subtitles,
+      language  : formData.langage,
       originalTitle: formData.originalTitle,
       year: formData.year,
       duration : formData.duration,
-      genre: formData.genre.split(' '),
+      genre: formData?.genre?.split(' '),
       country: formData.country,
       synopsis: formData.synopsis,
       trailer: formData.trailer,
@@ -47,6 +68,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       idGoogleDive: formData.idGoogleDive,
       originalTitle: formData.originalTitle,
       title: formData.title,
+      language  : formData.langage, 
       releaseDate: Date.now(),
       year: formData.year,
       duration : formData.duration,
@@ -55,9 +77,16 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       synopsis: formData.synopsis,
       trailer: formData.trailer,
       link: formData.link,
+      subtitles: formData.subtitles,
     }
      await editMovieToDb(rawFormData as any)
      setIsOpen(false)
+  }
+  const handleSubtitlesArray = (value: string) => {
+    if (formData?.subtitles.includes(value)) {
+      const newArray = formData?.subtitles.filter(item => item !== value);
+      setFormData({ ...formData, subtitles: newArray });
+    }
   }
 
 return(
@@ -110,6 +139,71 @@ return(
               setFormData({...formData, link: e.target.value})
             }}
           />
+        </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right text-[15px]" htmlFor="langage">
+            {t('langage')}
+          </label>
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="langage"
+            name='langage'
+            type='text'
+            value={formData?.langage}
+            onChange={(e) => {
+              setFormData({...formData, langage: e.target.value})
+            }}
+          />
+        </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
+            {t('subtitles')}
+          </label>
+          <div className="flex items-center justify-center">
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="subtitlesFR"
+            name='subtitlesFR'
+            type='checkbox'
+            value={'FR'}
+            checked={formData?.subtitles?.includes('FR')}
+            onChange={(e) => {
+              e.target.checked ? setFormData({...formData, subtitles: [...formData?.subtitles, e.target.value ]}) : handleSubtitlesArray(e.target.value)
+           }}
+          />
+          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
+            FR
+          </label>
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="subtitlesJP"
+            name='subtitlesJP'
+            type='checkbox'
+            value={'JP'}
+            checked={formData?.subtitles?.includes('JP')}
+            onChange={(e) => {
+              e.target.checked ? setFormData({...formData, subtitles: [...formData?.subtitles, e.target.value ]}) : handleSubtitlesArray(e.target.value)
+           }}
+          />
+             <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
+            JP
+          </label>
+
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="subtitlesEN"
+            name='subtitlesEN'
+            type='checkbox'
+            value={'EN'}
+            checked={formData?.subtitles?.includes('EN')}
+            onChange={(e) => {
+              e.target.checked ? setFormData({...formData, subtitles: [...formData?.subtitles, e.target.value ]}) : handleSubtitlesArray(e.target.value)
+           }}
+          />
+             <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
+            EN
+          </label>
+          </div>
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="year">

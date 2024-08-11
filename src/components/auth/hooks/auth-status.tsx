@@ -5,9 +5,9 @@ import { useEffect } from 'react'
 import useUserStore from "store/user/user-store"
 
 const useAuthStatus = async () => {
-  const {user, fetchUser, connected, setUser} = useUserStore((state) => state)
-  const pathname = usePathname()
-  const {  data: session,  } = useSession()
+  const {user, fetchUser, connected, setUser, logout} = useUserStore((state) => state);
+  const pathname = usePathname();
+  const {  data: session,  } = useSession();
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -17,13 +17,19 @@ const useAuthStatus = async () => {
         console.log(error)
       }
     };
+    const logoutSession = async () => {
+      try {
+        setUser({}, false)
+        await logout()
+      } catch (error) {
+        console.log(error)
+      }
+    };
     if (session && Object.keys(user).length === 0)  fetchSession();
    else if (!session && pathname !== '/') {
-    console.log("session")
-    setUser({}, false)
-    redirect('/')
+    logoutSession()
    }
-  }, [fetchUser, session, connected, user, setUser, pathname]);
+  }, [fetchUser, session, connected, user, setUser, pathname, logout]);
 
   return;
 }
