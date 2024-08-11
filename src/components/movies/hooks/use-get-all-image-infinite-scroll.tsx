@@ -2,9 +2,9 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../action';
 
 
-const fetchMoviesParams = async ({ pageParam = 5 }) =>  await fetchMovies({pageParam});
+const fetchMoviesParams = async ({ pageParam = 5, search = '' }) =>  await fetchMovies({pageParam, search});
 
-const useGetMoviesInfiniteScrool = (pageParam?:number) => {
+const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, search?:string}) => {
   const {
     data,
     error,
@@ -13,9 +13,11 @@ const useGetMoviesInfiniteScrool = (pageParam?:number) => {
     isFetching,
     isFetchingNextPage,
     status,
+    refetch
   } = useInfiniteQuery({
+
     queryKey: ['movies', pageParam],
-    queryFn: ({ pageParam }) => fetchMoviesParams({pageParam}),
+    queryFn: ({ pageParam }) => fetchMoviesParams({pageParam, search}),
     initialPageParam: pageParam,
     getNextPageParam: (lastPage) => {
       if (lastPage.prevOffset && lastPage.prevOffset > lastPage.movies?.length) {
@@ -24,8 +26,10 @@ const useGetMoviesInfiniteScrool = (pageParam?:number) => {
       return lastPage.prevOffset && lastPage.prevOffset + 5; 
     },
   })
-
-  return {data, error, hasNextPage, isFetching, status, fetchNextPage,isFetchingNextPage}
+  const handleSearchChange = () => {
+   refetch(); 
+  };
+  return {data, error, hasNextPage, isFetching, status, fetchNextPage, isFetchingNextPage, handleSearchChange}
 }
 
-export { useGetMoviesInfiniteScrool, fetchMoviesParams }
+export { useGetMoviesInfiniteScroll, fetchMoviesParams }

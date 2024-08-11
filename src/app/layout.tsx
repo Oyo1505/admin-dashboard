@@ -8,6 +8,7 @@ import MenuHeader from '../components/layout/components/menu-header/menu-header'
 import { auth } from '@/lib/auth';
 import Container from '@/components/ui/components/container/container';
 import { ReactElement, Suspense } from 'react';
+import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 
 
 export const metadata = {
@@ -35,7 +36,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
           <MenuHeader session={session}/>
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<LoadingSpinner />}>
             <Container >
               {children}
             </Container>

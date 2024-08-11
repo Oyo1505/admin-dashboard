@@ -5,6 +5,7 @@ import 'react-multi-carousel/lib/styles.css';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
 import { IMovie } from '@/models/movie/movie';
 import { useLocale } from 'next-intl';
+import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 
 const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
   const locale = useLocale()
@@ -27,7 +28,7 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
   };
   return (
    
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSpinner />}>
        {movies && movies.length > 0 ?
       <Carousel
       ssr={true} 

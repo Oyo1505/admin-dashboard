@@ -179,17 +179,29 @@ export const getAllMovies =  async ()=> {
 } 
 
 
-export const fetchMovies = async ({ pageParam }: { pageParam: number }) => {
-
+export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }) => {
+  console.log(search)
   try{
-    const movies = await prisma.movie.findMany({
+    const movies = search.trim() === '' ? await prisma.movie.findMany({
  
+      orderBy: {
+        createdAt: 'desc',
+    },
+      take:pageParam
+   }):
+     await prisma.movie.findMany({
+      where:{
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { originalTitle: { contains: search, mode: 'insensitive' } },
+        ],
+      },
        orderBy: {
          createdAt: 'desc',
      },
        take:pageParam
     });
- 
+   
     if(movies){  
      return {
         movies,
