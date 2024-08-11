@@ -7,6 +7,7 @@ import Link from 'next/link'
 import React from 'react'
 
 const MenuHeader = ({session}: {session: any}) => {
+ 
   const t = useTranslations('Menu');
 
   return (
@@ -21,6 +22,7 @@ const MenuHeader = ({session}: {session: any}) => {
       <Link
       className='hover:text-red-600'
         href={URL_MOVIES}
+        replace={true}
       >
         {t('movies')}
       </Link>
