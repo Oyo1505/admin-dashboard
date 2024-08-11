@@ -11,6 +11,8 @@ export interface IMovie {
   duration?: number | null
   link: string
   releaseDate: string | null
+  language?: string | null
+  subtitles?: string[]
   year: number | null
   genre: string[]
   country: string | null

@@ -62,7 +62,9 @@
     "link": "リンク",
     "save": "保存",
     "duration": "時間",
-    "originalTitle": "原題"
+    "originalTitle": "原題",
+    "langage": "言語",
+    "subtitles": "字幕"
   },
   "MoviePage": {
     "duration": "時間",
@@ -74,7 +76,12 @@
     "year": "年",
     "addToFavorite": "お気に入りに追加",
     "removeFromFavorite": "お気に入りから削除",
-      "originalTitle": "原題 "
+    "originalTitle": "原題 ",
+    "langage": "言語",
+    "subtitles": "字幕",
+    "subtitlesFR": "フランス語",
+    "subtitlesJP": "日本語",
+    "subtitlesEN": "英語"
   },
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",

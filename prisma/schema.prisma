@@ -64,6 +64,8 @@ model Movie {
   tags       String[]
   link     String     @unique
   releaseDate String?
+  language  String?
+  subtitles  String[]
   year     Int?
   genre    String[]
   country  String?

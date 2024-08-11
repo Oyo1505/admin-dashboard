@@ -62,7 +62,9 @@
     "link": "Lien",
     "save": "Enregistrer",
     "duration": "Durée",
-    "originalTitle": "Titre original"
+    "originalTitle": "Titre original",
+    "langage": "Langue",
+    "subtitles": "Sous-titres"
   },
   "MoviePage": {
     "duration": "Durée",
@@ -74,7 +76,12 @@
     "year": "Année",
     "addToFavorite": "Ajouter aux favoris",
     "removeFromFavorite": "Retirer des favoris",
-    "originalTitle": "Titre original"
+    "originalTitle": "Titre original",
+    "langage": "Langue",
+    "subtitles": "Sous-titres",
+    "subtitlesFR": "Français",
+    "subtitlesJP": "Japonais",
+    "subtitlesEN": "Anglais"
   },
   "SettingsPage": {
     "title": "Settings" ,

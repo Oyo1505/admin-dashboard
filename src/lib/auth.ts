@@ -22,7 +22,6 @@ const prisma = new PrismaClient()
  * returns the old token and an error property
  */
 
-const emailAuthorized = ['oyo150589@gmail.com', 'rigoulet.henri.pierre@gmail.com', 'henri-pierre.rigoulet@latelier.co']
 
 async function refreshAccessToken(token:JWT) {
   try {
@@ -74,7 +73,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       prompt: 'consent',
     }, },
 })],
-  session: { strategy: "jwt", maxAge: 60 * 30 },
+  session: { strategy: "jwt", maxAge: 60 * 30, updateAge: 10 * 30 },
   callbacks: {
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()
