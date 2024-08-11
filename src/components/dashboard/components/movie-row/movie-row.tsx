@@ -7,7 +7,7 @@ import * as Dialog  from '@radix-ui/react-dialog'
 import { Button } from '@/components/ui/components/button/button'
 import { deleteMovieById } from '../../action'
 
-function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index: number}) {
+function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index?: number}) {
   const [isOpen, setIsOpen] = React.useState(false)
 
   const onClickDeleteMovie = async () => {

@@ -30,7 +30,7 @@ export default async function RootLayout({
       <head>
         <meta name="googlebot" content="noindex"></meta>
       </head>
-      <body className="mb-14 bg-gray-50 font-semibold">
+      <body className="h-full mb-14 bg-gray-50 font-semibold">
         <SessionProvider session={session} >
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
