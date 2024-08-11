@@ -15,7 +15,7 @@ interface IMovieForm {
   genre: string | undefined
   trailer: string | undefined
   synopsis: string | undefined
-  duration: number | undefined
+  duration: number
   country: string | undefined
   langage: string | undefined
   subtitles: string[] 
@@ -223,7 +223,7 @@ return(
               // Vérifier si la valeur saisie est un nombre valide et dans la plage définie
               const year = parseInt(e.target.value, 10);
               if (year >= 1900 && year <= 2100) {
-                setFormData({ ...formData, year: e.target.value });
+                setFormData({ ...formData, year: Number(e.target.value)}); 
               }
             }}
       
@@ -255,7 +255,7 @@ return(
             name='duration'
             value={formData?.duration}
             onChange={(e) => {
-              setFormData({...formData, duration: e.target.value})
+              setFormData({...formData, duration: Number(e.target.value)})
             }}
           />
         </fieldset>
