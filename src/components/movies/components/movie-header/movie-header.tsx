@@ -28,7 +28,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
         return null
     }
   }
-  console.log(movie?.language)
+ 
   const {user} = useUserStore((state) => state)
   
   return (

@@ -162,3 +162,50 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
     };
   }
 };
+
+export const getAllMovies =  async ()=> {
+  
+  try {
+
+   const movieInDb = await prisma.movie.findMany()
+
+    return {movieInDb, status: 200 };
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+
+export const fetchMovies = async ({ pageParam }: { pageParam: number }) => {
+
+  try{
+    const movies = await prisma.movie.findMany({
+ 
+       orderBy: {
+         createdAt: 'desc',
+     },
+       take:pageParam
+    });
+ 
+    if(movies){  
+     return {
+        movies,
+       status : 200,
+       prevOffset: pageParam
+     }
+   }else{
+     return {
+       status : 400
+     }
+   }
+  }catch(err){
+   console.log(err)
+   return {
+     status : 500
+   }
+  }
+ };
+ 

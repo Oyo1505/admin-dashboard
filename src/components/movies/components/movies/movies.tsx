@@ -1,33 +1,56 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { URL_MOVIES } from '@/shared/route'
 import Image from 'next/image';
 import { IMovie } from '@/models/movie/movie';
 import { useRouter } from 'next/navigation';
 import imageDefault from '../../../../assets/image/default-placeholder.png'
-
+import { useGetMoviesInfiniteScrool } from '../../hooks/use-get-all-image-infinite-scroll';
+import { InView, useInView } from 'react-intersection-observer'
+import { useInfiniteScroll } from '@/app/infinite-scroll';
 
 const Movies = ({movies, offset, newOffset}:{movies?:IMovie[], offset?:number, newOffset?:number}) => {
+ const { ref, inView, entry } = useInView();
  
+  const [images, setImages] = useState<IMovie[]>();
   const router = useRouter();
-  function onClick() {
-    router.replace(`/movies/search?offset=${offset}`);
-  }
 
+  // function onClick() {
+  //   router.replace(`/movies/search?offset=${offset}`);
+  // }
+  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScrool(6);
+
+  useEffect(() => {
+    if(status === "success" && data?.pages.length === 1){
+      setImages(data?.pages[0]?.movies)
+    }
+  }, [setImages, data, status, hasNextPage])
+
+  useEffect(() => {
+   
+    if (inView && hasNextPage && !isFetchingNextPage  && status === "success" ) { 
+     
+      fetchNextPage()
+      setImages(data?.pages[data?.pages?.length-1]?.movies)
+    }
+  }, [inView,fetchNextPage, hasNextPage, data, status, isFetchingNextPage, entry ])
+
+  if (status === 'pending' && isFetching) return <p>Loading...</p>
+ 
   return (
-      <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-start'>
-      {movies && movies?.length > 0 ? movies?.map((movie, index) => 
-         movie?.title &&
-      <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center hover:scale-105 transition-all duration-300'
-        key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
-        href={`${URL_MOVIES}/${movie?.id}`} >
-          <Image className='object-fill h-72 w-full' src={movie?.image ? movie?.image : imageDefault} width={200} height={150} alt='movie' />
-          <div className='w-full text-center text-ellipsis whitespace-nowrap overflow-hidden'>{movie?.title}</div>
-      </Link> ) : 'Pas de film disponible'}
-      
+
+      <div className='flex flex-row  gap-4 mt-6 items-start flex-wrap justify-start' >      
+        {images && images?.length > 0 ? images?.map((movie, index) => 
+          movie?.title &&
+        <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center hover:scale-105 transition-all duration-300'
+          key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
+          href={`${URL_MOVIES}/${movie?.id}`} >
+            <Image className='object-fill h-72 w-full' src={movie?.image ? movie?.image : imageDefault} width={200} height={150} alt='movie' />
+            <div className='w-full text-center text-ellipsis whitespace-nowrap overflow-hidden'>{movie?.title}</div>
+        </Link> ) : 'Pas de film disponible'}
+        <div ref={ref} style={{ height: '1px', width: '100%', backgroundColor: 'transparent' }} />
       </div>
-  
   )
 }
 
