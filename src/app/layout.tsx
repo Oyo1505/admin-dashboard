@@ -9,7 +9,7 @@ import { auth } from '@/lib/auth';
 import Container from '@/components/ui/components/container/container';
 import { ReactElement, Suspense } from 'react';
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
-
+import { isMobileDevice } from '@/components/layout/hooks/isMobileDevice';
 
 export const metadata = {
   title: 'Nūberu Bāgu',
@@ -25,7 +25,8 @@ export default async function RootLayout({
   const session = await auth()
   const locale = await getLocale();
   const messages = await getMessages();
- 
+  // const mobile = isMobileDevice();
+  // console.log(mobile)
   return (
     <html lang={locale} >
       <head>
@@ -35,7 +36,7 @@ export default async function RootLayout({
         <SessionProvider session={session} >
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
-          <MenuHeader session={session}/>
+          <MenuHeader session={session} />
           <Suspense fallback={<LoadingSpinner />}>
             <Container >
               {children}

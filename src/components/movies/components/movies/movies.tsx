@@ -37,7 +37,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   if (status === 'pending' && isFetching) return <LoadingSpinner />
  
   return (
-  <div className='flex flex-row  gap-4 mt-6 items-start flex-wrap justify-start' >      
+  <div className='flex flex-row  gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start' >      
         {images && images?.length > 0 ? images?.map((movie, index) => 
           movie?.title &&
         <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center hover:scale-105 transition-all duration-300'
