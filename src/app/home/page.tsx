@@ -1,5 +1,5 @@
 import { getFavoriteMovies } from '@/components/dashboard/action'
-import {  getLastFiveMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/components/movies/action'
+import {  getLastMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/components/movies/action'
 import MoviesHomeSection from '@/components/movies/components/movies-home-section/movies-home-section'
 import Title from '@/components/ui/components/title/title'
 import React from 'react'
@@ -12,7 +12,7 @@ const Page =  async() => {
     { movies: moviesByARandomGenre, genre },
     { movies: favorites }
   ] = await Promise.all([
-    getLastFiveMovies(),
+    getLastMovies(),
     getMoviesByARandomCountry(),
     getMoviesByARandomGenre(),
     getFavoriteMovies("clzl1br370003zt5x1ipm2ojv")

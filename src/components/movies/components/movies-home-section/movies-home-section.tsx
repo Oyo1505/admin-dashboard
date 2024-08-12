@@ -12,17 +12,18 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
   const responsive = {
     desktop: {
       breakpoint: {  max: 5000, min: 1024 },
-      items: 5,
+      items: 6,
       slidesToSlide: 2
     },
     tablet: {
       breakpoint: { max: 1024, min: 465 },
       items: 3,
       slidesToSlide: 1 
+      
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 3,
+      items: 1,
       slidesToSlide: 1 // optional, default to 1.
     }
   };
@@ -38,8 +39,6 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
       draggable={false}
       infinite={true} 
       responsive={responsive} 
-      // customRightArrow={'>'}
-      // customLeftArrow={'<'}
       >
         {movies.map((movie, index) => (
           <MovieItemCarousel key={index} title={locale === 'fr' ? movie?.title : movie?.originalTitle ?? movie?.title} image={movie.image} id={movie.id} />

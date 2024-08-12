@@ -31,13 +31,13 @@ export const getMovieDetail =  async (id:string)=> {
   }
 } 
 
-export const getLastFiveMovies =  async ()=> {
+export const getLastMovies =  async ()=> {
   try {
     const moviesInDb = await prisma.movie.findMany({
       orderBy: {
         createdAt: 'desc'
       },
-      take: 5
+      take: 6
      })
     
    

@@ -9,12 +9,12 @@ const MenuMobile= ({session}: {session: any}) => {
   const t = useTranslations('Menu');
   const [isActive, setIsActive] = React.useState(false);
   return (
-    <div className="flex items-center pl-3 justify-between border-b border-gray-400 py-8">
+    <div className="flex items-center pl-3 justify-between shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] py-8">
       <nav>
         <section className=" flex lg:hidden">
           <div
             className="space-y-2"
-            onClick={() => setIsActive(!isActive)} // toggle isNavOpen state on click
+            onClick={() => setIsActive(!isActive)} 
           >
            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -25,8 +25,7 @@ const MenuMobile= ({session}: {session: any}) => {
           <div className={isActive ? "showMenuNav" : "hideMenuNav"}> 
             <div
               className="absolute top-0 right-0 px-8 py-8"
-              onClick={() => setIsActive(!isActive)} // change isNavOpen state to false to close the menu
-            >
+              onClick={() => setIsActive(!isActive)} >
               <svg
                 className="h-8 w-8 text-gray-600"
                 viewBox="0 0 24 24"
