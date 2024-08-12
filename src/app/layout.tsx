@@ -10,7 +10,6 @@ import Container from '@/components/ui/components/container/container';
 import { ReactElement, Suspense } from 'react';
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 
-
 export const metadata = {
   title: 'Nūberu Bāgu',
   description:
@@ -25,17 +24,17 @@ export default async function RootLayout({
   const session = await auth()
   const locale = await getLocale();
   const messages = await getMessages();
- 
+
   return (
     <html lang={locale} >
       <head>
         <meta name="googlebot" content="noindex"></meta>
       </head>
-      <body className="h-full mb-14 bg-gray-50 font-semibold">
+      <body className="h-full mb-14 relative bg-gray-50 font-semibold">
         <SessionProvider session={session} >
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
-          <MenuHeader session={session}/>
+          <MenuHeader session={session} />
           <Suspense fallback={<LoadingSpinner />}>
             <Container >
               {children}

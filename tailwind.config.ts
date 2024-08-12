@@ -25,7 +25,6 @@ export default {
     },
     container: {
       center: true,
-      padding: '2rem',
       screens: {
         'sm': '640px',
         // => @media (min-width: 640px) { ... }
