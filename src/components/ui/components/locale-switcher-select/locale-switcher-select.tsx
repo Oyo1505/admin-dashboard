@@ -39,7 +39,7 @@ export default function LocaleSwitcherSelect({
           aria-label={label}
           className={clsx(
             'rounded-sm p-2 transition-colors hover:bg-slate-200',
-            isPending && 'pointer-events-none opacity-60'
+            isPending && 'pointer-events-none '
           )}
         >
           <Select.Icon className='w-55 flex gap-2'>
@@ -52,7 +52,7 @@ export default function LocaleSwitcherSelect({
         <Select.Portal>
           <Select.Content
             align="end"
-            className="min-w-[8rem] overflow-hidden rounded-sm bg-white py-1 shadow-md"
+            className="min-w-[8rem] overflow-hidden rounded-sm bg-white py-1 shadow-md z-50 lg:z-0"
             position="popper"
           >
             <Select.Viewport>

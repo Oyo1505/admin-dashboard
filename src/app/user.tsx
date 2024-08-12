@@ -1,10 +1,10 @@
-
+'use client';
 import Image from 'next/image';
 import ButtonLogout from '../components/ui/components/button-logout/button-logout';
-import { auth } from '@/lib/auth';
+import { useSession } from 'next-auth/react';
 
-export async function User() {
-  const session = await auth();
+export function User() {
+  const {data: session} =  useSession();
   const user = session?.user;
   return (
     user &&
