@@ -26,7 +26,7 @@ const useAuthStatus = async () => {
       }
     };
     if (session && Object.keys(user).length === 0)  fetchSession();
-   else if (!session && pathname !== '/') {
+    else if (!session && pathname !== '/') {
     logoutSession()
    }
   }, [fetchUser, session, connected, user, setUser, pathname, logout]);
