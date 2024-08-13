@@ -32,11 +32,11 @@ import useUserStore from 'store/user/user-store';
       <form className="border shadow-sm rounded-lg">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="max-w-[150px]">Name</TableHead>
-              <TableHead className="hidden md:table-cell">Email</TableHead>
-              <TableHead className="hidden md:table-cell">Role</TableHead>
-              <TableHead></TableHead>
+          <TableRow className='border-b  border-background border-opacity-20'>
+              <TableHead className="max-w-[150px] text-primary font-bold">Name</TableHead>
+              <TableHead className="hidden md:table-cell text-primary font-bold">Email</TableHead>
+              <TableHead className="hidden md:table-cell text-primary font-bold">Role</TableHead>
+              <TableHead className="hidden md:table-cell text-primary font-bold">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -76,9 +76,9 @@ function UserRow({ user }: { user: User }) {
       {userId !==  userConnected?.id && userConnected?.role === 'ADMIN' && 
             <TableCell>
             <Button
-              className="w-full"
+              className="w-full font-bold"
               size="sm"
-              variant="outline"
+              variant="destructive"
               formAction={deleteUser}
             >
               Delete

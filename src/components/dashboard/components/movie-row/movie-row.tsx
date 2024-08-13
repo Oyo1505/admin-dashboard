@@ -18,17 +18,17 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
   return (
      <>
      <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-      <TableRow>
-        <TableCell className="font-medium">{index && index + 1}. {movie.title ?? movie.id}</TableCell>
+      <TableRow className='border-b border-background border-opacity-20'>
+        <TableCell className="font-bold">{index && index + 1}. {movie.title ?? movie.id}</TableCell>
           <TableCell>
               <Dialog.Trigger asChild>
-            <Button onClick={() => setIsOpen(true)}  className="text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none">
+            <Button onClick={() => setIsOpen(true)}  variant={'outline'} className='font-bold  text-primary'  formAction={onClickDeleteMovie} >
               {btnText}
             </Button>
             </Dialog.Trigger>
           </TableCell>
           <TableCell> 
-            <Button formAction={onClickDeleteMovie}  className="text-violet11 shadow-blackA4 hover:bg-mauve3 inline-flex h-[35px] items-center justify-center rounded-[4px] bg-white px-[15px] font-medium leading-none shadow-[0_2px_10px] focus:shadow-[0_0_0_2px] focus:shadow-black focus:outline-none">
+            <Button variant={'destructive'} className='font-bold' formAction={onClickDeleteMovie} >
                Supprimer
             </Button>
           </TableCell>

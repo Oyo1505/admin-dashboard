@@ -12,7 +12,7 @@ const Page = async () => {
   const moviesArray = movies?.map((movie: { movie: IMovie; }) => movie?.movie)
   return (
     <main className="flex flex-1 flex-col gap-4 md:gap-8 md:p-6">
-        <Title type='h1' translationTheme='DashboardNav' translationText='favorite' />
+        <Title type='h1' translationTheme='DashboardNav' className="text-3xl"  translationText='favorite' />
         <MoviesFavorite movies={moviesArray} />
     </main>
   )

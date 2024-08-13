@@ -30,7 +30,7 @@ const SearchMovie = (props: { value?: string }) => {
 
   return (
     <div className="relative mt-6 w-4/6 m-auto">
-      <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-gray-500" />
+      <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-background" />
       <Input
         ref={inputRef}
         value={value ?? ''}
@@ -38,7 +38,7 @@ const SearchMovie = (props: { value?: string }) => {
           setValue(e.currentTarget.value);
         }}
         spellCheck={false}
-        className="w-full bg-white shadow-none appearance-none pl-8"
+        className="w-full bg-white shadow-none text-background appearance-none pl-8"
         placeholder="Search Movies..."
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
@@ -46,7 +46,7 @@ const SearchMovie = (props: { value?: string }) => {
           }
         }}
       />
-      <Button className="absolute right-2 top-1 h-8 w-23 text-white" onClick={onClick}  >
+      <Button className="absolute right-2 top-1 h-8 w-23 bg-background text-white" onClick={onClick}  >
         Search
       </Button>
       {isPending && <Spinner />}

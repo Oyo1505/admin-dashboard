@@ -22,20 +22,22 @@ const Page =  async() => {
   return (
     <div className='flex flex-col mt-6 gap-4 md:gap-8'>
       <div>
-        <Title translationTheme='HomePage' className='text-2xl' translationText='lastFiveMovies' type='h2' />
+        <Title translationTheme='HomePage' className='text-3xl' translationText='lastFiveMovies' type='h3' />
         <MoviesHomeSection movies={moviesLastFive.movies} />
       </div>
       <div>
-        <Title translationTheme='HomePage' className='text-2xl' translationText='ACountry' type='h2'> {country}</Title>
+        <Title translationTheme='HomePage' className='text-3xl' translationText='ACountry'type='h3'> {country}</Title>
         <MoviesHomeSection movies={moviesByARandomCountry} />
       </div>
       <div>
-        <Title translationTheme='HomePage' className='text-2xl' translationText='Akind' type='h2'> {genre}</Title>
+        <Title translationTheme='HomePage' className='text-3xl' translationText='Akind'type='h3'> {genre}</Title>
         <MoviesHomeSection movies={moviesByARandomGenre} />
       </div>
       <div>
-        <Title translationTheme='HomePage' className='text-2xl' translationText='AHeart' type='h2' />
-        <MoviesHomeSection movies={extractFavoriteMovie} />
+      
+       {extractFavoriteMovie && extractFavoriteMovie?.length > 0 &&<>
+        <Title translationTheme='HomePage' className='text-3xl' translationText='AHeart'type='h3'/>
+       <MoviesHomeSection movies={extractFavoriteMovie} /></>  }
       </div>
       {/* <div>
         <Title translationTheme='HomePage' translationText='MyTopTen' type='h2' />

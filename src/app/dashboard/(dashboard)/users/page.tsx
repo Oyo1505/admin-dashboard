@@ -33,7 +33,7 @@ const Page = async ({
   </div>
     <UsersTable users={users} offset={newOffset}  /> 
     <div>
-      <Title type='h3' translationText='emailAuthorized' translationTheme='Dashboard' className='text-lg font-semibold mb-6' />
+      <Title type='h3' translationText='emailAuthorized' translationTheme='Dashboard' className='text-3xlfont-semibold mb-6' />
       {mails?.map((item: any) => (
           <EmailAuthrizedEmailRow key={item?.id} email={item?.email} />
         ))}

@@ -24,7 +24,7 @@ const Title = (
   const Tag = type.toLowerCase() as keyof JSX.IntrinsicElements;
 
   return (
-    <Tag className={cn(className)}>
+    <Tag className={cn(className, 'text-primary')}>
       {text || t(translationText)}
       {children}
     </Tag>

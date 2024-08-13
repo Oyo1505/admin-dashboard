@@ -43,16 +43,21 @@ export default {
       }
     },
     extend: {
+      // colors: {
+      //   'text': '#ecf0ee',
+      //   'background': '#080a08',
+      //   'primary': '#b6c5bc',
+      //   'secondary': '#4c5d61',
+      //   'accent': '#7b8b97',
+      //  },
       colors: {
-        border: 'hsl(var(--border))',
+        text: '#F5F5F5',
+        border: '#F5F5F5',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
-        },
+        background: '#121212',
+        foreground: '#F5F5F5',
+        primary: '#F5F5F5',
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))'

@@ -10,10 +10,10 @@ import React, { Suspense } from 'react'
 })=> {
  
   return (<>
-    <SearchMovie  />
-      <Suspense fallback={<LoadingSpinner />}>
-      <Movies searchParams={searchParams}  />
-    </Suspense>
+      <SearchMovie  />
+        <Suspense fallback={<LoadingSpinner />}>
+        <Movies searchParams={searchParams}  />
+      </Suspense>
     </>
 )
 }

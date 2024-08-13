@@ -12,14 +12,13 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
   const responsive = {
     desktop: {
       breakpoint: {  max: 5000, min: 1024 },
-      items: 6,
-      slidesToSlide: 2
+      items: 5,
+      slidesToSlide: 1
     },
     tablet: {
       breakpoint: { max: 1024, min: 465 },
       items: 3,
       slidesToSlide: 1 
-      
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -33,7 +32,7 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
        {movies && movies.length > 0 ?
       <Carousel
       ssr={true} 
-      containerClass="h-30 w-full mt-6 z-0"
+      containerClass="h-96 w-full mt-6 z-0"
       autoPlay={false}
       transitionDuration={500}
       draggable={false}

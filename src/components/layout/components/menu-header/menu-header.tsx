@@ -20,25 +20,30 @@ const MenuHeader = ({session}: {session: any}) => {
  
   return (
     isMobileView ? <MenuMobile session={session}/> : 
-    <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40 justify-between lg:justify-end">
-    <Container className='flex items-center justify-end gap-5'>
-      {session && <>
-        <Link className='hover:text-red-600'
-        href={URL_HOME}
-      >
-        {t('home')}
-      </Link>
-      <Link
-      className='hover:text-red-600'
-        href={URL_MOVIES}
-        replace={true}
-      >
-        {t('movies')}
-      </Link>
-      <Link  className='hover:text-red-600' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
-      </>}
-      <User />
-      <LocaleSwitcher />
+    <header className="fixed w-full flex h-15  pt-2 pb-2 items-center gap-4 bg-background bg-opacity-90  z-20 justify-between lg:justify-end">
+    <Container className='flex flex-row items-center justify-between  gap-5'>
+      <div className='flex items-center justify-start gap-5'>
+        {session && <>
+          <Link className='hover:text-red-600 text-primary'
+          href={URL_HOME}
+        >
+          {t('home')}
+        </Link>
+        <Link
+        className='hover:text-red-600 text-primary'
+          href={URL_MOVIES}
+          replace={true}
+        >
+          {t('movies')}
+        </Link>
+        <Link  className='hover:text-red-600 text-primary' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
+        </>}
+      </div>
+
+      <div className='flex items-center justify-end gap-5'>
+        <User mobile={false} />
+        <LocaleSwitcher />
+      </div>
     </Container>
   </header>
   )

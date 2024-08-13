@@ -30,13 +30,14 @@ export default async function RootLayout({
       <head>
         <meta name="googlebot" content="noindex"></meta>
       </head>
-      <body className="h-full mb-14 relative bg-gray-50 font-semibold">
+      <body className="h-full mb-14 relative background-background font-semibold">
         <SessionProvider session={session} >
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
           <MenuHeader session={session} />
           <Suspense fallback={<LoadingSpinner />}>
-            <Container >
+
+            <Container className='pt-14'>
               {children}
             </Container>
           </Suspense>

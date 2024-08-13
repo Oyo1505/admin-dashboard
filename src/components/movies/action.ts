@@ -54,6 +54,7 @@ export const getLastMovies =  async ()=> {
 } 
 
 export const getMoviesByARandomCountry = async () => {
+  try {
   const uniqueCountries = await prisma.movie.findMany({
     select: {
       country: true,
@@ -65,7 +66,7 @@ export const getMoviesByARandomCountry = async () => {
     return { status: 400, message: 'Pas de pays' };
   }
   const getARadomCountry = uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
- 
+  
   const movies = await prisma.movie.findMany({
     where: {
       country:  getARadomCountry.country
@@ -80,10 +81,16 @@ export const getMoviesByARandomCountry = async () => {
     return { status: 400, message: 'Pas de films' };
   }
   return { status: 200, movies, country: getARadomCountry.country};
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
 }
 
 export const getMoviesByARandomGenre = async () => {
-
+try {
   const uniqueGenres = await prisma.movie.findMany({
     select: {
       genre: true,
@@ -113,6 +120,12 @@ export const getMoviesByARandomGenre = async () => {
     return { status: 400, message: 'Pas de films' };
   }
   return { status: 200, movies, genre: randomGenre};
+    } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
 }
 
 
