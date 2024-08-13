@@ -23,11 +23,11 @@ const Page = async ({params}:any) => {
   <Suspense fallback={<p>Loading video...</p>}>
       <div className='justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col '>
       {movie && 
-      <div className='lg:w-1/2 w-full'>
+      <div className='lg:grow-0 w-full'>
           {movie?.idGoogleDive && 
           <Iframe 
             url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} 
-            className='w-full md:w-[400px] lg:w-full h-[250px] lg:h-[450px]'   
+            className='w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]'   
             width="auto" 
             height="450px"  />}
 
@@ -46,7 +46,7 @@ const Page = async ({params}:any) => {
     </div>
   </Suspense>
     {movie && movie?.trailer && 
-        <div className='mt-14'>
+        <div className='mt-14 h-96'>
         <Title translationTheme='MoviePage' translationText='trailer' type='h2' />
         <VideoPlayerYoutube movie={movie?.trailer} />  
       </div>

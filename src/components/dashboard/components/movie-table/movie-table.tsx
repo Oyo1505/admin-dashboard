@@ -15,11 +15,11 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
     <Suspense  fallback={<p>Chargement...</p>}>
 
     <div className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6'>
-        <form className="border shadow-sm rounded-lg">
+        <form className="border  bg-primary text-background shadow-sm rounded-lg">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="max-w-[150px]">Film non ajouté</TableHead>
+          <TableRow className='border-b border-background border-opacity-20'>
+              <TableHead className="max-w-[150px] font-bold">Film non ajouté</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -31,11 +31,11 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
         </Table>
       </form>
     {filteredMoviesAdded &&   filteredMoviesAdded?.length > 0 && <>      
-      <form className="border shadow-sm rounded-lg mt-4">
+      <form className="border  bg-primary text-background shadow-sm rounded-lg mt-4">
       <Table >
           <TableHeader>
-            <TableRow>
-              <TableHead className="max-w-[150px]">Film Ajouté</TableHead>
+            <TableRow className='border-b border-background border-opacity-20'>
+              <TableHead className="max-w-[150px] font-bold">Film Ajouté</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
