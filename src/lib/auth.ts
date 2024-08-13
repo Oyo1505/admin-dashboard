@@ -103,7 +103,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
           refresh_token: account.refresh_token,
           user: userProfile,
         }
-      } else if (Date.now() < tokenExpiresAt * 1000) {
+      } else if (token.expires_at && Date.now() < Number(token.expires_at) * 1000) {
+     
         // Subsequent logins, if the `access_token` is still valid, return the JWT
         return token
       } else {
