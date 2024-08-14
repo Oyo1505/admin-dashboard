@@ -193,7 +193,7 @@ export const getAllMovies =  async ()=> {
 
 
 export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }) => {
-  console.log(search)
+
   try{
     const movies = search.trim() === '' ? await prisma.movie.findMany({
  
