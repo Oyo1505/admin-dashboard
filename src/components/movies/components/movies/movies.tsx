@@ -18,7 +18,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   //   router.replace(`/movies/?offset=${offset}`);
   // }
 
-  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage, handleSearchChange } = useGetMoviesInfiniteScroll({pageParam: 6});
+  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage,} = useGetMoviesInfiniteScroll({pageParam: 5});
   
   useEffect(() => {
     if(status === "success" && data?.pages.length === 1){
@@ -26,7 +26,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
     }
   }, [setImages, data, status, hasNextPage, pathname])
 
-
+  
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage  && status === "success" ) { 
       fetchNextPage()
@@ -62,8 +62,8 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
         </div>
       </Link>
     )) : 'Pas de film disponible'}
-
-  <div ref={ref} style={{ height: '1px', width: '100%', backgroundColor: 'transparent' }} />
+  {isFetching ? <LoadingSpinner /> :  <div ref={ref} style={{ height: '1px', width: '100%', backgroundColor: 'transparent' }} />}
+ 
 </div>
   )
 }

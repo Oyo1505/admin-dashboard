@@ -7,7 +7,7 @@ import React from 'react'
 const LandingPage =  () => {
   const session = useSession()
   const t = useTranslations('LandingPage');
-
+  
   return (
     session.status === 'unauthenticated' &&
     <div className="h-screen flex items-center justify-center">

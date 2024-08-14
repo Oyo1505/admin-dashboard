@@ -15,6 +15,7 @@ export default async function middleware(req: NextRequest) {
   if (!secret) {
     return 
   }
+
   const session = await getToken({
     req,
     secret,
@@ -22,7 +23,7 @@ export default async function middleware(req: NextRequest) {
     cookieName: process.env.NEXTAUTH_ENV === 'production' ? '__Secure-authjs.session-token' : 'authjs.session-token',
     secureCookie: true,
   });
-
+  
   if (!session) {
     
     return NextResponse.redirect(new URL("/", req.url));
