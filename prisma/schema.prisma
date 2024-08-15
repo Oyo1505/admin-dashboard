@@ -58,6 +58,8 @@ model Movie {
   id       String    @id @default(cuid())
   title    String 
   originalTitle String?
+  titleJapanese String?
+  titleEnglish String?
   image    String
   duration Int?
   idGoogleDive String?     @unique

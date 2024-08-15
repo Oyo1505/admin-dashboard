@@ -194,27 +194,61 @@ export const getAllMovies =  async ()=> {
 
 export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }) => {
 
-  try{
-    const movies = search.trim() === '' ? await prisma.movie.findMany({
- 
-      orderBy: {
-        createdAt: 'desc',
-    },
+  try{   
+    const params = new URLSearchParams(search);
+    const subtitles = params.get('subtitles');
+    const language = params.get('language');
+    const q = params.get('q');
+    const conditions: {
+      OR?: Array<{
+        title?: { contains: string; mode: 'insensitive' };
+        originalTitle?: { contains: string; mode: 'insensitive' };
+      }>;
+      AND?: Array<{
+        subtitles?: { has: string, mode?: 'insensitive' };
+        language?: { has: string, mode?: 'insensitive' };
+      }>;
+    } = { OR: [], AND: [] };
+    
+    
+    // Add OR conditions based on the 'q' parameter
+    if (q && q.length > 0) {
+      conditions.OR?.push(
+        { title: { contains: q, mode: 'insensitive' } },
+        { originalTitle: { contains: q, mode: 'insensitive' } }
+      );
+    }
+// Example of adding conditions to the AND array (as needed)
+    if (subtitles) {
+      conditions.AND?.push({ subtitles: { has: subtitles, mode: 'insensitive' } });
+    }
+
+    if (language) {
+      conditions.AND?.push({ language: { has: language, mode: 'insensitive'} });
+    }
+        
+    // Ensure conditions are not empty to avoid invalid query structure
+    const whereClause = {
+      ...(conditions.OR && conditions.OR.length > 0 ? { OR: conditions.OR } : {}),
+      ...(conditions.AND && conditions.AND.length > 0 ? { AND: conditions.AND } : {}),
+    };
+    const movies = search.trim() === '' ? 
+    
+    await prisma.movie.findMany({
+          orderBy: {
+            createdAt: 'desc',
+        },
       take:pageParam
-   }):
+      }):
+
      await prisma.movie.findMany({
-      where:{
-        OR: [
-          { title: { contains: search, mode: 'insensitive' } },
-          { originalTitle: { contains: search, mode: 'insensitive' } },
-        ],
-      },
+      where: whereClause,
        orderBy: {
          createdAt: 'desc',
      },
        take:pageParam
     });
-   
+     console.log(movies);
     if(movies){  
      return {
         movies,

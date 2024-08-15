@@ -1,3 +1,4 @@
+import { IFilters } from '@/models/movie/movie';
 import {create} from 'zustand';
 
 interface FormData {
@@ -35,4 +36,25 @@ const useMovieFormStore = create<MovieFormState>((set) => ({
       },
     })),
 }));
-export default useMovieFormStore;
+
+interface FiltersMovieState {
+  filters: IFilters;
+  setFiltersData: (data: Partial<IFilters>) => void; 
+}
+
+const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
+  filters: {
+    subtitles: undefined,
+    language: undefined,
+    q: undefined,
+  },
+  setFiltersData: (data) =>
+    set((state) => ({
+      filters: {
+        ...state.filters,
+        ...data,
+      },
+    })),
+}));
+
+export { useFiltersMovieStore, useMovieFormStore };

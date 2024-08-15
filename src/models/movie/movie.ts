@@ -23,3 +23,10 @@ export interface IMovie {
   name?: string,
   mimeType?: string
 }
+
+
+export interface IFilters {
+  subtitles?: string;
+  language?: string; 
+  q?: string;
+}
