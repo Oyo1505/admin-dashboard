@@ -1,16 +1,13 @@
 'use client'
-import { Button } from '@/components/ui/components/button/button';
 import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
 import { Input } from '@/components/ui/components/input/input';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
-import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
-import MovieFilters from '../movies-filters/movies-filters';
 import { URL_MOVIES } from '@/shared/route';
 import { useFiltersMovieStore } from 'store/movie/movie-store';
 import qs from 'qs';
-import ButtonSearch from '@/components/ui/components/button-search/button-search';
-const SearchMovie = (props: { value?: string }) => {
+
+const SearchMovie = ( { search }: { search: string }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -19,6 +16,7 @@ const SearchMovie = (props: { value?: string }) => {
 
   function onChangeSearch(e: any) {
     const queryValue = e.target.value;
+  
     setFiltersData({...filters, q: e.target.value});
     startTransition(() => {
 
@@ -40,6 +38,7 @@ const SearchMovie = (props: { value?: string }) => {
         ref={inputRef}
         value={filters?.q ?? undefined}
         onInput={(e) => onChangeSearch(e)}
+        defaultValue={search ?? ''}
         spellCheck={false}
         className="w-full bg-white shadow-none text-background appearance-none pl-8"
         placeholder="Search Movies..."

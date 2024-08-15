@@ -18,7 +18,6 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
 
     queryKey: ['movies', pageParam],
     queryFn: ({ pageParam }) =>{
-      
       return fetchMoviesParams({pageParam, search});
     },
     initialPageParam: pageParam,
@@ -29,10 +28,12 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
       return lastPage.prevOffset && lastPage.prevOffset + 5; 
     },
   })
+  
   const handleSearchChange = () => {
    refetch(); 
   };
+
   return {data, error, hasNextPage, isFetching, status, fetchNextPage, isFetchingNextPage, handleSearchChange}
 }
 
-export { useGetMoviesInfiniteScroll, fetchMoviesParams }
+export { useGetMoviesInfiniteScroll }

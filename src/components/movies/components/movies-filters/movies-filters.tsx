@@ -1,6 +1,5 @@
 'use client'
-import React, { startTransition, useCallback, useEffect, useState } from 'react'
-import countriesList from '@/shared/constants/countries'
+import React, { startTransition, use, useCallback, useEffect } from 'react'
 import { useLocale } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { URL_MOVIES } from '@/shared/route'
@@ -10,11 +9,11 @@ import ButtonSearch from '@/components/ui/components/button-search/button-search
 import { useFiltersMovieStore } from 'store/movie/movie-store'
 import { languagesList } from '@/shared/constants/lang'
 
-const MovieFilters = () => {
+const MovieFilters = ({subtitles, language}:{subtitles?:string, language?:string}) => {
   const locale = useLocale()
   const router = useRouter();
 
- const {filters, setFiltersData} = useFiltersMovieStore();
+ const { filters, setFiltersData, setHasBeenSearched } = useFiltersMovieStore();
    const { handleSearchChange } = useGetMoviesInfiniteScroll({pageParam: 5, search: qs.stringify({ 
     subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
     language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
@@ -24,17 +23,23 @@ const MovieFilters = () => {
 
   function onChangeSubtitles(e: any) {
     const params = new URLSearchParams(window.location.search);
-    if (e.target.value) {
+    if (e.target.value === undefined) {
+      return;
+    }
+    else if (e.target.value) {
       params.set('subtitles', e.target.value);
     } else {
       params.delete('subtitles');
     }
     setFiltersData({...filters, subtitles: e.target.value});
   }
-  
+ 
   function onChangeCountry(e: any) {
     const params = new URLSearchParams(window.location.search);
-    if (e.target.value) {
+    if (e.target.value === undefined) {
+      return;
+    }
+    else if (e.target.value) {
       params.set('language', e.target.value);
     } else {
       params.delete('language');
@@ -59,14 +64,15 @@ const MovieFilters = () => {
       // But wrapping this allow us to observe the pending state
       routeReplace()
     });
-    handleSearchChange()
+    handleSearchChange() 
+    setHasBeenSearched(true)
   };
-
+  
   return (
     <div className="flex flex-row gap-2 relative mt-6 w-4/6 m-auto">
      <fieldset className="flex flex-col gap-2">
       <label>Subtitles</label>
-      <select onChange={onChangeSubtitles} defaultValue={filters?.subtitles} className='text-background'>
+      <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='text-background'>
         <option> </option>
         <option value="EN">English</option>
         <option value="JP">Japanese</option>
@@ -75,7 +81,7 @@ const MovieFilters = () => {
     </fieldset>
     <fieldset className="flex flex-col gap-2">
       <label>Langage</label>
-      <select  onChange={onChangeCountry} defaultValue={filters?.language} className='text-background'>
+      <select  onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='text-background'>
         <option> </option>
        {languagesList.map((country, index) => (
           <option  key={`${

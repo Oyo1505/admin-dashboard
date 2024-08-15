@@ -15,6 +15,7 @@ interface FormData {
 interface MovieFormState {
   formData: FormData
   setFormData: (data: Partial<MovieFormState>) => void;
+ 
 }
 
 const useMovieFormStore = create<MovieFormState>((set) => ({
@@ -39,7 +40,9 @@ const useMovieFormStore = create<MovieFormState>((set) => ({
 
 interface FiltersMovieState {
   filters: IFilters;
+  hasBeenSearched: boolean;
   setFiltersData: (data: Partial<IFilters>) => void; 
+  setHasBeenSearched : (val: boolean) => void;
 }
 
 const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
@@ -48,6 +51,7 @@ const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
     language: undefined,
     q: undefined,
   },
+  hasBeenSearched: false,
   setFiltersData: (data) =>
     set((state) => ({
       filters: {
@@ -55,6 +59,8 @@ const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
         ...data,
       },
     })),
+  setHasBeenSearched: (boolean) =>
+    set({ hasBeenSearched: boolean}),
 }));
 
 export { useFiltersMovieStore, useMovieFormStore };

@@ -11,23 +11,23 @@ import { useTransition, useEffect, useRef, useState } from 'react';
   const [value, setValue] = useState(props.value);
   const [isPending, startTransition] = useTransition();
 
-  // useEffect(() => {
-  //   const params = new URLSearchParams(window.location.search);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
     
-  //   if (value === undefined) {
-  //     return;
-  //   } else if (value) {
-  //     params.set('q', value);
-  //   } else {
-  //     params.delete('q');
-  //   }
+    if (value === undefined) {
+      return;
+    } else if (value) {
+      params.set('q', value);
+    } else {
+      params.delete('q');
+    }
 
-  //   startTransition(() => {
-  //     // All navigations are transitions automatically
-  //     // But wrapping this allow us to observe the pending state
-  //     router.replace(`/dashboard/users?${params.toString()}`);
-  //   });
-  // }, [router, value]);
+    startTransition(() => {
+      // All navigations are transitions automatically
+      // But wrapping this allow us to observe the pending state
+      router.replace(`/dashboard/users?${params.toString()}`);
+    });
+  }, [router, value]);
 
   return (
     <div className="relative">

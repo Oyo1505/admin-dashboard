@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { URL_MOVIES } from '@/shared/route'
 import Image from 'next/image';
@@ -9,10 +9,12 @@ import imageDefault from '../../../../assets/image/default-placeholder.png'
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 import {  useInView } from 'react-intersection-observer'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
+import { useFiltersMovieStore } from 'store/movie/movie-store';
 
 const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
  const { ref, inView, entry } = useInView();
-  const [images, setImages] = useState<IMovie[]>();
+  const [movies, setMovies] = useState<IMovie[]>();
+  const {hasBeenSearched, setHasBeenSearched, setFiltersData} = useFiltersMovieStore();
   const pathname = usePathname();
   // function onClick() {
   //   router.replace(`/movies/?offset=${offset}`);
@@ -21,16 +23,25 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage,} = useGetMoviesInfiniteScroll({pageParam: 5});
   
   useEffect(() => {
+  
     if(status === "success" && data?.pages.length === 1){
-      setImages(data?.pages[0]?.movies)
+      setMovies(data?.pages[0]?.movies)
     }
-  }, [setImages, data, status, hasNextPage, pathname])
+  }, [setMovies, data, status, hasNextPage, pathname])
 
+
+  useEffect(() => {
+    if( hasBeenSearched){
+      setMovies(data?.pages[0]?.movies)
+      setHasBeenSearched(false)
+      setFiltersData({})
+    }
+  }, [searchParams,setFiltersData, setMovies, data, status, hasBeenSearched, setHasBeenSearched])
   
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage  && status === "success" ) { 
       fetchNextPage()
-      setImages(data?.pages[data?.pages?.length-1]?.movies)
+      setMovies(data?.pages[data?.pages?.length-1]?.movies)
     }
   }, [inView,fetchNextPage, hasNextPage, data, status, isFetchingNextPage, entry ])
 
@@ -39,7 +50,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   return (
     
   <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start'>
-    {images && images.length > 0 ? images.map((movie, index) => 
+    {movies && movies.length > 0 ? movies.map((movie, index) => 
       movie?.title && (
         <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center transition-all duration-300'
           key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
