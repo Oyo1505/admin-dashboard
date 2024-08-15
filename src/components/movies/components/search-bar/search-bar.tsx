@@ -10,23 +10,23 @@ const SearchBar  = (props: { value?: string }) => {
   const [value, setValue] = useState(props.value);
   const [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+  // useEffect(() => {
+  //   const params = new URLSearchParams(window.location.search);
     
-    if (value === undefined) {
-      return;
-    } else if (value) {
-      params.set('q', value);
-    } else {
-      params.delete('q');
-    }
+  //   if (value === undefined) {
+  //     return;
+  //   } else if (value) {
+  //     params.set('q', value);
+  //   } else {
+  //     params.delete('q');
+  //   }
 
-    startTransition(() => {
-      // All navigations are transitions automatically
-      // But wrapping this allow us to observe the pending state
-      router.replace(`/movies/search?${params.toString()}`);
-    });
-  }, [router, value]);
+  //   startTransition(() => {
+  //     // All navigations are transitions automatically
+  //     // But wrapping this allow us to observe the pending state
+  //     router.replace(`/movies/search?${params.toString()}`);
+  //   });
+  // }, [router, value]);
 
   return (
     <div className="relative">
@@ -35,7 +35,7 @@ const SearchBar  = (props: { value?: string }) => {
         ref={inputRef}
         value={value ?? ''}
         onInput={(e) => {
-          setValue(e.currentTarget.value);
+          // setValue(e.currentTarget.value);
         }}
         spellCheck={false}
         className="w-full bg-white shadow-none appearance-none pl-8"

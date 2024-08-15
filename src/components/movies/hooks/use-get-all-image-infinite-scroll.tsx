@@ -17,7 +17,10 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
   } = useInfiniteQuery({
 
     queryKey: ['movies', pageParam],
-    queryFn: ({ pageParam }) => fetchMoviesParams({pageParam, search}),
+    queryFn: ({ pageParam }) =>{
+      
+      return fetchMoviesParams({pageParam, search});
+    },
     initialPageParam: pageParam,
     getNextPageParam: (lastPage) => {
       if (lastPage.prevOffset && lastPage.prevOffset > lastPage.movies?.length) {

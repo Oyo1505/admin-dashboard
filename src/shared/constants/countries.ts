@@ -253,10 +253,10 @@ export const countriesList: Country[] = [
   { label: { fr: 'Åland, Îles', en: 'Åland Islands', jp: 'オーランド諸島' }, value: 'AX' }
 ]
 
-export const countriesValues = countriesList.map((country: Country) => {
-  const label = country.label['fr'];
-  const value = country.value;
-  return { label, value };
-});
+// export const countriesValues = countriesList.map((country: Country, locale: [keyof typeof country['label']]) => {
+//   const label = country.label[locale];
+//   const value = country.value;
+//   return { label, value };
+// });
 
 export default countriesList;

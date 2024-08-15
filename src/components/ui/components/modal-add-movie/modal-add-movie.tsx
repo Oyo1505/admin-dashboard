@@ -3,9 +3,10 @@ import React from 'react'
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/button';
 import { IMovie } from '@/models/movie/movie';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
-import { language } from 'googleapis/build/src/apis/language';
+import countriesList from '@/shared/constants/countries';
+import { languagesList } from '@/shared/constants/lang';
 
 interface IMovieForm {
   title: string | undefined
@@ -25,7 +26,7 @@ interface IMovieForm {
 
 const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
-
+  const locale = useLocale()
   const [formData, setFormData] = React.useState<IMovieForm>({
     id : movie?.id,
     title: movie?.title ?? '',
@@ -88,7 +89,12 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       setFormData({ ...formData, subtitles: newArray });
     }
   }
-
+  function onChangeCountry(e: any) {
+    setFormData({...formData, country: e.target.value});
+  }
+  function onChangeLangage(e: any) {
+    setFormData({...formData, langage: e.target.value});
+  }
 return(
     <Dialog.Portal>
       <Dialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
@@ -144,18 +150,19 @@ return(
           <label className="text-violet11  text-right text-[15px]" htmlFor="langage">
             {t('langage')}
           </label>
-          <input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="langage"
-            name='langage'
-            type='text'
-            value={formData?.langage}
-            onChange={(e) => {
-              setFormData({...formData, langage: e.target.value})
-            }}
-          />
+          <select  onChange={onChangeLangage} defaultValue={formData?.langage} className='text-background'>
+              <option> </option>
+            {languagesList.map((country, index) => (
+                <option  key={`${
+                //@ts-ignore
+                country?.label?.[locale]}-${index}`} value={country?.value}>
+                  {
+                    //@ts-ignore
+                  country?.label?.[locale]}
+                </option>
+              ))}
+            </select>
         </fieldset>
-        
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
             {t('subtitles')}
@@ -296,15 +303,17 @@ return(
           <label className="text-violet11  text-right text-[15px]" htmlFor="country">
         {t('country')}
           </label>
-          <input
-            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="country"
-            name='country'
-            value={formData?.country}
-            onChange={(e) => {
-              setFormData({...formData, country: e.target.value})
-            }}
-          />
+          <select  onChange={onChangeCountry} defaultValue={formData?.country} className='text-background'>
+              <option> </option>
+            {countriesList.map((country, index) => (
+                <option  key={`${
+                //@ts-ignore
+                country?.label?.[locale]}-${index}`} value={country?.value}>
+                  {//@ts-ignore
+                  country?.label?.[locale]}
+                </option>
+              ))}
+            </select>
         </fieldset>
         {formData?.idGoogleDive && 
             <input
