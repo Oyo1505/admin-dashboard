@@ -64,7 +64,9 @@
     "duration": "時間",
     "originalTitle": "原題",
     "langage": "言語",
-    "subtitles": "字幕"
+    "subtitles": "字幕",
+    "titleJapanese": "日本語タイトル",
+    "titleEnglish": "英語タイトル"
   },
   "MoviePage": {
     "duration": "時間",

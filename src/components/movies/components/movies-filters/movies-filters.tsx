@@ -13,7 +13,8 @@ const MovieFilters = ({subtitles, language}:{subtitles?:string, language?:string
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters')
- const { filters, setFiltersData, setHasBeenSearched } = useFiltersMovieStore();
+
+  const { filters, setFiltersData, setHasBeenSearched } = useFiltersMovieStore();
    const { refetch } = useGetMoviesInfiniteScroll({pageParam: 5, search: qs.stringify({ 
     subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
     language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
@@ -64,33 +65,33 @@ const MovieFilters = ({subtitles, language}:{subtitles?:string, language?:string
   };
   
   return (
-    <div className="flex flex-row gap-2 relative mt-6 w-4/6 m-auto place-items-end justify-between">
-      <div className="flex  gap-2">
-     <fieldset className="flex flex-col gap-2">
-      <label>{t('subtitles')}</label>
-      <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-        <option> </option>
-        <option value="EN">{t('subtitlesEN')}</option>
-        <option value="JP">{t('subtitlesJP')}</option>
-        <option value="FR">{t('subtitlesFR')}</option>
-      </select>
-    </fieldset>
-    <fieldset className="flex flex-col gap-2">
-      <label>{t('language')}</label>
-      <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-        <option> </option>
-       {languagesList.map((country, index) => (
-          <option  key={`${
-          //@ts-ignore
-          country?.label?.[locale]}-${index}`} value={country?.value}>
-            {//@ts-ignore
-            country?.label?.[locale]}
-          </option>
-        ))}
-      </select>
-    </fieldset>
+    <div className="flex flex-col md:flex-row gap-5 md:gap-2 relative mt-6 w-4/6 m-auto place-items-end justify-between">
+      <div className="flex w-full flex-col md:flex-row  gap-2">
+        <fieldset className="flex flex-col gap-2 md:w-64">
+          <label>{t('subtitles')}</label>
+          <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+            <option> </option>
+            <option value="EN">{t('subtitlesEN')}</option>
+            <option value="JP">{t('subtitlesJP')}</option>
+            <option value="FR">{t('subtitlesFR')}</option>
+          </select>
+        </fieldset>
+        <fieldset  className="flex flex-col gap-2 md:w-64">
+          <label>{t('language')}</label>
+          <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+            <option> </option>
+          {languagesList.map((country, index) => (
+              <option  key={`${
+              //@ts-ignore
+              country?.label?.[locale]}-${index}`} value={country?.value}>
+                {//@ts-ignore
+                country?.label?.[locale]}
+              </option>
+            ))}
+          </select>
+        </fieldset>
     </div>
-    <ButtonSearch btnText={t('btnSearch')} onClick={onClick} />
+    <ButtonSearch className='w-full md:w-auto' btnText={t('btnSearch')} onClick={onClick} />
     </div>
   )
 }

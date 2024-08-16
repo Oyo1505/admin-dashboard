@@ -10,13 +10,15 @@ import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infini
 import {  useInView } from 'react-intersection-observer'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 import { useFiltersMovieStore } from 'store/movie/movie-store';
+import { titleOnlocale } from 'utilities/string/titleOnlocale';
+import { useLocale } from 'next-intl';
 
 const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
  const { ref, inView, entry } = useInView();
   const [movies, setMovies] = useState<IMovie[]>();
   const {hasBeenSearched, setFiltersData} = useFiltersMovieStore();
   const pathname = usePathname();
-
+  const locale = useLocale()  
   const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage, refetch } = useGetMoviesInfiniteScroll({pageParam: 5});
   
   useEffect(() => {
@@ -40,7 +42,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   }, [inView,fetchNextPage, hasNextPage, data, status, isFetchingNextPage, entry, hasBeenSearched, searchParams ])
 
   if (status === 'pending' && isFetching) return <LoadingSpinner />
-
+ 
   return (
     
   <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start'>
@@ -62,9 +64,8 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
               />
             </div>
           </div>
-          
           <div className='w-full text-center text-ellipsis whitespace-nowrap overflow-hidden'>
-            {movie?.title}
+            {titleOnlocale(movie, locale)}
           </div>
         </Link>
       )) : 'Pas de film disponible'}
