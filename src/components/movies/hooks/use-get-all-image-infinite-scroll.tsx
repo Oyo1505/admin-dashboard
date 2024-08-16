@@ -17,7 +17,8 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
   } = useInfiniteQuery({
 
     queryKey: ['movies', pageParam],
-    queryFn: ({ pageParam }) =>{
+    queryFn:  ({ pageParam }) =>{
+
       return fetchMoviesParams({pageParam, search});
     },
     initialPageParam: pageParam,
@@ -30,10 +31,10 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
   })
   
   const handleSearchChange = () => {
-   refetch(); 
+    refetch(); 
   };
 
-  return {data, error, hasNextPage, isFetching, status, fetchNextPage, isFetchingNextPage, handleSearchChange}
+  return {data, error, hasNextPage, isFetching, status, fetchNextPage, isFetchingNextPage, handleSearchChange, refetch}
 }
 
 export { useGetMoviesInfiniteScroll }

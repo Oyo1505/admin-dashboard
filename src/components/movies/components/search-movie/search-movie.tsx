@@ -2,15 +2,16 @@
 import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
 import { Input } from '@/components/ui/components/input/input';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState, useTransition } from 'react'
+import React, { useRef, useTransition } from 'react'
 import { URL_MOVIES } from '@/shared/route';
 import { useFiltersMovieStore } from 'store/movie/movie-store';
 import qs from 'qs';
+import { useTranslations } from 'next-intl';
 
 const SearchMovie = ( { search }: { search: string }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const t = useTranslations('Filters')
   const {filters, setFiltersData} = useFiltersMovieStore();
   const [isPending, startTransition] = useTransition();
 
@@ -30,7 +31,7 @@ const SearchMovie = ( { search }: { search: string }) => {
       router.replace(`${URL_MOVIES}?${queryString}`);
     });
   }
-  
+
   return (
     <div className="relative mt-6 w-4/6 m-auto">
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-background" />
@@ -41,7 +42,7 @@ const SearchMovie = ( { search }: { search: string }) => {
         defaultValue={search ?? ''}
         spellCheck={false}
         className="w-full bg-white shadow-none text-background appearance-none pl-8"
-        placeholder="Search Movies..."
+        placeholder={t('placeholderSearch')}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
             onChangeSearch(event)

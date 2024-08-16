@@ -15,7 +15,6 @@ import React, { Suspense } from 'react'
   const subtitles = searchParams.subtitles ?? '';
   const language = searchParams.language ?? '';
   
-  // const { users, newOffset } = await getMo(search, offset)
   return (<>
       <SearchMovie search={search}  />
       <MovieFilters subtitles={subtitles} language={language} />

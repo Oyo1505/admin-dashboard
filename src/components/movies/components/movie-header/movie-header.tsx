@@ -34,7 +34,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const {user} = useUserStore((state) => state)
   const findCountry = countriesList?.filter((item) => item?.value === movie?.country)
   const language = languagesList?.filter((item) => item?.value === movie?.language)
-  console.log(language)
+
   return (
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>

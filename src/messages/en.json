@@ -87,5 +87,14 @@
   "SettingsPage": {
     "anyHelp": "Any help you need?",
     "deleteAccount": "Delete my account"
+  },
+  "Filters": {
+    "subtitles": "Subtitles",
+    "language": "Language",
+    "btnSearch": "Search",
+    "placeholderSearch": "Search Movies...",
+    "subtitlesFR": "French",
+    "subtitlesJP": "Japanese",
+    "subtitlesEN": "English"
   }
 }

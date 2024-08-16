@@ -87,5 +87,14 @@
     "title": "Settings" ,
     "anyHelp": "Besoin d'aide ?",
     "deleteAccount": "Supprimer mon compte"
+  },
+  "Filters": {
+    "subtitles": "Sous-titres",
+    "language": "Langue",
+    "btnSearch": "Rechercher",
+    "placeholderSearch": "Rechercher des films...",
+    "subtitlesFR": "Français",
+    "subtitlesJP": "Japonais",
+    "subtitlesEN": "Anglais"
   }
 }
