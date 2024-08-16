@@ -4,6 +4,8 @@ export interface IMovie {
   id: string
   title: string
   originalTitle: string | null
+  titleJapanese: string | null
+  titleEnglish: string | null
   movieId?: string | null
   image: string
   idGoogleDive: string | null

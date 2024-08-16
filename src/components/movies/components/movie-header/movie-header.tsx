@@ -8,6 +8,7 @@ import { addOrRemoveToFavorite } from '../../action';
 import useUserStore from 'store/user/user-store';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
+import { titleOnlocale } from 'utilities/string/titleOnlocale';
 
 interface MovieHeaderProps {
   movie?: IMovie;
@@ -35,10 +36,12 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const findCountry = countriesList?.filter((item) => item?.value === movie?.country)
   const language = languagesList?.filter((item) => item?.value === movie?.language)
 
+
+ 
   return (
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
-    <h1 className='text-3xl font-bold'>{locale === 'fr' && movie?.title?  movie?.title : movie?.originalTitle ?? movie?.title}</h1>
+    <h1 className='text-3xl font-bold'>{movie && titleOnlocale(movie, locale)}</h1>
     {movie?.originalTitle && <div className='mt-2 mb-2 font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
     </div>
     <div className='mb-4'>

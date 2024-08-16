@@ -87,6 +87,8 @@ export const addMovieToDb =  async (movie:any)=> {
     await prisma.movie.create({
       data: {
         title: movie.title ?? 'Nouveau film',
+        titleEnglish: movie.titleEnglish,
+        titleJapanese: movie.titleJapanese,
         link: movie?.link,
         image: movie?.link,
         originalTitle: movie.originalTitle,
@@ -125,13 +127,15 @@ export const editMovieToDb =  async (movie:IMovie)=> {
   if (!movieInDb) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
-  
+  console.log(movie)
   await prisma.movie.update({
     where: {
       id: movie.id
     },
     data: {
       title: movie.title,
+      titleEnglish: movie.titleEnglish,
+      titleJapanese: movie.titleJapanese,
       link: movie?.link,
       image: movie?.link,
       originalTitle: movie.originalTitle,

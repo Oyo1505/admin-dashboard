@@ -11,6 +11,8 @@ import { languagesList } from '@/shared/constants/lang';
 interface IMovieForm {
   title: string | undefined
   originalTitle: string | undefined
+  titleJapanese: string | undefined
+  titleEnglish: string | undefined
   link: string | undefined
   year: number
   genre: string | undefined
@@ -31,6 +33,8 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     id : movie?.id,
     title: movie?.title ?? '',
     originalTitle: movie?.originalTitle ?? '',
+    titleJapanese: movie?.titleJapanese ?? '',
+    titleEnglish: movie?.titleEnglish ?? '',
     link: movie?.link ?? '', 
     year: movie?.year ?? new Date().getFullYear(), 
     genre: movie?.genre?.join(' ') ?? '', 
@@ -46,6 +50,8 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   const  createMovie= async () => {
     const rawFormData = {
       title: formData.title,
+      titleJapanese: formData.titleJapanese,
+      titleEnglish: formData.titleEnglish,
       idGoogleDive: formData.idGoogleDive,
       releaseDate: Date.now(),
       subtitles: formData.subtitles,
@@ -64,11 +70,14 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   }
  
   const onClickEditMovie = async () => {
+    console.log(formData)
     const rawFormData = {
       id: formData.id,
       idGoogleDive: formData.idGoogleDive,
       originalTitle: formData.originalTitle,
       title: formData.title,
+      titleEnglish: formData.titleEnglish,
+      titleJapanese: formData.titleJapanese,
       language  : formData.langage, 
       releaseDate: Date.now(),
       year: formData.year,
@@ -95,6 +104,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   function onChangeLangage(e: any) {
     setFormData({...formData, langage: e.target.value});
   }
+  
 return(
     <Dialog.Portal>
       <Dialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
@@ -126,9 +136,39 @@ return(
             id="originalTitle"
             required
             name='originalTitle'
-            value={formData?.originalTitle?.trimStart().trimEnd()}
+            value={formData?.originalTitle}
             onChange={(e) => {
               setFormData({...formData, originalTitle: e.target.value})
+            }}
+          />
+        </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
+          {t('titleJapanese')}
+          </label>
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="titleJapanese"
+       
+            name='titleJapanese'
+            value={formData?.titleJapanese}
+            onChange={(e) => {
+              setFormData({...formData, titleJapanese: e.target.value})
+            }}
+          />
+        </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
+          {t('titleEnglish')}
+          </label>
+          <input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="titleEnglish"
+    
+            name='titleEnglish'
+            value={formData?.titleEnglish}
+            onChange={(e) => {
+              setFormData({...formData, titleEnglish: e.target.value})
             }}
           />
         </fieldset>

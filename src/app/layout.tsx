@@ -29,6 +29,7 @@ export default async function RootLayout({
     <html lang={locale} >
       <head>
         <meta name="googlebot" content="noindex"></meta>
+
       </head>
       <body className="h-full mb-14 relative background-background font-semibold">
         <SessionProvider session={session} >

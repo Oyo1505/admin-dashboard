@@ -190,7 +190,7 @@ export const countriesList: Country[] = [
   { label: { fr: 'Réunion', en: 'Reunion', jp: 'レユニオン' }, value: 'RE' },
   { label: { fr: 'Roumanie', en: 'Romania', jp: 'ルーマニア' }, value: 'RO' },
   { label: { fr: 'Royaume-Uni', en: 'United Kingdom', jp: 'イギリス' }, value: 'GB' },
-  { label: { fr: 'Russie, Fédération de', en: 'Russia', jp: 'ロシア' }, value: 'RU' },
+  { label: { fr: 'Russie', en: 'Russia', jp: 'ロシア' }, value: 'RU' },
   { label: { fr: 'Rwanda', en: 'Rwanda', jp: 'ルワンダ' }, value: 'RW' },
   { label: { fr: 'Sahara Occidental', en: 'Western Sahara', jp: '西サハラ' }, value: 'EH' },
   { label: { fr: 'Saint-Barthélemy', en: 'Saint Barthélemy', jp: 'サン・バルテルミー' }, value: 'BL' },

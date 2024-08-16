@@ -64,7 +64,9 @@
     "duration": "Durée",
     "originalTitle": "Titre original",
     "langage": "Langue",
-    "subtitles": "Sous-titres"
+    "subtitles": "Sous-titres",
+    "titleJapanese": "Titre japonais",
+    "titleEnglish": "Titre anglais"
   },
   "MoviePage": {
     "duration": "Durée",
