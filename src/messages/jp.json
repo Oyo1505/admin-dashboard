@@ -86,5 +86,14 @@
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",
     "deleteAccount": "アカウントを削除"
+  },
+  "Filters": {
+    "subtitles": "字幕",
+    "language": "言語",
+    "btnSearch": "検索",
+    "placeholderSearch": "映画を検索...",
+    "subtitlesFR": "フランス語",
+    "subtitlesJP": "日本語",
+    "subtitlesEN": "英語"
   }
 }

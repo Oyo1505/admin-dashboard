@@ -193,8 +193,23 @@ export const getAllMovies =  async ()=> {
 
 
 export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }) => {
+ 
+  try{
+    if(search.trim() === '' && search.length === 0){
+   
+    const movies = await prisma.movie.findMany({
+       orderBy: {
+          createdAt: 'desc',
+      },
+      take:pageParam
+      })
+      return {
+        movies: movies,
+        status : 200,
+        prevOffset: pageParam
+      }
+    }
 
-  try{   
     const params = new URLSearchParams(search);
     const subtitles = params.get('subtitles');
     const language = params.get('language');
@@ -205,8 +220,8 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         originalTitle?: { contains: string; mode: 'insensitive' };
       }>;
       AND?: Array<{
-        subtitles?: { has: string, mode?: 'insensitive' };
-        language?: { has: string, mode?: 'insensitive' };
+        subtitles?: { has: string };
+        language?: { contains: string };
       }>;
     } = { OR: [], AND: [] };
     
@@ -220,11 +235,12 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     }
 // Example of adding conditions to the AND array (as needed)
     if (subtitles) {
-      conditions.AND?.push({ subtitles: { has: subtitles, mode: 'insensitive' } });
+      conditions.AND?.push({ subtitles: { has: subtitles } });
     }
 
     if (language) {
-      conditions.AND?.push({ language: { has: language, mode: 'insensitive'} });
+      conditions.AND?.push({ language: { contains: language
+      } });
     }
         
     // Ensure conditions are not empty to avoid invalid query structure
@@ -232,26 +248,18 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       ...(conditions.OR && conditions.OR.length > 0 ? { OR: conditions.OR } : {}),
       ...(conditions.AND && conditions.AND.length > 0 ? { AND: conditions.AND } : {}),
     };
-    const movies = search.trim() === '' ? 
-    
-    await prisma.movie.findMany({
-          orderBy: {
-            createdAt: 'desc',
-        },
-      take:pageParam
-      }):
-
-     await prisma.movie.findMany({
+ 
+    const movies = await prisma.movie.findMany({
       where: whereClause,
        orderBy: {
          createdAt: 'desc',
      },
-       take:pageParam
-    });
-     console.log(movies);
-    if(movies){  
+       take:100
+    }); 
+
+    if(movies){ 
      return {
-        movies,
+       movies,
        status : 200,
        prevOffset: pageParam
      }
@@ -260,6 +268,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
        status : 400
      }
    }
+
   }catch(err){
    console.log(err)
    return {

@@ -7,16 +7,17 @@ import React, { Suspense } from 'react'
  const Page  = async ({
   searchParams
 }: {
-  searchParams: { q: string; subtitles: string; langage: string };
+  searchParams: {
+    language: string; q: string; subtitles: string; langage: string 
+};
 })=> {
   const search = searchParams.q ?? '';
   const subtitles = searchParams.subtitles ?? '';
-  const langage = searchParams.langage ?? '';
+  const language = searchParams.language ?? '';
   
-  // const { users, newOffset } = await getMo(search, offset)
   return (<>
-      <SearchMovie  />
-      {/* <MovieFilters /> */}
+      <SearchMovie search={search}  />
+      <MovieFilters subtitles={subtitles} language={language} />
       <Suspense fallback={<LoadingSpinner />}>
         <Movies searchParams={searchParams}  />
       </Suspense>
