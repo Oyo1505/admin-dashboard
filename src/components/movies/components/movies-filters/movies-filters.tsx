@@ -107,7 +107,7 @@ const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, l
           </select>
         </fieldset>
         <fieldset  className="flex flex-col gap-2 md:w-64">
-          <label>Genre</label>
+          <label>{t('genre')}</label>
           <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             {genres?.map((genre, index) => (
