@@ -17,15 +17,15 @@ export default function Layout({
 }) { 
   return (
     <Suspense fallback={<LoadingSpinner />}>
-    <div className="grid min-h-screen h-full w-full lg:grid-cols-[280px_1fr] ">
+    <div className="grid md:min-h-screen h-full w-full lg:grid-cols-[280px_1fr] ">
     <div className="border-r h-52 md:h-full bg-gray-100/80 lg:block dark:bg-gray-800/40">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <MenuDashboard />
       </div>
     </div>
-    <Container>
+    
       {children}
-    </Container>
+    
 
   </div>
   </Suspense>
