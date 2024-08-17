@@ -119,7 +119,7 @@ const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, l
           </select>
         </fieldset>
     </div>
-      <ButtonSearch className='w-full md:w-auto' btnText={t('btnSearch')} onClick={onClick} />
+      <ButtonSearch className='w-full md:w-auto transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
     </div>
   )
 }

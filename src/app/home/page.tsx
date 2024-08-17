@@ -23,27 +23,27 @@ const Page =  async () => {
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   
   return (
-    <div className='flex flex-col mt-6 gap-4 md:gap-8'>
+    <div className='flex flex-col mt-6 gap-8'>
       <div>
-        <Title translationTheme='HomePage' className='text-3xl' translationText='lastFiveMovies' type='h3' />
+        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='lastFiveMovies' type='h3' />
         <MoviesHomeSection movies={moviesLastFive.movies} />
       </div>
       <div>
         
-        <Title translationTheme='HomePage' className='text-3xl' translationText='ACountry'type='h3'> {
+        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='ACountry'type='h3'> {
         //@ts-ignore
         findCountry?.[0]?.label?.[locale]
         }</Title>
         <MoviesHomeSection movies={moviesByARandomCountry} />
       </div>
       <div>
-        <Title translationTheme='HomePage' className='text-3xl' translationText='Akind'type='h3'> {genre}</Title>
+        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='Akind'type='h3'> {genre}</Title>
         <MoviesHomeSection movies={moviesByARandomGenre} />
       </div>
       <div>
       
        {extractFavoriteMovie && extractFavoriteMovie?.length > 0 &&<>
-        <Title translationTheme='HomePage' className='text-3xl' translationText='AHeart'type='h3'/>
+        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='AHeart'type='h3'/>
        <MoviesHomeSection movies={extractFavoriteMovie} /></>  }
       </div>
       {/* <div>
