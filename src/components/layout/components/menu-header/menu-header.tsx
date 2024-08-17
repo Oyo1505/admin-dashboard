@@ -20,23 +20,23 @@ const MenuHeader = ({session}: {session: any}) => {
  
   return (
     isMobileView ? <MenuMobile session={session}/> : 
-    <header className="fixed w-full flex h-15  pt-2 pb-2 items-center gap-4 bg-background bg-opacity-90  z-20 justify-between lg:justify-end">
-    <Container className='flex flex-row items-center justify-between  gap-5'>
-      <div className='flex items-center justify-start gap-5'>
+    <header className="group fixed w-full flex h-15  pt-2 pb-2 items-center gap-4 bg-background bg-opacity-90  z-20 justify-between lg:justify-end">
+    <Container className='flex flex-row items-center justify-between gap-5'>
+      <div className='flex items-center justify-start gap-5 '>
         {session && <>
-          <Link className='hover:text-red-600 text-primary'
+          <Link className='hover:text-red-600 text-primary transition-all duration-300'
           href={URL_HOME}
         >
           {t('home')}
         </Link>
         <Link
-        className='hover:text-red-600 text-primary'
+        className='hover:text-red-600 text-primary transition-all duration-300'
           href={URL_MOVIES}
           //replace={true}
         >
           {t('movies')}
         </Link>
-        <Link  className='hover:text-red-600 text-primary' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
+        <Link  className='hover:text-red-600 text-primary transition-all duration-300' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
         </>}
       </div>
 

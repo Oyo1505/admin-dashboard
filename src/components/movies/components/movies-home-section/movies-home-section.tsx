@@ -20,6 +20,11 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
       items: 4,
       slidesToSlide: 1 
     },
+    tabletHorizontal: {
+      breakpoint: { max: 1400, min: 1025 },
+      items: 3,
+      slidesToSlide: 1 
+    },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 3,

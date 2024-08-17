@@ -75,7 +75,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
 })],
   session: { strategy: "jwt",  
     maxAge: 60 * 60 * 2, 
-    updateAge: 10 * 60, },
+    updateAge: 20 * 60, },
   callbacks: {
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()
