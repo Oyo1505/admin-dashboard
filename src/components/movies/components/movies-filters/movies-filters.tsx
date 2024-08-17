@@ -85,7 +85,7 @@ const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, l
       <div className="flex w-full flex-col md:flex-row  gap-2">
         <fieldset className="flex flex-col gap-2 md:w-64">
           <label>{t('subtitles')}</label>
-          <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+          <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             <option value="EN">{t('subtitlesEN')}</option>
             <option value="JP">{t('subtitlesJP')}</option>
@@ -94,7 +94,7 @@ const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, l
         </fieldset>
         <fieldset  className="flex flex-col gap-2 md:w-64">
           <label>{t('language')}</label>
-          <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+          <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
           {languagesList.map((country, index) => (
               <option  key={`${
@@ -108,7 +108,7 @@ const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, l
         </fieldset>
         <fieldset  className="flex flex-col gap-2 md:w-64">
           <label>Genre</label>
-          <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+          <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             {genres?.map((genre, index) => (
               <option  key={`${genre}-${index}`} value={genre}>

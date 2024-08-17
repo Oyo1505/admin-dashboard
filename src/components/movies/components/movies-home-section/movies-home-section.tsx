@@ -17,12 +17,12 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
     },
     tablet: {
       breakpoint: { max: 1024, min: 465 },
-      items: 3,
+      items: 4,
       slidesToSlide: 1 
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 1,
+      items: 3,
       slidesToSlide: 1 // optional, default to 1.
     }
   };
@@ -32,7 +32,7 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
        {movies && movies.length > 0 ?
       <Carousel
       ssr={true} 
-      containerClass="h-96 w-full mt-6 z-0"
+      containerClass="h-48 md:h-72 lg:h-96 w-full mt-6 z-0"
       autoPlay={false}
       transitionDuration={500}
       draggable={false}
