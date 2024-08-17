@@ -6,7 +6,7 @@ export const URL_MOVIES = '/movies'
 
 
 export const URL_PRIVACY = '/regles-de-confidentialite'
-export const URL_LEGAL_MENTIONS = '/mention-legal'
+export const URL_LEGAL_MENTIONS = '/mentions-legales'
 
 //DASHBOARD
 export const URL_DASHBOARD = '/dashboard'

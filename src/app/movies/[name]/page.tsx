@@ -19,7 +19,7 @@ const Page = async ({params}:any) => {
   const isFavorite = favoriteMovives?.movies?.find((movieFromDb: {movieFromDb :IMovie} )=> movieFromDb?.movieId === movie?.id)
 
   return (  
-  <div className='h-screen pt-6 flex flex-col justify-start items-start'>
+  <div className='h-auto pt-6 flex flex-col justify-start items-start'>
   <Suspense fallback={<p>Loading video...</p>}>
       <div className='justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col '>
       {movie && 
@@ -46,7 +46,7 @@ const Page = async ({params}:any) => {
     </div>
   </Suspense>
     {movie && movie?.trailer && 
-        <div className='mt-14 h-96'>
+        <div className='mt-14 h-96 w-full lg:w-1/2'>
         <Title translationTheme='MoviePage' translationText='trailer' type='h2' />
         <VideoPlayerYoutube movie={movie?.trailer} />  
       </div>
