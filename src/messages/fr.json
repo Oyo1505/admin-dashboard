@@ -23,7 +23,9 @@
     "login": "Connexion",
     "logout": "Déconnexion",
     "welcome":"Bienvenue sur Nūberu Bāgu !",
-    "title": "Connectez-vous avec Google"
+    "title": "Connectez-vous avec Google",
+    "privacy": "Politique de confidentialité",
+    "legalMentions": "Mentions légales"
   },
   "ProfilePage": {
     "title": "Profile"

@@ -23,7 +23,9 @@
     "login": "Login",
     "logout": "Logout",
     "welcome":"Welcome to Nūberu Bāgu !",
-    "title": "Sign in with Google"
+    "title": "Sign in with Google",
+    "privacy": "Privacy Policy",
+    "legalMentions": "Legal mentions"
   },
   "ProfilePage": {
     "title": "Profile"

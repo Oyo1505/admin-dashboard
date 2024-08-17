@@ -73,7 +73,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       prompt: 'consent',
     }, },
 })],
-  session: { strategy: "jwt", maxAge: 60 * 30, updateAge: 10 * 30 },
+  session: { strategy: "jwt",  
+    maxAge: 60 * 60 * 2, 
+    updateAge: 10 * 60, },
   callbacks: {
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()
@@ -83,7 +85,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       return true
     },
     async jwt({ token, account, profile }) {
-      const tokenExpiresAt  = token.expires_at as number
+      
       if (account) {
         // First login, save the `access_token`, `refresh_token`, and other
         // details into the JWT
@@ -99,7 +101,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
         return {
           id_token : account.id_token,
           access_token: account.access_token,
-          expires_at: account.expires_at,
+          expires_at: Math.floor(Date.now() / 1000) + (account.expires_in || 60 * 60),
           refresh_token: account.refresh_token,
           user: userProfile,
         }
@@ -139,7 +141,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       }
     },
     async redirect({ url }) {
-     
       return process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}/home` : url
     },
     async session({ session, token }: { session: any, token: any}) {

@@ -23,7 +23,9 @@
     "login": "ログイン",
     "logout": "ログアウト",
     "welcome":"ヌーベルバーグへようこそ！",
-    "title": "Google に接続"
+    "title": "Google に接続",
+    "privacy": "プライバシーポリシー",
+    "legalMentions": "法的なお知らせ"
   },
   "ProfilePage": {
     "title": "プロフィール"

@@ -49,6 +49,7 @@ const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
   filters: {
     subtitles: undefined,
     language: undefined,
+    genre: undefined,
     q: undefined,
   },
   hasBeenSearched: false,

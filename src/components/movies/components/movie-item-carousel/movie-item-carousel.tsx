@@ -1,8 +1,10 @@
+import { IMovie } from '@/models/movie/movie'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { titleOnlocale } from 'utilities/string/titleOnlocale'
 
-const MovieItemCarousel = ({image, title, id }: {image: string, title: string, id: string}) => {
+const MovieItemCarousel = ({image, locale, movie, id }: {image: string, locale: string, movie: IMovie, id: string}) => {
   return (
     <Link href={`/movies/${id}`} >
     <div className='group flex mr-4 relative w-64 rounded-lg  flex-col justify-between h-full'>
@@ -11,7 +13,7 @@ const MovieItemCarousel = ({image, title, id }: {image: string, title: string, i
             <Image
               priority
               src={image}
-              alt={title}
+              alt={movie?.title}
               className='w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110'
               width={300}
               height={200}
@@ -19,7 +21,7 @@ const MovieItemCarousel = ({image, title, id }: {image: string, title: string, i
           </div>
           <div className='absolute inset-0 rounded-lg group-hover:bg-black group-hover:bg-opacity-50'></div>
         </div>
-      <div className='absolute pr-2 pl-2 inset-0 flex text-center items-center  justify-center text-lg font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity'>{title}</div>
+      <div className='absolute pr-2 pl-2 inset-0 flex text-center items-center  justify-center text-lg font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity'>{titleOnlocale(movie, locale)}</div>
     </div>
     </Link>
   )

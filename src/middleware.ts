@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from "next-auth/jwt";
+import { URL_LEGAL_MENTIONS, URL_PRIVACY } from './shared/route';
 
 export default async function middleware(req: NextRequest) {
   // Get the pathname of the request (e.g. /, /protected)
@@ -7,9 +8,12 @@ export default async function middleware(req: NextRequest) {
   // const headers = new Headers(req.headers);
   // headers.set("x-current-path",path);
   // If it's the root path, just render it
-  if (path === "/") {
+
+  if (path === "/" || path === URL_PRIVACY || path === URL_LEGAL_MENTIONS) {
     return NextResponse.next();
   }
+
+  
   const secret = process.env.NEXTAUTH_SECRET;
 
   if (!secret) {
@@ -23,9 +27,8 @@ export default async function middleware(req: NextRequest) {
     cookieName: process.env.NEXTAUTH_ENV === 'production' ? '__Secure-authjs.session-token' : 'authjs.session-token',
     secureCookie: true,
   });
-  
+
   if (!session) {
-    
     return NextResponse.redirect(new URL("/", req.url));
   } 
   return NextResponse.next();

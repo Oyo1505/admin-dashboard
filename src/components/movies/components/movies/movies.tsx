@@ -68,8 +68,8 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
             {titleOnlocale(movie, locale)}
           </div>
         </Link>
-      )) : 'Pas de film disponible'}
-    {isFetching ? <LoadingSpinner /> :  <div ref={ref} style={{ height: '1px', width: '100%', backgroundColor: 'transparent' }} />}
+      )) : <div className='w-full text-center mt-14 text-2xl'> Pas de films disponible </div>}
+    {isFetching || isFetchingNextPage && status !== 'success' ? <LoadingSpinner /> :  <div ref={ref} style={{ height: '1px', width: '100%', backgroundColor: 'transparent' }} />}
   
   </div>
   )

@@ -1,4 +1,5 @@
 'use client'
+import { URL_HOME, URL_LEGAL_MENTIONS, URL_PRIVACY } from "@/shared/route"
 import { useSession } from "next-auth/react"
 import { redirect, usePathname } from "next/navigation"
 import { useEffect } from 'react'
@@ -26,7 +27,8 @@ const useAuthStatus = async () => {
       }
     };
     if (session && Object.keys(user).length === 0)  fetchSession();
-    else if (!session && pathname !== '/') {
+    else if(session && (pathname === '/')){redirect(URL_HOME)}
+    else if (!session && pathname !== '/' &&  pathname !== URL_LEGAL_MENTIONS &&  pathname !== URL_PRIVACY) {
     logoutSession()
    }
   }, [fetchUser, session, connected, user, setUser, pathname, logout]);

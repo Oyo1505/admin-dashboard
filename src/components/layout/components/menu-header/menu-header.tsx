@@ -32,7 +32,7 @@ const MenuHeader = ({session}: {session: any}) => {
         <Link
         className='hover:text-red-600 text-primary'
           href={URL_MOVIES}
-          replace={true}
+          //replace={true}
         >
           {t('movies')}
         </Link>
