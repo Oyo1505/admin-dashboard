@@ -111,7 +111,7 @@ export const countriesList: Country[] = [
   { label: { fr: 'Hongrie', en: 'Hungary', jp: 'ハンガリー' }, value: 'HU' },
   { label: { fr: 'Inde', en: 'India', jp: 'インド' }, value: 'IN' },
   { label: { fr: 'Indonésie', en: 'Indonesia', jp: 'インドネシア' }, value: 'ID' },
-  { label: { fr: 'Iran, République Islamique d\'', en: 'Iran', jp: 'イラン・イスラム共和国' }, value: 'IR' },
+  { label: { fr: 'Iran', en: 'Iran', jp: 'イラン・イスラム共和国' }, value: 'IR' },
   { label: { fr: 'Iraq', en: 'Iraq', jp: 'イラク' }, value: 'IQ' },
   { label: { fr: 'Irlande', en: 'Ireland', jp: 'アイルランド' }, value: 'IE' },
   { label: { fr: 'Islande', en: 'Iceland', jp: 'アイスランド' }, value: 'IS' },
