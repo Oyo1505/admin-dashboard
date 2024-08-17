@@ -1,3 +1,4 @@
+import { getMoviesGenre } from '@/components/movies/action';
 import MovieFilters from '@/components/movies/components/movies-filters/movies-filters';
 import Movies from '@/components/movies/components/movies/movies'
 import SearchMovie from '@/components/movies/components/search-movie/search-movie'
@@ -8,16 +9,19 @@ import React, { Suspense } from 'react'
   searchParams
 }: {
   searchParams: {
-    language: string; q: string; subtitles: string; langage: string 
+    language: string; q: string; subtitles: string; langage: string, genre: string
 };
 })=> {
   const search = searchParams.q ?? '';
   const subtitles = searchParams.subtitles ?? '';
   const language = searchParams.language ?? '';
-  
+  const genre = searchParams.genre ?? '';
+  const { genres } = await getMoviesGenre();
+  const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
+ 
   return (<>
       <SearchMovie search={search}  />
-      <MovieFilters subtitles={subtitles} language={language} />
+      <MovieFilters subtitles={subtitles} language={language} genres={genresWithNoDuplicates} genre={genre} />
       <Suspense fallback={<LoadingSpinner />}>
         <Movies searchParams={searchParams}  />
       </Suspense>

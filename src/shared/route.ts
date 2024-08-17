@@ -4,6 +4,10 @@ export const URL_HOME = '/home'
 
 export const URL_MOVIES = '/movies'
 
+
+export const URL_PRIVACY = '/regles-de-confidentialite'
+export const URL_LEGAL_MENTIONS = '/mention-legal'
+
 //DASHBOARD
 export const URL_DASHBOARD = '/dashboard'
 export const URL_SETTINGS = `${URL_DASHBOARD}/settings`

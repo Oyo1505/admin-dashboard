@@ -9,15 +9,17 @@ import ButtonSearch from '@/components/ui/components/button-search/button-search
 import { useFiltersMovieStore } from 'store/movie/movie-store'
 import { languagesList } from '@/shared/constants/lang'
 
-const MovieFilters = ({subtitles, language}:{subtitles?:string, language?:string}) => {
+const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, language?:string, genres?:string[], genre?:string}) => {
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters')
 
   const { filters, setFiltersData, setHasBeenSearched } = useFiltersMovieStore();
-   const { refetch } = useGetMoviesInfiniteScroll({pageParam: 5, search: qs.stringify({ 
+  
+  const { refetch } = useGetMoviesInfiniteScroll({pageParam: 5, search: qs.stringify({ 
     subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
     language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+    genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
     q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
   })});
 
@@ -48,12 +50,26 @@ const MovieFilters = ({subtitles, language}:{subtitles?:string, language?:string
     setFiltersData({...filters, language: e.target.value});
   }
 
+  function onChangeGenre(e: any) {
+    const params = new URLSearchParams(window.location.search);
+    if (e.target.value === undefined) {
+      return;
+    }
+    else if (e.target.value) {
+      params.set('genre', e.target.value);
+    } else {
+      params.delete('genre');
+    }
+    setFiltersData({...filters, genre: e.target.value});
+  }
+
   useEffect(() => {
     startTransition(() => {
       router.replace(`${URL_MOVIES}?${qs.stringify({ 
         q:  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
         subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
         language: filters?.language &&  filters?.language?.length > 0 ? filters?.language : undefined,  
+        genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
       })}`);
     });
     
@@ -63,7 +79,7 @@ const MovieFilters = ({subtitles, language}:{subtitles?:string, language?:string
     refetch() 
     setHasBeenSearched(true)
   };
-  
+
   return (
     <div className="flex flex-col md:flex-row gap-5 md:gap-2 relative mt-6 w-4/6 m-auto place-items-end justify-between">
       <div className="flex w-full flex-col md:flex-row  gap-2">
@@ -90,8 +106,20 @@ const MovieFilters = ({subtitles, language}:{subtitles?:string, language?:string
             ))}
           </select>
         </fieldset>
+        <fieldset  className="flex flex-col gap-2 md:w-64">
+          <label>Genre</label>
+          <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+            <option> </option>
+            {genres?.map((genre, index) => (
+              <option  key={`${genre}-${index}`} value={genre}>
+                {genre}
+              </option>
+            ))}
+        
+          </select>
+        </fieldset>
     </div>
-    <ButtonSearch className='w-full md:w-auto' btnText={t('btnSearch')} onClick={onClick} />
+      <ButtonSearch className='w-full md:w-auto' btnText={t('btnSearch')} onClick={onClick} />
     </div>
   )
 }

@@ -213,6 +213,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     const params = new URLSearchParams(search);
     const subtitles = params.get('subtitles');
     const language = params.get('language');
+    const genre = params.get('genre');
     const q = params.get('q');
     const conditions: {
       OR?: Array<{
@@ -221,6 +222,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       }>;
       AND?: Array<{
         subtitles?: { has: string };
+        genre?: { has: string };
         language?: { contains: string };
       }>;
     } = { OR: [], AND: [] };
@@ -242,7 +244,9 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       conditions.AND?.push({ language: { contains: language
       } });
     }
-        
+    if (genre) {
+      conditions.AND?.push({ genre: { has: genre } });
+    }    
     // Ensure conditions are not empty to avoid invalid query structure
     const whereClause = {
       ...(conditions.OR && conditions.OR.length > 0 ? { OR: conditions.OR } : {}),
@@ -277,3 +281,26 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
   }
  };
  
+ export const getMoviesGenre = async () => {
+  try {
+    const uniqueGenres  = await prisma.movie.findMany({
+      select: {
+        genre: true,
+      },
+      distinct: ['genre'],
+    });
+  
+    if (!uniqueGenres) {
+      return { status: 400, message: 'Pas de genre' };
+    }
+
+  const genres = uniqueGenres?.flatMap(item => item.genre)
+    return { status: 200, genres};
+
+      } catch (error) {
+      console.log(error)
+      return {
+        status : 500
+      }
+    }
+  }

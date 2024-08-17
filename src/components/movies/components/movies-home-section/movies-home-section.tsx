@@ -40,7 +40,7 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
       responsive={responsive} 
       >
         {movies.map((movie, index) => (
-          <MovieItemCarousel key={index} title={locale === 'fr' ? movie?.title : movie?.originalTitle ?? movie?.title} image={movie.image} id={movie.id} />
+          <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image}  id={movie.id} />
         ))}
       </Carousel>
       : null}

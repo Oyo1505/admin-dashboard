@@ -4,9 +4,9 @@ import MoviesHomeSection from '@/components/movies/components/movies-home-sectio
 import Title from '@/components/ui/components/title/title'
 import React from 'react'
 import countriesList from '@/shared/constants/countries';
-
 import { getLocale } from 'next-intl/server'
-const Page =  async() => {
+
+const Page =  async () => {
   const locale = await getLocale();
   const [
     moviesLastFive,
