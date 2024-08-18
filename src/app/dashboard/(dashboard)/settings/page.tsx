@@ -13,7 +13,7 @@ export default async function SettingsPage() {
         </div>
         <div>
           <Title translationTheme="SettingsPage" type='h3' translationText='deleteAccount' />
-          <ButtonDeleteAccount className='mt-4' translationTheme="SettingsPage" translationText='deleteAccount' />
+          <ButtonDeleteAccount className='mt-4 bg-red-500 text-white' translationTheme="SettingsPage" translationText='deleteAccount' />
         </div>
         <div>
           <Title translationTheme="SettingsPage" type='h3' translationText='anyHelp' />
