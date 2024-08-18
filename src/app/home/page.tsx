@@ -5,6 +5,7 @@ import Title from '@/components/ui/components/title/title'
 import React from 'react'
 import countriesList from '@/shared/constants/countries';
 import { getLocale } from 'next-intl/server'
+import Link from 'next/link'
 
 const Page =  async () => {
   const locale = await getLocale();
@@ -30,7 +31,7 @@ const Page =  async () => {
       </div>
       <div>
         
-        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='ACountry'type='h3'> {
+        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='ACountry' type='h3'> {
         //@ts-ignore
         findCountry?.[0]?.label?.[locale]
         }</Title>
@@ -38,6 +39,7 @@ const Page =  async () => {
       </div>
       <div>
         <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='Akind'type='h3'> {genre}</Title>
+        {/* <Link href='/movies?genre=Animation'>Voir tous les films d'animation</Link> */}
         <MoviesHomeSection movies={moviesByARandomGenre} />
       </div>
       <div>
