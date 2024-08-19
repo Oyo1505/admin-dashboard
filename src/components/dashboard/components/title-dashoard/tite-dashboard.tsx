@@ -11,7 +11,7 @@ const TitleDashboard = ({data}: {data?: any}) => {
 
   return (
     <div>
-      <h1 className='text-2xl text-primary'>{t('welcome')}, {user?.name}</h1>
+      <h1 className='text-2xl text-primary'>{t('welcome')}, {user?.name} 👋</h1>
       <ContinueWatching />
     </div>
   )

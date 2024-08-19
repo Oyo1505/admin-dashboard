@@ -44,7 +44,8 @@
     "continue" : "Reprise de vos vidéo en cours",
     "emailAuthorized":"Email autorisé",
     "addButton":"Ajouter",
-    "deleteButton":"Supprimer"
+    "deleteButton":"Supprimer",
+    "NoMovie":"Aucun film disponible"
   },
   "DashboardNav": {
     "dashboard":"Espace Personnel",

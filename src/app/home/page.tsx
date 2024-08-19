@@ -47,7 +47,7 @@ const Page =  async () => {
       <div className='w-full bg-primary pb-6 pt-6'>
       <Container>
        {extractFavoriteMovie && extractFavoriteMovie?.length > 0 &&<>
-        <Title translationTheme='HomePage' className='text-2xl text-black md:text-3xl' translationText='AHeart'type='h3'/>
+        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' textColor="text-background" translationText='AHeart'type='h3'/>
        <MoviesHomeSection movies={extractFavoriteMovie}  isMobileView={isMobileView} /></>  }
       </Container>
       </div>

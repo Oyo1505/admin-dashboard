@@ -44,7 +44,8 @@
     "continue" : "続きを見る",
     "emailAuthorized":"Email 承認済み",
     "addButton":"追加",
-    "deleteButton":"削除"
+    "deleteButton":"削除",
+    "NoMovie":"映画がありません"
   },
   "DashboardNav": {
     "dashboard":"ダッシュボード",

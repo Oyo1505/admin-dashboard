@@ -45,7 +45,8 @@
     "users":"Users",
     "emailAuthorized":"Email Authorized",
     "addButton":"Add",
-    "deleteButton":"Delete"
+    "deleteButton":"Delete",
+    "NoMovie":"No movies available"
   },
   "DashboardNav": {
     "dashboard":"Dashboard",
