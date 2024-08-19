@@ -34,7 +34,7 @@ const Page =  async () => {
     <div className='flex flex-col mt-6 gap-8'>
     <Container className='pt-14'>
         <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='lastFiveMovies' type='h3' />
-        <MoviesHomeSection movies={moviesLastFive.movies} />
+        <MoviesHomeSection movies={moviesLastFive.movies} isMobileView={isMobileView} />
      </Container >
       <div>
          <MoviesHomeTheme movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
@@ -42,14 +42,15 @@ const Page =  async () => {
       <Container>
         <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='Akind'type='h3'> {genre}</Title>
         {/* <Link href='/movies?genre=Animation'>Voir tous les films d'animation</Link> */}
-        <MoviesHomeSection movies={moviesByARandomGenre} />
+        <MoviesHomeSection movies={moviesByARandomGenre} isMobileView={isMobileView} />
       </Container>
-      
+      <div className='w-full bg-primary pb-6 pt-6'>
       <Container>
        {extractFavoriteMovie && extractFavoriteMovie?.length > 0 &&<>
-        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='AHeart'type='h3'/>
-       <MoviesHomeSection movies={extractFavoriteMovie} /></>  }
+        <Title translationTheme='HomePage' className='text-2xl text-black md:text-3xl' translationText='AHeart'type='h3'/>
+       <MoviesHomeSection movies={extractFavoriteMovie}  isMobileView={isMobileView} /></>  }
       </Container>
+      </div>
       {/* <div>
         <Title translationTheme='HomePage' translationText='MyTopTen' type='h2' />
       </div> */}

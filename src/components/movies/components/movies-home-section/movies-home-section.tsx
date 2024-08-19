@@ -7,7 +7,7 @@ import { IMovie } from '@/models/movie/movie';
 import { useLocale } from 'next-intl';
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 
-const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
+const MoviesHomeSection = ({ movies, isMobileView }:{movies?:IMovie[], isMobileView?:boolean}) => {
   const locale = useLocale()
   const responsive = {
     desktop: {
@@ -41,7 +41,7 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
       containerClass="h-48 md:h-72 lg:h-96 w-full mt-6 z-0"
       autoPlay={false}
       transitionDuration={500}
-      draggable={false}
+      draggable={isMobileView ? true : false}
       infinite={true} 
       responsive={responsive} 
       >
