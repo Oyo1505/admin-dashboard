@@ -37,7 +37,7 @@ export const getLastMovies =  async ()=> {
       orderBy: {
         createdAt: 'desc'
       },
-      take: 6
+      take: 5
      })
     
    
@@ -74,7 +74,7 @@ export const getMoviesByARandomCountry = async () => {
     orderBy: {
       createdAt: 'desc'
     },
-    take: 5
+    take: 3
    });
   
    if (!movies) {

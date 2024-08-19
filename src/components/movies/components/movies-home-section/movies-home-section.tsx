@@ -31,6 +31,7 @@ const MoviesHomeSection = ({ movies }:{movies?:IMovie[]}) => {
       slidesToSlide: 1 // optional, default to 1.
     }
   };
+  
   return (
    
     <Suspense fallback={<LoadingSpinner />}>

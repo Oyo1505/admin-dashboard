@@ -43,13 +43,7 @@ export default {
       }
     },
     extend: {
-      // colors: {
-      //   'text': '#ecf0ee',
-      //   'background': '#080a08',
-      //   'primary': '#b6c5bc',
-      //   'secondary': '#4c5d61',
-      //   'accent': '#7b8b97',
-      //  },
+
       colors: {
         text: '#F5F5F5',
         border: '#F5F5F5',
@@ -83,6 +77,9 @@ export default {
           foreground: 'hsl(var(--card-foreground))'
         }
       },
+      aspectRatio:{
+        '1/0.4': '1/0.4',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
@@ -101,7 +98,13 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
-      }
+      },
+      backgroundImage: {
+        'paramount': "url('/images/paramount.jpg'')",
+        'chicago': "url('/images/chicago.jpg')",
+        'ticket': "url('/images/ticket.jpg')",
+    
+        }
     }
   },
   plugins: [require('tailwindcss-animate')]
