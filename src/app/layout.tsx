@@ -28,8 +28,8 @@ export default async function RootLayout({
   return (
     <html lang={locale} >
       <head>
-        <meta name="googlebot" content="noindex"></meta>
-
+        <meta name="googlebot" content="noindex, nofollow"></meta>
+        <meta name="robots" content="noindex, nofollow"></meta>
       </head>
       <body className="h-full mb-14 relative background-background font-semibold">
         <SessionProvider session={session} >

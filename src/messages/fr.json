@@ -37,7 +37,7 @@
     "logout": "Déconnexion"
   },
   "MoviesPage": {
- 
+    "NoMovie":"Aucun film disponible"
   },
   "Dashboard": {
     "welcome": "Bienvenue",

@@ -37,7 +37,7 @@
     "logout": "Logout"
   },
   "MoviesPage": {
- 
+    "NoMovie":"No movies available"
   },
   "Dashboard": {
     "welcome": "Welcome",
