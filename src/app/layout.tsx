@@ -12,8 +12,6 @@ import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 
 export const metadata = {
   title: 'Nūberu Bāgu',
-  description:
-    'Mes goûts > vos goûts'
 };
 
 export default async function RootLayout({
