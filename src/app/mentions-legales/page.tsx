@@ -3,7 +3,7 @@ import React from 'react'
 
 const Page = () => {
   return (
-    <Container>MentionLegal</Container>
+    <Container className='pt-14'> Mentions Leggals</Container>
   )
 }
 

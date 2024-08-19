@@ -4,18 +4,17 @@ import Link from 'next/link'
 import React from 'react'
 import { titleOnlocale } from 'utilities/string/titleOnlocale'
 
-const MovieItemCarousel = ({image, locale, movie, id }: {image: string, locale: string, movie: IMovie, id: string}) => {
-
+const MovieItemTheme = ({image, locale, movie, id }: {image: string, locale: string, movie: IMovie, id: string}) => {
   return (
     <Link href={`/movies/${id}`} >
-    <div className='group flex  w-28 md:w-44 lg:w-64 rounded-lg  flex-col justify-between h-full'>
+    <div className='group flex h-56 relative w-28 md:w-44 lg:w-80 rounded-lg  flex-col justify-between '>
         <div className='w-full rounded-lg h-full relative overflow-hidden'>
           <div className='relative w-full h-full'>
             <Image
               priority
               src={image}
               alt={movie?.title}
-              className='w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110'
+              className='w-full h-full rounded-lg object-cover transform transition-transform duration-300 group-hover:scale-110'
               width={300}
               height={200}
             />
@@ -28,4 +27,4 @@ const MovieItemCarousel = ({image, locale, movie, id }: {image: string, locale: 
   )
 }
 
-export default MovieItemCarousel 
+export default MovieItemTheme 

@@ -37,10 +37,7 @@ export default async function RootLayout({
          <LayoutLogic >
           <MenuHeader session={session} />
           <Suspense fallback={<LoadingSpinner />}>
-
-            <Container className='pt-14'>
               {children}
-            </Container>
           </Suspense>
           </LayoutLogic>
          <Analytics />

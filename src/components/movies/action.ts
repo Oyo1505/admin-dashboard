@@ -37,7 +37,7 @@ export const getLastMovies =  async ()=> {
       orderBy: {
         createdAt: 'desc'
       },
-      take: 6
+      take: 5
      })
     
    
@@ -74,7 +74,7 @@ export const getMoviesByARandomCountry = async () => {
     orderBy: {
       createdAt: 'desc'
     },
-    take: 5
+    take: 3
    });
   
    if (!movies) {
@@ -219,6 +219,8 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       OR?: Array<{
         title?: { contains: string; mode: 'insensitive' };
         originalTitle?: { contains: string; mode: 'insensitive' };
+        titleJapanese?: { contains: string; mode: 'insensitive' };
+        titleEnglish?: { contains: string; mode: 'insensitive' };
       }>;
       AND?: Array<{
         subtitles?: { has: string };
@@ -232,7 +234,9 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     if (q && q.length > 0) {
       conditions.OR?.push(
         { title: { contains: q, mode: 'insensitive' } },
-        { originalTitle: { contains: q, mode: 'insensitive' } }
+        { originalTitle: { contains: q, mode: 'insensitive' } },
+        { titleJapanese: { contains: q, mode: 'insensitive' } },
+        { titleEnglish: { contains: q, mode: 'insensitive' } },
       );
     }
 // Example of adding conditions to the AND array (as needed)
