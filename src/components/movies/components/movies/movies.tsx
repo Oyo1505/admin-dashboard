@@ -11,7 +11,7 @@ import {  useInView } from 'react-intersection-observer'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 import { useFiltersMovieStore } from 'store/movie/movie-store';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
  const { ref, inView, entry } = useInView();
@@ -20,7 +20,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   const pathname = usePathname();
   const locale = useLocale()  
   const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage, refetch } = useGetMoviesInfiniteScroll({pageParam: 5});
-  
+  const t = useTranslations('MoviesPage')
   useEffect(() => {
     if(status === "success" && data?.pages.length === 1 && Object.keys(searchParams).length === 0){
       setMovies(data?.pages[0]?.movies)
@@ -68,7 +68,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
             {titleOnlocale(movie, locale)}
           </div>
         </Link>
-      )) : <div className='w-full text-center mt-14 text-2xl'> Pas de films disponible </div>}
+      )) : <div className='w-full text-center mt-14 text-2xl'> {t('NoMovie')} </div>}
     {isFetching || isFetchingNextPage && status !== 'success' ? <LoadingSpinner /> :  <div ref={ref} style={{ height: '1px', width: '100%', backgroundColor: 'transparent' }} />}
   
   </div>

@@ -37,7 +37,7 @@
     "logout": "ログアウト"
   },
   "MoviesPage": {
- 
+    "NoMovie":"映画がありません"
   },
   "Dashboard": {
     "welcome": "ようこそ",
