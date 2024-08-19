@@ -4,12 +4,12 @@ import Link from 'next/link'
 import { URL_MOVIES } from '@/shared/route'
 import Image from 'next/image';
 import { IMovie } from '@/models/movie/movie';
-import { useRouter } from 'next/navigation';
 import imageDefault from '../../../../assets/image/default-placeholder.png'
+import { useTranslations } from 'next-intl';
 
 
 const MoviesFavorite = ({movies, offset, newOffset}:{movies?:IMovie[], offset?:number, newOffset?:number}) => {
- 
+  const t = useTranslations('Dashboard')
   return (
       <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-start'>
       {movies && movies?.length > 0 ? movies?.map((movie, index) => 
@@ -19,7 +19,7 @@ const MoviesFavorite = ({movies, offset, newOffset}:{movies?:IMovie[], offset?:n
         href={`${URL_MOVIES}/${movie?.id}`} >
           <Image className='object-fill h-72 w-full' src={movie?.image ? movie?.image : imageDefault} width={200} height={150} alt='movie' />
           <div className='w-full text-center text-ellipsis whitespace-nowrap overflow-hidden'>{movie?.title}</div>
-      </Link> ) : 'Pas de film disponible'}
+      </Link> ) : t('NoMovie')}
       
       </div>
   

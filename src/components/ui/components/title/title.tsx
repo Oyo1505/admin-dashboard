@@ -9,13 +9,15 @@ const Title = (
     type='h1', 
     text, 
     children, 
-    className 
+    className,
+    textColor = 'text-primary',
   }
   :{
     translationTheme?: string, 
     translationText?: string, 
     type: string, 
     text?: string, 
+    textColor?: string,
     children?: React.ReactNode, 
     className?: string 
   }) => {
@@ -24,7 +26,7 @@ const Title = (
   const Tag = type.toLowerCase() as keyof JSX.IntrinsicElements;
 
   return (
-    <Tag className={cn(className, 'text-primary')}>
+    <Tag className={cn(className,textColor)}>
       {text || t(translationText)}
       {children}
     </Tag>
