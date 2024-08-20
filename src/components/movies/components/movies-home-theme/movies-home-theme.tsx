@@ -49,7 +49,7 @@ const MoviesHomeTheme = ({ movies, country, isMobileView }:{movies?:IMovie[], co
             </div>
             {movies && movies?.length > 0 && isMobileView &&
             <Carousel
-              containerClass="h-48 w-full mt-6 z-99"
+              containerClass="w-full mt-6 "
               autoPlay={false}
               transitionDuration={500}
               draggable={true}
