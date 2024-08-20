@@ -42,7 +42,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
     <h1 className='text-3xl font-bold'>{movie && titleOnlocale(movie, locale)}</h1>
-    {movie?.originalTitle && <div className='mt-2 mb-2 font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
+    {movie?.originalTitle && <div className='mt-2 mb-2  font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
     </div>
     <div className='mb-4'>
       {movie?.year && <div className='inline'>{t('release')}: {movie?.year}</div>}

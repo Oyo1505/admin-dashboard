@@ -9,8 +9,9 @@ import MovieItemTheme from '../movie-item-theme/movie-item-theme';
 import Container from '@/components/ui/components/container/container';
 import Carousel from 'react-multi-carousel';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
+import clsx from 'clsx';
 
-const MoviesHomeTheme = ({ movies, country, isMobileView }:{movies?:IMovie[], country?:string, isMobileView?:boolean}) => {
+const MoviesHomeTheme = ({ movies, country, isMobileView, fontFamily }:{movies?:IMovie[], country?:string, isMobileView?:boolean, fontFamily?:string}) => {
 
  const locale = useLocale()
  
@@ -37,7 +38,7 @@ const MoviesHomeTheme = ({ movies, country, isMobileView }:{movies?:IMovie[], co
       <div className={`w-full aspect-[0/0.4] md:aspect-[1/0.4] relative bg-chicago bg-cover bg-center`}>
         <div className='absolute w-full h-full bg-slate-950 opacity-50  top-0 left-0 z-0'></div>
           <Container className='h-full pt-6 pb-6 flex relative flex-col justify-start items-start'>
-            <Title className='text-2xl relative  md:text-4xl' text={country} type='h3' /> 
+            <Title className={clsx(fontFamily,'text-2xl relative md:text-4xl')}  text={country} type='h3' /> 
 
             <div className='h-full flex flex-wrap justify-start items-end gap-2'>
             {movies && movies?.length > 0 && !isMobileView &&
