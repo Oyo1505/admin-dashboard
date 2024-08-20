@@ -8,7 +8,14 @@ import { getLocale } from 'next-intl/server'
 import MoviesHomeTheme from '@/components/movies/components/movies-home-theme/movies-home-theme'
 import Container from '@/components/ui/components/container/container'
 import { headers } from 'next/headers'
+import { Lobster } from 'next/font/google'
+import clsx from 'clsx'
 
+const lobster = Lobster({
+  weight: '400',
+  display: 'swap',
+  subsets: ['latin'],
+})
 const Page =  async () => {
   const locale = await getLocale();
   const [
@@ -33,21 +40,21 @@ const Page =  async () => {
   return (
     <div className='flex flex-col mt-6 gap-8'>
     <Container className='pt-14'>
-        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='lastFiveMovies' type='h3' />
+        <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='lastFiveMovies' type='h3' />
         <MoviesHomeSection movies={moviesLastFive.movies} isMobileView={isMobileView} />
      </Container >
       <div>
-         <MoviesHomeTheme movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
+         <MoviesHomeTheme fontFamily={lobster.className} movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
       </div>
       <Container>
-        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' translationText='Akind'type='h3'> {genre}</Title>
+        <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='Akind'type='h3'> {genre}</Title>
         {/* <Link href='/movies?genre=Animation'>Voir tous les films d'animation</Link> */}
         <MoviesHomeSection movies={moviesByARandomGenre} isMobileView={isMobileView} />
       </Container>
       <div className='w-full bg-primary pb-6 pt-6'>
       <Container>
        {extractFavoriteMovie && extractFavoriteMovie?.length > 0 &&<>
-        <Title translationTheme='HomePage' className='text-2xl md:text-3xl' textColor="text-background" translationText='AHeart'type='h3'/>
+        <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} textColor="text-background" translationText='AHeart'type='h3'/>
        <MoviesHomeSection movies={extractFavoriteMovie}  isMobileView={isMobileView} /></>  }
       </Container>
       </div>
