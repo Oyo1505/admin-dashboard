@@ -127,7 +127,7 @@ export const editMovieToDb =  async (movie:IMovie)=> {
   if (!movieInDb) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
-  console.log(movie)
+ 
   await prisma.movie.update({
     where: {
       id: movie.id
