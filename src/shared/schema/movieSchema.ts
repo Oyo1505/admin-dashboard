@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
 export const FormDataMovieSchema = z.object({
+  id : z.string(),
   title: z.string().min(1, 'Un titre est requis'),
-  titleOriginal: z.string().min(1, 'Un titre original est requis'),
+  originalTitle: z.string().min(1, 'Un titre original est requis'),
   titleEnglish: z.string(),
   titleJapanese: z.string(),
   synopsis: z.string(),
@@ -10,13 +11,14 @@ export const FormDataMovieSchema = z.object({
   country: z.string(),
   duration: z.number(),
   langage: z.string(),
-  subtitles: z.string(),
   link: z.string(),
-  year: z.number(),
-  trailer: z.array(z.string()),
+  trailer : z.string(),
+  year: z.number().min(1890, 'L\'année doit être valide').max(new Date().getFullYear(), 'L\'année ne peut pas être dans le futur'),
+  subtitles: z.array(z.string()).optional(),
   idGoogleDive: z.string().min(1, 'Un id google dive est requis'),
 });
 
+export type MovieSchema = z.infer<typeof FormDataMovieSchema>;
 
 export const emailSchema = z.object({
   email: z

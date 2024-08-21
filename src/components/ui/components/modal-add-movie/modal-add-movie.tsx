@@ -12,37 +12,46 @@ import { Input } from '../input/input';
 import { Textarea } from '../textarea/textarea';
 import { Checkbox } from '../checkbox/checkbox';
 import SelectInput from '../select/select';
-
-
-interface IMovieForm {
-  title: string | undefined
-  originalTitle: string | undefined
-  titleJapanese: string | undefined
-  titleEnglish: string | undefined
-  link: string | undefined
-  year: number
-  genre: string | undefined
-  trailer: string | undefined
-  synopsis: string | undefined
-  duration: number
-  country: string | undefined
-  langage: string | undefined
-  subtitles: string[] 
-  id: string | undefined
-  idGoogleDive: string | undefined
-}
+import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
-
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      id : movie?.id,
+      title: movie?.title ?? '',
+      originalTitle: movie?.originalTitle ?? '',
+      titleJapanese: movie?.titleJapanese ?? '',
+      titleEnglish: movie?.titleEnglish ?? '',
+      link: movie?.link ?? '',  
+      year: movie?.year ?? new Date().getFullYear(), 
+      genre: movie?.genre?.join(' ') ?? '', 
+      trailer: movie?.trailer ?? '', 
+      duration: movie?.duration ?? 0,
+      synopsis: movie?.synopsis ?? '', 
+      country: movie?.country ?? '',
+      langage: movie?.language ?? '',
+      subtitles: movie?.subtitles ?? [],
+      idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
+    },
+    resolver: zodResolver(FormDataMovieSchema)
+  });
   const locale = useLocale()
-  const [formData, setFormData] = React.useState<IMovieForm>({
+  const [formData, setFormData] = React.useState<MovieSchema>({
     id : movie?.id,
     title: movie?.title ?? '',
     originalTitle: movie?.originalTitle ?? '',
     titleJapanese: movie?.titleJapanese ?? '',
     titleEnglish: movie?.titleEnglish ?? '',
-    link: movie?.link ?? '', 
+    link: movie?.link ?? '',  
     year: movie?.year ?? new Date().getFullYear(), 
     genre: movie?.genre?.join(' ') ?? '', 
     trailer: movie?.trailer ?? '', 
@@ -53,114 +62,98 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     subtitles: movie?.subtitles ?? [],
     idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
   });
-
-  const  createMovie= async () => {
+  
+  const  createMovie= async (data : MovieSchema) => {
     const rawFormData = {
-      title: formData.title,
-      titleJapanese: formData.titleJapanese,
-      titleEnglish: formData.titleEnglish,
-      idGoogleDive: formData.idGoogleDive,
+      title: data.title,
+      titleJapanese: data.titleJapanese,
+      titleEnglish: data.titleEnglish,
+      idGoogleDive: data.idGoogleDive,
       releaseDate: Date.now(),
-      subtitles: formData.subtitles,
-      language  : formData.langage,
-      originalTitle: formData.originalTitle,
-      year: formData.year,
-      duration : formData.duration,
-      genre: formData?.genre?.split(' '),
-      country: formData.country,
-      synopsis: formData.synopsis,
-      trailer: formData.trailer,
-      link: formData.link,
+      subtitles: data.subtitles,
+      language  : data.langage,
+      originalTitle: data.originalTitle,
+      year: data.year,
+      duration : data.duration,
+      genre: data?.genre?.split(' '),
+      country: data.country,
+      synopsis: data.synopsis,
+      trailer: data.trailer,
+      link: data.link,
     }
     await addMovieToDb(rawFormData)
     setIsOpen(false)
   }
  
-  const onClickEditMovie = async () => {
-
+  const onClickEditMovie = async ( data: MovieSchema) => {
+      
     const rawFormData = {
-      id: formData.id,
-      idGoogleDive: formData.idGoogleDive,
-      originalTitle: formData.originalTitle,
-      title: formData.title,
-      titleEnglish: formData.titleEnglish,
-      titleJapanese: formData.titleJapanese,
-      language  : formData.langage, 
+      id: data.id,
+      idGoogleDive: data.idGoogleDive,
+      originalTitle: data.originalTitle,
+      title: data.title,
+      titleEnglish: data.titleEnglish,
+      titleJapanese: data.titleJapanese,
+      language  : data.langage, 
       releaseDate: Date.now(),
-      year: formData.year,
-      duration : formData.duration,
-      genre: formData?.genre?.split(' '),
-      country: formData.country,
-      synopsis: formData.synopsis,
-      trailer: formData.trailer,
-      link: formData.link,
-      subtitles: formData.subtitles,
+      year: data.year,
+      duration : data.duration,
+      genre: data?.genre?.split(' '),
+      country: data.country,
+      synopsis: data.synopsis,
+      trailer: data.trailer,
+      link: data.link,
+      subtitles: data.subtitles,
     }
+
      await editMovieToDb(rawFormData as any)
      setIsOpen(false)
   }
-  const handleSubtitlesArray = (value: string) => {
-    if (formData?.subtitles.includes(value)) {
-      const newArray = formData?.subtitles.filter(item => item !== value);
-      setFormData({ ...formData, subtitles: newArray });
-    }
-  }
-  function onChangeCountry(e: any) {
-    setFormData({...formData, country: e.target.value});
-  }
-  function onChangeLangage(e: any) {
-    setFormData({...formData, langage: e.target.value});
-  }
-  
+
+  const subtitles = watch('subtitles', []);
+  const idGoogleDive = watch('idGoogleDive', '');
+  const handleCheckboxChange = (value : string) => {
+    const newValue = subtitles.includes(value)
+      ? subtitles.filter((item) => item !== value)
+      : [...subtitles, value];
+
+    setValue('subtitles', newValue); 
+  };
+
+
 return(
     <Dialog.Portal>
       <Dialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
       <Dialog.Title>FIlm</Dialog.Title>
       <Dialog.Description>Tesxt</Dialog.Description>
       <Dialog.Content className="data-[state=open]:animate-contentShow overflow-scroll text-background fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[950px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-        <form>
-        <fieldset className="mb-[15px]  flex flex-col items-center gap-5">
+        <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
+        <fieldset className="mb-[15px]  flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="title">
           {t('titleMovie')}
           </label>
           <Input
            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-           id="title"
-           required
-           name='title'
-           value={formData?.title?.trimStart().trimEnd()}
-           onChange={(e) => {
-             setFormData({...formData, title: e.target.value})
-           }}
+           {...register('title')}
           />
+          {errors.title && <p className="text-red-600 text-xs">{errors.title.message}</p>}
         </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        <fieldset className="mb-[15px] flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('originalTitle')}
           </label>
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="originalTitle"
-            required
-            name='originalTitle'
-            value={formData?.originalTitle}
-            onChange={(e) => {
-              setFormData({...formData, originalTitle: e.target.value})
-            }}
+            {...register('originalTitle')}
           />
         </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        <fieldset className="mb-[15px] flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('titleJapanese')}
           </label>
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="titleJapanese"
-            name='titleJapanese'
-            value={formData?.titleJapanese}
-            onChange={(e) => {
-              setFormData({...formData, titleJapanese: e.target.value})
-            }}
+            {...register('titleJapanese')}
           />
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
@@ -169,12 +162,7 @@ return(
           </label>
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="titleEnglish"
-            name='titleEnglish'
-            value={formData?.titleEnglish}
-            onChange={(e) => {
-              setFormData({...formData, titleEnglish: e.target.value})
-            }}
+            {...register('titleEnglish')}
           />
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
@@ -184,11 +172,7 @@ return(
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="link"
-            name='link'
-            value={formData?.link}
-            onChange={(e) => {
-              setFormData({...formData, link: e.target.value})
-            }}
+            {...register('link')}
           />
         </fieldset>
         <div className='grid grid-cols-2 gap-3'>
@@ -228,12 +212,10 @@ return(
           <div className='flex gap-5 justify-center align-items'>
           <Checkbox
             id="subtitlesFR"
-            name='subtitlesFR'
             value={'FR'}
-            checked={formData?.subtitles?.includes('FR')}
-            onChange={(e) => {
-              e.target.checked ? setFormData({...formData, subtitles: [...formData?.subtitles, e.target.value ]}) : handleSubtitlesArray(e.target.value)
-           }}
+            {...register('subtitles')}
+            checked={subtitles.includes('FR')}
+            onChange={() => handleCheckboxChange('FR')}
           />
      
           <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
@@ -241,12 +223,10 @@ return(
           </label>
           <Checkbox
             id="subtitlesJP"
-            name='subtitlesJP'
             value={'JP'}
-            checked={formData?.subtitles?.includes('JP')}
-            onChange={(e) => {
-              e.target.checked ? setFormData({...formData, subtitles: [...formData?.subtitles, e.target.value ]}) : handleSubtitlesArray(e.target.value)
-           }}
+            {...register('subtitles')}
+            checked={subtitles.includes('JP')}
+            onChange={() => handleCheckboxChange('JP')}
           />
           <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
             JP
@@ -254,12 +234,10 @@ return(
 
           <Checkbox
             id="subtitlesEN"
-            name='subtitlesEN'
-            value={'EN'}
-            checked={formData?.subtitles?.includes('EN')}
-            onChange={(e) => {
-              e.target.checked ? setFormData({...formData, subtitles: [...formData?.subtitles, e.target.value ]}) : handleSubtitlesArray(e.target.value)
-           }}
+            {...register('subtitles')}
+            value="EN"
+            checked={subtitles.includes('EN')}
+            onChange={() => handleCheckboxChange('EN')}
           />
              <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
             EN
@@ -274,22 +252,14 @@ return(
           </label>
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="year"
             type='number'
-            name='year'
-            value={formData?.year}
-            min="1890" 
-            max={new Date().getFullYear()}
             step="1" 
-        
-            onChange={(e) => {
-              // Vérifier si la valeur saisie est un nombre valide et dans la plage définie
-              const year = parseInt(e.target.value, 10);
-              if (year >= 1900 && year <= 2100) {
-                setFormData({ ...formData, year: Number(e.target.value)}); 
-              }
-            }}
-      
+            {...register('year', {
+              required: 'L\'année est requis',
+              min: { value: 1890, message: 'L\'année doit être supérieure à 1890' },
+              max: { value: new Date().getFullYear(), message: 'L\'année ne peut pas être dans le futur' },
+              setValueAs: (value) => value === '' ? undefined : parseInt(value, 10),
+            })}
           />
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
@@ -298,13 +268,7 @@ return(
           </label>
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="genre"
-            name='genre'
-            type='text'
-            value={formData?.genre}
-            onChange={(e) => {
-              setFormData({...formData, genre: e.target.value})
-            }}
+            {...register('genre')}
           />
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
@@ -313,13 +277,8 @@ return(
           </label>
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="duration"
             type='number'
-            name='duration'
-            value={formData?.duration}
-            onChange={(e) => {
-              setFormData({...formData, duration: Number(e.target.value)})
-            }}
+            {...register('duration')}
           />
         </fieldset>
         </div>
@@ -329,12 +288,7 @@ return(
           </label>
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="trailer"
-            name='trailer'
-            value={formData?.trailer}
-            onChange={(e) => {
-              setFormData({...formData, trailer: e.target.value})
-            }}
+            {...register('trailer')}
           />
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
@@ -343,31 +297,28 @@ return(
           </label>
           <Textarea
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="synopsis"
-            name='synopsis'
-            value={formData?.synopsis}
-            onChange={(e) => {
-              setFormData({...formData, synopsis: e.target.value})
-            }}
+            {...register('synopsis')}
           />
         </fieldset>
 
-        {formData?.idGoogleDive && 
+        {idGoogleDive && 
             <Input
               className="text-violet11 hidden shadow-violet7 focus:shadow-violet8  h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
               id="idGoogleDive"
               type='hidden'
-              name='idGoogleDive'
-              value={formData?.idGoogleDive}
+              {...register('idGoogleDive')}
             />
           }
-        <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="50" allow="autoplay"></iframe>
+
+        <iframe src={`https://drive.google.com/file/d/${idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>
+
         <div className="mt-[25px] flex justify-end">
          
             <Button 
               size="sm"
               variant="outline"
-              formAction={editMovie ? onClickEditMovie : createMovie}
+              type='submit'
+              // formAction={editMovie ? onClickEditMovie : createMovie}
               className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
             >
                {t('save')}
