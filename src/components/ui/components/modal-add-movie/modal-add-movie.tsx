@@ -8,6 +8,11 @@ import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { CrossIcon } from '../icons/icons';
+import { Input } from '../input/input';
+import { Textarea } from '../textarea/textarea';
+import { Checkbox } from '../checkbox/checkbox';
+import SelectInput from '../select/select';
+
 
 interface IMovieForm {
   title: string | undefined
@@ -29,6 +34,7 @@ interface IMovieForm {
 
 const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
+
   const locale = useLocale()
   const [formData, setFormData] = React.useState<IMovieForm>({
     id : movie?.id,
@@ -71,7 +77,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   }
  
   const onClickEditMovie = async () => {
-    console.log(formData)
+
     const rawFormData = {
       id: formData.id,
       idGoogleDive: formData.idGoogleDive,
@@ -117,22 +123,22 @@ return(
           <label className="text-violet11  text-right  text-[15px]" htmlFor="title">
           {t('titleMovie')}
           </label>
-          <input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            id="title"
-            required
-            name='title'
-            value={formData?.title?.trimStart().trimEnd()}
-            onChange={(e) => {
-              setFormData({...formData, title: e.target.value})
-            }}
+          <Input
+           className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+           id="title"
+           required
+           name='title'
+           value={formData?.title?.trimStart().trimEnd()}
+           onChange={(e) => {
+             setFormData({...formData, title: e.target.value})
+           }}
           />
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('originalTitle')}
           </label>
-          <input
+          <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="originalTitle"
             required
@@ -147,10 +153,9 @@ return(
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('titleJapanese')}
           </label>
-          <input
+          <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="titleJapanese"
-       
             name='titleJapanese'
             value={formData?.titleJapanese}
             onChange={(e) => {
@@ -162,10 +167,9 @@ return(
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('titleEnglish')}
           </label>
-          <input
+          <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="titleEnglish"
-    
             name='titleEnglish'
             value={formData?.titleEnglish}
             onChange={(e) => {
@@ -177,7 +181,7 @@ return(
           <label className="text-violet11  text-right text-[15px]" htmlFor="link">
             {t('link')}
           </label>
-          <input
+          <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="link"
             name='link'
@@ -187,33 +191,44 @@ return(
             }}
           />
         </fieldset>
+        <div className='grid grid-cols-2 gap-3'>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="langage">
             {t('langage')}
           </label>
-          <select  onChange={onChangeLangage} defaultValue={formData?.langage} className='text-background'>
-              <option> </option>
-            {languagesList.map((country, index) => (
-                <option  key={`${
-                //@ts-ignore
-                country?.label?.[locale]}-${index}`} value={country?.value}>
-                  {
-                    //@ts-ignore
-                  country?.label?.[locale]}
-                </option>
-              ))}
-            </select>
+          <SelectInput 
+            optionsList={languagesList} 
+            formData={formData} 
+            formDataKey='langage' 
+            locale={locale} 
+            onChange={(e) => {
+              setFormData({...formData, langage: e.target.value})
+            }}
+          />
         </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right text-[15px]" htmlFor="country">
+        {t('country')}
+          </label>
+          <SelectInput 
+            optionsList={countriesList} 
+            formData={formData} 
+            formDataKey='country' 
+            locale={locale} 
+            onChange={(e) => {
+              setFormData({...formData, country: e.target.value})
+            }}
+          />
+        </fieldset>
+        </div>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
             {t('subtitles')}
           </label>
           <div className='flex gap-5 justify-center align-items'>
-          <input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px]"
+          <Checkbox
             id="subtitlesFR"
             name='subtitlesFR'
-            type='checkbox'
             value={'FR'}
             checked={formData?.subtitles?.includes('FR')}
             onChange={(e) => {
@@ -224,11 +239,9 @@ return(
           <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
             FR
           </label>
-          <input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px]"
+          <Checkbox
             id="subtitlesJP"
             name='subtitlesJP'
-            type='checkbox'
             value={'JP'}
             checked={formData?.subtitles?.includes('JP')}
             onChange={(e) => {
@@ -239,11 +252,9 @@ return(
             JP
           </label>
 
-          <input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px]"
+          <Checkbox
             id="subtitlesEN"
             name='subtitlesEN'
-            type='checkbox'
             value={'EN'}
             checked={formData?.subtitles?.includes('EN')}
             onChange={(e) => {
@@ -261,7 +272,7 @@ return(
           <label className="text-violet11  text-right text-[15px]" htmlFor="year">
           {t('year')}
           </label>
-          <input
+          <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="year"
             type='number'
@@ -285,7 +296,7 @@ return(
           <label className="text-violet11 text-right text-[15px]" htmlFor="genre">
           {t('genre')}
           </label>
-          <input
+          <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="genre"
             name='genre'
@@ -300,7 +311,7 @@ return(
           <label className="text-violet11 text-right text-[15px]" htmlFor="duration">
           {t('duration')}
           </label>
-          <input
+          <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="duration"
             type='number'
@@ -316,7 +327,7 @@ return(
           <label className="text-violet11 text-right text-[15px]" htmlFor="trailer">
           {t('trailer')}
           </label>
-          <input
+          <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="trailer"
             name='trailer'
@@ -330,7 +341,7 @@ return(
           <label className="text-violet11 text-right text-[15px]" htmlFor="synopsis">
           {t('synopsis')}
           </label>
-          <textarea
+          <Textarea
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="synopsis"
             name='synopsis'
@@ -340,24 +351,9 @@ return(
             }}
           />
         </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="country">
-        {t('country')}
-          </label>
-          <select  onChange={onChangeCountry} defaultValue={formData?.country} className='text-background'>
-              <option> </option>
-            {countriesList.map((country, index) => (
-                <option  key={`${
-                //@ts-ignore
-                country?.label?.[locale]}-${index}`} value={country?.value}>
-                  {//@ts-ignore
-                  country?.label?.[locale]}
-                </option>
-              ))}
-            </select>
-        </fieldset>
+
         {formData?.idGoogleDive && 
-            <input
+            <Input
               className="text-violet11 hidden shadow-violet7 focus:shadow-violet8  h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
               id="idGoogleDive"
               type='hidden'
