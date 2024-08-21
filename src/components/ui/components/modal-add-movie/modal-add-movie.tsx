@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
+import { CrossIcon } from '../icons/icons';
 
 interface IMovieForm {
   title: string | undefined
@@ -382,16 +383,13 @@ return(
             className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
             aria-label="Close"
           >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
-
+          <CrossIcon  color='black'/>
           </button>
         </Dialog.Close>
         </form>
       </Dialog.Content>
     </Dialog.Portal>
-)
+    )
 }
 
 export default DialogAddMovie
