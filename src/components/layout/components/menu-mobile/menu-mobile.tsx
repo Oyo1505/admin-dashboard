@@ -5,6 +5,7 @@ import React from 'react'
 import MenuMobileItem from '../menu-mobile-item/menu-mobile-item';
 import { User } from '@/app/user';
 import clsx from 'clsx';
+import { BurgerIcon, CrossIcon } from '@/components/ui/components/icons/icons';
 
 const MenuMobile= ({session}: {session: any}) => {
   const t = useTranslations('Menu');
@@ -17,27 +18,13 @@ const MenuMobile= ({session}: {session: any}) => {
             className="space-y-2"
             onClick={() => setIsActive(!isActive)} 
           >
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-9">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-
+          <BurgerIcon />
           </div>
           <div className={clsx(isActive ? "showMenuNav" : "hideMenuNav")}> 
             <div
               className="absolute top-0 right-0 px-8 py-8"
               onClick={() => setIsActive(!isActive)} >
-              <svg
-                className="h-8 w-8 text-primary"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+              <CrossIcon />
             </div>
             <ul className="flex flex-col items-center justify-between min-h-[250px] text-primary">
               <MenuMobileItem session={session} setIsActive={setIsActive} isActive={isActive} />

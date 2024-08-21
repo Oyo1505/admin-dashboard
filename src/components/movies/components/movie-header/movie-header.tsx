@@ -9,6 +9,7 @@ import useUserStore from 'store/user/user-store';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
+import { Favorite } from '@/components/ui/components/icons/icons';
 
 interface MovieHeaderProps {
   movie?: IMovie;
@@ -61,7 +62,22 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
       //@ts-ignore
       displaySubtitles(item)}</span>)}</div> }
       {movie?.synopsis && <div className='mt-6 font-normal'> {t('synopsis')} : {movie?.synopsis}</div>}
-      <div className='mt-10 font-normal italic'> <form><Button formAction={() => user?.id && addOrRemoveToFavorite(user?.id ,movie?.id) }  >{ isFavorite ? t('removeFromFavorite') : t('addToFavorite')}</Button></form></div>
+      <div className='mt-10 font-normal italic'> 
+        <form>
+          <Button className='flex justify-start items-center  gap-2' formAction={() => user?.id && addOrRemoveToFavorite(user?.id ,movie?.id)}>{isFavorite ?
+          <>
+            <Favorite fill={true} />
+            {t('removeFromFavorite')}
+          </>
+           :    
+          <>
+            <Favorite /> 
+            {t('addToFavorite')}
+          </>
+          }
+          </Button>
+        </form>
+      </div>
   </div>
   )
 }
