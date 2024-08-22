@@ -1,21 +1,24 @@
+//@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
 import { IMovie } from "@/models/movie/movie";
 import { URL_ADD_MOVIE, URL_USERS } from "@/shared/route";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/dist/server/api-utils";
+
 
 export const getUsersWithPageParam = async (search:string, pageParam:number)=> {
 
  try{
     const users = search.trim() === '' ?
     await prisma.user.findMany({
-      take:pageParam
+      take:pageParam,
+      cacheStrategy: { ttl: 60 },
      })
     : await prisma.user.findMany({
     where:{
       name: search
     },
+    cacheStrategy: { ttl: 60 },
     take:pageParam
    });
 
@@ -60,7 +63,7 @@ export const getAllMovies =  async ()=> {
   
   try {
 
-   const movieInDb = await prisma.movie.findMany()
+   const movieInDb = await prisma.movie.findMany({cacheStrategy: { ttl: 60 }})
 
     return {movieInDb, status: 200 };
   } catch (error) {
@@ -187,12 +190,14 @@ export const getFavoriteMovies =  async (id:string)=> {
   
   try {
     const movies = await prisma.userFavoriteMovies.findMany({
+      relationLoadStrategy: 'join',
       where: {
         userId: id
       },
       include: {
         movie: true
-      }
+      },
+      cacheStrategy: { ttl: 60 },
     });
     return { movies , status: 200 };
   
