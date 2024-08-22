@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { IMovie } from "@/models/movie/movie";
 import { URL_ADD_MOVIE, URL_USERS } from "@/shared/route";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/dist/server/api-utils";
+
 
 export const getUsersWithPageParam = async (search:string, pageParam:number)=> {
 
@@ -187,6 +187,7 @@ export const getFavoriteMovies =  async (id:string)=> {
   
   try {
     const movies = await prisma.userFavoriteMovies.findMany({
+      relationLoadStrategy: 'join',
       where: {
         userId: id
       },

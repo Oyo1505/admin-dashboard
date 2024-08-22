@@ -16,7 +16,8 @@ export const getMovieDetail =  async (id:string)=> {
   const movieInDb = await prisma.movie.findUnique({
       where:{
         id
-      }
+      },
+      cacheStrategy: { ttl: 60 },
     })
    
   if (!movieInDb) {
@@ -37,7 +38,8 @@ export const getLastMovies =  async ()=> {
       orderBy: {
         createdAt: 'desc'
       },
-      take: 5
+      take: 5,
+      cacheStrategy: { ttl: 60 },
      })
     
    
@@ -60,6 +62,7 @@ export const getMoviesByARandomCountry = async () => {
       country: true,
     },
     distinct: ['country'],
+    cacheStrategy: { ttl: 60 },
     
   });
   if (!uniqueCountries) {
@@ -96,6 +99,7 @@ try {
       genre: true,
     },
     distinct: ['genre'],
+    cacheStrategy: { ttl: 60 },
   });
 
   if (!uniqueGenres) {
@@ -113,7 +117,8 @@ try {
     orderBy: {
       createdAt: 'desc'
     },
-    take: 5
+    take: 5,
+    cacheStrategy: { ttl: 60 },
    });
   
    if (!movies) {
@@ -180,7 +185,8 @@ export const getAllMovies =  async ()=> {
   
   try {
 
-   const movieInDb = await prisma.movie.findMany()
+   const movieInDb = await prisma.movie.findMany({
+    cacheStrategy: { ttl: 60 },})
 
     return {movieInDb, status: 200 };
   } catch (error) {
@@ -201,7 +207,8 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
        orderBy: {
           createdAt: 'desc',
       },
-      take:pageParam
+      take:pageParam,
+      cacheStrategy: { ttl: 60 },
       })
       return {
         movies: movies,
@@ -262,7 +269,8 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
        orderBy: {
          createdAt: 'desc',
      },
-       take:100
+       take:100,
+       cacheStrategy: { ttl: 60 },
     }); 
 
     if(movies){ 
@@ -292,6 +300,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         genre: true,
       },
       distinct: ['genre'],
+      cacheStrategy: { ttl: 60 },
     });
   
     if (!uniqueGenres) {
