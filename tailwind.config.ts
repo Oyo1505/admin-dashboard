@@ -101,7 +101,7 @@ export default {
       },
       backgroundImage: {
         'paramount': "url('/images/paramount.jpg'')",
-        'chicago': "url('/images/chicago.jpg')",
+        'chicago': "url('/images/chicago.avif')",
         'ticket': "url('/images/ticket.jpg')",
     
         }
