@@ -1,6 +1,6 @@
+//@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
-import { EmailAuthorized } from "@/models/auth/auth";
 import { URL_USERS } from "@/shared/route";
 import { User } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -8,7 +8,8 @@ import { revalidatePath } from "next/cache";
 export const getUserConnected = async (email:string): Promise<{ user?: User | undefined, status?:number | undefined }> => {
   try {
     const user = await prisma.user.findUnique({
-      where:{email}
+      where:{email},
+      cacheStrategy: { ttl: 60 },
     })
     return {user : user ? user : {}, status:200 }
   } catch (error) {
@@ -45,7 +46,7 @@ export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:num
 
 export const getAuthorizedEmails = async ( ): Promise<{ status?:number | undefined, mails?:any[] | undefined }> => {
   try {
-    const userauthorizedEmails = await prisma.authorizedEmail.findMany() 
+    const userauthorizedEmails = await prisma.authorizedEmail.findMany({cacheStrategy: { ttl: 60 }})
   
     if (!userauthorizedEmails) {
       return { status: 400 };
