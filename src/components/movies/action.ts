@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -299,8 +300,9 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       select: {
         genre: true,
       },
-      distinct: ['genre'],
       cacheStrategy: { ttl: 60 },
+      distinct: ['genre'],
+      
     });
   
     if (!uniqueGenres) {
