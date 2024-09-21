@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/components/button/button';
 import { IMovie } from '@/models/movie/movie'
 import { useLocale, useTranslations } from 'next-intl'
-import React from 'react'
+import React, { useState } from 'react'
 import { heuresEnMinutes } from 'utilities/number/minutesToHours'
 import { addOrRemoveToFavorite } from '../../action';
 import useUserStore from 'store/user/user-store';
@@ -19,7 +19,7 @@ interface MovieHeaderProps {
 const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const t = useTranslations('MoviePage')
   const locale = useLocale()
-
+  const [isLoading, setIsLoading] = useState(false);
   const displaySubtitles = (value: string) => {
     switch (value) { 
       case  'FR':
@@ -36,7 +36,21 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const {user} = useUserStore((state) => state)
   const findCountry = countriesList?.filter((item) => item?.value === movie?.country)
   const language = languagesList?.filter((item) => item?.value === movie?.language)
-
+  const handleFavorite =  () => {
+    if (user?.id) {
+      setIsLoading(true); 
+      console.log(isLoading)
+      try {
+         addOrRemoveToFavorite(user?.id, movie?.id);
+        toast.success(t('toastMessageSuccess'), { position: "top-center" });
+      } catch (err) {
+        toast.error(t('toastMessageError'), { position: "top-center" });
+      } finally {
+        setIsLoading(false); 
+      }
+    }
+  };
+ 
   return (
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
@@ -62,11 +76,12 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
       {movie?.synopsis && <div className='mt-6 font-normal'> {t('synopsis')} : {movie?.synopsis}</div>}
       <div className='mt-10 font-normal italic'> 
         <form>
-          <Button className='flex justify-start items-center  gap-2' 
-            formAction={async () => user?.id && 
-            await addOrRemoveToFavorite(user?.id ,movie?.id)
-            .then(_ => toast.success(t('toastMessageSuccess'), {position: "top-center"}))
-           .catch(err => toast.error(t('toastMessageError'), {position: "top-center"}))}>{isFavorite ?
+          <Button
+            disabled={isLoading}
+            className='flex justify-start items-center  gap-2' 
+            formAction={handleFavorite}
+          >
+          {isFavorite ?
           <>
             <Favorite fill={true} />
             {t('removeFromFavorite')}
