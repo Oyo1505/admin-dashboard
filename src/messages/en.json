@@ -87,8 +87,9 @@
     "langage": "Language",
     "subtitlesFR": "French",
     "subtitlesJP": "Japanese",
-    "subtitlesEN": "English"
-    
+    "subtitlesEN": "English",
+    "toastMessageSuccess": "Movie added to favorites",
+    "toastMessageError": "An error occurred"
   },
   "SettingsPage": {
     "anyHelp": "Any help you need?",

@@ -17,7 +17,7 @@ const Page = async ({params}:any) => {
   const favoriteMovives = session?.user?.id &&  await getFavoriteMovies(session?.user?.id)
   //@ts-ignore
   const isFavorite = favoriteMovives?.movies?.find((movieFromDb: {movieFromDb :IMovie} )=> movieFromDb?.movieId === movie?.id)
-
+ 
   return (  
   <div className='h-auto pt-6 flex flex-col justify-start items-start'>
   <Suspense fallback={<p>Loading video...</p>}>
@@ -42,7 +42,7 @@ const Page = async ({params}:any) => {
         /> */}
         </div>
       }
-      <MovieHeader movie={movie} isFavorite={isFavorite ? true : false}/>
+      <MovieHeader movie={movie} isFavorite={isFavorite}/>
     </div>
   </Suspense>
     {movie && movie?.trailer && 

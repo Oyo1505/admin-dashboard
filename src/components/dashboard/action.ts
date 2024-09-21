@@ -197,7 +197,6 @@ export const getFavoriteMovies =  async (id:string)=> {
       include: {
         movie: true
       },
-      cacheStrategy: { ttl: 60 },
     });
     return { movies , status: 200 };
   
