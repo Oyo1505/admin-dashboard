@@ -39,7 +39,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const handleFavorite =  () => {
     if (user?.id) {
       setIsLoading(true); 
-      console.log(isLoading)
+     
       try {
          addOrRemoveToFavorite(user?.id, movie?.id);
         toast.success(t('toastMessageSuccess'), { position: "top-center" });
