@@ -8,7 +8,9 @@ import MenuHeader from '../components/layout/components/menu-header/menu-header'
 import { auth } from '@/lib/auth';
 import { ReactElement, Suspense } from 'react';
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
-
+import React from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 export const metadata = {
   title: 'Nūberu Bāgu',
 };
@@ -30,6 +32,7 @@ export default async function RootLayout({
       </head>
       <body className="h-full mb-14 relative background-background font-semibold">
         <SessionProvider session={session} >
+        <ToastContainer />
         <NextIntlClientProvider messages={messages}>
          <LayoutLogic >
           <MenuHeader session={session} />

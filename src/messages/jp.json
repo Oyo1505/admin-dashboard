@@ -86,7 +86,9 @@
     "subtitles": "字幕",
     "subtitlesFR": "フランス語",
     "subtitlesJP": "日本語",
-    "subtitlesEN": "英語"
+    "subtitlesEN": "英語",
+    "toastMessageSuccess": "映画をお気に入りに追加しました",
+    "toastMessageError": "エラーが発生しました"
   },
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",

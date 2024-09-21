@@ -48,7 +48,6 @@ const Page =  async () => {
       </div>
       <Container>
         <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='Akind'type='h3'> {genre}</Title>
-        {/* <Link href='/movies?genre=Animation'>Voir tous les films d'animation</Link> */}
         <MoviesHomeSection movies={moviesByARandomGenre} isMobileView={isMobileView} />
       </Container>
       <div className='w-full bg-primary pb-6 pt-6'>
@@ -59,7 +58,7 @@ const Page =  async () => {
       </Container>
       </div>
       {/* <div>
-        <Title translationTheme='HomePage' translationText='MyTopTen' type='h2' />
+         <MoviesHomeTheme fontFamily={lobster.className} movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
       </div> */}
     </div>
   )

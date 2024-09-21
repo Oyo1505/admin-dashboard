@@ -10,7 +10,7 @@ import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { Favorite } from '@/components/ui/components/icons/icons';
-
+import { toast } from 'react-toastify';
 interface MovieHeaderProps {
   movie?: IMovie;
   isFavorite: boolean;
@@ -37,8 +37,6 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const findCountry = countriesList?.filter((item) => item?.value === movie?.country)
   const language = languagesList?.filter((item) => item?.value === movie?.language)
 
-
- 
   return (
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
@@ -64,7 +62,11 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
       {movie?.synopsis && <div className='mt-6 font-normal'> {t('synopsis')} : {movie?.synopsis}</div>}
       <div className='mt-10 font-normal italic'> 
         <form>
-          <Button className='flex justify-start items-center  gap-2' formAction={() => user?.id && addOrRemoveToFavorite(user?.id ,movie?.id)}>{isFavorite ?
+          <Button className='flex justify-start items-center  gap-2' 
+            formAction={async () => user?.id && 
+            await addOrRemoveToFavorite(user?.id ,movie?.id)
+            .then(_ => toast.success(t('toastMessageSuccess'), {position: "top-center"}))
+           .catch(err => toast.error(t('toastMessageError'), {position: "top-center"}))}>{isFavorite ?
           <>
             <Favorite fill={true} />
             {t('removeFromFavorite')}

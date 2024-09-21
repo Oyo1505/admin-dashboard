@@ -86,7 +86,9 @@
     "subtitles": "Sous-titres",
     "subtitlesFR": "Français",
     "subtitlesJP": "Japonais",
-    "subtitlesEN": "Anglais"
+    "subtitlesEN": "Anglais",
+    "toastMessageSuccess": "Film ajouté aux favoris",
+    "toastMessageError": "Une Erreur est survenue"
   },
   "SettingsPage": {
     "title": "Settings" ,
