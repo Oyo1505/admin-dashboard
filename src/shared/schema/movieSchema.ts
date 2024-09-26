@@ -7,6 +7,8 @@ export const FormDataMovieSchema = z.object({
   titleEnglish: z.string(),
   titleJapanese: z.string(),
   synopsis: z.string(),
+  director : z.string(),
+  imdbId : z.string(),
   genre: z.string(),
   country: z.string(),
   duration: z.number(),
@@ -30,4 +32,10 @@ export const emailSchema = z.object({
 
 export const FormDeleteAccountSchema = z.object({
   id: z.string(),
+});
+
+
+export const directorSectionSchema = z.object({
+  director: z.string().min(1, 'Un réalisteur est requis'),
+  image: z.string(),
 });

@@ -40,7 +40,7 @@ export const getLastMovies =  async ()=> {
         createdAt: 'desc'
       },
       take: 5,
-      cacheStrategy: { ttl: 60 },
+      cacheStrategy: { ttl: 60 * 5 }
      })
     
    
@@ -100,7 +100,7 @@ try {
       genre: true,
     },
     distinct: ['genre'],
-    cacheStrategy: { ttl: 60 },
+    cacheStrategy: { ttl: 60 * 5 },
   });
 
   if (!uniqueGenres) {

@@ -73,6 +73,9 @@ model Movie {
   country  String?
   synopsis  String?
   trailer  String?
+  director  String?
+  imdbId   String?
+  publish   Boolean @default(true)
   favoriteMovies UserFavoriteMovies[]
   createdAt DateTime @default(now())
 }
@@ -99,6 +102,12 @@ model UserFavoriteMovies {
 model AuthorizedEmail {
   id            String    @id @default(cuid())
   email         String?   @unique
+}
+
+model DirectorSection {
+  id            String    @id @default(cuid())
+  director      String
+  imageBackdrop String?
 }
 
 enum UserRole {

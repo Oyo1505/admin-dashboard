@@ -63,7 +63,7 @@ export const getAllMovies =  async ()=> {
   
   try {
 
-   const movieInDb = await prisma.movie.findMany({cacheStrategy: { ttl: 60 }})
+   const movieInDb = await prisma.movie.findMany({cacheStrategy: { ttl: 60 * 5 }})
 
     return {movieInDb, status: 200 };
   } catch (error) {
@@ -94,6 +94,8 @@ export const addMovieToDb =  async (movie:any)=> {
         titleJapanese: movie.titleJapanese,
         link: movie?.link,
         image: movie?.link,
+        director : movie?.director,
+        imdbId : movie?.imdbId,
         originalTitle: movie.originalTitle,
         subtitles: movie.subtitles,
         language: movie.language,
@@ -130,7 +132,7 @@ export const editMovieToDb =  async (movie:IMovie)=> {
   if (!movieInDb) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
- 
+
   await prisma.movie.update({
     where: {
       id: movie.id
@@ -141,6 +143,8 @@ export const editMovieToDb =  async (movie:IMovie)=> {
       titleJapanese: movie.titleJapanese,
       link: movie?.link,
       image: movie?.link,
+      director: movie?.director,
+      imdbId: movie?.imdbId,
       originalTitle: movie.originalTitle,
       duration:  Number(movie.duration),
       idGoogleDive: movie.idGoogleDive,
@@ -194,11 +198,33 @@ export const getFavoriteMovies =  async (id:string)=> {
       where: {
         userId: id
       },
+      cacheStrategy: { ttl: 60 * 5 },
       include: {
         movie: true
       },
+      
     });
     return { movies , status: 200 };
+  
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const getDirectorMovies =  async (director:string)=> {
+  
+  try {
+    const directorMovies = await prisma.movie.findMany({
+      where:{
+        director: director
+      },
+      cacheStrategy: { ttl: 60 * 5 },
+     })
+
+    return { directorMovies , status: 200 };
   
   } catch (error) {
     console.log(error)

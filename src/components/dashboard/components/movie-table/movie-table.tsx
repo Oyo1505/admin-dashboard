@@ -36,6 +36,7 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
           <TableHeader>
             <TableRow className='border-b border-background border-opacity-20'>
               <TableHead className="max-w-[150px] font-bold">Film Ajouté</TableHead>
+              <TableHead className="max-w-[150px] font-bold">Publié</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

@@ -16,6 +16,7 @@ import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+
 const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
   const {
@@ -31,6 +32,9 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       originalTitle: movie?.originalTitle ?? '',
       titleJapanese: movie?.titleJapanese ?? '',
       titleEnglish: movie?.titleEnglish ?? '',
+      director : movie?.director ?? '',
+      imdbId : movie?.imdbId ?? '',
+      publish : movie?.publish ?? true,
       link: movie?.link ?? '',  
       year: movie?.year ?? new Date().getFullYear(), 
       genre: movie?.genre?.join(' ') ?? '', 
@@ -44,6 +48,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     },
     resolver: zodResolver(FormDataMovieSchema)
   });
+
   const locale = useLocale()
   const [formData, setFormData] = React.useState<MovieSchema>({
     id : movie?.id,
@@ -52,6 +57,8 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     titleJapanese: movie?.titleJapanese ?? '',
     titleEnglish: movie?.titleEnglish ?? '',
     link: movie?.link ?? '',  
+    director : movie?.director ?? '',
+    imdbId : movie?.imdbId ?? '',
     year: movie?.year ?? new Date().getFullYear(), 
     genre: movie?.genre?.join(' ') ?? '', 
     trailer: movie?.trailer ?? '', 
@@ -70,6 +77,8 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       titleEnglish: data.titleEnglish,
       idGoogleDive: data.idGoogleDive,
       releaseDate: Date.now(),
+      director : data.director,
+      imdbId : data.imdbId,
       subtitles: data.subtitles,
       language  : data.langage,
       originalTitle: data.originalTitle,
@@ -86,7 +95,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   }
  
   const onClickEditMovie = async ( data: MovieSchema) => {
-      
+    console.log(data?.director)
     const rawFormData = {
       id: data.id,
       idGoogleDive: data.idGoogleDive,
@@ -94,6 +103,8 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       title: data.title,
       titleEnglish: data.titleEnglish,
       titleJapanese: data.titleJapanese,
+      director : data.director,
+      imdbId : data.imdbId,
       language  : data.langage, 
       releaseDate: Date.now(),
       year: data.year,
@@ -112,6 +123,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
 
   const subtitles = watch('subtitles', []);
   const idGoogleDive = watch('idGoogleDive', '');
+
   const handleCheckboxChange = (value : string) => {
     const newValue = subtitles.includes(value)
       ? subtitles.filter((item) => item !== value)
@@ -145,6 +157,7 @@ return(
           />
           {errors.title && <p className="text-red-600 text-xs">{errors.title.message}</p>}
         </fieldset>
+
         <fieldset className="mb-[15px] flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('originalTitle')}
@@ -154,6 +167,7 @@ return(
             {...register('originalTitle')}
           />
         </fieldset>
+
         <fieldset className="mb-[15px] flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('titleJapanese')}
@@ -163,6 +177,7 @@ return(
             {...register('titleJapanese')}
           />
         </fieldset>
+
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('titleEnglish')}
@@ -170,6 +185,16 @@ return(
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleEnglish')}
+          />
+        </fieldset>
+        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right text-[15px]" htmlFor="director">
+            {t('director')}
+          </label>
+          <Input
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            id="director"
+            {...register('director')}
           />
         </fieldset>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
@@ -182,6 +207,7 @@ return(
             {...register('link')}
           />
         </fieldset>
+
         <div className='grid grid-cols-2 gap-3'>
         <fieldset className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="langage">
@@ -323,7 +349,6 @@ return(
               size="sm"
               variant="outline"
               type='submit'
-              // formAction={editMovie ? onClickEditMovie : createMovie}
               className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
             >
                {t('save')}

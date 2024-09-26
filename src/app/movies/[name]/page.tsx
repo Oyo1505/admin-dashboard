@@ -12,7 +12,7 @@ const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-playe
 
 const Page = async ({params}:any) => {
   const { name }= params
-  const {movie} = await getMovieDetail(name)
+  const { movie } = await getMovieDetail(name)
   const session = await auth()
   const favoriteMovives = session?.user?.id &&  await getFavoriteMovies(session?.user?.id)
   //@ts-ignore

@@ -1,4 +1,4 @@
-import { getFavoriteMovies } from '@/components/dashboard/action'
+import { getDirectorMovies, getFavoriteMovies } from '@/components/dashboard/action'
 import {  getLastMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/components/movies/action'
 import MoviesHomeSection from '@/components/movies/components/movies-home-section/movies-home-section'
 import Title from '@/components/ui/components/title/title'
@@ -10,6 +10,7 @@ import Container from '@/components/ui/components/container/container'
 import { headers } from 'next/headers'
 import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
+import MoviesHomeDirector from '@/components/movies/components/movies-home-director/movies-home-director'
 
 const lobster = Lobster({
   weight: '400',
@@ -22,12 +23,14 @@ const Page =  async () => {
     moviesLastFive,
     { movies: moviesByARandomCountry, country },
     { movies: moviesByARandomGenre, genre },
-    { movies: favorites }
+    { movies: favorites },
+    { directorMovies }
   ] = await Promise.all([
     getLastMovies(),
     getMoviesByARandomCountry(),
     getMoviesByARandomGenre(),
-    getFavoriteMovies("clzl1br370003zt5x1ipm2ojv")
+    getFavoriteMovies("clzl1br370003zt5x1ipm2ojv"),
+    getDirectorMovies("John Carpenter")
   ]);
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
@@ -57,9 +60,9 @@ const Page =  async () => {
        <MoviesHomeSection movies={extractFavoriteMovie}  isMobileView={isMobileView} /></>  }
       </Container>
       </div>
-      {/* <div>
-         <MoviesHomeTheme fontFamily={lobster.className} movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
-      </div> */}
+      <div>
+         <MoviesHomeDirector fontFamily={lobster.className} movies={directorMovies} isMobileView={isMobileView} director={"John Carpenter"} />
+      </div>
     </div>
   )
 }

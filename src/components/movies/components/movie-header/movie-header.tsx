@@ -9,7 +9,7 @@ import useUserStore from 'store/user/user-store';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
-import { Favorite } from '@/components/ui/components/icons/icons';
+import { DoawloadLogo, Favorite } from '@/components/ui/components/icons/icons';
 import { toast } from 'react-toastify';
 interface MovieHeaderProps {
   movie?: IMovie;
@@ -50,21 +50,25 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
       }
     }
   };
- 
+  const titleCompute = (title: string | undefined | null) => {
+    return title?.replaceAll(' ', '+')?.toLocaleLowerCase()
+  }
+  
   return (
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
     <h1 className='text-3xl font-bold'>{movie && titleOnlocale(movie, locale)}</h1>
-    {movie?.originalTitle && <div className='mt-2 mb-2  font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
+      {movie?.originalTitle && <div className='mt-2 mb-2  font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
+      {movie?.director && <div className='mt-2 mb-2  font-bold'> {t('director')}: {movie?.director}</div>}
     </div>
-    <div className='mb-4'>
+    <div className='mb-4 flex flex-col gap-2'>
       {movie?.year && <div className='inline'>{t('release')}: {movie?.year}</div>}
-      {movie?.genre && movie?.genre?.length > 0  &&  <div className='inline'> -  {t('genre')}:  {movie?.genre?.map(item => <span className='mr-1' key={item}>{item}</span>)}</div>} 
-      {movie?.country && <div className='inline'>- {t('country')}: { 
+      {movie?.genre && movie?.genre?.length > 0  &&  <div className='inline'>{t('genre')}:  {movie?.genre?.map(item => <span className='mr-1' key={item}>{item}</span>)}</div>} 
+      {movie?.country && <div className='inline'>{t('country')}: { 
         //@ts-ignore
       findCountry?.[0]?.label?.[locale]}</div>}
-      {movie?.duration && movie?.duration > 0 &&<span> - {t('duration')}: {heuresEnMinutes(movie?.duration)}</span> }
-      {movie?.language &&<span> - {t('langage')}: {
+      {movie?.duration && movie?.duration > 0 &&<span>{t('duration')}: {heuresEnMinutes(movie?.duration)}</span> }
+      {movie?.language &&<span>{t('langage')}: {
         //@ts-ignore
       language?.[0]?.label?.[locale]}</span> }
     </div>
@@ -74,11 +78,11 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
       //@ts-ignore
       displaySubtitles(item)}</span>)}</div> }
       {movie?.synopsis && <div className='mt-6 font-normal'> {t('synopsis')} : {movie?.synopsis}</div>}
-      <div className='mt-10 font-normal italic'> 
+      <div className='mt-10 font-normal flex flex-col gap-3'> 
         <form>
           <Button
             disabled={isLoading}
-            className='flex justify-start items-center  gap-2' 
+            className='flex justify-start items-center gap-2' 
             formAction={handleFavorite}
           >
           {isFavorite ?
@@ -94,6 +98,30 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
           }
           </Button>
         </form>
+        <div>
+          <a 
+          href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`} 
+          className='inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-blue-400' 
+          target='_blank' download>
+            {
+              <DoawloadLogo />
+            }
+          {t('download')}
+            </a>
+          <div className='flex flex-col gap-2 mt-4'>
+              <h4 className='font-bold'>{t('titleWebSubtitles')}</h4>
+              <ul>
+                <li>
+                  <a href={`https://www.opensubtitles.org/${locale === 'fr' ? 'fr' : 'en'}/search/sublanguageid-all/moviename-${titleCompute(movie?.title)}`} 
+                    target='_blank' rel='noreferrer'>
+                     - OpenSubtitles
+                  </a>
+                </li>
+                <li><a href={`yifysubtitles.ch`} target='_blank' rel='noreferrer'>- Yifi Subtitles</a></li>
+                <li><a href={`https://www.subtitlecat.com/index.php?search=${movie?.titleEnglish?.replaceAll(' ', '+')?.toLocaleLowerCase()}`} target='_blank' rel='noreferrer'>- SubtitleCat</a></li>
+              </ul>
+          </div>
+        </div>
       </div>
   </div>
   )

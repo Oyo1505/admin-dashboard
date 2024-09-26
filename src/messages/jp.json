@@ -50,6 +50,7 @@
   "DashboardNav": {
     "dashboard":"ダッシュボード",
     "users":"ユーザー",
+    "director":"ディレクター",
     "add-movie":"映画を追加",
     "favorite":"お気に入り",
     "settings":"設定"
@@ -57,6 +58,7 @@
   "AddMovie": {
     "title":"映画を追加",
     "titleMovie": "タイトル",
+    "director": "ディレクター",
     "year": "年",
     "genre": "ジャンル",
     "country": "国",
@@ -74,6 +76,7 @@
   "MoviePage": {
     "duration": "時間",
     "release": "発売日",
+    "director": "ディレクター",
     "genre": "ジャンル",
     "country": "国",
     "synopsis": "概要",
@@ -88,7 +91,9 @@
     "subtitlesJP": "日本語",
     "subtitlesEN": "英語",
     "toastMessageSuccess": "映画をお気に入りに追加しました",
-    "toastMessageError": "エラーが発生しました"
+    "toastMessageError": "エラーが発生しました",
+    "download": "映画をダウンロード",
+    "titleWebSubtitles": "サイトの字幕リスト"
   },
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",
