@@ -50,6 +50,7 @@
   "DashboardNav": {
     "dashboard":"Espace Personnel",
     "users":"Utilisateurs",
+    "director":"Section Réalisateur",
     "add-movie":"Ajouter film",
     "favorite":"Favoris",
     "settings":"Paramètres"
@@ -58,6 +59,7 @@
     "title":"Ajouter un film",
     "titleMovie": "Titre du Film",
     "year": "Année",
+    "director": "Réalisateur",
     "genre": "Genre",
     "country": "Pays",
     "trailer": "Bande-annonce",
@@ -71,10 +73,18 @@
     "titleJapanese": "Titre japonais",
     "titleEnglish": "Titre anglais"
   },
+  "DirectorSectionForm": {
+    "title": "Ajouter une section réalisateur",
+    "director": "Réalisateur",
+    "image": "Image",
+    "delete": "Supprimer",
+    "save": "Enregistrer"
+  },
   "MoviePage": {
     "duration": "Durée",
     "release": "Date de sortie",
     "genre": "Genre",
+    "director": "Réalisateur",
     "country": "Pays",
     "synopsis": "Synopsis",
     "trailer": "Bande-annonce",
@@ -88,7 +98,9 @@
     "subtitlesJP": "Japonais",
     "subtitlesEN": "Anglais",
     "toastMessageSuccess": "Film ajouté aux favoris",
-    "toastMessageError": "Une Erreur est survenue"
+    "toastMessageError": "Une Erreur est survenue",
+    "download": "Télécharger le film",
+    "titleWebSubtitles" : "Liste des sous-titres web"
   },
   "SettingsPage": {
     "title": "Settings" ,

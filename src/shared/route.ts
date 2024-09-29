@@ -14,3 +14,4 @@ export const URL_SETTINGS = `${URL_DASHBOARD}/settings`
 export const URL_FAVORITE = `${URL_DASHBOARD}/favorite`
 export const URL_ADD_MOVIE = `${URL_DASHBOARD}/add-movie`
 export const URL_USERS = `${URL_DASHBOARD}/users`
+export const URL_DIRECTOR_SECTION = `${URL_DASHBOARD}/director`

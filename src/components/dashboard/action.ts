@@ -63,7 +63,7 @@ export const getAllMovies =  async ()=> {
   
   try {
 
-   const movieInDb = await prisma.movie.findMany({cacheStrategy: { ttl: 60 }})
+   const movieInDb = await prisma.movie.findMany({cacheStrategy: { ttl: 60 * 5 }})
 
     return {movieInDb, status: 200 };
   } catch (error) {
@@ -94,6 +94,8 @@ export const addMovieToDb =  async (movie:any)=> {
         titleJapanese: movie.titleJapanese,
         link: movie?.link,
         image: movie?.link,
+        director : movie?.director,
+        imdbId : movie?.imdbId,
         originalTitle: movie.originalTitle,
         subtitles: movie.subtitles,
         language: movie.language,
@@ -130,7 +132,7 @@ export const editMovieToDb =  async (movie:IMovie)=> {
   if (!movieInDb) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
- 
+
   await prisma.movie.update({
     where: {
       id: movie.id
@@ -141,6 +143,8 @@ export const editMovieToDb =  async (movie:IMovie)=> {
       titleJapanese: movie.titleJapanese,
       link: movie?.link,
       image: movie?.link,
+      director: movie?.director,
+      imdbId: movie?.imdbId,
       originalTitle: movie.originalTitle,
       duration:  Number(movie.duration),
       idGoogleDive: movie.idGoogleDive,
@@ -194,12 +198,116 @@ export const getFavoriteMovies =  async (id:string)=> {
       where: {
         userId: id
       },
+      cacheStrategy: { ttl: 60 * 60 },
       include: {
         movie: true
       },
+      
     });
     return { movies , status: 200 };
   
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const getDirectorFromSection =  async () => {
+  try {
+    const directorMovies = await prisma.directorSection.findFirst();
+    return { directorMovies , status: 200 };
+  
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const createDirectorFromSection =  async (formDirector:any) => {
+  try{
+    const director = await prisma.directorSection.create({
+      data: {
+        director: formDirector.director,
+        imageBackdrop: formDirector.image,
+      },
+    })
+    revalidatePath('dashboard/director')
+    return { director , status: 200 };
+
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const updateDirectorFromSection =  async (formDirector:any) => {
+ 
+  try
+  {
+    if(formDirector.id){
+    const director = await prisma.directorSection.update({
+      where: {
+        id: formDirector.id
+      },
+      data: {
+        director: formDirector.director,
+        imageBackdrop: formDirector.imageBackdrop,
+      },
+    })
+    revalidatePath('dashboard/director')
+    return { director , status: 200 };
+  }
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const deleteDirectorFromSection =  async (id:string) => {
+
+  try
+  {
+    const director = await prisma.directorSection.delete({
+      where: {
+        id,
+      },
+    })
+    revalidatePath('dashboard/director')
+    return { status: 200 };
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const getDirectorMovies =  async ()=> {
+  
+  try {
+    const director  = await getDirectorFromSection()
+    if(director && director?.directorMovies?.director){
+     
+      const directorMovies = await prisma.movie.findMany({
+        where:{
+          director: director?.directorMovies.director
+        },
+        cacheStrategy: { ttl: 60 * 5 },
+       })
+
+      return { directorMovies, director:director?.directorMovies?.director, imageBackdrop:director?.directorMovies?.imageBackdrop, status: 200 };
+    }else{
+      return { status: 200 };
+    }
+
   } catch (error) {
     console.log(error)
     return {

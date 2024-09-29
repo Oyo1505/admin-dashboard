@@ -51,12 +51,14 @@
   "DashboardNav": {
     "dashboard":"Dashboard",
     "users":"Users",
+    "director":"Section Director",
     "add-movie":"Add movie",
     "favorite":"Favorite",
     "settings":"Settings"
   },
   "AddMovie": {
     "title": "Add Movie",
+    "director": "Director",
     "titleMovie": "Title Movie",
     "year": "Year",
     "genre": "Genre",
@@ -72,9 +74,17 @@
     "titleJapanese": "Japanese Title",
     "titleEnglish": "English Title"
   },
+  "DirectorSectionForm": {
+    "title": "Add Director Section",
+    "director": "Director",
+    "image": "Image", 
+    "delete": "Delete",
+    "save": "Save"
+  },
   "MoviePage": {
     "duration": "Duration",
     "release": "Release date",
+    "director" : "Director",
     "genre": "Genre",
     "country": "Country",
     "synopsis": "Synopsis",
@@ -89,7 +99,9 @@
     "subtitlesJP": "Japanese",
     "subtitlesEN": "English",
     "toastMessageSuccess": "Movie added to favorites",
-    "toastMessageError": "An error occurred"
+    "toastMessageError": "An error occurred",
+    "download": "Download Movie",
+    "titleWebSubtitles": "List of site web subtitles"
   },
   "SettingsPage": {
     "anyHelp": "Any help you need?",

@@ -8,6 +8,9 @@ export interface IMovie {
   titleEnglish: string | null
   movieId?: string | null
   image: string
+  director?: string | null
+  publish?: boolean
+  imdbId? : string  | null
   idGoogleDive: string | null
   tags: string[]
   duration?: number | null

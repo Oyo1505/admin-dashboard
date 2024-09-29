@@ -25,7 +25,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()
       const usersEmail = mails?.map((item: any) => item?.email)
-      
        if(user?.email && !usersEmail?.includes(user?.email)) return false
       return true
     },

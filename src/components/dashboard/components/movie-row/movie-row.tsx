@@ -20,6 +20,10 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
      <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <TableRow className='border-b border-background border-opacity-20'>
         <TableCell className="font-bold">{index}. {movie.title ?? movie.id}</TableCell>
+          {movie.title &&   
+          <TableCell> 
+               Publbblish TOGGLE
+          </TableCell>}
           <TableCell>
               <Dialog.Trigger asChild>
             <Button onClick={() => setIsOpen(true)}  variant={'outline'} className='font-bold  text-primary'  formAction={onClickDeleteMovie} >
