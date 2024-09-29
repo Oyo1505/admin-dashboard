@@ -117,7 +117,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
                      - OpenSubtitles
                   </a>
                 </li>
-                {movie?.imdbId && <li><a href={`https://yifysubtitles.chmovie-imdb/${movie?.imdbId}`} target='_blank' rel='noreferrer'>- Yifi Subtitles</a></li>}
+                {movie?.imdbId && <li><a href={`https://yifysubtitles.ch/movie-imdb/${movie?.imdbId}`} target='_blank' rel='noreferrer'>- Yifi Subtitles</a></li>}
                 <li><a href={`https://www.subtitlecat.com/index.php?search=${movie?.titleEnglish?.replaceAll(' ', '+')?.toLocaleLowerCase()}`} target='_blank' rel='noreferrer'>- SubtitleCat</a></li>
               </ul>
           </div>

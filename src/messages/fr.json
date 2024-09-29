@@ -71,7 +71,8 @@
     "langage": "Langue",
     "subtitles": "Sous-titres",
     "titleJapanese": "Titre japonais",
-    "titleEnglish": "Titre anglais"
+    "titleEnglish": "Titre anglais",
+    "imdbId": "IMDB ID"
   },
   "DirectorSectionForm": {
     "title": "Ajouter une section réalisateur",
@@ -100,7 +101,7 @@
     "toastMessageSuccess": "Film ajouté aux favoris",
     "toastMessageError": "Une Erreur est survenue",
     "download": "Télécharger le film",
-    "titleWebSubtitles" : "Liste des sous-titres web"
+    "titleWebSubtitles" : "Liste des sites de sous-titres"
   },
   "SettingsPage": {
     "title": "Settings" ,
