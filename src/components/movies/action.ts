@@ -40,7 +40,7 @@ export const getLastMovies =  async ()=> {
         createdAt: 'desc'
       },
       take: 5,
-      cacheStrategy: { ttl: 60 * 5 }
+      cacheStrategy: { ttl: 60 * 60 },
      })
     
    

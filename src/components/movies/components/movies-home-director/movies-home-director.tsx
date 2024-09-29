@@ -10,11 +10,12 @@ import Container from '@/components/ui/components/container/container';
 import Carousel from 'react-multi-carousel';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
 import clsx from 'clsx';
+import paramount from '../.../../../../../../public/images/paramount.avif';
 
-const MoviesHomeDirector = ({ movies, director, isMobileView, fontFamily }:{movies?:IMovie[], director?:string, isMobileView?:boolean, fontFamily?:string}) => {
+const MoviesHomeDirector = ({ movies, director, isMobileView, fontFamily, imageBackdrop }:{movies?:IMovie[], director?:string, isMobileView?:boolean, fontFamily?:string, imageBackdrop?:string | null}) => {
 
  const locale = useLocale()
- 
+console.log(paramount)
  const responsive = {
   tablet: {
     breakpoint: { max: 1024, min: 465 },
@@ -32,10 +33,13 @@ const MoviesHomeDirector = ({ movies, director, isMobileView, fontFamily }:{movi
     slidesToSlide: 1 
   }
 };
+const backgroundStyle = imageBackdrop 
+? { backgroundImage: `url(${imageBackdrop})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+: { backgroundImage: `url(${paramount?.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }; 
 
   return ( 
     <Suspense fallback={<LoadingSpinner />}>
-      <div className={`w-full aspect-[0/0.4] md:aspect-[1/0.4] relative bg-chicago bg-cover bg-center`}>
+      <div className={`w-full aspect-[0/0.4] md:aspect-[1/0.4] relative`}  style={backgroundStyle}>
         <div className='absolute w-full h-full bg-slate-950 opacity-50  top-0 left-0 z-0'></div>
           <Container className='h-full pt-6 pb-6 flex relative flex-col justify-start items-start'>
             <Title className={clsx(fontFamily,'text-xl relative mb-4 md:text-xl')}  text={"Zoom sur..."} type='div' /> 

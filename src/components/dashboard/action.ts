@@ -198,7 +198,7 @@ export const getFavoriteMovies =  async (id:string)=> {
       where: {
         userId: id
       },
-      cacheStrategy: { ttl: 60 * 5 },
+      cacheStrategy: { ttl: 60 * 60 },
       include: {
         movie: true
       },
@@ -215,13 +215,9 @@ export const getFavoriteMovies =  async (id:string)=> {
 } 
 
 export const getDirectorFromSection =  async () => {
-  
   try {
-    const directorMovies = await prisma.directorSection.findMany({
-      cacheStrategy: { ttl: 60 * 5 },
-     })
-
-    return { director:directorMovies , status: 200 };
+    const directorMovies = await prisma.directorSection.findFirst();
+    return { directorMovies , status: 200 };
   
   } catch (error) {
     console.log(error)
@@ -232,15 +228,14 @@ export const getDirectorFromSection =  async () => {
 } 
 
 export const createDirectorFromSection =  async (formDirector:any) => {
-
-  try
-  {
+  try{
     const director = await prisma.directorSection.create({
       data: {
         director: formDirector.director,
         imageBackdrop: formDirector.image,
       },
     })
+    revalidatePath('dashboard/director')
     return { director , status: 200 };
 
   } catch (error) {
@@ -252,17 +247,22 @@ export const createDirectorFromSection =  async (formDirector:any) => {
 } 
 
 export const updateDirectorFromSection =  async (formDirector:any) => {
-
+ 
   try
   {
+    if(formDirector.id){
     const director = await prisma.directorSection.update({
+      where: {
+        id: formDirector.id
+      },
       data: {
         director: formDirector.director,
-        imageBackdrop: formDirector.image,
+        imageBackdrop: formDirector.imageBackdrop,
       },
     })
+    revalidatePath('dashboard/director')
     return { director , status: 200 };
-
+  }
   } catch (error) {
     console.log(error)
     return {
@@ -271,18 +271,43 @@ export const updateDirectorFromSection =  async (formDirector:any) => {
   }
 } 
 
-export const getDirectorMovies =  async (director:string)=> {
+export const deleteDirectorFromSection =  async (id:string) => {
+
+  try
+  {
+    const director = await prisma.directorSection.delete({
+      where: {
+        id,
+      },
+    })
+    revalidatePath('dashboard/director')
+    return { status: 200 };
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const getDirectorMovies =  async ()=> {
   
   try {
-    const directorMovies = await prisma.movie.findMany({
-      where:{
-        director: director
-      },
-      cacheStrategy: { ttl: 60 * 5 },
-     })
+    const director  = await getDirectorFromSection()
+    if(director && director?.directorMovies?.director){
+     
+      const directorMovies = await prisma.movie.findMany({
+        where:{
+          director: director?.directorMovies.director
+        },
+        cacheStrategy: { ttl: 60 * 5 },
+       })
 
-    return { directorMovies , status: 200 };
-  
+      return { directorMovies, director:director?.directorMovies?.director, imageBackdrop:director?.directorMovies?.imageBackdrop, status: 200 };
+    }else{
+      return { status: 200 };
+    }
+
   } catch (error) {
     console.log(error)
     return {
