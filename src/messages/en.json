@@ -72,7 +72,8 @@
     "langage": "Language",
     "subtitles": "Subtitles",
     "titleJapanese": "Japanese Title",
-    "titleEnglish": "English Title"
+    "titleEnglish": "English Title",
+    "imdbId": "IMDB ID"
   },
   "DirectorSectionForm": {
     "title": "Add Director Section",

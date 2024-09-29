@@ -71,7 +71,8 @@
     "langage": "言語",
     "subtitles": "字幕",
     "titleJapanese": "日本語タイトル",
-    "titleEnglish": "英語タイトル"
+    "titleEnglish": "英語タイトル",
+    "imdbId": "IMDB ID"
   },
   "DirectorSectionForm": {
     "title": "ディレクターセクションを追加",
