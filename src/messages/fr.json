@@ -73,6 +73,13 @@
     "titleJapanese": "Titre japonais",
     "titleEnglish": "Titre anglais"
   },
+  "DirectorSectionForm": {
+    "title": "Ajouter une section réalisateur",
+    "director": "Réalisateur",
+    "image": "Image",
+    "delete": "Supprimer",
+    "save": "Enregistrer"
+  },
   "MoviePage": {
     "duration": "Durée",
     "release": "Date de sortie",

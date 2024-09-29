@@ -214,6 +214,63 @@ export const getFavoriteMovies =  async (id:string)=> {
   }
 } 
 
+export const getDirectorFromSection =  async () => {
+  
+  try {
+    const directorMovies = await prisma.directorSection.findMany({
+      cacheStrategy: { ttl: 60 * 5 },
+     })
+
+    return { director:directorMovies , status: 200 };
+  
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const createDirectorFromSection =  async (formDirector:any) => {
+
+  try
+  {
+    const director = await prisma.directorSection.create({
+      data: {
+        director: formDirector.director,
+        imageBackdrop: formDirector.image,
+      },
+    })
+    return { director , status: 200 };
+
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
+export const updateDirectorFromSection =  async (formDirector:any) => {
+
+  try
+  {
+    const director = await prisma.directorSection.update({
+      data: {
+        director: formDirector.director,
+        imageBackdrop: formDirector.image,
+      },
+    })
+    return { director , status: 200 };
+
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
+
 export const getDirectorMovies =  async (director:string)=> {
   
   try {

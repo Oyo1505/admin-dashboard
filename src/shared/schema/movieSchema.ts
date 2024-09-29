@@ -34,8 +34,9 @@ export const FormDeleteAccountSchema = z.object({
   id: z.string(),
 });
 
-
+export type DirectorSectionSchema = z.infer<typeof directorSectionSchema>;
 export const directorSectionSchema = z.object({
+  id: z.string().optional(),
   director: z.string().min(1, 'Un réalisteur est requis'),
-  image: z.string(),
+  imageBackdrop: z.string(),
 });

@@ -47,7 +47,6 @@ export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:num
 export const getAuthorizedEmails = async ( ): Promise<{ status?:number | undefined, mails?:any[] | undefined }> => {
   try {
     const userauthorizedEmails = await prisma.authorizedEmail.findMany()
-  
     if (!userauthorizedEmails) {
       return { status: 400 };
     }

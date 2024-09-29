@@ -50,7 +50,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   });
 
   const locale = useLocale()
-  const [formData, setFormData] = React.useState<MovieSchema>({
+  const [formData,] = React.useState<MovieSchema>({
     id : movie?.id,
     title: movie?.title ?? '',
     originalTitle: movie?.originalTitle ?? '',
@@ -70,7 +70,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
   });
   
-  const  createMovie= async (data : MovieSchema) => {
+  const createMovie= async (data : MovieSchema) => {
     const rawFormData = {
       title: data.title,
       titleJapanese: data.titleJapanese,
@@ -94,8 +94,8 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     setIsOpen(false)
   }
  
-  const onClickEditMovie = async ( data: MovieSchema) => {
-    console.log(data?.director)
+  const onClickEditMovie = async (data: MovieSchema) => {
+  
     const rawFormData = {
       id: data.id,
       idGoogleDive: data.idGoogleDive,
@@ -143,8 +143,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
 return(
     <Dialog.Portal>
       <Dialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
-      <Dialog.Title>FIlm</Dialog.Title>
-      <Dialog.Description>Tesxt</Dialog.Description>
+      
       <Dialog.Content className="data-[state=open]:animate-contentShow overflow-scroll text-background fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[950px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
         <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
         <fieldset className="mb-[15px]  flex flex-col items-center gap-2">

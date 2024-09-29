@@ -74,6 +74,13 @@
     "titleJapanese": "Japanese Title",
     "titleEnglish": "English Title"
   },
+  "DirectorSectionForm": {
+    "title": "Add Director Section",
+    "director": "Director",
+    "image": "Image", 
+    "delete": "Delete",
+    "save": "Save"
+  },
   "MoviePage": {
     "duration": "Duration",
     "release": "Release date",
