@@ -63,7 +63,7 @@ export const getAllMovies =  async ()=> {
   
   try {
 
-   const movieInDb = await prisma.movie.findMany({cacheStrategy: { ttl: 60 * 5 }})
+   const movieInDb = await prisma.movie.findMany();
 
     return {movieInDb, status: 200 };
   } catch (error) {
@@ -189,6 +189,30 @@ export const deleteMovieById =  async (id:string)=> {
   }
 } 
 
+
+export const publishedMovieById =  async (id:string,  publish:boolean)=> {
+ 
+  try {
+   if(id){
+    const movie = await prisma.movie.update({
+        where: {
+          id,
+        },
+        data: {
+          publish: publish,
+        },
+      });
+      console.log(movie.publish)
+     // revalidatePath('/dashboard/add-movie')
+    return { publish: movie.publish, status: 200 };
+   }
+  } catch (error) {
+    console.log(error)
+    return {
+      status : 500
+    }
+  }
+} 
 
 export const getFavoriteMovies =  async (id:string)=> {
   

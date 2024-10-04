@@ -5,14 +5,20 @@ import { IMovie } from '@/models/movie/movie'
 import DialogAddMovie from '@/components/ui/components/modal-add-movie/modal-add-movie'
 import * as Dialog  from '@radix-ui/react-dialog'
 import { Button } from '@/components/ui/components/button/button'
-import { deleteMovieById } from '../../action'
+import { deleteMovieById, publishedMovieById } from '../../action'
+import Toggle from '@/components/ui/components/toggle/toggle'
 
 function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index?: number}) {
   const [isOpen, setIsOpen] = React.useState(false)
-
+  const [isPublished, setIsPublished] = React.useState(movie?.publish)
   const onClickDeleteMovie = async () => {
     movie?.id && await deleteMovieById(movie?.id)
-  
+  }
+
+  const onTogglePublished = async () => {
+   const { publish } = movie?.id && await publishedMovieById(movie?.id, !movie?.publish)
+   console.log(publish)
+   setIsPublished(publish)
   }
 
   return (
@@ -22,7 +28,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
         <TableCell className="font-bold">{index}. {movie.title ?? movie.id}</TableCell>
           {movie.title &&   
           <TableCell> 
-               Publbblish TOGGLE
+               <Toggle toggle={onTogglePublished} publish={isPublished} />
           </TableCell>}
           <TableCell>
               <Dialog.Trigger asChild>

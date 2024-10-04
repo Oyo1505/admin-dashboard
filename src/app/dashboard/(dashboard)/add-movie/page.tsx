@@ -9,6 +9,7 @@ import React from 'react'
 const Page = async () => {
   const { movies } = await getData() as {movies: IMovie[]}
   const { movieInDb } = await getAllMovies()
+ 
     return <MovieTable movies={movies} movieInDb={movieInDb as any}  />
 }
 
