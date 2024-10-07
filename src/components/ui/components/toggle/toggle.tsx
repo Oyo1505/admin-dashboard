@@ -3,7 +3,7 @@ import React, { ChangeEventHandler } from 'react'
 import { Input } from '../input/input'
 import { useTranslations } from 'next-intl';
 
-const Toggle = ({toggle, publish}: {toggle: ChangeEventHandler<HTMLInputElement>, publish:boolean | undefined}) => {
+const Toggle = ({toggle, publish}: {toggle:any, publish:boolean | undefined}) => {
   const t = useTranslations('Dashboard');
   
   return (

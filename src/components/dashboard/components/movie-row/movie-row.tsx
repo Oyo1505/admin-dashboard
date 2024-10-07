@@ -1,26 +1,34 @@
 'use client'
 import { TableCell, TableRow } from '@/components/ui/components/table/table'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IMovie } from '@/models/movie/movie'
 import DialogAddMovie from '@/components/ui/components/modal-add-movie/modal-add-movie'
 import * as Dialog  from '@radix-ui/react-dialog'
 import { Button } from '@/components/ui/components/button/button'
 import { deleteMovieById, publishedMovieById } from '../../action'
 import Toggle from '@/components/ui/components/toggle/toggle'
+import { useQuery } from '@tanstack/react-query'
+import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 
 function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index?: number}) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish)
+  const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
+
   const onClickDeleteMovie = async () => {
     movie?.id && await deleteMovieById(movie?.id)
   }
+  
+  const { data, isFetching, status, refetch } = useQuery({
+    queryKey: ['moviePublish', movie?.id],
+    enabled: false,  
+    queryFn: () => publishedMovieById(movie?.id),
+  });
 
-  const onTogglePublished = async () => {
-   const result = movie?.id && await publishedMovieById(movie?.id)
-   if(result && result?.status === 200){
-    setIsMoviePublished(result.publish)
-   }
-  }
+  useEffect(() => { 
+    if(data && status === "success"){
+      setIsMoviePublished(data.publish)
+    }
+  },[data, status]);
 
   return (
     movie && movie.id &&
@@ -30,7 +38,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
         <TableCell className="font-bold">{index}. {movie.title ?? movie.id}</TableCell>
           {movie.title &&   
           <TableCell> 
-             <Toggle toggle={onTogglePublished} publish={isMoviePublished}  /> 
+             {isFetching ? <LoadingSpinner /> : <Toggle toggle={refetch} publish={isMoviePublished}  />}
           </TableCell>}
           <TableCell>
             <Dialog.Trigger asChild>
