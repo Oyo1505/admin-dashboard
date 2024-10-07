@@ -1,6 +1,6 @@
 'use client'
 import { TableCell, TableRow } from '@/components/ui/components/table/table'
-import React from 'react'
+import React, { useState } from 'react'
 import { IMovie } from '@/models/movie/movie'
 import DialogAddMovie from '@/components/ui/components/modal-add-movie/modal-add-movie'
 import * as Dialog  from '@radix-ui/react-dialog'
@@ -10,29 +10,31 @@ import Toggle from '@/components/ui/components/toggle/toggle'
 
 function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index?: number}) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [isPublished, setIsPublished] = React.useState(movie?.publish)
+  const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish)
   const onClickDeleteMovie = async () => {
     movie?.id && await deleteMovieById(movie?.id)
   }
 
   const onTogglePublished = async () => {
-   const { publish } = movie?.id && await publishedMovieById(movie?.id, !movie?.publish)
-   console.log(publish)
-   setIsPublished(publish)
+   const result = movie?.id && await publishedMovieById(movie?.id)
+   if(result && result?.status === 200){
+    setIsMoviePublished(result.publish)
+   }
   }
 
   return (
+    movie && movie.id &&
      <>
      <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <TableRow className='border-b border-background border-opacity-20'>
         <TableCell className="font-bold">{index}. {movie.title ?? movie.id}</TableCell>
           {movie.title &&   
           <TableCell> 
-               <Toggle toggle={onTogglePublished} publish={isPublished} />
+             <Toggle toggle={onTogglePublished} publish={isMoviePublished}  /> 
           </TableCell>}
           <TableCell>
-              <Dialog.Trigger asChild>
-            <Button onClick={() => setIsOpen(true)}  variant={'outline'} className='font-bold  text-primary'  formAction={onClickDeleteMovie} >
+            <Dialog.Trigger asChild>
+            <Button  onClick={() => setIsOpen(true)}  variant={'outline'} className='font-bold  text-primary' >
               {btnText}
             </Button>
             </Dialog.Trigger>

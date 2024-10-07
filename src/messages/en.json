@@ -46,7 +46,9 @@
     "emailAuthorized":"Email Authorized",
     "addButton":"Add",
     "deleteButton":"Delete",
-    "NoMovie":"No movies available",
+    "noMovie":"No movies available",
+    "movieAdded": "Movie published",
+    "movieNotAdded": "Movie not published",
     "togglePublished": "Published",
     "toggleUnpublished": "Unpublished"
   },

@@ -1,4 +1,3 @@
-
 import { getAllMovies } from '@/components/dashboard/action';
 import MovieTable from '@/components/dashboard/components/movie-table/movie-table';
 import { getData } from '@/googleDrive';

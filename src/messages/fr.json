@@ -46,6 +46,9 @@
     "addButton":"Ajouter",
     "deleteButton":"Supprimer",
     "NoMovie":"Aucun film disponible",
+    "movieAdded" : "Film ajouté",
+    "movieNotAdded": "Film non ajouté",
+    "noMovie": "Aucun film",
     "togglePublished": "Publier",
     "toggleUnpublished": "Dépublier"
   },

@@ -62,9 +62,11 @@ export const deleteUserById =  async (id:string)=> {
 export const getAllMovies =  async ()=> {
   
   try {
-
-   const movieInDb = await prisma.movie.findMany();
-
+   const movieInDb = await prisma.movie.findMany({   
+        orderBy: {
+        createdAt: 'desc'
+      }
+    });
     return {movieInDb, status: 200 };
   } catch (error) {
     console.log(error)
@@ -190,27 +192,31 @@ export const deleteMovieById =  async (id:string)=> {
 } 
 
 
-export const publishedMovieById =  async (id:string,  publish:boolean)=> {
+export const publishedMovieById =  async (id:string): Promise<{publish: boolean, status: number}> => {
  
   try {
    if(id){
-    const movie = await prisma.movie.update({
+    const findedMovie = await prisma.movie.findUnique({
+      where: {
+        id,
+      },
+    })
+    if(findedMovie){
+      const movie = await prisma.movie.update({
         where: {
           id,
         },
         data: {
-          publish: publish,
+          publish: !findedMovie?.publish,
         },
       });
-      console.log(movie.publish)
-     // revalidatePath('/dashboard/add-movie')
     return { publish: movie.publish, status: 200 };
+    }
    }
+   return { publish: false, status: 404 };
   } catch (error) {
     console.log(error)
-    return {
-      status : 500
-    }
+    return { publish: false, status: 500 };
   }
 } 
 
