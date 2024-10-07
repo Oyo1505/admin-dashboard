@@ -36,14 +36,15 @@ export const getMovieDetail =  async (id:string)=> {
 export const getLastMovies =  async ()=> {
   try {
     const moviesInDb = await prisma.movie.findMany({
+      where: {
+        publish: true
+      },
       orderBy: {
         createdAt: 'desc'
       },
       take: 5,
       cacheStrategy: { ttl: 60 * 60 },
-     })
-    
-   
+     }) 
   if (!moviesInDb) {
     return { status: 404, message: 'Pas de films' };
   }

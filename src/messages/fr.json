@@ -45,7 +45,12 @@
     "emailAuthorized":"Email autorisé",
     "addButton":"Ajouter",
     "deleteButton":"Supprimer",
-    "NoMovie":"Aucun film disponible"
+    "NoMovie":"Aucun film disponible",
+    "movieAdded" : "Film ajouté",
+    "movieNotAdded": "Film non ajouté",
+    "noMovie": "Aucun film",
+    "togglePublished": "Publier",
+    "toggleUnpublished": "Dépublier"
   },
   "DashboardNav": {
     "dashboard":"Espace Personnel",
@@ -77,7 +82,7 @@
   "DirectorSectionForm": {
     "title": "Ajouter une section réalisateur",
     "director": "Réalisateur",
-    "image": "Image",
+    "image": "Image de la section",
     "delete": "Supprimer",
     "save": "Enregistrer"
   },

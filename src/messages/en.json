@@ -46,7 +46,11 @@
     "emailAuthorized":"Email Authorized",
     "addButton":"Add",
     "deleteButton":"Delete",
-    "NoMovie":"No movies available"
+    "noMovie":"No movies available",
+    "movieAdded": "Movie published",
+    "movieNotAdded": "Movie not published",
+    "togglePublished": "Published",
+    "toggleUnpublished": "Unpublished"
   },
   "DashboardNav": {
     "dashboard":"Dashboard",
@@ -78,7 +82,7 @@
   "DirectorSectionForm": {
     "title": "Add Director Section",
     "director": "Director",
-    "image": "Image", 
+    "image": "Image of the section",
     "delete": "Delete",
     "save": "Save"
   },

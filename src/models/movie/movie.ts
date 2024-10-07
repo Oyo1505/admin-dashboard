@@ -9,7 +9,7 @@ export interface IMovie {
   movieId?: string | null
   image: string
   director?: string | null
-  publish?: boolean
+  publish: boolean
   imdbId? : string  | null
   idGoogleDive: string | null
   tags: string[]

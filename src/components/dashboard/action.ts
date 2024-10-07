@@ -62,9 +62,11 @@ export const deleteUserById =  async (id:string)=> {
 export const getAllMovies =  async ()=> {
   
   try {
-
-   const movieInDb = await prisma.movie.findMany({cacheStrategy: { ttl: 60 * 5 }})
-
+   const movieInDb = await prisma.movie.findMany({   
+        orderBy: {
+        createdAt: 'desc'
+      }
+    });
     return {movieInDb, status: 200 };
   } catch (error) {
     console.log(error)
@@ -189,6 +191,34 @@ export const deleteMovieById =  async (id:string)=> {
   }
 } 
 
+
+export const publishedMovieById =  async (id:string): Promise<{publish: boolean, status: number}> => {
+ 
+  try {
+   if(id){
+    const findedMovie = await prisma.movie.findUnique({
+      where: {
+        id,
+      },
+    })
+    if(findedMovie){
+      const movie = await prisma.movie.update({
+        where: {
+          id,
+        },
+        data: {
+          publish: !findedMovie?.publish,
+        },
+      });
+    return { publish: movie.publish, status: 200 };
+    }
+   }
+   return { publish: false, status: 404 };
+  } catch (error) {
+    console.log(error)
+    return { publish: false, status: 500 };
+  }
+} 
 
 export const getFavoriteMovies =  async (id:string)=> {
   

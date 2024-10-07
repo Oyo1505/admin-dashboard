@@ -8,7 +8,7 @@ import { createDirectorFromSection, deleteDirectorFromSection, updateDirectorFro
 import { useTranslations } from "next-intl";
 import { IDirector } from "@/models/director/director";
 
-const DirectorSectionForm = ({ director }:{director:IDirector | null}) => {
+const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
 
   const t = useTranslations('DirectorSectionForm');
   
@@ -56,6 +56,7 @@ const DirectorSectionForm = ({ director }:{director:IDirector | null}) => {
 
   return (
     <div>
+      <h1>{t('title')}</h1>
       <form onSubmit={handleSubmit(director?.id ? uploadDirectorSection : createDirectorSection)}>
       <fieldset className="mb-[15px]  flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="director">

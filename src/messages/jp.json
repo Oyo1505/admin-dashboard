@@ -45,7 +45,11 @@
     "emailAuthorized":"Email 承認済み",
     "addButton":"追加",
     "deleteButton":"削除",
-    "NoMovie":"映画がありません"
+    "noMovie":"映画がありません",
+    "movieAdded": "追加",
+    "movieNotAdded": "映画がありません",
+    "togglePublished" : "公開",
+    "toggleUnpublished": "非公開"
   },
   "DashboardNav": {
     "dashboard":"ダッシュボード",
