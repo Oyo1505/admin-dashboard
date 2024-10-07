@@ -17,7 +17,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
   const onClickDeleteMovie = async () => {
     movie?.id && await deleteMovieById(movie?.id)
   }
-  
+
   const { data, isFetching, status, refetch } = useQuery({
     queryKey: ['moviePublish', movie?.id],
     enabled: false,  
@@ -38,7 +38,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
         <TableCell className="font-bold">{index}. {movie.title ?? movie.id}</TableCell>
           {movie.title &&   
           <TableCell> 
-             {isFetching ? <LoadingSpinner /> : <Toggle toggle={refetch} publish={isMoviePublished}  />}
+             <Toggle toggle={refetch} publish={isMoviePublished} isFetching={isFetching} />
           </TableCell>}
           <TableCell>
             <Dialog.Trigger asChild>
