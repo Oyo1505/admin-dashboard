@@ -199,31 +199,35 @@ export const getAllMovies =  async ()=> {
   }
 } 
 
-
 export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }) => {
  
-  try{
-    if(search.trim() === '' && search.length === 0){
-   
-    const movies = await prisma.movie.findMany({
-       orderBy: {
+  try {
+
+    if (!search.trim()) {
+     
+      const movies = await prisma.movie.findMany({
+        orderBy: {
           createdAt: 'desc',
-      },
-      take:pageParam,
-      cacheStrategy: { ttl: 60 },
-      })
+        },
+        take: pageParam,
+        cacheStrategy: { ttl: 60 },
+      });
+
       return {
-        movies: movies,
-        status : 200,
-        prevOffset: pageParam
-      }
+        movies,
+        status: 200,
+        prevOffset: pageParam,
+      };
     }
 
+    // Extraction des paramètres de recherche
     const params = new URLSearchParams(search);
     const subtitles = params.get('subtitles');
     const language = params.get('language');
     const genre = params.get('genre');
     const q = params.get('q');
+
+    // Conditions pour la requête
     const conditions: {
       OR?: Array<{
         title?: { contains: string; mode: 'insensitive' };
@@ -236,65 +240,63 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         genre?: { has: string };
         language?: { contains: string };
       }>;
-    } = { OR: [], AND: [] };
-    
-    
-    // Add OR conditions based on the 'q' parameter
+    } = {};
+
+    // Ajout des conditions OR basées sur la recherche 'q'
     if (q && q.length > 0) {
-      conditions.OR?.push(
+      conditions.OR = [
         { title: { contains: q, mode: 'insensitive' } },
         { originalTitle: { contains: q, mode: 'insensitive' } },
         { titleJapanese: { contains: q, mode: 'insensitive' } },
         { titleEnglish: { contains: q, mode: 'insensitive' } },
-      );
+      ];
     }
-// Example of adding conditions to the AND array (as needed)
+
+    // Ajout des conditions AND selon les paramètres facultatifs
+    conditions.AND = [];
     if (subtitles) {
-      conditions.AND?.push({ subtitles: { has: subtitles } });
+      conditions.AND.push({ subtitles: { has: subtitles } });
     }
 
     if (language) {
-      conditions.AND?.push({ language: { contains: language
-      } });
+      conditions.AND.push({ language: { contains: language } });
     }
+
     if (genre) {
-      conditions.AND?.push({ genre: { has: genre } });
-    }    
-    // Ensure conditions are not empty to avoid invalid query structure
+      conditions.AND.push({ genre: { has: genre } });
+    }
+
+    // Concaténation des conditions OR et AND si elles existent
     const whereClause = {
-      ...(conditions.OR && conditions.OR.length > 0 ? { OR: conditions.OR } : {}),
-      ...(conditions.AND && conditions.AND.length > 0 ? { AND: conditions.AND } : {}),
+      ...(conditions.OR?.length ? { OR: conditions.OR } : {}),
+      ...(conditions.AND?.length ? { AND: conditions.AND } : {}),
     };
- 
+
+
     const movies = await prisma.movie.findMany({
       where: whereClause,
-       orderBy: {
-         createdAt: 'desc',
-     },
-       take:100,
-       cacheStrategy: { ttl: 60 },
-    }); 
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: pageParam,
+      cacheStrategy: { ttl: 60 },
+    });
 
-    if(movies){ 
-     return {
-       movies,
-       status : 200,
-       prevOffset: pageParam
-     }
-   }else{
-     return {
-       status : 400
-     }
-   }
+    return {
+      movies,
+      status: 200,
+      prevOffset: pageParam,
+    };
 
-  }catch(err){
-   console.log(err)
-   return {
-     status : 500
-   }
+  } catch (err) {
+    console.error('Erreur lors de la récupération des films:', err);
+    return {
+      status: 500,
+      message: 'Erreur serveur. Impossible de récupérer les films.',
+    };
   }
- };
- 
+};
+
  export const getMoviesGenre = async () => {
   try {
     const uniqueGenres  = await prisma.movie.findMany({

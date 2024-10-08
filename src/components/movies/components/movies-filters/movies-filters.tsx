@@ -1,28 +1,39 @@
 'use client'
-import React, { startTransition, use, useCallback, useEffect } from 'react'
+import React, { startTransition, useEffect } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { URL_MOVIES } from '@/shared/route'
 import qs from 'qs';
-import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll'
 import ButtonSearch from '@/components/ui/components/button-search/button-search'
-import { useFiltersMovieStore } from 'store/movie/movie-store'
+import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store'
 import { languagesList } from '@/shared/constants/lang'
+import { useQuery } from '@tanstack/react-query'
+import { fetchMovies } from '../../action'
 
-const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, language?:string, genres?:string[], genre?:string}) => {
+const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:string, language?:string, genres?:string[], genre?:string, offset:number}) => {
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters')
-
-  const { filters, setFiltersData, setHasBeenSearched } = useFiltersMovieStore();
+  const { setMoviesStore } = useMovieFormStore();
+  const { filters, setFiltersData, setHasBeenSearched,hasBeenSearched,  } = useFiltersMovieStore();
   
-  const { refetch } = useGetMoviesInfiniteScroll({pageParam: 5, search: qs.stringify({ 
-    subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
-    language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
-    genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
-    q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
-  })});
-
+  // const { refetch } = useGetMoviesInfiniteScroll({pageParam: 5, search: qs.stringify({ 
+  //   subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
+  //   language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+  //   genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
+  //   q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
+  // })});
+  
+  const { data, isFetching, status, refetch } = useQuery({
+    queryKey: ['moviesFilters', offset],
+    enabled: false,
+    queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
+      subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
+      language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+      genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
+      q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
+    })}),
+  });
 
   function onChangeSubtitles(e: any) {
     const params = new URLSearchParams(window.location.search);
@@ -63,7 +74,32 @@ const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, l
     setFiltersData({...filters, genre: e.target.value});
   }
 
+  // useEffect(() => {
+
+  //   startTransition(() => {
+  //     router.replace(`${URL_MOVIES}?${qs.stringify({ 
+  //       q:  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
+  //       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
+  //       language: filters?.language &&  filters?.language?.length > 0 ? filters?.language : undefined,  
+  //       genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
+  //     })}`);
+  //   });
+  
+  // }, [filters, router]);
   useEffect(() => {
+    if(hasBeenSearched){
+      refetch()
+      setHasBeenSearched(false)
+    }
+  }, [hasBeenSearched, setHasBeenSearched, refetch]);
+
+  useEffect(() => {
+    if(data){
+      setMoviesStore(data?.movies)
+    }
+  }, [data, setMoviesStore]);
+
+  const onClick = () => {
     startTransition(() => {
       router.replace(`${URL_MOVIES}?${qs.stringify({ 
         q:  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
@@ -72,11 +108,6 @@ const MovieFilters = ({subtitles, language, genres, genre}:{subtitles?:string, l
         genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
       })}`);
     });
-    
-  }, [filters, router]);
-
-  const onClick = () => {
-    refetch() 
     setHasBeenSearched(true)
   };
 

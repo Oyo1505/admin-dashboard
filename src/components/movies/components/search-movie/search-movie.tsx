@@ -19,17 +19,17 @@ const SearchMovie = ( { search }: { search: string }) => {
     const queryValue = e.target.value;
   
     setFiltersData({...filters, q: e.target.value});
-    startTransition(() => {
+    // startTransition(() => {
 
-      const params = {
-        q: queryValue && queryValue.length > 0 ? queryValue : undefined,
-        subtitles: filters?.subtitles && filters?.subtitles.length > 0 ? filters?.subtitles : undefined,
-        language: filters?.language && filters?.language.length > 0 ? filters?.language : undefined,
-      };
-      const queryString = qs.stringify(params, { skipNulls: true });
+    //   const params = {
+    //     q: queryValue && queryValue.length > 0 ? queryValue : undefined,
+    //     subtitles: filters?.subtitles && filters?.subtitles.length > 0 ? filters?.subtitles : undefined,
+    //     language: filters?.language && filters?.language.length > 0 ? filters?.language : undefined,
+    //   };
+    //   const queryString = qs.stringify(params, { skipNulls: true });
 
-      router.replace(`${URL_MOVIES}?${queryString}`);
-    });
+    //   router.replace(`${URL_MOVIES}?${queryString}`);
+    // });
   }
 
   return (
