@@ -57,7 +57,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
     }
   };
 
-  if (status === 'pending' && isFetching) return <LoadingSpinner />
+  if (status === 'pending' && isFetching) return <LoadingSpinner className='flex justify-center h-screen' />
 
   return (
     <>
@@ -87,8 +87,12 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
       )) : <div className='w-full text-center mt-14 text-2xl'> {t('NoMovie')} </div>}
   
   </div>
-  {isFetching || isFetchingNextPage && status !== 'success' ? <LoadingSpinner /> : !hasNextPage  ||(moviesFromStore && moviesFromStore.length === 0) ? null : <Button onClick={() => fecthNextMovie()} className='mt-10 w-min-48'>Load more</Button>}
-
+  <div className='flex justify-center mt-10'>
+  {isFetching || isFetchingNextPage && status !== 'success' ? 
+    <LoadingSpinner /> : 
+  !hasNextPage  || (moviesFromStore && moviesFromStore.length === 0) ? null : 
+    <Button variant={'outline'} onClick={() => fecthNextMovie()} className='min-w-80 flex align'>Load more</Button>}
+  </div>
   </>
   )
 }
