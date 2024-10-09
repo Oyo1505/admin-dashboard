@@ -23,7 +23,7 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
       if (lastPage.prevOffset && lastPage.prevOffset > lastPage.movies?.length) {
         return undefined;
       }
-      return lastPage.prevOffset && lastPage.prevOffset + 5; 
+      return lastPage.prevOffset && lastPage.prevOffset + 12; 
     },
   })
 
