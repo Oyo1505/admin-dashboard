@@ -7,6 +7,7 @@ import qs from 'qs';
 import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMovies } from '../../action';
+import { decade } from '@/shared/constants/decade';
 
 const SearchMovie = ( { search, offset }: { search: string, offset:number }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -14,18 +15,17 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
   const {filters, setFiltersData, hasBeenSearched, setHasBeenSearched} = useFiltersMovieStore();
   const { setMoviesStore } = useMovieFormStore();
 
-
   function onChangeSearch(e: any) {  
     setFiltersData({...filters, q: e.target.value});
   }
 
-
-  const { data, isFetching, status, refetch } = useQuery({
+  const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
     queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
       language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+      decade: filters?.decade && filters?.decade> 0 ? filters?.decade : undefined,
       genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
       q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
     })}),
@@ -39,10 +39,10 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
   }, [hasBeenSearched, setHasBeenSearched, refetch]);
   
   useEffect(() => {
-    if(data && data?.movies){
+    if(data && data?.movies && status === 'success'){
       setMoviesStore(data?.movies)
     }
-  }, [data, setMoviesStore]);
+  }, [data, setMoviesStore, status]);
 
   const onPressEnter = () => {
     setHasBeenSearched(true)
@@ -52,9 +52,8 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-background" />
       <Input
         ref={inputRef}
-        value={filters?.q ?? undefined}
+        value={filters?.q || search} 
         onInput={(e) => onChangeSearch(e)}
-        defaultValue={search ?? ''}
         spellCheck={false}
         className="w-full bg-white shadow-none text-background appearance-none pl-8"
         placeholder={t('placeholderSearch')}

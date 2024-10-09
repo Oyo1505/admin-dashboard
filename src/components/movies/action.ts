@@ -224,6 +224,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     const params = new URLSearchParams(search);
     const subtitles = params.get('subtitles');
     const language = params.get('language');
+    const decade = params.get('decade');
     const genre = params.get('genre');
     const q = params.get('q');
 
@@ -239,6 +240,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         subtitles?: { has: string };
         genre?: { has: string };
         language?: { contains: string };
+        year?: {has : number}
       }>;
     } = {};
 
@@ -249,6 +251,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         { originalTitle: { contains: q, mode: 'insensitive' } },
         { titleJapanese: { contains: q, mode: 'insensitive' } },
         { titleEnglish: { contains: q, mode: 'insensitive' } },
+        { director: { contains: q, mode: 'insensitive' } },
       ];
     }
 
@@ -258,8 +261,19 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       conditions.AND.push({ subtitles: { has: subtitles } });
     }
 
+    if (decade) {
+      const startOfDecade = Number(decade); 
+      const endOfDecade = startOfDecade + 9;
+
+      conditions.AND.push({ year : {
+        gte: startOfDecade, 
+        lte: endOfDecade 
+      }
+     });
+    }
+
     if (language) {
-      conditions.AND.push({ language: { contains: language } });
+      conditions.AND.push({ country: { contains: language,  mode: 'insensitive' } });
     }
 
     if (genre) {

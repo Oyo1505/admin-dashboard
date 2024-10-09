@@ -33,6 +33,7 @@ export interface IMovie {
 export interface IFilters {
   subtitles?: string;
   language?: string; 
+  decade?: number | null
   genre?: string;
   q?: string;
 }

@@ -19,11 +19,11 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: Object.keys(searchParams).length > 0 ? qs.stringify({ 
     subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
     language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+    decade: filters?.decade && filters?.decade > 0 ? filters?.decade : undefined,
     genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
     q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
   }) : ''});
  
-
   const t = useTranslations('MoviesPage')
 
   const filteredMovies = useMemo(() => {
@@ -91,7 +91,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   {isFetching || isFetchingNextPage && status !== 'success' ? 
     <LoadingSpinner /> : 
   !hasNextPage  || (moviesFromStore && moviesFromStore.length === 0) ? null : 
-    <Button variant={'outline'} onClick={() => fecthNextMovie()} className='min-w-80 flex align'>Load more</Button>}
+    <Button variant={'outline'} onClick={() => fecthNextMovie()} className='min-w-80 flex align'>{t('btnLoadMore')}</Button>}
   </div>
   </>
   )

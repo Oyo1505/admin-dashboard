@@ -7,6 +7,7 @@ import qs from 'qs';
 import ButtonSearch from '@/components/ui/components/button-search/button-search'
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store'
 import { languagesList } from '@/shared/constants/lang'
+import { decade } from '@/shared/constants/decade'
 import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
 
@@ -17,13 +18,13 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
 
-  
-  const { data, isFetching, status, refetch } = useQuery({
+  const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
     queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
       language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+      decade: filters?.decade && filters?.decade > 0 ? filters?.decade : undefined,
       genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
       q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
     })}),
@@ -54,7 +55,18 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
     }
     setFiltersData({...filters, language: e.target.value});
   }
-
+  function onChangeDecade(e: any) {
+    const params = new URLSearchParams(window.location.search);
+    if (e.target.value === undefined) {
+      return;
+    }
+    else if (e.target.value) {
+      params.set('decade', e.target.value);
+    } else {
+      params.delete('decade');
+    }
+    setFiltersData({...filters, decade: e.target.value});
+  }
   function onChangeGenre(e: any) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
@@ -76,10 +88,10 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
   }, [hasBeenSearched, setHasBeenSearched, refetch]);
 
   useEffect(() => {
-    if(data && data?.movies){
+    if(data && data?.movies && status === 'success'){
       setMoviesStore(data?.movies)
     }
-  }, [data, setMoviesStore]);
+  }, [data, setMoviesStore, status]);
 
   const onClick = () => {
     startTransition(() => {
@@ -87,6 +99,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
         q:  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
         subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
         language: filters?.language &&  filters?.language?.length > 0 ? filters?.language : undefined,  
+        decade: filters?.decade &&  filters?.decade > 0 ? filters?.decade : undefined,  
         genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
       })}`);
     });
@@ -94,8 +107,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-5 md:gap-2 relative mt-6 w-4/6 m-auto place-items-end justify-between">
-      <div className="flex w-full flex-col md:flex-row  gap-2">
+    <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
+      <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
         <fieldset className="flex flex-col gap-2 md:w-64">
           <label>{t('subtitles')}</label>
           <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
@@ -120,6 +133,17 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
           </select>
         </fieldset>
         <fieldset  className="flex flex-col gap-2 md:w-64">
+          <label>{t('decade')}</label>
+          <select   onChange={onChangeDecade}  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+            <option> </option>
+          {decade?.decade.map((dec, index) => (
+              <option  key={`${dec}-${index}`} value={dec}>
+                {dec}
+              </option>
+            ))}
+          </select>
+        </fieldset>
+        <fieldset  className="flex flex-col gap-2 md:w-64">
           <label>{t('genre')}</label>
           <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -132,7 +156,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
           </select>
         </fieldset>
     </div>
-      <ButtonSearch className='w-full md:w-auto transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
+      <ButtonSearch className='w-full md:w-full lg:max-w-56 transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
     </div>
   )
 }
