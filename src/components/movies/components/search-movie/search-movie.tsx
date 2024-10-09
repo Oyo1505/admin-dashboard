@@ -39,7 +39,7 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
   }, [hasBeenSearched, setHasBeenSearched, refetch]);
   
   useEffect(() => {
-    if(data){
+    if(data && data?.movies){
       setMoviesStore(data?.movies)
     }
   }, [data, setMoviesStore]);
