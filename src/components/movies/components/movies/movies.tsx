@@ -4,7 +4,6 @@ import Link from 'next/link'
 import qs from 'qs';
 import { URL_MOVIES } from '@/shared/route'
 import Image from 'next/image';
-import { IMovie } from '@/models/movie/movie';
 import imageDefault from '../../../../assets/image/default-placeholder.png'
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
@@ -55,7 +54,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   };
 
   if (status === 'pending' && isFetching) return <LoadingSpinner />
- 
+
   return (
     <>
   <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start'>
@@ -84,7 +83,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
       )) : <div className='w-full text-center mt-14 text-2xl'> {t('NoMovie')} </div>}
   
   </div>
-  {isFetching || isFetchingNextPage && status !== 'success' ? <LoadingSpinner /> : Object.keys(searchParams).length > 0 ? null : <Button onClick={() => fecthNextMovie()} className='mt-10 w-min-48'>Load more</Button>}
+  {isFetching || isFetchingNextPage && status !== 'success' ? <LoadingSpinner /> : !hasNextPage  ||(moviesFromStore && moviesFromStore.length === 0) ? null : <Button onClick={() => fecthNextMovie()} className='mt-10 w-min-48'>Load more</Button>}
 
   </>
   )

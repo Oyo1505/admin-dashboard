@@ -20,7 +20,7 @@ import React, { Suspense } from 'react'
   const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
   
   return (<>
-      <SearchMovie search={search}  />
+      <SearchMovie search={search} offset={10} />
       <MovieFilters subtitles={subtitles} offset={10} language={language} genres={genresWithNoDuplicates} genre={genre} />
       <Suspense fallback={<LoadingSpinner />}>
         <Movies searchParams={searchParams} offset={10} />

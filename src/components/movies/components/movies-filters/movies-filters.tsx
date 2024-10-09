@@ -15,14 +15,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
   const router = useRouter();
   const t = useTranslations('Filters')
   const { setMoviesStore } = useMovieFormStore();
-  const { filters, setFiltersData, setHasBeenSearched,hasBeenSearched,  } = useFiltersMovieStore();
-  
-  // const { refetch } = useGetMoviesInfiniteScroll({pageParam: 5, search: qs.stringify({ 
-  //   subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
-  //   language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
-  //   genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
-  //   q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
-  // })});
+  const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
+
   
   const { data, isFetching, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
@@ -74,18 +68,6 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
     setFiltersData({...filters, genre: e.target.value});
   }
 
-  // useEffect(() => {
-
-  //   startTransition(() => {
-  //     router.replace(`${URL_MOVIES}?${qs.stringify({ 
-  //       q:  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
-  //       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
-  //       language: filters?.language &&  filters?.language?.length > 0 ? filters?.language : undefined,  
-  //       genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
-  //     })}`);
-  //   });
-  
-  // }, [filters, router]);
   useEffect(() => {
     if(hasBeenSearched){
       refetch()
