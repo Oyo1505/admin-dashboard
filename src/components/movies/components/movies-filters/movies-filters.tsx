@@ -17,8 +17,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
 
-  
-  const { data, isFetching, status, refetch } = useQuery({
+  const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
     queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
@@ -76,10 +75,10 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
   }, [hasBeenSearched, setHasBeenSearched, refetch]);
 
   useEffect(() => {
-    if(data && data?.movies){
+    if(data && data?.movies && status === 'success'){
       setMoviesStore(data?.movies)
     }
-  }, [data, setMoviesStore]);
+  }, [data, setMoviesStore, status]);
 
   const onClick = () => {
     startTransition(() => {

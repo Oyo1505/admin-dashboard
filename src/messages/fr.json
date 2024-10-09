@@ -37,7 +37,8 @@
     "logout": "Déconnexion"
   },
   "MoviesPage": {
-    "NoMovie":"Aucun film disponible"
+    "NoMovie":"Aucun film disponible",
+    "btnLoadMore": "Charger plus"
   },
   "Dashboard": {
     "welcome": "Bienvenue",
@@ -115,9 +116,9 @@
   },
   "Filters": {
     "subtitles": "Sous-titres",
-    "language": "Langue",
+    "language": "Pays",
     "btnSearch": "Rechercher",
-    "placeholderSearch": "Rechercher des films...",
+    "placeholderSearch": "Rechercher des films ou réalisateurs...",
     "subtitlesFR": "Français",
     "subtitlesJP": "Japonais",
     "subtitlesEN": "Anglais",

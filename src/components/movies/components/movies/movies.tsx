@@ -23,7 +23,6 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
     q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
   }) : ''});
  
-
   const t = useTranslations('MoviesPage')
 
   const filteredMovies = useMemo(() => {
@@ -91,7 +90,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   {isFetching || isFetchingNextPage && status !== 'success' ? 
     <LoadingSpinner /> : 
   !hasNextPage  || (moviesFromStore && moviesFromStore.length === 0) ? null : 
-    <Button variant={'outline'} onClick={() => fecthNextMovie()} className='min-w-80 flex align'>Load more</Button>}
+    <Button variant={'outline'} onClick={() => fecthNextMovie()} className='min-w-80 flex align'>{t('btnLoadMore')}</Button>}
   </div>
   </>
   )

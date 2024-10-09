@@ -37,7 +37,8 @@
     "logout": "ログアウト"
   },
   "MoviesPage": {
-    "NoMovie":"映画がありません"
+    "NoMovie":"映画がありません",
+    "btnLoadMore": "もっと読み込む"
   },
   "Dashboard": {
     "welcome": "ようこそ",
@@ -113,9 +114,9 @@
   },
   "Filters": {
     "subtitles": "字幕",
-    "language": "言語",
+    "language": "国",
     "btnSearch": "検索",
-    "placeholderSearch": "映画を検索...",
+    "placeholderSearch": "映画や監督を探す",
     "subtitlesFR": "フランス語",
     "subtitlesJP": "日本語",
     "subtitlesEN": "英語",

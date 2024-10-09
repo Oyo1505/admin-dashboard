@@ -37,7 +37,8 @@
     "logout": "Logout"
   },
   "MoviesPage": {
-    "NoMovie":"No movies available"
+    "NoMovie":"No movies available",
+    "btnLoadMore": "Load more"
   },
   "Dashboard": {
     "welcome": "Welcome",
@@ -114,9 +115,9 @@
   },
   "Filters": {
     "subtitles": "Subtitles",
-    "language": "Language",
+    "language": "Country",
     "btnSearch": "Search",
-    "placeholderSearch": "Search Movies...",
+    "placeholderSearch": "Search Movies or director...",
     "subtitlesFR": "French",
     "subtitlesJP": "Japanese",
     "subtitlesEN": "English",

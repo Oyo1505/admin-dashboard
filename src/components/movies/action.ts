@@ -249,6 +249,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         { originalTitle: { contains: q, mode: 'insensitive' } },
         { titleJapanese: { contains: q, mode: 'insensitive' } },
         { titleEnglish: { contains: q, mode: 'insensitive' } },
+        { director: { contains: q, mode: 'insensitive' } },
       ];
     }
 
@@ -259,7 +260,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     }
 
     if (language) {
-      conditions.AND.push({ language: { contains: language } });
+      conditions.AND.push({ country: { contains: language,  mode: 'insensitive' } });
     }
 
     if (genre) {
