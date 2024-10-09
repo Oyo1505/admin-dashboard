@@ -117,6 +117,7 @@
   "Filters": {
     "subtitles": "Sous-titres",
     "language": "Pays",
+    "decade": "Décennie",
     "btnSearch": "Rechercher",
     "placeholderSearch": "Rechercher des films ou réalisateurs...",
     "subtitlesFR": "Français",

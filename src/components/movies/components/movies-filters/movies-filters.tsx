@@ -7,6 +7,7 @@ import qs from 'qs';
 import ButtonSearch from '@/components/ui/components/button-search/button-search'
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store'
 import { languagesList } from '@/shared/constants/lang'
+import { decade } from '@/shared/constants/decade'
 import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
 
@@ -23,6 +24,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
     queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
       language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+      decade: filters?.decade && filters?.decade > 0 ? filters?.decade : undefined,
       genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
       q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
     })}),
@@ -53,7 +55,18 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
     }
     setFiltersData({...filters, language: e.target.value});
   }
-
+  function onChangeDecade(e: any) {
+    const params = new URLSearchParams(window.location.search);
+    if (e.target.value === undefined) {
+      return;
+    }
+    else if (e.target.value) {
+      params.set('decade', e.target.value);
+    } else {
+      params.delete('decade');
+    }
+    setFiltersData({...filters, decade: e.target.value});
+  }
   function onChangeGenre(e: any) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
@@ -86,6 +99,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
         q:  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
         subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
         language: filters?.language &&  filters?.language?.length > 0 ? filters?.language : undefined,  
+        decade: filters?.decade &&  filters?.decade > 0 ? filters?.decade : undefined,  
         genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
       })}`);
     });
@@ -114,6 +128,17 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
               country?.label?.[locale]}-${index}`} value={country?.value}>
                 {//@ts-ignore
                 country?.label?.[locale]}
+              </option>
+            ))}
+          </select>
+        </fieldset>
+        <fieldset  className="flex flex-col gap-2 md:w-64">
+          <label>{t('decade')}</label>
+          <select   onChange={onChangeDecade}  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+            <option> </option>
+          {decade?.decade.map((dec, index) => (
+              <option  key={`${dec}-${index}`} value={dec}>
+                {dec}
               </option>
             ))}
           </select>

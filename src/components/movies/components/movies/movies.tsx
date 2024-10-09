@@ -19,6 +19,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: Object.keys(searchParams).length > 0 ? qs.stringify({ 
     subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
     language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+    decade: filters?.decade && filters?.decade > 0 ? filters?.decade : undefined,
     genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
     q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
   }) : ''});

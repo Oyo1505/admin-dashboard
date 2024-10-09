@@ -116,6 +116,7 @@
   "Filters": {
     "subtitles": "Subtitles",
     "language": "Country",
+    "decade": "Decade",
     "btnSearch": "Search",
     "placeholderSearch": "Search Movies or director...",
     "subtitlesFR": "French",
