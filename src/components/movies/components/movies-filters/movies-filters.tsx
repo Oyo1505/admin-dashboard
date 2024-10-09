@@ -76,7 +76,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
   }, [hasBeenSearched, setHasBeenSearched, refetch]);
 
   useEffect(() => {
-    if(data){
+    if(data && data?.movies){
       setMoviesStore(data?.movies)
     }
   }, [data, setMoviesStore]);

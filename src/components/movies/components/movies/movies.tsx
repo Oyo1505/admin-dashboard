@@ -48,7 +48,11 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   const fecthNextMovie = () => {
     if (!isFetchingNextPage && hasNextPage) {
       fetchNextPage().then((res) => {
-        setMoviesStore(res?.data && res?.data.pages ? res?.data.pages[res?.data?.pages?.length-1]?.movies : [])
+        if(res?.data?.pages){
+        setMoviesStore(res?.data.pages[res?.data?.pages?.length-1]?.movies ?? []) 
+        }else{
+          setMoviesStore([])
+        }
       }).catch(err => console.error(err));
     }
   };
