@@ -1,4 +1,4 @@
-import { IFilters } from '@/models/movie/movie';
+import { IFilters, IMovie } from '@/models/movie/movie';
 import {create} from 'zustand';
 
 interface FormData {
@@ -15,7 +15,8 @@ interface FormData {
 interface MovieFormState {
   formData: FormData
   setFormData: (data: Partial<MovieFormState>) => void;
- 
+  moviesFromStore : IMovie[]
+  setMoviesStore: (data: IMovie[]) => void;
 }
 
 const useMovieFormStore = create<MovieFormState>((set) => ({
@@ -29,6 +30,7 @@ const useMovieFormStore = create<MovieFormState>((set) => ({
     country: '',
     idGoogleDive: '',
   },
+  moviesFromStore : [],
   setFormData: (data) =>
     set((state) => ({
       formData: {
@@ -36,7 +38,12 @@ const useMovieFormStore = create<MovieFormState>((set) => ({
         ...data,
       },
     })),
-}));
+    setMoviesStore: (data) => {
+      set((state) => ({
+        moviesFromStore: [...data],
+      }));
+    },
+  }));
 
 interface FiltersMovieState {
   filters: IFilters;

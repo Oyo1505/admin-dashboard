@@ -1,52 +1,68 @@
 'use client'
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import qs from 'qs';
 import { URL_MOVIES } from '@/shared/route'
 import Image from 'next/image';
-import { IMovie } from '@/models/movie/movie';
-import { usePathname, useRouter } from 'next/navigation';
 import imageDefault from '../../../../assets/image/default-placeholder.png'
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
-import {  useInView } from 'react-intersection-observer'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
-import { useFiltersMovieStore } from 'store/movie/movie-store';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { useLocale, useTranslations } from 'next-intl';
+import { Button } from '@/components/ui/components/button/button';
+import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
 
 const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
- const { ref, inView, entry } = useInView();
-  const [movies, setMovies] = useState<IMovie[]>();
-  const {hasBeenSearched, setFiltersData} = useFiltersMovieStore();
-  const pathname = usePathname();
-  const locale = useLocale()  
-  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage, refetch } = useGetMoviesInfiniteScroll({pageParam: 5});
+  const { filters } = useFiltersMovieStore();
+  const { moviesFromStore, setMoviesStore } = useMovieFormStore();
+  const locale = useLocale();
+  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: Object.keys(searchParams).length > 0 ? qs.stringify({ 
+    subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
+    language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+    genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
+    q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
+  }) : ''});
+ 
+
   const t = useTranslations('MoviesPage')
-  useEffect(() => {
-    if(status === "success" && data?.pages.length === 1 && Object.keys(searchParams).length === 0){
-      setMovies(data?.pages[0]?.movies)
-    }
-  }, [setMovies, data, status, hasNextPage, pathname, searchParams])
 
-
-  useEffect(() => {
-    if(status === "success" && !isFetching && Object.keys(searchParams).length > 0){
-      setMovies(() => data?.pages[data?.pages?.length-1]?.movies)
+  const filteredMovies = useMemo(() => {
+    if (status === "success") {
+      if (Object.keys(searchParams).length > 0) {
+        return data?.pages[data.pages.length - 1]?.movies || [];
+      } else if (Object.keys(searchParams).length === 0){
+ 
+       return data?.pages[0]?.movies || [];
+      }
     }
-  }, [searchParams, fetchNextPage, setFiltersData,isFetching, data, status, setMovies, inView, isFetchingNextPage, refetch])
   
+    return [];
+  }, [data, searchParams, status]);
+   
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage  && status === "success" && Object.keys(searchParams).length === 0) {
-      fetchNextPage()
-      setMovies(() => data?.pages[data?.pages?.length-1]?.movies) 
+    if(filteredMovies?.length > 0){
+      setMoviesStore(filteredMovies);
     }
-  }, [inView,fetchNextPage, hasNextPage, data, status, isFetchingNextPage, entry, hasBeenSearched, searchParams ])
+  }, [filteredMovies, setMoviesStore]);
+
+  const fecthNextMovie = () => {
+    if (!isFetchingNextPage && hasNextPage) {
+      fetchNextPage().then((res) => {
+        if(res?.data?.pages){
+        setMoviesStore(res?.data.pages[res?.data?.pages?.length-1]?.movies ?? []) 
+        }else{
+          setMoviesStore([])
+        }
+      }).catch(err => console.error(err));
+    }
+  };
 
   if (status === 'pending' && isFetching) return <LoadingSpinner />
- 
+
   return (
-    
+    <>
   <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start'>
-    {movies && movies.length > 0 ? movies.map((movie, index) => 
+    {moviesFromStore && moviesFromStore.length > 0 ? moviesFromStore.map((movie, index) => 
       movie?.title && (
         <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center transition-all duration-300'
           key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
@@ -69,9 +85,11 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
           </div>
         </Link>
       )) : <div className='w-full text-center mt-14 text-2xl'> {t('NoMovie')} </div>}
-    {isFetching || isFetchingNextPage && status !== 'success' ? <LoadingSpinner /> :  <div ref={ref} style={{ height: '1px', width: '100%', backgroundColor: 'transparent' }} />}
   
   </div>
+  {isFetching || isFetchingNextPage && status !== 'success' ? <LoadingSpinner /> : !hasNextPage  ||(moviesFromStore && moviesFromStore.length === 0) ? null : <Button onClick={() => fecthNextMovie()} className='mt-10 w-min-48'>Load more</Button>}
+
+  </>
   )
 }
 

@@ -1,37 +1,52 @@
 'use client'
 import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
 import { Input } from '@/components/ui/components/input/input';
-import { useRouter } from 'next/navigation';
-import React, { useRef, useTransition } from 'react'
-import { URL_MOVIES } from '@/shared/route';
-import { useFiltersMovieStore } from 'store/movie/movie-store';
+import React, { useEffect, useRef, useTransition } from 'react'
+import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
 import qs from 'qs';
 import { useTranslations } from 'next-intl';
+import { useQuery } from '@tanstack/react-query';
+import { fetchMovies } from '../../action';
 
-const SearchMovie = ( { search }: { search: string }) => {
-  const router = useRouter();
+const SearchMovie = ( { search, offset }: { search: string, offset:number }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations('Filters')
-  const {filters, setFiltersData} = useFiltersMovieStore();
-  const [isPending, startTransition] = useTransition();
+  const {filters, setFiltersData, hasBeenSearched, setHasBeenSearched} = useFiltersMovieStore();
+  const { setMoviesStore } = useMovieFormStore();
 
-  function onChangeSearch(e: any) {
-    const queryValue = e.target.value;
-  
+
+  function onChangeSearch(e: any) {  
     setFiltersData({...filters, q: e.target.value});
-    startTransition(() => {
-
-      const params = {
-        q: queryValue && queryValue.length > 0 ? queryValue : undefined,
-        subtitles: filters?.subtitles && filters?.subtitles.length > 0 ? filters?.subtitles : undefined,
-        language: filters?.language && filters?.language.length > 0 ? filters?.language : undefined,
-      };
-      const queryString = qs.stringify(params, { skipNulls: true });
-
-      router.replace(`${URL_MOVIES}?${queryString}`);
-    });
   }
 
+
+  const { data, isFetching, status, refetch } = useQuery({
+    queryKey: ['moviesFilters', offset],
+    enabled: false,
+    queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
+      subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
+      language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
+      genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
+      q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
+    })}),
+  });
+
+  useEffect(() => {
+    if(hasBeenSearched){
+      refetch()
+      setHasBeenSearched(false)
+    }
+  }, [hasBeenSearched, setHasBeenSearched, refetch]);
+  
+  useEffect(() => {
+    if(data && data?.movies){
+      setMoviesStore(data?.movies)
+    }
+  }, [data, setMoviesStore]);
+
+  const onPressEnter = () => {
+    setHasBeenSearched(true)
+  }
   return (
     <div className="relative mt-6 w-4/6 m-auto">
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-background" />
@@ -45,12 +60,10 @@ const SearchMovie = ( { search }: { search: string }) => {
         placeholder={t('placeholderSearch')}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
-            onChangeSearch(event)
+            onPressEnter()
           }
         }}
-      />
-      {isPending && <Spinner />}
-    
+      />   
     </div>
   );
 }
