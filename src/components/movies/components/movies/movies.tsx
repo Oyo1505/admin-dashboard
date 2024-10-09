@@ -90,7 +90,7 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
   <div className='flex justify-center mt-10'>
   {isFetching || isFetchingNextPage && status !== 'success' ? 
     <LoadingSpinner /> : 
-  !hasNextPage  || (moviesFromStore && moviesFromStore.length === 0) ? null : 
+  !hasNextPage  || (moviesFromStore && moviesFromStore.length < 12) ? null : 
     <Button variant={'outline'} onClick={() => fecthNextMovie()} className='min-w-80 flex align'>{t('btnLoadMore')}</Button>}
   </div>
   </>
