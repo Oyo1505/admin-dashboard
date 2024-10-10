@@ -11,6 +11,7 @@ import { languagesList } from '@/shared/constants/lang';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { DoawloadLogo, Favorite } from '@/components/ui/components/icons/icons';
 import { toast } from 'react-toastify';
+import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
 interface MovieHeaderProps {
   movie?: IMovie;
   isFavorite: boolean;
@@ -20,6 +21,9 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const t = useTranslations('MoviePage')
   const locale = useLocale()
   const [isLoading, setIsLoading] = useState(false);
+  const { data: movieDetails } = useGetDetailsMovie({id:movie?.imdbId ?? '', language:locale})
+  const synopsis = movieDetails?.movie_results[0]?.overview
+  
   const displaySubtitles = (value: string) => {
     switch (value) { 
       case  'FR':
@@ -77,7 +81,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
       {movie?.subtitles && movie?.subtitles?.length > 0  &&<div className='flex flex-wrap gap-2'>{t('subtitles')}: {movie?.subtitles?.map(item => <span key={item}>{
       //@ts-ignore
       displaySubtitles(item)}</span>)}</div> }
-      {movie?.synopsis && <div className='mt-6 font-normal'> {t('synopsis')} : {movie?.synopsis}</div>}
+      {synopsis ? <div className='mt-6 font-normal'> {t('synopsis')} : { synopsis }</div> : movie?.synopsis && <div className='mt-6 font-normal'> {t('synopsis')} : {movie?.synopsis}</div>}
       <div className='mt-10 font-normal flex flex-col gap-3'> 
         <form>
           <Button
