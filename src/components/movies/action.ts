@@ -43,7 +43,7 @@ export const getLastMovies =  async ()=> {
         createdAt: 'desc'
       },
       take: 5,
-      cacheStrategy: { ttl: 60 * 60 },
+      cacheStrategy: { ttl: 300},
      }) 
   if (!moviesInDb) {
     return { status: 404, message: 'Pas de films' };
@@ -64,7 +64,7 @@ export const getMoviesByARandomCountry = async () => {
       country: true,
     },
     distinct: ['country'],
-    cacheStrategy: { ttl: 60 },
+    cacheStrategy: { ttl: 300 },
     
   });
   if (!uniqueCountries) {
@@ -101,7 +101,7 @@ try {
       genre: true,
     },
     distinct: ['genre'],
-    cacheStrategy: { ttl: 60 * 5 },
+    cacheStrategy: { ttl: 300 },
   });
 
   if (!uniqueGenres) {
@@ -120,7 +120,7 @@ try {
       createdAt: 'desc'
     },
     take: 5,
-    cacheStrategy: { ttl: 60 },
+    cacheStrategy: { ttl: 300 },
    });
   
    if (!movies) {
@@ -188,7 +188,7 @@ export const getAllMovies =  async ()=> {
   try {
 
    const movieInDb = await prisma.movie.findMany({
-    cacheStrategy: { ttl: 60 },})
+    cacheStrategy: { ttl: 300 },})
 
     return {movieInDb, status: 200 };
   } catch (error) {
@@ -210,7 +210,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
           createdAt: 'desc',
         },
         take: pageParam,
-        cacheStrategy: { ttl: 60 },
+        cacheStrategy: { ttl: 300 },
       });
 
       return {
@@ -240,7 +240,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         subtitles?: { has: string };
         genre?: { has: string };
         language?: { contains: string };
-        year?: {has : number}
+        year?: { gte: number; lte: number };
       }>;
     } = {};
 
@@ -293,7 +293,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         createdAt: 'desc',
       },
       take: pageParam,
-      cacheStrategy: { ttl: 60 },
+      cacheStrategy: { ttl: 300 },
     });
 
     return {
@@ -317,7 +317,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       select: {
         genre: true,
       },
-      cacheStrategy: { ttl: 60 },
+      cacheStrategy: { ttl: 300 },
       distinct: ['genre'],
       
     });
@@ -336,3 +336,30 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       }
     }
   }
+
+  export const getMoviesCountries = async () => {
+    try {
+      const countriesValues  = await prisma.movie.findMany({
+        select: {
+          country: true,
+        },
+        cacheStrategy: { ttl: 300 * 60 },
+        distinct: ['country'],
+        
+      });
+    
+      if (!countriesValues) {
+        return { status: 400, message: 'Pas de pays' };
+      }
+  
+    const countries = countriesValues?.flatMap(item => item.country)
+
+      return { status: 200, countries};
+  
+        } catch (error) {
+        console.log(error)
+        return {
+          status : 500
+        }
+      }
+    }

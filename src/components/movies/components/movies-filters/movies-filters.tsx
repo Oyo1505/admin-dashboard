@@ -6,21 +6,24 @@ import { URL_MOVIES } from '@/shared/route'
 import qs from 'qs';
 import ButtonSearch from '@/components/ui/components/button-search/button-search'
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store'
-import { languagesList } from '@/shared/constants/lang'
 import { decade } from '@/shared/constants/decade'
 import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
+import countriesList from '@/shared/constants/countries'
 
-const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:string, language?:string, genres?:string[], genre?:string, offset:number}) => {
+const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:string[], genre?:string, offset:number, countries?:string[] | undefined}) => {
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters')
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
+  const listCountries = countriesList.filter(country => countries?.includes(country.value))
 
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
     queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
       language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
@@ -122,7 +125,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset}:{subtitles?:s
           <label>{t('language')}</label>
           <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
-          {languagesList.map((country, index) => (
+          {listCountries.map((country, index) => (
               <option  key={`${
               //@ts-ignore
               country?.label?.[locale]}-${index}`} value={country?.value}>

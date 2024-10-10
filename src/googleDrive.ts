@@ -37,7 +37,7 @@ const auth = new google.auth.GoogleAuth({
 });
 
 
-export const getData = async () => {
+export const getDataFromGoogleDrive = async () => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth })
   try {

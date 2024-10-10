@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/components/button/button'
 import { deleteMovieById, publishedMovieById } from '../../action'
 import Toggle from '@/components/ui/components/toggle/toggle'
 import { useQuery } from '@tanstack/react-query'
-import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 
 function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index?: number}) {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -20,7 +19,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
 
   const { data, isFetching, status, refetch } = useQuery({
     queryKey: ['moviePublish', movie?.id],
-    enabled: false,  
+    enabled: false,
     queryFn: () => publishedMovieById(movie?.id),
   });
 

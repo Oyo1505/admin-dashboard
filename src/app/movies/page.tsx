@@ -1,9 +1,18 @@
-import { getMoviesGenre } from '@/components/movies/action';
+import { getMoviesCountries, getMoviesGenre } from '@/components/movies/action';
 import MovieFilters from '@/components/movies/components/movies-filters/movies-filters';
 import Movies from '@/components/movies/components/movies/movies'
 import SearchMovie from '@/components/movies/components/search-movie/search-movie'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 import React, { Suspense } from 'react'
+
+export const revalidate = 60;  
+
+async function getData() {
+  const { genres } = await getMoviesGenre();
+  const { countries } = await getMoviesCountries();
+
+  return { genres, countries }
+}
 
  const Page  = async ({
   searchParams
@@ -12,16 +21,18 @@ import React, { Suspense } from 'react'
     language: string; q: string; subtitles: string; langage: string, genre: string
 };
 })=> {
+  const { genres, countries } = await getData();
   const search = searchParams.q ?? '';
   const subtitles = searchParams.subtitles ?? '';
   const language = searchParams.language ?? '';
   const genre = searchParams.genre ?? '';
-  const { genres } = await getMoviesGenre();
+
   const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
+  console.log(typeof countries)
   const offset = 12
   return (<>
       <SearchMovie search={search} offset={offset} />
-      <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genresWithNoDuplicates} genre={genre} />
+      <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genresWithNoDuplicates} genre={genre} countries={countries as string[]}/>
       <Suspense fallback={<LoadingSpinner />}>
         <Movies searchParams={searchParams} offset={offset} />
       </Suspense>

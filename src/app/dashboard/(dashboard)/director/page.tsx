@@ -1,7 +1,10 @@
 import { getDirectorFromSection } from "@/components/dashboard/action";
 import DirectorSectionForm from "@/components/dashboard/components/director-section-form/director-section-form";
 
+export const revalidate = 60;
+
 export default async function Page() {
+  
   const { directorMovies } = await getDirectorFromSection()
 
   return (

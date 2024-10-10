@@ -2,7 +2,7 @@ import { getDirectorMovies, getFavoriteMovies } from '@/components/dashboard/act
 import {  getLastMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/components/movies/action'
 import MoviesHomeSection from '@/components/movies/components/movies-home-section/movies-home-section'
 import Title from '@/components/ui/components/title/title'
-import React from 'react'
+import React, { Suspense } from 'react'
 import countriesList from '@/shared/constants/countries';
 import { getLocale } from 'next-intl/server'
 import MoviesHomeTheme from '@/components/movies/components/movies-home-theme/movies-home-theme'
@@ -11,27 +11,30 @@ import { headers } from 'next/headers'
 import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
 import MoviesHomeDirector from '@/components/movies/components/movies-home-director/movies-home-director'
+import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
+
+export const revalidate = 60; 
 
 const lobster = Lobster({
   weight: '400',
   display: 'swap',
   subsets: ['latin'],
-})
+});
+
+async function getData() {
+  const moviesLastFive = await getLastMovies();
+  const { movies: moviesByARandomCountry, country} = await getMoviesByARandomCountry();
+  const { movies: moviesByARandomGenre, genre } = await getMoviesByARandomGenre();
+  const { movies: favorites} = await getFavoriteMovies("clzl1br370003zt5x1ipm2ojv");
+  const { directorMovies, director, imageBackdrop} = await getDirectorMovies();
+  return { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop }
+}
+
 const Page =  async () => {
   const locale = await getLocale();
-  const [
-    moviesLastFive,
-    { movies: moviesByARandomCountry, country },
-    { movies: moviesByARandomGenre, genre },
-    { movies: favorites },
-    { directorMovies, director, imageBackdrop }
-  ] = await Promise.all([
-    getLastMovies(),
-    getMoviesByARandomCountry(),
-    getMoviesByARandomGenre(),
-    getFavoriteMovies("clzl1br370003zt5x1ipm2ojv"),
-    getDirectorMovies()
-  ]);
+
+  const { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop } = await getData();
+  
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   const headersList = headers();
@@ -44,25 +47,35 @@ const Page =  async () => {
     <div className='flex flex-col mt-6 gap-8'>
       <Container className='pt-14'>
           <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='lastFiveMovies' type='h3' />
-          <MoviesHomeSection movies={moviesLastFive.movies} isMobileView={isMobileView} />
+          <Suspense fallback={<LoadingSpinner />}>
+            <MoviesHomeSection movies={moviesLastFive.movies} isMobileView={isMobileView} />
+          </Suspense>
       </Container >
       <div>
-         <MoviesHomeTheme fontFamily={lobster.className} movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <MoviesHomeTheme fontFamily={lobster.className} movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
+        </Suspense>
       </div>
       <Container>
         <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='Akind'type='h3'> {genre}</Title>
-        <MoviesHomeSection movies={moviesByARandomGenre} isMobileView={isMobileView} />
+        <Suspense fallback={<LoadingSpinner />}>
+         <MoviesHomeSection movies={moviesByARandomGenre} isMobileView={isMobileView} />
+        </Suspense>
       </Container>
+      <Suspense fallback={<LoadingSpinner />}>
       {directorMovies && directorMovies?.length > 0 && director && 
         <div>
           <MoviesHomeDirector fontFamily={lobster.className} movies={directorMovies}  isMobileView={isMobileView} director={director} imageBackdrop={imageBackdrop} />
        </div>
       }
+      </Suspense>
       {extractFavoriteMovie && extractFavoriteMovie?.length > 0 &&<>
       <div className='w-full bg-primary pb-6 pt-6'>
         <Container>
           <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} textColor="text-background" translationText='AHeart'type='h3'/>
-          <MoviesHomeSection movies={extractFavoriteMovie}  isMobileView={isMobileView} />
+          <Suspense fallback={<LoadingSpinner />}>
+           <MoviesHomeSection movies={extractFavoriteMovie}  isMobileView={isMobileView} />
+          </Suspense>
         </Container>
       </div>
       </>}

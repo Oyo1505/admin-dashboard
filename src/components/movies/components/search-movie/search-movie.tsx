@@ -7,7 +7,6 @@ import qs from 'qs';
 import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { fetchMovies } from '../../action';
-import { decade } from '@/shared/constants/decade';
 
 const SearchMovie = ( { search, offset }: { search: string, offset:number }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,6 +21,8 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
     queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
       language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
