@@ -112,6 +112,8 @@
   "SettingsPage": {
     "title": "Settings" ,
     "anyHelp": "Besoin d'aide ?",
+    "areYouSure": "Etes vous sûr de vouloir supprimer votre compte ?",
+    "cancel": "Annuler",
     "deleteAccount": "Supprimer mon compte"
   },
   "Filters": {

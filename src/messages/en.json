@@ -111,7 +111,9 @@
   },
   "SettingsPage": {
     "anyHelp": "Any help you need?",
-    "deleteAccount": "Delete my account"
+    "deleteAccount": "Delete my account",
+    "areYouSure": "Are you sure you want to delete your account?",
+    "cancel": "Cancel"
   },
   "Filters": {
     "subtitles": "Subtitles",
