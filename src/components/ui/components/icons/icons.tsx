@@ -151,7 +151,7 @@ export function InstagramLogo() {
     <stop offset="0.78" stopColor="#D82D7E"/>
     </radialGradient>
     <radialGradient id="paint1_radial_7092_54471" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(41.1086 63.257) scale(51.4733 51.4424)">
-    <stop offset="0.64" stopColor="#8C3AAA" stop-opacity="0"/>
+    <stop offset="0.64" stopColor="#8C3AAA" stopOpacity="0"/>
     <stop offset="1" stopColor="#8C3AAA"/>
     </radialGradient>
     </defs>

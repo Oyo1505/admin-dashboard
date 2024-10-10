@@ -110,7 +110,9 @@
   },
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",
-    "deleteAccount": "アカウントを削除"
+    "deleteAccount": "アカウントを削除",
+    "areYouSure" : "本当にアカウントを削除しますか？",
+    "cancel": "キャンセル"
   },
   "Filters": {
     "subtitles": "字幕",
