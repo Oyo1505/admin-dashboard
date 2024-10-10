@@ -10,7 +10,9 @@ import { IMovie } from '@/models/movie/movie'
 const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
 
-const Page = async ({params}:any) => {
+export const revalidate = 60;  
+
+const Page = async ({ params }:any) => {
   const { name }= params
   const { movie } = await getMovieDetail(name)
   const session = await auth()
