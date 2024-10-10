@@ -23,7 +23,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { data: movieDetails } = useGetDetailsMovie({id:movie?.imdbId ?? '', language:locale})
   const synopsis = movieDetails?.movie_results[0]?.overview
-  
+
   const displaySubtitles = (value: string) => {
     switch (value) { 
       case  'FR':
