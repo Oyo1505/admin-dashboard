@@ -353,6 +353,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       }
   
     const countries = countriesValues?.flatMap(item => item.country)
+
       return { status: 200, countries};
   
         } catch (error) {

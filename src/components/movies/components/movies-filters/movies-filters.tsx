@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
 import countriesList from '@/shared/constants/countries'
 
-const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:string[], genre?:string, offset:number, countries?:string[]}) => {
+const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:string[], genre?:string, offset:number, countries?:string[] | undefined}) => {
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters')

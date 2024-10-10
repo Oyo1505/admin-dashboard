@@ -7,10 +7,10 @@ import React, { Suspense } from 'react'
 
 export const revalidate = 60;  
 
-export async function getData() {
+async function getData() {
   const { genres } = await getMoviesGenre();
   const { countries } = await getMoviesCountries();
-  
+
   return { genres, countries }
 }
 
@@ -28,11 +28,11 @@ export async function getData() {
   const genre = searchParams.genre ?? '';
 
   const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
-
+  console.log(typeof countries)
   const offset = 12
   return (<>
       <SearchMovie search={search} offset={offset} />
-      <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genresWithNoDuplicates} genre={genre} countries={countries}/>
+      <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genresWithNoDuplicates} genre={genre} countries={countries as string[]}/>
       <Suspense fallback={<LoadingSpinner />}>
         <Movies searchParams={searchParams} offset={offset} />
       </Suspense>

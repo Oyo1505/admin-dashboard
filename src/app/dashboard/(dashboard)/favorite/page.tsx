@@ -6,7 +6,7 @@ import Title from '@/components/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';
 import MoviesFavorite from '@/components/movies/components/movies-favorite/movies-favorite';
 
-export async function getData() {
+ async function getData() {
   const session = await auth()
   //@ts-ignore
   const   { movies } = session?.user?.id &&  await getFavoriteMovies(session?.user?.id)

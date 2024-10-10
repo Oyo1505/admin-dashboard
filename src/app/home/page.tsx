@@ -19,8 +19,9 @@ const lobster = Lobster({
   weight: '400',
   display: 'swap',
   subsets: ['latin'],
-})
-export async function getData() {
+});
+
+async function getData() {
   const moviesLastFive = await getLastMovies();
   const { movies: moviesByARandomCountry, country} = await getMoviesByARandomCountry();
   const { movies: moviesByARandomGenre, genre } = await getMoviesByARandomGenre();
@@ -31,7 +32,7 @@ export async function getData() {
 
 const Page =  async () => {
   const locale = await getLocale();
-  
+
   const { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop } = await getData();
   
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
