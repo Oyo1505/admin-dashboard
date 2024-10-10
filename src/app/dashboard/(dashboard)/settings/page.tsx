@@ -19,7 +19,7 @@ export default async function SettingsPage() {
         <div>
           <Title translationTheme="SettingsPage" type='h3' translationText='anyHelp' />
           <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-start items-start">
-              <a href=" https://ig.me/m/oyo1505" target="_blank" rel="noreferrer" className="flex h-11 w-48 sm:w-32 items-center justify-start gap-4">
+              <a href="https://www.instagram.com/oyo1505" target="_blank" rel="noreferrer" className="flex h-11 w-48 sm:w-32 items-center justify-start gap-4">
               <button className="w-full h-full flex items-center justify-center group rounded-lg bg-white  group">
                <InstagramLogo />
                  <span className='text-sm text-background font-bold'>Oyo1505</span>

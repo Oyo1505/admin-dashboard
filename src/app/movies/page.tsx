@@ -28,7 +28,7 @@ async function getData() {
   const genre = searchParams.genre ?? '';
 
   const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
-  console.log(typeof countries)
+
   const offset = 12
   return (<>
       <SearchMovie search={search} offset={offset} />

@@ -14,8 +14,8 @@ import paramount from '../.../../../../../../public/images/paramount.avif';
 
 const MoviesHomeDirector = ({ movies, director, isMobileView, fontFamily, imageBackdrop }:{movies?:IMovie[], director?:string, isMobileView?:boolean, fontFamily?:string, imageBackdrop?:string | null}) => {
 
- const locale = useLocale()
-console.log(paramount)
+ const locale = useLocale();
+ 
  const responsive = {
   tablet: {
     breakpoint: { max: 1024, min: 465 },
