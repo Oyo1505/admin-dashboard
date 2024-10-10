@@ -6,15 +6,9 @@ import React from 'react';
 
 export const revalidate = 60;
 
-export async function getData() {
+const Page = async () => {
   const { movies } = await getDataFromGoogleDrive() as {movies: IMovie[]}
   const { movieInDb } = await getAllMovies()
-
-  return {movies, movieInDb}
-}
-
-const Page = async () => {
-    const {movies, movieInDb} = await getData()
 
     return <MovieTable movies={movies} movieInDb={movieInDb as any}  />
 }
