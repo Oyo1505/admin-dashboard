@@ -107,7 +107,8 @@
     "toastMessageSuccess": "Movie added to favorites",
     "toastMessageError": "An error occurred",
     "download": "Download Movie",
-    "titleWebSubtitles": "List of site web subtitles"
+    "titleWebSubtitles": "List of site web subtitles",
+    "Suggestion": "Suggestion"
   },
   "SettingsPage": {
     "anyHelp": "Any help you need?",

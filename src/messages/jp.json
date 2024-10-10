@@ -106,7 +106,8 @@
     "toastMessageSuccess": "映画をお気に入りに追加しました",
     "toastMessageError": "エラーが発生しました",
     "download": "映画をダウンロード",
-    "titleWebSubtitles": "サイトの字幕リスト"
+    "titleWebSubtitles": "サイトの字幕リスト",
+     "Suggestion": "Suggestion"
   },
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",

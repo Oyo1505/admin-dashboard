@@ -41,7 +41,7 @@ const Page =  async () => {
 
   const userAgent = headersList.get('user-agent');
   const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));   
-//@ts-ignore
+  //@ts-ignore
   const countryChosen = findCountry?.[0]?.label?.[locale] 
   return (
     <div className='flex flex-col mt-6 gap-8'>

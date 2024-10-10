@@ -107,7 +107,8 @@
     "toastMessageSuccess": "Film ajouté aux favoris",
     "toastMessageError": "Une Erreur est survenue",
     "download": "Télécharger le film",
-    "titleWebSubtitles" : "Liste des sites de sous-titres"
+    "titleWebSubtitles" : "Liste des sites de sous-titres",
+     "Suggestion": "Suggestion"
   },
   "SettingsPage": {
     "title": "Settings" ,

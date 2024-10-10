@@ -48,10 +48,16 @@ const Page = async ({ params }:any) => {
     </div>
   </Suspense>
     {movie && movie?.trailer && 
-        <div className='mt-14 h-96 w-full lg:w-1/2'>
+    <div className='w-full h-96 mt-14 mb-10 flex flex-row gap-7'>
+      <div className='h-full w-full lg:w-1/2'>
         <Title translationTheme='MoviePage' translationText='trailer' type='h2' />
         <VideoPlayerYoutube movie={movie?.trailer} />  
       </div>
+      <div className='h-full w-full lg:w-1/2'>
+        <Title translationTheme='MoviePage' translationText='Suggestion' type='h2' />
+      </div>
+    </div>
+      
     }
 
 </div>
