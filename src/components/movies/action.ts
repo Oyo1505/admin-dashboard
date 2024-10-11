@@ -19,12 +19,25 @@ export const getMovieDetail =  async (id:string)=> {
         id
       },
       cacheStrategy: { ttl: 60 },
-    })
+    });
+  
+  const randomGenre = movieInDb.genre[Math.floor(Math.random() * movieInDb.genre.length)];
+  const suggestedMovies = await prisma.movie.findMany({
+    where: {
+      genre: {
+        has: randomGenre
+      },
+      NOT: {
+        id: movieInDb.id
+      }
+    },
+    take: 3,
+   }) 
    
-  if (!movieInDb) {
+  if (!movieInDb && !suggestedMovies) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
-  return {movie : movieInDb, status: 200 };
+  return { movie : movieInDb,suggestedMovies, status: 200 };
 } catch (error) {
   console.log(error)
     return {

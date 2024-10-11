@@ -13,7 +13,7 @@ import { DoawloadLogo, Favorite } from '@/components/ui/components/icons/icons';
 import { toast } from 'react-toastify';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
 interface MovieHeaderProps {
-  movie?: IMovie;
+  movie?: IMovie | null;
   isFavorite: boolean;
 }
 
