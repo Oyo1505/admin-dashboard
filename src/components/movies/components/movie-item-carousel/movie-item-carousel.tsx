@@ -4,11 +4,11 @@ import Link from 'next/link'
 import React from 'react'
 import { titleOnlocale } from 'utilities/string/titleOnlocale'
 
-const MovieItemCarousel = ({image, locale, movie, id, suggestionSection }: {image: string, locale: string, movie: IMovie, id: string, suggestionSection?:boolean}) => {
+const MovieItemCarousel = ({image, locale, movie, id, suggestionSection = false }: {image: string, locale: string, movie: IMovie, id: string, suggestionSection?:boolean}) => {
 
   return (
     <Link href={`/movies/${id}`} >
-    <div className={`group relative flex  w-28 md:${suggestionSection ? 'w-56' : 'w-60'} lg:${suggestionSection ? 'w-60' : 'w-64'} rounded-lg  flex-col justify-between h-full`}>
+    <div className={`group relative flex  w-28 md:w-44 lg:${suggestionSection ? 'w-60' : 'w-64'} rounded-lg  flex-col justify-between h-full`}>
         <div className='w-full rounded-lg h-full relative overflow-hidden'>
           <div className='relative w-full h-full'>
             <Image
