@@ -34,7 +34,6 @@ const MoviesHomeTheme = ({ movies, country, isMobileView, fontFamily }:{movies?:
 };
 
   return ( 
-    <Suspense fallback={<LoadingSpinner />}>
       <div className={`w-full aspect-[0/0.4] md:aspect-[1/0.4] relative bg-chicago bg-cover bg-center`}>
         <div className='absolute w-full h-full bg-slate-950 opacity-50  top-0 left-0 z-0'></div>
           <Container className='h-full pt-6 pb-6 flex relative flex-col justify-start items-start'>
@@ -63,7 +62,6 @@ const MoviesHomeTheme = ({ movies, country, isMobileView, fontFamily }:{movies?:
             </Carousel>}
           </Container>
       </div>
-    </Suspense>
   )
 }
 

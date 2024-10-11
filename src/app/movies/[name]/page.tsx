@@ -7,15 +7,22 @@ import Title from '@/components/ui/components/title/title'
 import { auth } from '@/lib/auth'
 import { getFavoriteMovies } from '@/components/dashboard/action'
 import { IMovie } from '@/models/movie/movie'
+import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
+import MovieCarouselSuggestion from '@/components/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
+import { headers } from 'next/headers'
 const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
 
 export const revalidate = 60;  
 
 const Page = async ({ params }:any) => {
+  const headersList = headers();
+  const userAgent = headersList.get('user-agent');
+  const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));   
   const { name }= params
-  const { movie } = await getMovieDetail(name)
-  const session = await auth()
+  const { movie, suggestedMovies } = await getMovieDetail(name)
+  const session = await auth();
+
   const favoriteMovives = session?.user?.id &&  await getFavoriteMovies(session?.user?.id)
   //@ts-ignore
   const isFavorite = favoriteMovives?.movies?.find((movieFromDb: {movieFromDb :IMovie} )=> movieFromDb?.movieId === movie?.id)
@@ -47,19 +54,26 @@ const Page = async ({ params }:any) => {
       <MovieHeader movie={movie} isFavorite={isFavorite}/>
     </div>
   </Suspense>
+  <div className='w-full  mt-14 mb-10 flex gap-7 flex-col lg:flex-row'>
+
     {movie && movie?.trailer && 
-    <div className='w-full h-96 mt-14 mb-10 flex flex-row gap-7'>
-      <div className='h-full w-full lg:w-1/2'>
-        <Title translationTheme='MoviePage' translationText='trailer' type='h2' />
+    <>
+      <div className='h-96 w-full lg:w-1/2'>
+        <Title translationTheme='MoviePage' className='text-2xl md:text-3xl' translationText='trailer' type='h2' />
         <VideoPlayerYoutube movie={movie?.trailer} />  
       </div>
-      <div className='h-full w-full lg:w-1/2'>
-        <Title translationTheme='MoviePage' translationText='Suggestion' type='h2' />
-      </div>
-    </div>
-      
-    }
 
+    </>
+    }
+    {suggestedMovies && suggestedMovies?.length > 0 ?
+      <Suspense fallback={<LoadingSpinner />}>
+        <div className='h-full w-full mt-10 lg:mt-0 lg:w-1/2'>
+          <Title translationTheme='MoviePage' className={'text-2xl md:text-3xl'} translationText='Suggestion' type='h2' />
+          <MovieCarouselSuggestion movies={suggestedMovies}  isMobileView={isMobileView}/>
+        </div>
+        </Suspense>
+    : null}
+  </div>
 </div>
   )
 }
