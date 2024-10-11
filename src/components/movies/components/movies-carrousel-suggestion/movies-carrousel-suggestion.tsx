@@ -8,7 +8,8 @@ import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
 
 const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], isMobileView?:boolean}) => {
 
-  const locale = useLocale()
+  const locale = useLocale();
+  
   const responsive = {
     desktop: {
       breakpoint: {  max: 5000, min: 1025 },
@@ -28,7 +29,7 @@ const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], is
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 3,
-      slidesToSlide: 1 // optional, default to 1.
+      slidesToSlide: 1 
     }
   };
   
