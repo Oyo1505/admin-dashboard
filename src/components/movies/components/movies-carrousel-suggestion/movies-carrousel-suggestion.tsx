@@ -11,7 +11,7 @@ const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], is
   const locale = useLocale()
   const responsive = {
     desktop: {
-      breakpoint: {  max: 5000, min: 1024 },
+      breakpoint: {  max: 5000, min: 1025 },
       items: 3,
       slidesToSlide: 1
     },
