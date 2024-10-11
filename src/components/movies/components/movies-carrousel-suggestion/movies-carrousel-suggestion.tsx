@@ -44,7 +44,7 @@ const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], is
       responsive={responsive} 
       >
         {movies.map((movie, index) => (
-          <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image} suggestionSection={true}  id={movie.id} />
+          <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image} id={movie.id} />
         ))}
       </Carousel>
       : null

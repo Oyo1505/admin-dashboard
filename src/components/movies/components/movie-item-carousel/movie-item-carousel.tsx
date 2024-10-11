@@ -8,7 +8,7 @@ const MovieItemCarousel = ({image, locale, movie, id, suggestionSection = false 
 
   return (
     <Link href={`/movies/${id}`} >
-    <div className={`group relative flex  w-28 md:w-44 lg:${suggestionSection ? 'w-54' : 'w-64'} rounded-lg  flex-col justify-between h-full`}>
+    <div className={`group relative flex  w-28 md:w-44 lg:w-64} rounded-lg  flex-col justify-between h-full`}>
         <div className='w-full rounded-lg h-full relative overflow-hidden'>
           <div className='relative w-full h-full'>
             <Image
