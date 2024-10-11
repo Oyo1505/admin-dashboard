@@ -43,7 +43,7 @@ const MoviesHomeSection = ({ movies, isMobileView }:{movies?:IMovie[], isMobileV
       responsive={responsive} 
       >
         {movies.map((movie, index) => (
-          <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image} suggestionSection={false}  id={movie.id} />
+          <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image} id={movie.id} />
         ))}
       </Carousel>
       : null

@@ -9,11 +9,11 @@ import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
 const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], isMobileView?:boolean}) => {
 
   const locale = useLocale();
-  
+
   const responsive = {
     desktop: {
       breakpoint: {  max: 5000, min: 1025 },
-      items: 3,
+      items: 2,
       slidesToSlide: 1
     },
     tablet: {
@@ -45,7 +45,7 @@ const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], is
       responsive={responsive} 
       >
         {movies.map((movie, index) => (
-          <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image} suggestionSection={true}  id={movie.id} />
+          <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image}   id={movie.id} />
         ))}
       </Carousel>
       : null
