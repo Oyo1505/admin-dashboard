@@ -31,7 +31,7 @@ export const getMovieDetail =  async (id:string)=> {
         id: movieInDb.id
       }
     },
-    take: 5,
+    cacheStrategy: { ttl: 120 },
    }) 
    
   if (!movieInDb && !suggestedMovies) {
