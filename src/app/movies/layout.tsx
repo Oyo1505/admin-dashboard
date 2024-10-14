@@ -1,5 +1,6 @@
 import Container from '@/components/ui/components/container/container';
-import React, { ReactElement } from 'react'
+import React, { ReactElement, Suspense } from 'react'
+import Loading from './loading';
 
 const Layout = ({
   children
@@ -7,9 +8,11 @@ const Layout = ({
   children: ReactElement;
 }) => {
   return (
-    <Container className='pt-14'>
-    {children}
-  </Container>
+    <Suspense fallback={<Loading />} >
+      <Container className='pt-14'>
+        {children}
+      </Container>
+    </Suspense>
   )
 }
 

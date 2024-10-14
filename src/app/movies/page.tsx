@@ -2,7 +2,7 @@ import { getMoviesCountries, getMoviesGenre } from '@/components/movies/action';
 import MovieFilters from '@/components/movies/components/movies-filters/movies-filters';
 import Movies from '@/components/movies/components/movies/movies'
 import SearchMovie from '@/components/movies/components/search-movie/search-movie'
-import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
+import MoviesSkeleton from '@/components/skeleton/components/movies-skeleton/movies-skeleton';
 import React, { Suspense } from 'react'
 
 export const revalidate = 60;  
@@ -33,7 +33,7 @@ async function getData() {
   return (<>
       <SearchMovie search={search} offset={offset} />
       <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genresWithNoDuplicates} genre={genre} countries={countries as string[]}/>
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<MoviesSkeleton />}>
         <Movies searchParams={searchParams} offset={offset} />
       </Suspense>
     </>

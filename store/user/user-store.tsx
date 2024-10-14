@@ -8,7 +8,8 @@ import { create } from 'zustand'
 import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
 
 interface IUser extends User {
-  role? : 'ADMIN' | 'USER'
+  token?: string;
+  role? : 'ADMIN' | 'USER';
 }
 
 interface UserStore {
@@ -34,7 +35,7 @@ const useUserStore = create<UserStore>()(
       connected: false,
       setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
-        const {user} = await getUserConnected(email);
+        const { user } = await getUserConnected(email);
         set({  user: user, connected: true });
       },
       login: async ()=> {

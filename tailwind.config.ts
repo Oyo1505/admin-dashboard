@@ -43,7 +43,6 @@ export default {
       }
     },
     extend: {
-
       colors: {
         text: '#F5F5F5',
         border: '#F5F5F5',
@@ -86,6 +85,11 @@ export default {
         sm: 'calc(var(--radius) - 4px)'
       },
       keyframes: {
+        'shimmer': {
+          '0%': { backgroundColor: '#f0f0f0' },
+          '50%': { backgroundColor: '#e0e0e0' },
+          '100%': { backgroundColor: '#f0f0f0' },
+        },
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' }
@@ -97,7 +101,8 @@ export default {
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        'shimmer': 'shimmer 1.5s infinite'
       },
       backgroundImage: {
         'paramount': "url('/images/paramount.jpg'')",
