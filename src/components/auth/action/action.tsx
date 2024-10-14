@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 export const getUserConnected = async (email:string): Promise<{ user?: User | undefined, status?:number | undefined }> => {
   try {
     const user = await prisma.user.findUnique({
-      where:{email},
+      where:{ email },
       cacheStrategy: { ttl: 60 },
     })
     return {user : user ? user : {}, status:200 }

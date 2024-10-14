@@ -12,6 +12,8 @@ import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
 import MoviesHomeDirector from '@/components/movies/components/movies-home-director/movies-home-director'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
+import MoviesHomeSectionSkeleton from '@/components/skeleton/components/movie-home-section/movie-home-section'
+import MoviesHomeThemeSkeleton from '@/components/skeleton/components/movies-home-theme/movies-home-theme'
 
 export const revalidate = 60; 
 
@@ -47,22 +49,22 @@ const Page =  async () => {
     <div className='flex flex-col mt-6 gap-8'>
       <Container className='pt-14'>
           <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='lastFiveMovies' type='h3' />
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense fallback={<MoviesHomeSectionSkeleton />}>
             <MoviesHomeSection movies={moviesLastFive.movies} isMobileView={isMobileView} />
           </Suspense>
       </Container >
       <div>
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={<MoviesHomeThemeSkeleton />}>
           <MoviesHomeTheme fontFamily={lobster.className} movies={moviesByARandomCountry} isMobileView={isMobileView} country={countryChosen} />
         </Suspense>
       </div>
       <Container>
         <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='Akind'type='h3'> {genre}</Title>
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={<MoviesHomeSectionSkeleton />}>
          <MoviesHomeSection movies={moviesByARandomGenre} isMobileView={isMobileView} />
         </Suspense>
       </Container>
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<MoviesHomeThemeSkeleton />}>
       {directorMovies && directorMovies?.length > 0 && director && 
         <div>
           <MoviesHomeDirector fontFamily={lobster.className} movies={directorMovies}  isMobileView={isMobileView} director={director} imageBackdrop={imageBackdrop} />
@@ -73,7 +75,7 @@ const Page =  async () => {
       <div className='w-full bg-primary pb-6 pt-6'>
         <Container>
           <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} textColor="text-background" translationText='AHeart'type='h3'/>
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense fallback={<MoviesHomeSectionSkeleton />}>
            <MoviesHomeSection movies={extractFavoriteMovie}  isMobileView={isMobileView} />
           </Suspense>
         </Container>
