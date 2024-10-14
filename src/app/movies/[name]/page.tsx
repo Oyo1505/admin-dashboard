@@ -11,8 +11,15 @@ import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 import MovieCarouselSuggestion from '@/components/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
 import { headers } from 'next/headers'
 import Loading from './loading'
+import { Lobster } from 'next/font/google'
+import clsx from 'clsx'
 const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
+const lobster = Lobster({
+  weight: '400',
+  display: 'swap',
+  subsets: ['latin'],
+});
 
 export const revalidate = 60;  
 
@@ -62,7 +69,7 @@ const Page = async ({ params }:any) => {
     {movie && movie?.trailer && 
     <>
       <div className='h-96 w-full lg:w-1/2'>
-        <Title translationTheme='MoviePage' className='text-2xl md:text-3xl' translationText='trailer' type='h2' />
+        <Title translationTheme='MoviePage' className={clsx(lobster.className,'text-2xl md:text-3xl')} translationText='trailer' type='h2' />
         <VideoPlayerYoutube movie={movie?.trailer} />  
       </div>
 
@@ -71,7 +78,7 @@ const Page = async ({ params }:any) => {
     {suggestedMovies && suggestedMovies?.length > 0 ?
       <Suspense fallback={<LoadingSpinner />}>
         <div className='h-full w-full mt-10 lg:mt-0 lg:w-1/2'>
-          <Title translationTheme='MoviePage' className={'text-2xl md:text-3xl'} translationText='Suggestion' type='h2' />
+          <Title translationTheme='MoviePage' className={clsx(lobster.className,'text-2xl md:text-3xl')} translationText='Suggestion' type='h2' />
           <MovieCarouselSuggestion movies={suggestedMovies}  isMobileView={isMobileView}/>
         </div>
         </Suspense>

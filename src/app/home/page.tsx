@@ -11,7 +11,6 @@ import { headers } from 'next/headers'
 import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
 import MoviesHomeDirector from '@/components/movies/components/movies-home-director/movies-home-director'
-import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 import MoviesHomeSectionSkeleton from '@/components/skeleton/components/movie-home-section/movie-home-section'
 import MoviesHomeThemeSkeleton from '@/components/skeleton/components/movies-home-theme/movies-home-theme'
 
