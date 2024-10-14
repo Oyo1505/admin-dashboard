@@ -37,7 +37,7 @@ const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], is
     movies && movies?.length > 0 ?
     <Carousel
       ssr={true} 
-      containerClass="h-48 md:h-72 lg:h-96 w-full mt-1 z-0"
+      containerClass="h-48 md:h-72 lg:h-96 w-full mt-5 z-0"
       autoPlay={false}
       transitionDuration={500}
       draggable={isMobileView ? true : false}
