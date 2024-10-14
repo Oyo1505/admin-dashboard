@@ -38,7 +38,9 @@ const Page = async ({ params }:any) => {
             url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} 
             className='w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]'   
             width="auto" 
-            height="450px"  />}
+            height="450px"
+         
+            />}
 
           {
           //TODO: add video player when I got a NAS

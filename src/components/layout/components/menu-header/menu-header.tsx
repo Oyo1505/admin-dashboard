@@ -9,10 +9,8 @@ import { headers } from 'next/headers';
 import MenuMobile from '../menu-mobile/menu-mobile';
 
 const MenuHeader = ({session}: {session: any}) => {
- 
   const t = useTranslations('Menu');
   const headersList = headers();
-
   const userAgent = headersList.get('user-agent');
   const isMobileView = userAgent!.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
@@ -24,22 +22,11 @@ const MenuHeader = ({session}: {session: any}) => {
     <Container className='flex flex-row items-center justify-between gap-5'>
       <div className='flex items-center justify-start gap-5 '>
         {session && <>
-          <Link className='hover:text-red-600 text-primary transition-all duration-300'
-          href={URL_HOME}
-        >
-          {t('home')}
-        </Link>
-        <Link
-        className='hover:text-red-600 text-primary transition-all duration-300'
-          href={URL_MOVIES}
-          //replace={true}
-        >
-          {t('movies')}
-        </Link>
-        <Link  className='hover:text-red-600 text-primary transition-all duration-300' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
+        <Link className='hover:text-red-600 text-primary transition-all duration-300' href={URL_HOME}>{t('home')}</Link>
+        <Link className='hover:text-red-600 text-primary transition-all duration-300' href={URL_MOVIES}>{t('movies')}</Link>
+        <Link className='hover:text-red-600 text-primary transition-all duration-300' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
         </>}
       </div>
-
       <div className='flex items-center justify-end gap-5'>
         <User mobile={false} />
         <LocaleSwitcher />

@@ -105,6 +105,7 @@
     "subtitlesJP": "Japonais",
     "subtitlesEN": "Anglais",
     "toastMessageSuccess": "Film ajouté aux favoris",
+    "toastMessageSuccessDelete": "Film supprimé des favoris",
     "toastMessageError": "Une Erreur est survenue",
     "download": "Télécharger le film",
     "titleWebSubtitles" : "Liste des sites de sous-titres",

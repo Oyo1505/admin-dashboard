@@ -1,6 +1,6 @@
 import { IMovie } from "@/models/movie/movie"
 
-export   const titleOnlocale = (movie: IMovie, locale: string) => {
+export const titleOnlocale = (movie: IMovie, locale: string) => {
   if (locale === 'fr') {
     return movie?.title
   }else if (locale === 'jp') {
