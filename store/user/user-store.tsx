@@ -7,9 +7,6 @@ import { signIn, signOut } from 'next-auth/react';
 import { create } from 'zustand'
 import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
 
-
-// Définir l'interface pour le store utilisateur
-
 interface IUser extends User {
   role? : 'ADMIN' | 'USER'
 }
@@ -23,13 +20,13 @@ interface UserStore {
   login: () => void;
 }
 
-// Définir les options de persistance
+
 const persistOptions: PersistOptions<UserStore> = {
   name: 'user',
   storage: createJSONStorage(() => sessionStorage),
 };
 
-// Implémenter le store utilisateur en utilisant zustand et persist
+
 const useUserStore = create<UserStore>()(
   persist(
     (set) => ({

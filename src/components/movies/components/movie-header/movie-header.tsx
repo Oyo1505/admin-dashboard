@@ -17,7 +17,7 @@ interface MovieHeaderProps {
   isFavorite: boolean;
 }
 
-const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
+const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   const t = useTranslations('MoviePage')
   const locale = useLocale()
   const [isLoading, setIsLoading] = useState(false);
@@ -37,16 +37,21 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
     }
   }
   
-  const {user} = useUserStore((state) => state)
+  const { user } = useUserStore((state) => state)
   const findCountry = countriesList?.filter((item) => item?.value === movie?.country)
   const language = languagesList?.filter((item) => item?.value === movie?.language)
-  const handleFavorite =  () => {
+  const handleFavorite =  async() => {
     if (user?.id) {
       setIsLoading(true); 
      
       try {
-         addOrRemoveToFavorite(user?.id, movie?.id);
-        toast.success(t('toastMessageSuccess'), { position: "top-center" });
+       const res  = await addOrRemoveToFavorite(user?.id, movie?.id);
+        if (res?.status === 200 && res?.message === 'Ajouté aux favoris avec succès') {
+          toast.success(t('toastMessageSuccess'), { position: "top-center" });
+        } else if (res?.status === 200 && res?.message === 'Supprimé des favoris avec succès') {
+          toast.success(t('toastMessageSuccessDelete'), { position: "top-center" });
+        }
+
       } catch (err) {
         toast.error(t('toastMessageError'), { position: "top-center" });
       } finally {
@@ -105,7 +110,7 @@ const MovieHeader = ({movie, isFavorite}:MovieHeaderProps) => {
         <div>
           <a 
           href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`} 
-          className='inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-blue-400' 
+          className='inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-green-700'
           target='_blank' download>
             {
               <DoawloadLogo />

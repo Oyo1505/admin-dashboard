@@ -228,7 +228,6 @@ export const getFavoriteMovies =  async (id:string)=> {
       where: {
         userId: id
       },
-      cacheStrategy: { ttl: 60 * 60 },
       include: {
         movie: true
       },

@@ -18,7 +18,7 @@ export const getMovieDetail =  async (id:string)=> {
       where:{
         id
       },
-      cacheStrategy: { ttl: 60 },
+      cacheStrategy: { ttl: 120 },
     });
   
   const randomGenre = movieInDb.genre[Math.floor(Math.random() * movieInDb.genre.length)];
@@ -31,7 +31,7 @@ export const getMovieDetail =  async (id:string)=> {
         id: movieInDb.id
       }
     },
-    take: 3,
+    take: 5,
    }) 
    
   if (!movieInDb && !suggestedMovies) {

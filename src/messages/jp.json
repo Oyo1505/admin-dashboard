@@ -104,6 +104,7 @@
     "subtitlesJP": "日本語",
     "subtitlesEN": "英語",
     "toastMessageSuccess": "映画をお気に入りに追加しました",
+    "toastMessageSuccessDelete": "お気に入りリストから削除されました",
     "toastMessageError": "エラーが発生しました",
     "download": "映画をダウンロード",
     "titleWebSubtitles": "サイトの字幕リスト",
