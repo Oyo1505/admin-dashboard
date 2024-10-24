@@ -11,12 +11,13 @@ import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+
 export const metadata = {
   title: 'Nūberu Bāgu',
 };
 
 export default async function RootLayout({
-  children
+  children,
 }: {
   children: ReactElement;
 }) {

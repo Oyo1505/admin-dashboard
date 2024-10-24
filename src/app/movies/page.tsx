@@ -14,31 +14,32 @@ async function getData() {
   return { genres, countries }
 }
 
- const Page  = async ({
-  searchParams
-}: {
-  searchParams: {
-    language: string; q: string; subtitles: string; langage: string, genre: string
-};
-})=> {
-  const { genres, countries } = await getData();
-  const search = searchParams.q ?? '';
-  const subtitles = searchParams.subtitles ?? '';
-  const language = searchParams.language ?? '';
-  const genre = searchParams.genre ?? '';
+ const Page  = async (
+   props: {
+    searchParams: Promise<{
+      language: string; q: string; subtitles: string; langage: string, genre: string
+  }>;
+  }
+ ) => {
+   const searchParams = await props.searchParams;
+   const { genres, countries } = await getData();
+   const search = searchParams.q ?? '';
+   const subtitles = searchParams.subtitles ?? '';
+   const language = searchParams.language ?? '';
+   const genre = searchParams.genre ?? '';
 
-  const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
+   const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
 
-  const offset = 12
-  return (<>
-      <SearchMovie search={search} offset={offset} />
-      <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genresWithNoDuplicates} genre={genre} countries={countries as string[]}/>
-      <Suspense fallback={<MoviesSkeleton />}>
-        <Movies searchParams={searchParams} offset={offset} />
-      </Suspense>
-    </>
-)
-}
+   const offset = 12
+   return (<>
+       <SearchMovie search={search} offset={offset} />
+       <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genresWithNoDuplicates} genre={genre} countries={countries as string[]}/>
+       <Suspense fallback={<MoviesSkeleton />}>
+         <Movies searchParams={searchParams} offset={offset} />
+       </Suspense>
+     </>
+ )
+ }
 
 
 export default Page

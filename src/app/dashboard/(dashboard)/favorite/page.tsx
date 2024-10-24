@@ -9,7 +9,7 @@ import MoviesFavorite from '@/components/movies/components/movies-favorite/movie
  async function getData() {
   const session = await auth()
   //@ts-ignore
-  const   { movies } = session?.user?.id &&  await getFavoriteMovies(session?.user?.id)
+  const   { movies } = session?.user?.id &&  (await getFavoriteMovies(session?.user?.id))
   return { movies}
 }
 

@@ -14,7 +14,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
 
   const onClickDeleteMovie = async () => {
-    movie?.id && await deleteMovieById(movie?.id)
+    movie?.id && (await deleteMovieById(movie?.id))
   }
 
   const { data, isFetching, status, refetch } = useQuery({

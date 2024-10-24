@@ -13,7 +13,8 @@ import { headers } from 'next/headers'
 import Loading from './loading'
 import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
-const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
+import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube'
+//const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
 const lobster = Lobster({
   weight: '400',
@@ -23,18 +24,18 @@ const lobster = Lobster({
 
 export const revalidate = 60;  
 
-const Page = async ({ params }:any) => {
-  const headersList = headers();
-  const userAgent = headersList.get('user-agent');
-  const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));   
+const Page = async (props:any) => {
+  const params = await props.params;
+  const userAgent =  (await headers()).get('user-agent');
+  const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
   const { name }= params
   const { movie, suggestedMovies } = await getMovieDetail(name)
   const session = await auth();
 
-  const favoriteMovives = session?.user?.id &&  await getFavoriteMovies(session?.user?.id)
+  const favoriteMovives = session?.user?.id &&  (await getFavoriteMovies(session?.user?.id))
   //@ts-ignore
   const isFavorite = favoriteMovives?.movies?.find((movieFromDb: {movieFromDb :IMovie} )=> movieFromDb?.movieId === movie?.id)
- 
+
   return (  
   <div className='h-auto pt-6 flex flex-col justify-start items-start'>
   <Suspense fallback={<Loading />}>
