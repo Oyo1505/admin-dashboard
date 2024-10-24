@@ -64,7 +64,7 @@ function UserRow({ user }: { user: User }) {
   const { user:userConnected } = useUserStore(state => state);
   
   const deleteUser = async () => {
-    userId && await deleteUserById(userId)
+    userId && (await deleteUserById(userId))
   }
 
   return (

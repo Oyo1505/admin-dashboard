@@ -13,7 +13,7 @@ const ButtonDeleteAccount = ({ translationTheme, translationText, className}: { 
   const {data: session} = useSession();
 
   const deleteUser = async () => {
-    session?.user?.id && await deleteUserById(session?.user?.id)
+    session?.user?.id && (await deleteUserById(session?.user?.id))
     logout()
   }
 

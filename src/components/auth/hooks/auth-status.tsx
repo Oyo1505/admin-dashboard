@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use client'
 import { URL_HOME, URL_LEGAL_MENTIONS, URL_PRIVACY } from "@/shared/route"
 import { useSession } from "next-auth/react"
@@ -13,7 +14,7 @@ const useAuthStatus = async () => {
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        session && session?.user?.email &&  await fetchUser(session?.user?.email);  
+        session && session?.user?.email &&  (await fetchUser(session?.user?.email));  
       } catch (error) {
         console.log(error)
       }

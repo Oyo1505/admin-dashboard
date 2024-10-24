@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 "use server"
 import prisma from "@/lib/prisma";
 import { URL_USERS } from "@/shared/route";
@@ -9,7 +9,6 @@ export const getUserConnected = async (email:string): Promise<{ user?: User | un
   try {
     const user = await prisma.user.findUnique({
       where:{ email },
-      cacheStrategy: { ttl: 60 },
     })
     return {user : user ? user : {}, status:200 }
   } catch (error) {

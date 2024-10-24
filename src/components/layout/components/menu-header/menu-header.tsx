@@ -2,21 +2,21 @@ import { User } from '@/app/user';
 import Container from '@/components/ui/components/container/container';
 import LocaleSwitcher from '@/components/ui/components/LocaleSwitcher/locale-switcher';
 import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
-import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import React from 'react'
-import { headers } from 'next/headers';
 import MenuMobile from '../menu-mobile/menu-mobile';
+import { headers } from 'next/headers';
+import { getTranslations } from 'next-intl/server';
 
-const MenuHeader = ({session}: {session: any}) => {
-  const t = useTranslations('Menu');
-  const headersList = headers();
-  const userAgent = headersList.get('user-agent');
+const MenuHeader = async ({session}: {session: any}) => {
+  const t = await getTranslations('Menu');
+  const userAgent = (await headers()).get('user-agent');
   const isMobileView = userAgent!.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
   );
  
   return (
+    
     isMobileView ? <MenuMobile session={session}/> : 
     <header className="group fixed w-full top-0 flex h-15  pt-2 pb-2 items-center gap-4 bg-background bg-opacity-90  z-20 justify-between lg:justify-end">
     <Container className='flex flex-row items-center justify-between gap-5'>

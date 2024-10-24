@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl'
-import React from 'react'
+import React, { type JSX } from 'react';
 import cn from 'clsx';
 
 const Title = (

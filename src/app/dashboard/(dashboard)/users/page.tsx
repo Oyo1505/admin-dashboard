@@ -11,17 +11,18 @@ import { EmailAuthrizedEmailRow } from '@/components/dashboard/components/email-
 import Title from '@/components/ui/components/title/title';
 
 
-const Page = async ({
-  searchParams
-}: {
-  searchParams: { q: string; offset: string };
-}) => {
+const Page = async (
+  props: {
+    searchParams: Promise<{ q: string; offset: string }>;
+  }
+) => {
+  const searchParams = await props.searchParams;
   const session = await auth()
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset)
   const { mails } = await getAuthorizedEmails()
-  
+
   if(!session?.user) return redirect('/')
   return (
   <div className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6'>    

@@ -7,13 +7,12 @@ import countriesList from '@/shared/constants/countries';
 import { getLocale } from 'next-intl/server'
 import MoviesHomeTheme from '@/components/movies/components/movies-home-theme/movies-home-theme'
 import Container from '@/components/ui/components/container/container'
-import { headers } from 'next/headers'
 import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
 import MoviesHomeDirector from '@/components/movies/components/movies-home-director/movies-home-director'
 import MoviesHomeSectionSkeleton from '@/components/skeleton/components/movie-home-section/movie-home-section'
 import MoviesHomeThemeSkeleton from '@/components/skeleton/components/movies-home-theme/movies-home-theme'
-
+import { headers } from 'next/headers'
 export const revalidate = 60; 
 
 const lobster = Lobster({
@@ -38,9 +37,7 @@ const Page =  async () => {
   
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
-  const headersList = headers();
-
-  const userAgent = headersList.get('user-agent');
+  const userAgent =  (await headers()).get('user-agent') ;
   const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));   
   //@ts-ignore
   const countryChosen = findCountry?.[0]?.label?.[locale] 
