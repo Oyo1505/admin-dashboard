@@ -37,8 +37,6 @@
     "next": "15.0.1",
     "next-auth": "5.0.0-beta.25",
     "next-intl": "^3.23.3",
-    "next-video": "^1.2.0",
-    "next-videos": "^1.4.1",
     "npm": "^10.9.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
