@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from "next-auth/jwt";
 import { URL_LEGAL_MENTIONS, URL_PRIVACY } from './shared/route';
+import NextAuth from "next-auth"
+import authConfig from './lib/auth.config';
 
-export default async function middleware(req: NextRequest) {
+const { auth } = NextAuth(authConfig)
+export default auth(async function middleware(req: NextRequest) {
   // Get the pathname of the request (e.g. /, /protected)
   const path = req.nextUrl.pathname;
   // const headers = new Headers(req.headers);
@@ -32,7 +35,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   } 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
