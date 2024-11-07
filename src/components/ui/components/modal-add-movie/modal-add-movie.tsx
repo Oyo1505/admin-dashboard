@@ -146,7 +146,7 @@ return(
       <Dialog.Title >Ajouter Film</Dialog.Title>
       <Dialog.Content className="data-[state=open]:animate-contentShow overflow-scroll text-background fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[950px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
         <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
-        <fieldset className="mb-[15px]  flex flex-col items-center gap-2">
+        <div className="mb-[15px]  flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="title">
           {t('titleMovie')}
           </label>
@@ -155,9 +155,9 @@ return(
            {...register('title')}
           />
           {errors.title && <p className="text-red-600 text-xs">{errors.title.message}</p>}
-        </fieldset>
+        </div>
 
-        <fieldset className="mb-[15px] flex flex-col items-center gap-2">
+        <div className="mb-[15px] flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('originalTitle')}
           </label>
@@ -165,9 +165,9 @@ return(
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('originalTitle')}
           />
-        </fieldset>
+        </div>
 
-        <fieldset className="mb-[15px] flex flex-col items-center gap-2">
+        <div className="mb-[15px] flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('titleJapanese')}
           </label>
@@ -175,9 +175,9 @@ return(
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleJapanese')}
           />
-        </fieldset>
+        </div>
 
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
           {t('titleEnglish')}
           </label>
@@ -185,8 +185,8 @@ return(
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleEnglish')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="director">
             {t('director')}
           </label>
@@ -195,8 +195,8 @@ return(
             id="director"
             {...register('director')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="link">
             {t('link')}
           </label>
@@ -205,8 +205,8 @@ return(
             id="link"
             {...register('link')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="imdbId">
             {t('imdbId')}
           </label>
@@ -215,9 +215,9 @@ return(
             id="imdbId"
             {...register('imdbId')}
           />
-        </fieldset>
+        </div>
         <div className='grid grid-cols-2 gap-3'>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="langage">
             {t('langage')}
           </label>
@@ -228,8 +228,8 @@ return(
             locale={locale} 
             onChange={handleLangageChange}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="country">
         {t('country')}
           </label>
@@ -240,9 +240,9 @@ return(
             locale={locale} 
             onChange={handleCountryChange}
           />
-        </fieldset>
         </div>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
             {t('subtitles')}
           </label>
@@ -280,10 +280,10 @@ return(
             EN
           </label>
           </div>
-        </fieldset>
+        </div>
        
         <div className='grid grid-cols-3 gap-3'>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="year">
           {t('year')}
           </label>
@@ -298,8 +298,8 @@ return(
               valueAsNumber: true,
             })}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11 text-right text-[15px]" htmlFor="genre">
           {t('genre')}
           </label>
@@ -307,8 +307,8 @@ return(
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('genre')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11 text-right text-[15px]" htmlFor="duration">
           {t('duration')}
           </label>
@@ -319,9 +319,9 @@ return(
               valueAsNumber: true,
             })}
           />
-        </fieldset>
         </div>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11 text-right text-[15px]" htmlFor="trailer">
           {t('trailer')}
           </label>
@@ -329,8 +329,8 @@ return(
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('trailer')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11 text-right text-[15px]" htmlFor="synopsis">
           {t('synopsis')}
           </label>
@@ -338,7 +338,7 @@ return(
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('synopsis')}
           />
-        </fieldset>
+        </div>
 
         {idGoogleDive && 
             <Input

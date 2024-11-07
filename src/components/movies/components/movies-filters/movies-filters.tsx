@@ -112,7 +112,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
   return (
     <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
-        <fieldset className="flex flex-col gap-2 md:w-64">
+        <div className="flex flex-col gap-2 md:w-64">
           <label>{t('subtitles')}</label>
           <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -120,8 +120,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
             <option value="JP">{t('subtitlesJP')}</option>
             <option value="FR">{t('subtitlesFR')}</option>
           </select>
-        </fieldset>
-        <fieldset  className="flex flex-col gap-2 md:w-64">
+        </div>
+        <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('language')}</label>
           <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -134,8 +134,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
               </option>
             ))}
           </select>
-        </fieldset>
-        <fieldset  className="flex flex-col gap-2 md:w-64">
+        </div>
+        <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('decade')}</label>
           <select   onChange={onChangeDecade}  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -145,8 +145,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
               </option>
             ))}
           </select>
-        </fieldset>
-        <fieldset  className="flex flex-col gap-2 md:w-64">
+        </div>
+        <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('genre')}</label>
           <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -157,7 +157,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
             ))}
         
           </select>
-        </fieldset>
+        </div>
     </div>
       <ButtonSearch className='w-full md:w-full lg:max-w-56 transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
     </div>

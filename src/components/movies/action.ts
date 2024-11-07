@@ -1,6 +1,7 @@
 //@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
+import { URL_GENRE_SECTION } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 
@@ -376,3 +377,77 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
         }
       }
     }
+
+export const getAllGenres = async () => {
+  try {
+    const genres = await prisma.genre.findMany();
+    if (!genres) {
+      return { status: 404, genres };
+    }
+    return { status: 200, genres };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+    };
+  }
+};
+
+export const addGenre = async (genre: IGenre) => {
+  try {
+    const genres = await prisma.genre.create({
+      data: genre,
+    });
+    if (!genres) {
+      return { status: 404, genres };
+    }
+    revalidatePath(URL_GENRE_SECTION)
+    return { status: 200, genres };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+    };
+  }
+};
+
+export const updateGenre = async (genre: IGenre) => {
+  try {
+    const genres = await prisma.genre.update({
+      where: {
+        id: genre.id,
+      },
+      data: genre,
+    });
+    if (!genres) {
+      return { status: 404, genres };
+    }
+    revalidatePath(URL_GENRE_SECTION)
+    return { status: 200, genres };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+    };
+  }
+};
+
+export const deleteGenre = async (id: string) => {
+  try {
+    const genres = await prisma.genre.delete({
+      where: {
+        id: id,
+      },
+    });
+    if (!genres) {
+      return { status: 404, genres };
+    }
+    revalidatePath(URL_GENRE_SECTION)
+    return { status: 200, genres };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+    };
+  }
+};  

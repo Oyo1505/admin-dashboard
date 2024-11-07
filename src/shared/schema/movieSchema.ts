@@ -40,3 +40,11 @@ export const directorSectionSchema = z.object({
   director: z.string().min(1, 'Un réalisteur est requis'),
   imageBackdrop: z.string(),
 });
+
+export type GenreSectionSchema = z.infer<typeof genreSchema>;
+export const genreSchema = z.object({
+  id: z.string().optional(),
+  nameFR: z.string().min(1, 'Un genre est requis'),
+  nameEN: z.string().min(1, 'Un genre est requis'),
+  nameJP: z.string().min(1, 'Un genre est requis'),
+});

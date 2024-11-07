@@ -110,6 +110,13 @@ model DirectorSection {
   imageBackdrop String?
 }
 
+model Genre {
+  id            String    @id @default(cuid())
+  nameFR          String    @unique
+  nameEN          String    @unique
+  nameJP          String    @unique
+}
+
 enum UserRole {
   USER
   ADMIN
