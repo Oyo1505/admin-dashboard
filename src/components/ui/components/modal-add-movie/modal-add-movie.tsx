@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/button';
-import { IMovie } from '@/models/movie/movie';
+import { IGenre, IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 import countriesList from '@/shared/constants/countries';
@@ -231,7 +231,19 @@ return(
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
           <label className="text-violet11  text-right text-[15px]" htmlFor="country">
-        {t('country')}
+            {t('country')}
+          </label>
+          <SelectInput 
+            optionsList={countriesList} 
+            formData={formData} 
+            formDataKey='country' 
+            locale={locale} 
+            onChange={handleCountryChange}
+          />
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <label className="text-violet11  text-right text-[15px]" htmlFor="country">
+            {t('genre')}
           </label>
           <SelectInput 
             optionsList={countriesList} 

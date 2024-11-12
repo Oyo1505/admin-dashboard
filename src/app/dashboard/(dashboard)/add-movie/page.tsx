@@ -10,7 +10,7 @@ const Page = async () => {
   const { movies } = await getDataFromGoogleDrive() as {movies: IMovie[]}
   const { movieInDb } = await getAllMovies()
 
-    return <MovieTable movies={movies} movieInDb={movieInDb as any}  />
+    return <MovieTable movies={movies} movieInDb={movieInDb as any} />
 }
 
 export default Page

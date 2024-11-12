@@ -27,14 +27,15 @@ async function getData() {
   const { movies: moviesByARandomGenre, genre } = await getMoviesByARandomGenre();
   const { movies: favorites} = await getFavoriteMovies("clzl1br370003zt5x1ipm2ojv");
   const { directorMovies, director, imageBackdrop} = await getDirectorMovies();
-  return { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop }
+
+  return { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop, }
 }
 
 const Page =  async () => {
   const locale = await getLocale();
 
   const { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop } = await getData();
-  
+ 
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   const userAgent =  (await headers()).get('user-agent') ;

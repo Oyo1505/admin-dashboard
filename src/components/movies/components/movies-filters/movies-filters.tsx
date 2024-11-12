@@ -10,15 +10,16 @@ import { decade } from '@/shared/constants/decade'
 import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
 import countriesList from '@/shared/constants/countries'
+import { IGenre } from '@/models/movie/movie'
 
-const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:string[], genre?:string, offset:number, countries?:string[] | undefined}) => {
+const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined}) => {
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters')
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
   const listCountries = countriesList.filter(country => countries?.includes(country.value))
-
+  //const genreWithLocal = genres?.filter(genre => locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP)
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
@@ -151,8 +152,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
           <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             {genres?.map((genre, index) => (
-              <option  key={`${genre}-${index}`} value={genre}>
-                {genre}
+              <option  key={`${genre.id}-${index}`} value={locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP}>
+                {locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP}
               </option>
             ))}
         
