@@ -18,6 +18,7 @@ export interface IMovie {
   subtitles?: string[]
   year: number | null
   genre: string[]
+  genresIds?: string[]
   country: string | null
   synopsis: string | null
   trailer: string | null

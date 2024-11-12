@@ -19,6 +19,13 @@ export const getMovieDetail =  async (id:string)=> {
       where:{
         id
       },
+      include: {
+        genresIds: {
+          select: {
+            genre: true,
+          },
+        },
+      },
       cacheStrategy: { ttl: 120 },
     });
   
@@ -176,6 +183,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
           }
         }
       });
+      
       revalidatePath(`/movies/${idMovie}`);
       return { status: 200, message: 'Supprimé des favoris avec succès' };
     }

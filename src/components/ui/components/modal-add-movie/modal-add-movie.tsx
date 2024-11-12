@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/button';
 import { IGenre, IMovie } from '@/models/movie/movie';
@@ -15,10 +15,18 @@ import SelectInput from '../select/select';
 import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useGenreStore } from 'store/movie/movie-store';
+import LabelForm from '../label-form/label-form';
+import SelectGenreMovieForm from '@/components/movies/components/select-genre-movie-form/select-genre-movie-form';
+import LabelGenre from '../label-genre/label-genre';
 
 
-const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
+
+  const [genresMovie, setGenresMovie] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map(item => item.genre) : []);
+  const { genres } = useGenreStore();
+
   const {
     register,
     setValue,
@@ -38,6 +46,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       link: movie?.link ?? '',  
       year: movie?.year ?? new Date().getFullYear(), 
       genre: movie?.genre?.join(' ') ?? '', 
+      genresIds: genresMovie ?? [],
       trailer: movie?.trailer ?? '', 
       duration: movie?.duration ?? 0,
       synopsis: movie?.synopsis ?? '', 
@@ -61,6 +70,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     imdbId : movie?.imdbId ?? '',
     year: movie?.year ?? new Date().getFullYear(), 
     genre: movie?.genre?.join(' ') ?? '', 
+    genresIds : movie.genresIds ?? [],
     trailer: movie?.trailer ?? '', 
     duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '', 
@@ -70,7 +80,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
   });
   
-  const createMovie= async (data : MovieSchema) => {
+  const createMovie = async (data : MovieSchema) => {
     const rawFormData = {
       title: data.title,
       titleJapanese: data.titleJapanese,
@@ -82,6 +92,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       subtitles: data.subtitles,
       language  : data.langage,
       originalTitle: data.originalTitle,
+      genresIds: data?.genresIds,
       year: data.year,
       duration : data.duration,
       genre: data?.genre?.split(' '),
@@ -95,7 +106,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   }
  
   const onClickEditMovie = async (data: MovieSchema) => {
-  
+
     const rawFormData = {
       id: data.id,
       idGoogleDive: data.idGoogleDive,
@@ -110,6 +121,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       year: data.year,
       duration : data.duration,
       genre: data?.genre?.split(' '),
+      genresIds: data?.genresIds,
       country: data.country,
       synopsis: data.synopsis,
       trailer: data.trailer,
@@ -139,6 +151,24 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     setValue('langage', e.target.value);
   };
 
+  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if(genresMovie.find(item => item.id === e.target.value)) return
+
+    const newGenreEntry =  genres?.find(item => item.id === e.target.value)
+    const newGenresMovie = [...genresMovie, newGenreEntry];
+    setGenresMovie(prevGenresMovie => {
+      if (newGenreEntry && !prevGenresMovie.some(genre => genre.id === newGenreEntry.id)) {
+        return [...prevGenresMovie, newGenreEntry];
+      }
+      return prevGenresMovie;
+    });
+    const genresIds = newGenresMovie.map(item => item?.id);
+    setValue('genresIds', genresIds);
+  };
+
+  const handleGenreDelete = (id:string) => {
+    setGenresMovie(genresMovie.filter(item => item.id !== id))
+  }
 
 return(
     <Dialog.Portal>
@@ -147,9 +177,7 @@ return(
       <Dialog.Content className="data-[state=open]:animate-contentShow overflow-scroll text-background fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[950px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
         <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
         <div className="mb-[15px]  flex flex-col items-center gap-2">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="title">
-          {t('titleMovie')}
-          </label>
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleMovie')} htmlFor="title" />
           <Input
            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
            {...register('title')}
@@ -158,9 +186,7 @@ return(
         </div>
 
         <div className="mb-[15px] flex flex-col items-center gap-2">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
-          {t('originalTitle')}
-          </label>
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('originalTitle')} htmlFor="originalTitle" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('originalTitle')}
@@ -168,9 +194,7 @@ return(
         </div>
 
         <div className="mb-[15px] flex flex-col items-center gap-2">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
-          {t('titleJapanese')}
-          </label>
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleJapanese')} htmlFor="titleJapanese" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleJapanese')}
@@ -178,18 +202,14 @@ return(
         </div>
 
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
-          {t('titleEnglish')}
-          </label>
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleEnglish')} htmlFor="titleEnglish" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleEnglish')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="director">
-            {t('director')}
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('director')} htmlFor="director" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="director"
@@ -197,9 +217,7 @@ return(
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="link">
-            {t('link')}
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('link')} htmlFor="link" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="link"
@@ -207,9 +225,7 @@ return(
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="imdbId">
-            {t('imdbId')}
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('imdbId')} htmlFor="imdbId" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="imdbId"
@@ -217,47 +233,38 @@ return(
           />
         </div>
         <div className='grid grid-cols-2 gap-3'>
+          <div className="mb-[15px] flex flex-col items-center gap-5">
+            <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('langage')} htmlFor="langage" />
+            <SelectInput 
+              optionsList={languagesList} 
+              formData={formData} 
+              formDataKey='langage' 
+              locale={locale} 
+              onChange={handleLangageChange}
+            />
+          </div>
+          <div className="mb-[15px] flex flex-col items-center gap-5">
+            <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('country')} htmlFor="country" />
+            <SelectInput 
+              optionsList={countriesList} 
+              formData={formData} 
+              formDataKey='country' 
+              locale={locale} 
+              onChange={handleCountryChange}
+            />
+          </div>
+        </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="langage">
-            {t('langage')}
-          </label>
-          <SelectInput 
-            optionsList={languagesList} 
-            formData={formData} 
-            formDataKey='langage' 
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('genre')} htmlFor="genresIds" />
+          <div className='inline-flex flex-wrap gap-2' >{genresMovie.length > 0 && genresMovie?.map(item => <LabelGenre key={item.id} id={item.id} nameFR={item.nameFR} nameEN={item.nameEN} nameJP={item.nameJP} onClick={() => handleGenreDelete(item.id)} locale={locale} />)}</div>
+          <SelectGenreMovieForm 
+            optionsList={genres} 
             locale={locale} 
-            onChange={handleLangageChange}
+            onChange={handleGenreChange}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="country">
-            {t('country')}
-          </label>
-          <SelectInput 
-            optionsList={countriesList} 
-            formData={formData} 
-            formDataKey='country' 
-            locale={locale} 
-            onChange={handleCountryChange}
-          />
-        </div>
-        <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="country">
-            {t('genre')}
-          </label>
-          <SelectInput 
-            optionsList={countriesList} 
-            formData={formData} 
-            formDataKey='country' 
-            locale={locale} 
-            onChange={handleCountryChange}
-          />
-        </div>
-        </div>
-        <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            {t('subtitles')}
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('subtitles')} htmlFor="subtitles" />
           <div className='flex gap-5 justify-center align-items'>
           <Checkbox
             id="subtitlesFR"
@@ -266,10 +273,8 @@ return(
             checked={subtitles.includes('FR')}
             onChange={() => handleCheckboxChange('FR')}
           />
-     
-          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            FR
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={'FR'} htmlFor="subtitles" />
+
           <Checkbox
             id="subtitlesJP"
             value={'JP'}
@@ -277,9 +282,7 @@ return(
             checked={subtitles.includes('JP')}
             onChange={() => handleCheckboxChange('JP')}
           />
-          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            JP
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={'JP'} htmlFor="subtitles" />
 
           <Checkbox
             id="subtitlesEN"
@@ -288,17 +291,13 @@ return(
             checked={subtitles.includes('EN')}
             onChange={() => handleCheckboxChange('EN')}
           />
-             <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            EN
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={'EN'} htmlFor="subtitles" />
           </div>
         </div>
        
         <div className='grid grid-cols-3 gap-3'>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="year">
-          {t('year')}
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('year')} htmlFor="year" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             type='number'
@@ -312,18 +311,14 @@ return(
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="genre">
-          {t('genre')}
-          </label>
+          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('genre')} htmlFor="genre" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('genre')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="duration">
-          {t('duration')}
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('duration')} htmlFor="duration" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             type='number'
@@ -334,18 +329,14 @@ return(
         </div>
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="trailer">
-          {t('trailer')}
-          </label>
+          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('trailer')} htmlFor="trailer" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('trailer')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="synopsis">
-          {t('synopsis')}
-          </label>
+          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('synopsis')} htmlFor="synopsis" />
           <Textarea
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('synopsis')}
@@ -361,7 +352,7 @@ return(
             />
           }
 
-        <iframe src={`https://drive.google.com/file/d/${idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>
+        <iframe src={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>
 
         <div className="mt-[25px] flex justify-end">
          

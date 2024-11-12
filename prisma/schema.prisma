@@ -70,7 +70,7 @@ model Movie {
   subtitles  String[]
   year     Int?
   genre    String[]
-  genres   MovieGenre[]
+  genresIds   MovieGenre[]
   country  String?
   synopsis  String?
   trailer  String?
@@ -118,6 +118,7 @@ model Genre {
   nameJP          String    @unique
   movies  MovieGenre[]
 }
+
 model MovieGenre {
   id       String   @id @default(cuid())
   movie    Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
@@ -126,6 +127,7 @@ model MovieGenre {
   genreId  String
   @@unique([movieId, genreId])
 }
+
 enum UserRole {
   USER
   ADMIN

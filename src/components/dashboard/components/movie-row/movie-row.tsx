@@ -52,7 +52,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
             </Button>
           </TableCell>
         </TableRow>
-        <DialogAddMovie  movie={movie} editMovie={editMovie}  setIsOpen={setIsOpen} />
+       {isOpen &&  <DialogAddMovie  movie={movie} editMovie={editMovie}  setIsOpen={setIsOpen} />}
       </Dialog.Root>
       </>
   );

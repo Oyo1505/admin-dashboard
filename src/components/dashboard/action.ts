@@ -62,7 +62,14 @@ export const deleteUserById =  async (id:string)=> {
 export const getAllMovies =  async ()=> {
   
   try {
-   const movieInDb = await prisma.movie.findMany({   
+   const movieInDb = await prisma.movie.findMany({
+        include: {
+          genresIds: {
+            select: {
+              genre: true,
+            },
+          },
+        },   
         orderBy: {
         createdAt: 'desc'
       }
@@ -101,6 +108,7 @@ export const addMovieToDb =  async (movie:any)=> {
         originalTitle: movie.originalTitle,
         subtitles: movie.subtitles,
         language: movie.language,
+        genresIds: movie?.genresIds,
         duration: Number(movie.duration),
         idGoogleDive: movie.idGoogleDive,
         year: Number(movie.year),
@@ -134,7 +142,7 @@ export const editMovieToDb =  async (movie:IMovie)=> {
   if (!movieInDb) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
-
+  
   await prisma.movie.update({
     where: {
       id: movie.id
@@ -154,11 +162,20 @@ export const editMovieToDb =  async (movie:IMovie)=> {
       subtitles: movie.subtitles,
       year: Number(movie.year),
       genre:movie.genre,
+      genresIds:{
+        create: movie.genresIds.map((genreId) => ({
+          genre: {
+            connect: { id: genreId }
+          }
+        }))
+      },
       country: movie.country,
       synopsis: movie.synopsis,
       trailer: movie.trailer,
     },
   })
+
+// await updateMovieGenre(movie)
   
   revalidatePath(URL_ADD_MOVIE)
   return {status: 200 };
@@ -170,6 +187,21 @@ export const editMovieToDb =  async (movie:IMovie)=> {
   }
 } 
 
+const updateMovieGenre = async(movie:IMovie) =>{
+  if(movie.genresIds && movie.genresIds.length > 0){
+    const dataGenreIds =  movie.genresIds.map(item =>{ return {
+      movieId: movie.id,
+      genreId : item}
+  })
+
+      await prisma.movieGenre.createMany({
+        data: {
+          ...dataGenreIds
+        }
+      });
+    
+  }
+}
 
 export const deleteMovieById =  async (id:string)=> {
   
@@ -231,7 +263,6 @@ export const getFavoriteMovies =  async (id:string)=> {
       include: {
         movie: true
       },
-      
     });
     return { movies , status: 200 };
   
