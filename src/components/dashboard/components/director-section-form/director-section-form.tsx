@@ -58,7 +58,7 @@ const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
     <div>
       <h1>{t('title')}</h1>
       <form onSubmit={handleSubmit(director?.id ? uploadDirectorSection : createDirectorSection)}>
-      <fieldset className="mb-[15px]  flex flex-col items-center gap-2">
+      <div className="mb-[15px]  flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="director">
           {t('director')}
           </label>
@@ -69,8 +69,8 @@ const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
            {...register('director')}
           />
           {errors.director && <p className="text-red-600 text-xs">{errors?.director?.message}</p>}
-      </fieldset>
-      <fieldset className="mb-[15px]  flex flex-col items-center gap-2">
+      </div>
+      <div className="mb-[15px]  flex flex-col items-center gap-2">
           <label className="text-violet11  text-right  text-[15px]" htmlFor="imageBackdrop">
           {t('image')}
           </label>
@@ -80,7 +80,7 @@ const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
            className="text-black inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
            {...register('imageBackdrop')}
           />
-      </fieldset>
+      </div>
         <div className="mt-[25px] gap-2 flex justify-end">
          {director?.id &&
          <Button 

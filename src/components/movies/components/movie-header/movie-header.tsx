@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/components/button/button';
-import { IMovie } from '@/models/movie/movie'
+import { IGenre, IMovie } from '@/models/movie/movie'
 import { useLocale, useTranslations } from 'next-intl'
 import React, { useState } from 'react'
 import { heuresEnMinutes } from 'utilities/number/minutesToHours'
@@ -12,6 +12,7 @@ import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { DoawloadLogo, Favorite } from '@/components/ui/components/icons/icons';
 import { toast } from 'react-toastify';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
+import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 interface MovieHeaderProps {
   movie?: IMovie | null;
   isFavorite: boolean;
@@ -22,6 +23,8 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   const locale = useLocale()
   const [isLoading, setIsLoading] = useState(false);
   const { data: movieDetails } = useGetDetailsMovie({id:movie?.imdbId ?? '', language:locale})
+  const [genresMovie,] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
+
   const synopsis = movieDetails?.movie_results[0]?.overview
 
   const displaySubtitles = (value: string) => {
@@ -72,7 +75,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
     </div>
     <div className='mb-4 flex flex-col gap-2'>
       {movie?.year && <div className='inline'>{t('release')}: {movie?.year}</div>}
-      {movie?.genre && movie?.genre?.length > 0  &&  <div className='inline'>{t('genre')}:  {movie?.genre?.map(item => <span className='mr-1' key={item}>{item}</span>)}</div>} 
+      {genresMovie && genresMovie.length > 0  &&  <div className='inline'>{t('genre')}:  {genresMovie?.map(item => <span className='mr-1' key={item.id}>{displayGenreTranslated(item, locale)}</span>)}</div>}
       {movie?.country && <div className='inline'>{t('country')}: { 
         //@ts-ignore
       findCountry?.[0]?.label?.[locale]}</div>}

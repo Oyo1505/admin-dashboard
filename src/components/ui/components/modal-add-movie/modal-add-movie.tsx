@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/button';
-import { IMovie } from '@/models/movie/movie';
+import { IGenre, IGenreResponse, IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 import countriesList from '@/shared/constants/countries';
@@ -15,10 +15,18 @@ import SelectInput from '../select/select';
 import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useGenreStore } from 'store/movie/movie-store';
+import LabelForm from '../label-form/label-form';
+import SelectGenreMovieForm from '@/components/movies/components/select-genre-movie-form/select-genre-movie-form';
+import LabelGenre from '../label-genre/label-genre';
 
 
-const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: Dispatch<SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
+
+  const [genresMovie, setGenresMovie] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
+  const { genres } = useGenreStore();
+
   const {
     register,
     setValue,
@@ -38,6 +46,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       link: movie?.link ?? '',  
       year: movie?.year ?? new Date().getFullYear(), 
       genre: movie?.genre?.join(' ') ?? '', 
+      genresIds: genresMovie.map(item => item.id) ?? [],
       trailer: movie?.trailer ?? '', 
       duration: movie?.duration ?? 0,
       synopsis: movie?.synopsis ?? '', 
@@ -49,8 +58,9 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     resolver: zodResolver(FormDataMovieSchema)
   });
 
-  const locale = useLocale()
-  const [formData,] = React.useState<MovieSchema>({
+  const locale = useLocale();
+
+  const [formData,] = useState<MovieSchema>({
     id : movie?.id,
     title: movie?.title ?? '',
     originalTitle: movie?.originalTitle ?? '',
@@ -60,7 +70,8 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     director : movie?.director ?? '',
     imdbId : movie?.imdbId ?? '',
     year: movie?.year ?? new Date().getFullYear(), 
-    genre: movie?.genre?.join(' ') ?? '', 
+    genre: movie?.genre?.join(' ') as any ?? '', 
+    genresIds : movie.genresIds as any ?? [],
     trailer: movie?.trailer ?? '', 
     duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '', 
@@ -70,7 +81,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
   });
   
-  const createMovie= async (data : MovieSchema) => {
+  const createMovie = async (data : MovieSchema) => {
     const rawFormData = {
       title: data.title,
       titleJapanese: data.titleJapanese,
@@ -82,6 +93,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       subtitles: data.subtitles,
       language  : data.langage,
       originalTitle: data.originalTitle,
+      genresIds: data?.genresIds,
       year: data.year,
       duration : data.duration,
       genre: data?.genre?.split(' '),
@@ -95,7 +107,6 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
   }
  
   const onClickEditMovie = async (data: MovieSchema) => {
-  
     const rawFormData = {
       id: data.id,
       idGoogleDive: data.idGoogleDive,
@@ -110,6 +121,7 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
       year: data.year,
       duration : data.duration,
       genre: data?.genre?.split(' '),
+      genresIds: data?.genresIds,
       country: data.country,
       synopsis: data.synopsis,
       trailer: data.trailer,
@@ -139,6 +151,35 @@ const DialogAddMovie = ({movie, editMovie=false, setIsOpen}:{ movie:IMovie, edit
     setValue('langage', e.target.value);
   };
 
+  const setGenresValue = (newGenresMovie: IGenre[]) => {
+    const genresIds = newGenresMovie.map(item => item?.id);
+    setValue('genresIds', genresIds);
+  }
+
+  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    
+    if(genresMovie.find(item => item.id === e.target.value)) return
+    
+    const newGenreEntry =  genres?.find(item => item.id === e.target.value)
+    const newGenresMovie = [...genresMovie, newGenreEntry].filter(
+      (item): item is IGenre => item !== undefined
+    );
+
+    setGenresMovie(prevGenresMovie => {
+      if (newGenreEntry && !prevGenresMovie.some(genre => genre.id === newGenreEntry.id)) {
+        return [...prevGenresMovie, newGenreEntry];
+      }
+      return prevGenresMovie;
+    });
+
+    setGenresValue(newGenresMovie)
+  };
+
+  const handleGenreDelete = (id:string) => {
+    const newGenresMovie = genresMovie.filter(item => item.id !== id)
+    setGenresMovie(newGenresMovie)
+    setGenresValue(newGenresMovie)
+  }
 
 return(
     <Dialog.Portal>
@@ -146,106 +187,96 @@ return(
       <Dialog.Title >Ajouter Film</Dialog.Title>
       <Dialog.Content className="data-[state=open]:animate-contentShow overflow-scroll text-background fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[950px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
         <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
-        <fieldset className="mb-[15px]  flex flex-col items-center gap-2">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="title">
-          {t('titleMovie')}
-          </label>
+        <div className="mb-[15px]  flex flex-col items-center gap-2">
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleMovie')} htmlFor="title" />
           <Input
            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
            {...register('title')}
           />
           {errors.title && <p className="text-red-600 text-xs">{errors.title.message}</p>}
-        </fieldset>
+        </div>
 
-        <fieldset className="mb-[15px] flex flex-col items-center gap-2">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
-          {t('originalTitle')}
-          </label>
+        <div className="mb-[15px] flex flex-col items-center gap-2">
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('originalTitle')} htmlFor="originalTitle" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('originalTitle')}
           />
-        </fieldset>
+        </div>
 
-        <fieldset className="mb-[15px] flex flex-col items-center gap-2">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
-          {t('titleJapanese')}
-          </label>
+        <div className="mb-[15px] flex flex-col items-center gap-2">
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleJapanese')} htmlFor="titleJapanese" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleJapanese')}
           />
-        </fieldset>
+        </div>
 
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right  text-[15px]" htmlFor="originalTitle">
-          {t('titleEnglish')}
-          </label>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleEnglish')} htmlFor="titleEnglish" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleEnglish')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="director">
-            {t('director')}
-          </label>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('director')} htmlFor="director" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="director"
             {...register('director')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="link">
-            {t('link')}
-          </label>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('link')} htmlFor="link" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="link"
             {...register('link')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="imdbId">
-            {t('imdbId')}
-          </label>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('imdbId')} htmlFor="imdbId" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="imdbId"
             {...register('imdbId')}
           />
-        </fieldset>
-        <div className='grid grid-cols-2 gap-3'>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="langage">
-            {t('langage')}
-          </label>
-          <SelectInput 
-            optionsList={languagesList} 
-            formData={formData} 
-            formDataKey='langage' 
-            locale={locale} 
-            onChange={handleLangageChange}
-          />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="country">
-        {t('country')}
-          </label>
-          <SelectInput 
-            optionsList={countriesList} 
-            formData={formData} 
-            formDataKey='country' 
-            locale={locale} 
-            onChange={handleCountryChange}
-          />
-        </fieldset>
         </div>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            {t('subtitles')}
-          </label>
+        <div className='grid grid-cols-2 gap-3'>
+          <div className="mb-[15px] flex flex-col items-center gap-5">
+            <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('langage')} htmlFor="langage" />
+            <SelectInput 
+              optionsList={languagesList} 
+              formData={formData} 
+              formDataKey='langage' 
+              locale={locale} 
+              onChange={handleLangageChange}
+            />
+          </div>
+          <div className="mb-[15px] flex flex-col items-center gap-5">
+            <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('country')} htmlFor="country" />
+            <SelectInput 
+              optionsList={countriesList} 
+              formData={formData} 
+              formDataKey='country' 
+              locale={locale} 
+              onChange={handleCountryChange}
+            />
+          </div>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('genre')} htmlFor="genresIds" />
+          <div className='inline-flex flex-wrap gap-2' >{genresMovie.length > 0 && genresMovie?.map(item => <LabelGenre key={item.id} id={item.id} nameFR={item.nameFR} nameEN={item.nameEN} nameJP={item.nameJP} onClick={() => handleGenreDelete(item.id)} locale={locale} />)}</div>
+          <SelectGenreMovieForm 
+            optionsList={genres} 
+            locale={locale} 
+            onChange={handleGenreChange}
+          />
+          {errors.genresIds && <p className="text-red-600 text-xs">{errors.genresIds.message}</p>}
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('subtitles')} htmlFor="subtitles" />
           <div className='flex gap-5 justify-center align-items'>
           <Checkbox
             id="subtitlesFR"
@@ -254,10 +285,8 @@ return(
             checked={subtitles.includes('FR')}
             onChange={() => handleCheckboxChange('FR')}
           />
-     
-          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            FR
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={'FR'} htmlFor="subtitles" />
+
           <Checkbox
             id="subtitlesJP"
             value={'JP'}
@@ -265,9 +294,7 @@ return(
             checked={subtitles.includes('JP')}
             onChange={() => handleCheckboxChange('JP')}
           />
-          <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            JP
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={'JP'} htmlFor="subtitles" />
 
           <Checkbox
             id="subtitlesEN"
@@ -276,17 +303,13 @@ return(
             checked={subtitles.includes('EN')}
             onChange={() => handleCheckboxChange('EN')}
           />
-             <label className="text-violet11  text-right text-[15px]" htmlFor="subtitles">
-            EN
-          </label>
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={'EN'} htmlFor="subtitles" />
           </div>
-        </fieldset>
+        </div>
        
         <div className='grid grid-cols-3 gap-3'>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11  text-right text-[15px]" htmlFor="year">
-          {t('year')}
-          </label>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('year')} htmlFor="year" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             type='number'
@@ -298,20 +321,16 @@ return(
               valueAsNumber: true,
             })}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="genre">
-          {t('genre')}
-          </label>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('genre')} htmlFor="genre" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('genre')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="duration">
-          {t('duration')}
-          </label>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('duration')} htmlFor="duration" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             type='number'
@@ -319,26 +338,22 @@ return(
               valueAsNumber: true,
             })}
           />
-        </fieldset>
         </div>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="trailer">
-          {t('trailer')}
-          </label>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('trailer')} htmlFor="trailer" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('trailer')}
           />
-        </fieldset>
-        <fieldset className="mb-[15px] flex flex-col items-center gap-5">
-          <label className="text-violet11 text-right text-[15px]" htmlFor="synopsis">
-          {t('synopsis')}
-          </label>
+        </div>
+        <div className="mb-[15px] flex flex-col items-center gap-5">
+          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('synopsis')} htmlFor="synopsis" />
           <Textarea
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('synopsis')}
           />
-        </fieldset>
+        </div>
 
         {idGoogleDive && 
             <Input
@@ -349,7 +364,7 @@ return(
             />
           }
 
-        <iframe src={`https://drive.google.com/file/d/${idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>
+        <iframe src={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>
 
         <div className="mt-[25px] flex justify-end">
          

@@ -1,7 +1,7 @@
 'use client'
 import { NavItem } from '@/app/nav-item'
 import { AddIncon, Favorite, Home, SettingsIcon, UsersIcon } from '@/components/ui/components/icons/icons'
-import { URL_ADD_MOVIE, URL_DASHBOARD, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_SETTINGS, URL_USERS } from '@/shared/route'
+import { URL_ADD_MOVIE, URL_DASHBOARD, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_GENRE_SECTION, URL_SETTINGS, URL_USERS } from '@/shared/route'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import useUserStore from 'store/user/user-store'
@@ -29,6 +29,10 @@ const MenuDashboard = () => {
               <NavItem href={URL_DIRECTOR_SECTION}>
               <AddIncon />
                     {t('director')}
+              </NavItem>
+              <NavItem href={URL_GENRE_SECTION}>
+              <AddIncon />
+                    Genre
               </NavItem>
            </>
             }

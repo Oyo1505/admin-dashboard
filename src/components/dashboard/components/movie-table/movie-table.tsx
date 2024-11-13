@@ -5,13 +5,13 @@ import { IMovie, } from '@/models/movie/movie'
 import MovieRow from '../movie-row/movie-row'
 import { useTranslations } from 'next-intl'
 
-const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInDb: IMovie[] }) => {
+const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInDb: IMovie[]}) => {
 
   const t = useTranslations('Dashboard');
   const filteredMoviesNotAdded = movies?.filter(testMovie => !movieInDb?.some(dataMovie => dataMovie.idGoogleDive === testMovie.id));
-  
+ 
   const filteredMoviesAdded = movieInDb?.filter(testMovie => movies?.some(dataMovie => dataMovie.id === testMovie.idGoogleDive));
-
+  
   return (
     <Suspense  fallback={<p>Chargement...</p>}>
 
@@ -43,7 +43,7 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
           </TableHeader>
           <TableBody>
             {filteredMoviesAdded ? filteredMoviesAdded?.map((movie, index) => (
-              <MovieRow key={movie?.id} movie={movie}  index={index} editMovie={true} btnText={'Editer'} />
+              <MovieRow key={movie?.id} movie={movie}  index={index + 1} editMovie={true} btnText={'Editer'} />
             )): t('noMovie')}
           
           </TableBody>

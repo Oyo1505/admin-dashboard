@@ -10,15 +10,16 @@ import { decade } from '@/shared/constants/decade'
 import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
 import countriesList from '@/shared/constants/countries'
+import { IGenre } from '@/models/movie/movie'
 
-const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:string[], genre?:string, offset:number, countries?:string[] | undefined}) => {
+const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined}) => {
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters')
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
   const listCountries = countriesList.filter(country => countries?.includes(country.value))
-
+  //const genreWithLocal = genres?.filter(genre => locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP)
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
@@ -70,7 +71,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
     }
     setFiltersData({...filters, decade: e.target.value});
   }
-  function onChangeGenre(e: any) {
+  function onChangeGenre(e: React.ChangeEvent<HTMLSelectElement>) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
       return;
@@ -112,7 +113,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
   return (
     <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
-        <fieldset className="flex flex-col gap-2 md:w-64">
+        <div className="flex flex-col gap-2 md:w-64">
           <label>{t('subtitles')}</label>
           <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -120,8 +121,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
             <option value="JP">{t('subtitlesJP')}</option>
             <option value="FR">{t('subtitlesFR')}</option>
           </select>
-        </fieldset>
-        <fieldset  className="flex flex-col gap-2 md:w-64">
+        </div>
+        <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('language')}</label>
           <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -134,8 +135,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
               </option>
             ))}
           </select>
-        </fieldset>
-        <fieldset  className="flex flex-col gap-2 md:w-64">
+        </div>
+        <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('decade')}</label>
           <select   onChange={onChangeDecade}  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
@@ -145,19 +146,19 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
               </option>
             ))}
           </select>
-        </fieldset>
-        <fieldset  className="flex flex-col gap-2 md:w-64">
+        </div>
+        <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('genre')}</label>
           <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             {genres?.map((genre, index) => (
-              <option  key={`${genre}-${index}`} value={genre}>
-                {genre}
+              <option  key={`${genre.id}-${index}`} value={locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP}>
+                {locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP}
               </option>
             ))}
         
           </select>
-        </fieldset>
+        </div>
     </div>
       <ButtonSearch className='w-full md:w-full lg:max-w-56 transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
     </div>

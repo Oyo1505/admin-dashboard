@@ -1,4 +1,5 @@
-import { IFilters, IMovie } from '@/models/movie/movie';
+import { getAllGenres } from '@/components/movies/action';
+import { IFilters, IGenre, IMovie } from '@/models/movie/movie';
 import {create} from 'zustand';
 
 interface FormData {
@@ -52,6 +53,11 @@ interface FiltersMovieState {
   setHasBeenSearched : (val: boolean) => void;
 }
 
+interface IGenreStore {
+  genres: IGenre[];
+  setGenres: (data: IGenre[]) => void;
+}
+
 const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
   filters: {
     subtitles: undefined,
@@ -71,4 +77,18 @@ const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
     set({ hasBeenSearched: boolean}),
 }));
 
-export { useFiltersMovieStore, useMovieFormStore };
+
+const useGenreStore = create<IGenreStore>((set) => ({
+  genres: [],
+  setGenres: (data) => {
+    set((state) => ({
+      genres: [
+        ...state.genres,
+        ...data,
+      ],
+    }));  
+  },
+}));
+
+
+export { useFiltersMovieStore, useMovieFormStore, useGenreStore };

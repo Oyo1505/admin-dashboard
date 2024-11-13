@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+export type GenreSectionSchema = z.infer<typeof genreSchema>;
+
+export const genreSchema = z.object({
+  id: z.string().optional(),
+  nameFR: z.string().min(1, 'Un genre est requis'),
+  nameEN: z.string().min(1, 'Un genre est requis'),
+  nameJP: z.string().min(1, 'Un genre est requis'),
+});
+
 export const FormDataMovieSchema = z.object({
   id : z.string(),
   title: z.string().min(1, 'Un titre est requis'),
@@ -10,6 +19,7 @@ export const FormDataMovieSchema = z.object({
   director : z.string(),
   imdbId : z.string(),
   genre: z.string(),
+  genresIds : z.array(z.string()).min(1, 'Un genre est requis'),
   country: z.string(),
   duration: z.number(),
   langage: z.string(),
@@ -40,3 +50,4 @@ export const directorSectionSchema = z.object({
   director: z.string().min(1, 'Un réalisteur est requis'),
   imageBackdrop: z.string(),
 });
+

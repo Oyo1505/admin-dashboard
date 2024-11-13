@@ -9,7 +9,7 @@ const Fieldset = ({ label, id, defaultValue }: { label: string, id: string, defa
     setValue(event.target.value);
   };
   return (
-    <fieldset className="mb-[15px] flex items-center gap-5">
+    <div className="mb-[15px] flex items-center gap-5">
       <label className="text-violet11 w-[90px] text-right text-[15px]" htmlFor={id}>
         {label}
       </label>
@@ -20,7 +20,7 @@ const Fieldset = ({ label, id, defaultValue }: { label: string, id: string, defa
         onChange={handleChange}
         value={value}
       />
-    </fieldset>
+    </div>
   );
 }
 

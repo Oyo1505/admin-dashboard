@@ -1,5 +1,3 @@
-import { User } from "next-auth"
-
 export interface IMovie {
   id: string
   title: string
@@ -19,7 +17,8 @@ export interface IMovie {
   language?: string | null
   subtitles?: string[]
   year: number | null
-  genre: string[]
+  genre?: string[]
+  genresIds?:  IGenreResponse[]
   country: string | null
   synopsis: string | null
   trailer: string | null
@@ -36,4 +35,15 @@ export interface IFilters {
   decade?: number | null
   genre?: string;
   q?: string;
+}
+
+export interface IGenreResponse {
+  genre: IGenre
+}
+
+export interface IGenre {
+  id: string
+  nameFR:string
+  nameJP:string
+  nameEN:string
 }
