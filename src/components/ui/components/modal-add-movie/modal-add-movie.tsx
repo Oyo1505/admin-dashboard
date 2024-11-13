@@ -45,7 +45,6 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       publish : movie?.publish ?? true,
       link: movie?.link ?? '',  
       year: movie?.year ?? new Date().getFullYear(), 
-      genre: movie?.genre?.join(' ') ?? '', 
       genresIds: genresMovie.map(item => item.id) ?? [],
       trailer: movie?.trailer ?? '', 
       duration: movie?.duration ?? 0,
@@ -70,7 +69,6 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
     director : movie?.director ?? '',
     imdbId : movie?.imdbId ?? '',
     year: movie?.year ?? new Date().getFullYear(), 
-    genre: movie?.genre?.join(' ') as any ?? '', 
     genresIds : movie.genresIds as any ?? [],
     trailer: movie?.trailer ?? '', 
     duration: movie?.duration ?? 0,
@@ -96,7 +94,6 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       genresIds: data?.genresIds,
       year: data.year,
       duration : data.duration,
-      genre: data?.genre?.split(' '),
       country: data.country,
       synopsis: data.synopsis,
       trailer: data.trailer,
@@ -120,7 +117,6 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       releaseDate: Date.now(),
       year: data.year,
       duration : data.duration,
-      genre: data?.genre?.split(' '),
       genresIds: data?.genresIds,
       country: data.country,
       synopsis: data.synopsis,
@@ -320,13 +316,6 @@ return(
               max: { value: new Date().getFullYear(), message: 'L\'année ne peut pas être dans le futur' },
               valueAsNumber: true,
             })}
-          />
-        </div>
-        <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('genre')} htmlFor="genre" />
-          <Input
-            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            {...register('genre')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">

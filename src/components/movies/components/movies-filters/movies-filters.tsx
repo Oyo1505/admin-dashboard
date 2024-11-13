@@ -11,15 +11,17 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
 import countriesList from '@/shared/constants/countries'
 import { IGenre } from '@/models/movie/movie'
+import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
 
 const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined}) => {
   const locale = useLocale()
   const router = useRouter();
-  const t = useTranslations('Filters')
+  const t = useTranslations('Filters');
+
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
-  const listCountries = countriesList.filter(country => countries?.includes(country.value))
-  //const genreWithLocal = genres?.filter(genre => locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP)
+  const listCountries = countriesList.filter(country => countries?.includes(country.value));
+
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
     enabled: false,
@@ -34,7 +36,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
     })}),
   });
 
-  function onChangeSubtitles(e: any) {
+  function onChangeSubtitles(e: React.ChangeEvent<HTMLSelectElement>) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
       return;
@@ -47,7 +49,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
     setFiltersData({...filters, subtitles: e.target.value});
   }
  
-  function onChangeCountry(e: any) {
+  function onChangeCountry(e: React.ChangeEvent<HTMLSelectElement>) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
       return;
@@ -59,18 +61,21 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
     }
     setFiltersData({...filters, language: e.target.value});
   }
-  function onChangeDecade(e: any) {
+
+  function onChangeDecade(e: React.ChangeEvent<HTMLSelectElement>) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
       return;
     }
-    else if (e.target.value) {
+    const decadeValue = e.target.value ? Number(e.target.value) : undefined;
+    if (e.target.value) {
       params.set('decade', e.target.value);
     } else {
       params.delete('decade');
     }
-    setFiltersData({...filters, decade: e.target.value});
+    setFiltersData({...filters, decade: decadeValue});
   }
+
   function onChangeGenre(e: React.ChangeEvent<HTMLSelectElement>) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
@@ -152,8 +157,8 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
           <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             {genres?.map((genre, index) => (
-              <option  key={`${genre.id}-${index}`} value={locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP}>
-                {locale === 'fr' ? genre.nameFR : locale === 'en' ? genre.nameEN : genre.nameJP}
+              <option  key={`${genre.id}-${index}`} value={displayGenreTranslated(genre, locale)}>
+                {displayGenreTranslated(genre, locale)}
               </option>
             ))}
         

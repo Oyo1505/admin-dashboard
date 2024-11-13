@@ -13,6 +13,7 @@ import MoviesHomeDirector from '@/components/movies/components/movies-home-direc
 import MoviesHomeSectionSkeleton from '@/components/skeleton/components/movie-home-section/movie-home-section'
 import MoviesHomeThemeSkeleton from '@/components/skeleton/components/movies-home-theme/movies-home-theme'
 import { headers } from 'next/headers'
+import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
 export const revalidate = 60; 
 
 const lobster = Lobster({
@@ -28,14 +29,14 @@ async function getData() {
   const { movies: favorites} = await getFavoriteMovies("clzl1br370003zt5x1ipm2ojv");
   const { directorMovies, director, imageBackdrop} = await getDirectorMovies();
 
-  return { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop, }
+  return { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, genre, favorites, directorMovies, country,  director, imageBackdrop, }
 }
 
 const Page =  async () => {
   const locale = await getLocale();
 
-  const { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, favorites, directorMovies, country, genre,  director, imageBackdrop } = await getData();
- 
+  const { moviesLastFive, moviesByARandomCountry, favorites, directorMovies, moviesByARandomGenre, genre, country,  director, imageBackdrop } = await getData();
+
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   const userAgent =  (await headers()).get('user-agent') ;
@@ -56,7 +57,7 @@ const Page =  async () => {
         </Suspense>
       </div>
       <Container>
-        <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='Akind'type='h3'> {genre}</Title>
+        <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='Akind'type='h3'> {displayGenreTranslated(genre, locale)}</Title>
         <Suspense fallback={<MoviesHomeSectionSkeleton />}>
          <MoviesHomeSection movies={moviesByARandomGenre} isMobileView={isMobileView} />
         </Suspense>

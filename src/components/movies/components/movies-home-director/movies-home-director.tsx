@@ -10,7 +10,7 @@ import Container from '@/components/ui/components/container/container';
 import Carousel from 'react-multi-carousel';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
 import clsx from 'clsx';
-import paramount from '../.../../../../../../public/images/paramount.avif';
+import paramount from '../.../../../../../../public/images/paramount.webp';
 
 const MoviesHomeDirector = ({ movies, director, isMobileView, fontFamily, imageBackdrop }:{movies?:IMovie[], director?:string, isMobileView?:boolean, fontFamily?:string, imageBackdrop?:string | null}) => {
 
