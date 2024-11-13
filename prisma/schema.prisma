@@ -69,7 +69,6 @@ model Movie {
   language  String?
   subtitles  String[]
   year     Int?
-  genre    String[]
   genresIds   MovieGenre[]
   country  String?
   synopsis  String?
