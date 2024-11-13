@@ -18,7 +18,6 @@ export const FormDataMovieSchema = z.object({
   synopsis: z.string(),
   director : z.string(),
   imdbId : z.string(),
-  genre: z.string(),
   genresIds : z.array(z.string()).min(1, 'Un genre est requis'),
   country: z.string(),
   duration: z.number(),

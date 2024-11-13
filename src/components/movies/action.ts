@@ -4,15 +4,6 @@ import prisma from "@/lib/prisma";
 import { URL_GENRE_SECTION } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
-
-function extractUniqueGenres(data: any[]) {
-  const allGenres = data.flatMap(item => item.genre);
-  
-  const uniqueGenres = [...new Set(allGenres)];
-  return uniqueGenres;
-}
-
-
 export const getMovieDetail =  async (id:string)=> {
   try {
   const movieInDb = await prisma.movie.findUnique({
@@ -28,13 +19,15 @@ export const getMovieDetail =  async (id:string)=> {
       },
       cacheStrategy: { ttl: 120 },
     });
+
+  const randomGenre = movieInDb.genresIds[Math.floor(Math.random() * movieInDb.genresIds.length)];
   
-  const randomGenre = movieInDb.genre[Math.floor(Math.random() * movieInDb.genre.length)];
   const suggestedMovies = await prisma.movie.findMany({
     where: {
-      genre: {
-        has: randomGenre
-      },
+      genresIds: {
+        some: {
+            genreId: { contains: randomGenre.genre.id, mode : 'insensitive'},
+        },},
       NOT: {
         id: movieInDb.id
       }
@@ -45,7 +38,7 @@ export const getMovieDetail =  async (id:string)=> {
   if (!movieInDb && !suggestedMovies) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
-  return { movie : movieInDb,suggestedMovies, status: 200 };
+  return { movie : movieInDb, suggestedMovies, status: 200 };
 } catch (error) {
   console.log(error)
     return {
@@ -53,17 +46,15 @@ export const getMovieDetail =  async (id:string)=> {
     }
   }
 } 
+
 export const getMoviesByARandomGenreById =  async (genre: string) => {
   try {
     const moviesInDb = await prisma.movie.findMany({
       where: {
         genresIds: {
-          some: {
-            genre: {
-              nameEN: genre
-            }
-          }
-        }
+        some: {
+            genreId: { contains: genre.id, mode : 'insensitive'},
+        },},
       },
     });
     return { movies : moviesInDb,status: 200 };
@@ -138,25 +129,20 @@ export const getMoviesByARandomCountry = async () => {
 
 export const getMoviesByARandomGenre = async () => {
 try {
-  const uniqueGenres = await prisma.movie.findMany({
-    select: {
-      genre: true,
-    },
-    distinct: ['genre'],
+  const uniqueGenres = await prisma.genre.findMany({
     cacheStrategy: { ttl: 300 },
   });
-
   if (!uniqueGenres) {
     return { status: 400, message: 'Pas de genre' };
-  }
-
-  const result = extractUniqueGenres(uniqueGenres);
-  const randomGenre = result[Math.floor(Math.random() * result.length)];
+  }  
+  const randomGenre = uniqueGenres[Math.floor(Math.random() * uniqueGenres.length)];
+  
   const movies = await prisma.movie.findMany({
     where: {
-      genre: {
-        has: randomGenre,
-      },
+      genresIds: {
+      some: {
+          genreId: { contains: randomGenre.id, mode : 'insensitive'},
+      },},
     },
     orderBy: {
       createdAt: 'desc'
@@ -164,7 +150,6 @@ try {
     take: 5,
     cacheStrategy: { ttl: 300 },
    });
-  
    if (!movies) {
     return { status: 400, message: 'Pas de films' };
   }
@@ -183,9 +168,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
   if (!idMovie) {
     return { status: 400, message: 'Le film n\'est pas défini' };
   }
-
   try {
-    // Vérifiez si l'association existe déjà
     const existingFavorite = await prisma.userFavoriteMovies.findUnique({
       where: {
         userId_movieId: {
@@ -214,6 +197,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
         movieId: idMovie
       }
     });
+
     revalidatePath(`/movies/${idMovie}`);
     return { status: 200, message: 'Ajouté aux favoris avec succès' };
 
@@ -226,7 +210,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
   }
 };
 
-export const getAllMovies =  async ()=> {
+export const getAllMovies =  async () => {
   
   try {
 
@@ -320,7 +304,19 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     }
 
     if (genre) {
-      conditions.AND.push({ genre: { has: genre } });
+      conditions.AND.push({
+        genresIds: {
+          some: {
+            genre: {
+              OR: [
+                { nameFR: { contains: genre, mode: 'insensitive' } },
+                { nameEN: { contains: genre, mode: 'insensitive' } },
+                { nameJP: { contains: genre, mode: 'insensitive' } },
+              ],
+            },
+          },
+        },
+      });
     }
 
     // Concaténation des conditions OR et AND si elles existent
@@ -353,32 +349,6 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     };
   }
 };
-
- export const getMoviesGenre = async () => {
-  try {
-    const uniqueGenres  = await prisma.movie.findMany({
-      select: {
-        genre: true,
-      },
-      cacheStrategy: { ttl: 300 },
-      distinct: ['genre'],
-      
-    });
-  
-    if (!uniqueGenres) {
-      return { status: 400, message: 'Pas de genre' };
-    }
-
-  const genres = uniqueGenres?.flatMap(item => item.genre)
-    return { status: 200, genres};
-
-      } catch (error) {
-      console.log(error)
-      return {
-        status : 500
-      }
-    }
-  }
 
   export const getMoviesCountries = async () => {
     try {

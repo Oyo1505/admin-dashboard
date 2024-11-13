@@ -1,9 +1,9 @@
 import GenreForm from '@/components/dashboard/components/genre-form/genre-form'
 import { GenreList } from '@/components/dashboard/components/genre-list/genre-list';
-import { getAllGenres, getMoviesGenre } from '@/components/movies/action';
+import { getAllGenres } from '@/components/movies/action';
 import Container from '@/components/ui/components/container/container'
-import { Input } from 'postcss'
 import React from 'react'
+
 const revalidate = 60;
 
 const getData = async () => {

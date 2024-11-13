@@ -118,7 +118,6 @@ export const addMovieToDb =  async (movie:any)=> {
         duration: Number(movie.duration),
         idGoogleDive: movie.idGoogleDive,
         year: Number(movie.year),
-        genre: movie?.genre ? movie?.genre : [],
         country: movie.country,
         synopsis: movie.synopsis,
         trailer: movie.trailer,
@@ -167,7 +166,6 @@ export const editMovieToDb =  async (movie:IMovie)=> {
       language: movie.language,
       subtitles: movie.subtitles,
       year: Number(movie.year),
-      genre:movie.genre,
       genresIds:{
         deleteMany:{},
         create: movie.genresIds.map((genreId) => ({
@@ -182,8 +180,6 @@ export const editMovieToDb =  async (movie:IMovie)=> {
     },
   })
 
-// await updateMovieGenre(movie)
-  
   revalidatePath(URL_ADD_MOVIE)
   return {status: 200 };
 } catch (error) {
@@ -193,22 +189,6 @@ export const editMovieToDb =  async (movie:IMovie)=> {
     }
   }
 } 
-
-const updateMovieGenre = async(movie:IMovie) =>{
-  if(movie.genresIds && movie.genresIds.length > 0){
-    const dataGenreIds =  movie.genresIds.map(item =>{ return {
-      movieId: movie.id,
-      genreId : item}
-  })
-
-      await prisma.movieGenre.createMany({
-        data: {
-          ...dataGenreIds
-        }
-      });
-    
-  }
-}
 
 export const deleteMovieById =  async (id:string)=> {
   

@@ -1,4 +1,4 @@
-import { getAllGenres, getMoviesCountries, getMoviesGenre } from '@/components/movies/action';
+import { getAllGenres, getMoviesCountries } from '@/components/movies/action';
 import MovieFilters from '@/components/movies/components/movies-filters/movies-filters';
 import Movies from '@/components/movies/components/movies/movies'
 import SearchMovie from '@/components/movies/components/search-movie/search-movie'
@@ -27,9 +27,6 @@ async function getData() {
    const subtitles = searchParams.subtitles ?? '';
    const language = searchParams.language ?? '';
    const genre = searchParams.genre ?? '';
-
-   //const genresWithNoDuplicates = genres?.filter((item, index) => genres.indexOf(item) === index && item !== '');
-   
    const offset = 12
    return (<>
        <SearchMovie search={search} offset={offset} />
