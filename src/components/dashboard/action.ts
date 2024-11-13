@@ -108,7 +108,13 @@ export const addMovieToDb =  async (movie:any)=> {
         originalTitle: movie.originalTitle,
         subtitles: movie.subtitles,
         language: movie.language,
-        genresIds: movie?.genresIds,
+        genresIds:{
+          create: movie.genresIds.map((genreId) => ({
+            genre: {
+              connect: { id: genreId }
+            }
+          }))
+        },
         duration: Number(movie.duration),
         idGoogleDive: movie.idGoogleDive,
         year: Number(movie.year),
@@ -163,6 +169,7 @@ export const editMovieToDb =  async (movie:IMovie)=> {
       year: Number(movie.year),
       genre:movie.genre,
       genresIds:{
+        deleteMany:{},
         create: movie.genresIds.map((genreId) => ({
           genre: {
             connect: { id: genreId }

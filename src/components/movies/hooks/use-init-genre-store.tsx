@@ -14,9 +14,7 @@ const useInitGenreStore =  () => {
       if(genresStore && genresStore.length > 0 && pathname !== '/') return
       else if(genresStore && genresStore.length === 0 && pathname !== '/'){
         const { genres } = await getAllGenres()
-        console.log(genres)
-        setGenres(genres)
-
+        setGenres(genres ?? [])
       }
     })()
   }, [pathname, setGenres, genresStore])

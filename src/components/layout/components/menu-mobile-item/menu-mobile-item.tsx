@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React from 'react'
 
-const MenuMobileItem = ({session, setIsActive, isActive}: {session: any, setIsActive: any, isActive: any}) => {
+const MenuMobileItem = ({session, setIsActive, isActive}: {session: any, setIsActive: any, isActive: boolean}) => {
   const t = useTranslations('Menu');
 
   return (

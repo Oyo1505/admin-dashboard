@@ -71,7 +71,7 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
     }
     setFiltersData({...filters, decade: e.target.value});
   }
-  function onChangeGenre(e: any) {
+  function onChangeGenre(e: React.ChangeEvent<HTMLSelectElement>) {
     const params = new URLSearchParams(window.location.search);
     if (e.target.value === undefined) {
       return;

@@ -43,7 +43,7 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
           </TableHeader>
           <TableBody>
             {filteredMoviesAdded ? filteredMoviesAdded?.map((movie, index) => (
-              <MovieRow key={movie?.id} movie={movie}  index={index} editMovie={true} btnText={'Editer'} />
+              <MovieRow key={movie?.id} movie={movie}  index={index + 1} editMovie={true} btnText={'Editer'} />
             )): t('noMovie')}
           
           </TableBody>

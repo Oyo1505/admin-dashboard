@@ -1,8 +1,8 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/button';
-import { IGenre, IMovie } from '@/models/movie/movie';
+import { IGenre, IGenreResponse, IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 import countriesList from '@/shared/constants/countries';
@@ -21,10 +21,10 @@ import SelectGenreMovieForm from '@/components/movies/components/select-genre-mo
 import LabelGenre from '../label-genre/label-genre';
 
 
-const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: Dispatch<SetStateAction<boolean>>}) => {
   const t = useTranslations('AddMovie');
 
-  const [genresMovie, setGenresMovie] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map(item => item.genre) : []);
+  const [genresMovie, setGenresMovie] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
   const { genres } = useGenreStore();
 
   const {
@@ -46,7 +46,7 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       link: movie?.link ?? '',  
       year: movie?.year ?? new Date().getFullYear(), 
       genre: movie?.genre?.join(' ') ?? '', 
-      genresIds: genresMovie ?? [],
+      genresIds: genresMovie.map(item => item.id) ?? [],
       trailer: movie?.trailer ?? '', 
       duration: movie?.duration ?? 0,
       synopsis: movie?.synopsis ?? '', 
@@ -58,8 +58,9 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
     resolver: zodResolver(FormDataMovieSchema)
   });
 
-  const locale = useLocale()
-  const [formData,] = React.useState<MovieSchema>({
+  const locale = useLocale();
+
+  const [formData,] = useState<MovieSchema>({
     id : movie?.id,
     title: movie?.title ?? '',
     originalTitle: movie?.originalTitle ?? '',
@@ -69,8 +70,8 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
     director : movie?.director ?? '',
     imdbId : movie?.imdbId ?? '',
     year: movie?.year ?? new Date().getFullYear(), 
-    genre: movie?.genre?.join(' ') ?? '', 
-    genresIds : movie.genresIds ?? [],
+    genre: movie?.genre?.join(' ') as any ?? '', 
+    genresIds : movie.genresIds as any ?? [],
     trailer: movie?.trailer ?? '', 
     duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '', 
@@ -106,7 +107,6 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
   }
  
   const onClickEditMovie = async (data: MovieSchema) => {
-
     const rawFormData = {
       id: data.id,
       idGoogleDive: data.idGoogleDive,
@@ -151,23 +151,34 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
     setValue('langage', e.target.value);
   };
 
-  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if(genresMovie.find(item => item.id === e.target.value)) return
+  const setGenresValue = (newGenresMovie: IGenre[]) => {
+    const genresIds = newGenresMovie.map(item => item?.id);
+    setValue('genresIds', genresIds);
+  }
 
+  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    
+    if(genresMovie.find(item => item.id === e.target.value)) return
+    
     const newGenreEntry =  genres?.find(item => item.id === e.target.value)
-    const newGenresMovie = [...genresMovie, newGenreEntry];
+    const newGenresMovie = [...genresMovie, newGenreEntry].filter(
+      (item): item is IGenre => item !== undefined
+    );
+
     setGenresMovie(prevGenresMovie => {
       if (newGenreEntry && !prevGenresMovie.some(genre => genre.id === newGenreEntry.id)) {
         return [...prevGenresMovie, newGenreEntry];
       }
       return prevGenresMovie;
     });
-    const genresIds = newGenresMovie.map(item => item?.id);
-    setValue('genresIds', genresIds);
+
+    setGenresValue(newGenresMovie)
   };
 
   const handleGenreDelete = (id:string) => {
-    setGenresMovie(genresMovie.filter(item => item.id !== id))
+    const newGenresMovie = genresMovie.filter(item => item.id !== id)
+    setGenresMovie(newGenresMovie)
+    setGenresValue(newGenresMovie)
   }
 
 return(
@@ -262,6 +273,7 @@ return(
             locale={locale} 
             onChange={handleGenreChange}
           />
+          {errors.genresIds && <p className="text-red-600 text-xs">{errors.genresIds.message}</p>}
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
           <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('subtitles')} htmlFor="subtitles" />

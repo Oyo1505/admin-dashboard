@@ -53,6 +53,27 @@ export const getMovieDetail =  async (id:string)=> {
     }
   }
 } 
+export const getMoviesByARandomGenreById =  async (genre: string) => {
+  try {
+    const moviesInDb = await prisma.movie.findMany({
+      where: {
+        genresIds: {
+          some: {
+            genre: {
+              nameEN: genre
+            }
+          }
+        }
+      },
+    });
+    return { movies : moviesInDb,status: 200 };
+  } catch (error) {
+    console.log(error)
+      return {
+        status : 500
+      }
+    }
+}
 
 export const getLastMovies =  async ()=> {
   try {
