@@ -6,8 +6,9 @@ import MenuMobileItem from '../menu-mobile-item/menu-mobile-item';
 import { User } from '@/app/user';
 import clsx from 'clsx';
 import { BurgerIcon, CrossIcon } from '@/components/ui/components/icons/icons';
+import { Session } from 'next-auth';
 
-const MenuMobile= ({session}: {session: any}) => {
+const MenuMobile= ({session}: {session: Session | null}) => {
   const t = useTranslations('Menu');
   const [isActive, setIsActive] = React.useState(false);
   return (

@@ -99,7 +99,7 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       trailer: data.trailer,
       link: data.link,
     }
-    await addMovieToDb(rawFormData)
+    await addMovieToDb(rawFormData as any)
     setIsOpen(false)
   }
  

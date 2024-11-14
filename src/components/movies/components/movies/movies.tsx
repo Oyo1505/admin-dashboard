@@ -12,11 +12,19 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/components/button/button';
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
 
-const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
+interface SearchParams {
+  subtitles?: string;
+  language?: string;
+  decade?: string;
+  genre?: string;
+  q?: string;
+}
+
+const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, offset?:number}) => {
   const { filters } = useFiltersMovieStore();
   const { moviesFromStore, setMoviesStore } = useMovieFormStore();
   const locale = useLocale();
-  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: Object.keys(searchParams).length > 0 ? qs.stringify({ 
+  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: searchParams && Object.keys(searchParams).length > 0 ? qs.stringify({ 
     subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
     language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
     decade: filters?.decade && filters?.decade > 0 ? filters?.decade : undefined,
@@ -28,9 +36,9 @@ const Movies = ({searchParams, offset}:{searchParams?:any, offset?:number}) => {
 
   const filteredMovies = useMemo(() => {
     if (status === "success") {
-      if (Object.keys(searchParams).length > 0) {
+      if (searchParams && Object.keys(searchParams).length > 0) {
         return data?.pages[data.pages.length - 1]?.movies || [];
-      } else if (Object.keys(searchParams).length === 0){
+      } else if (searchParams && Object.keys(searchParams)?.length === 0){
  
        return data?.pages[0]?.movies || [];
       }

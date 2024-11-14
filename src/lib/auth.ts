@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { getAuthorizedEmails } from "@/components/auth/action/action";
 import authConfig from "./auth.config";
 import { URL_BASE } from "@/shared/route";
+import { JWT } from "next-auth/jwt";
 
 const prisma = new PrismaClient()
 
@@ -16,7 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
   callbacks: {
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()
-      const usersEmail = mails?.map((item: any) => item?.email)
+      const usersEmail = mails?.map((item) => item?.email)
        if(user?.email && !usersEmail?.includes(user?.email)) return URL_BASE
       return true
     },
@@ -93,7 +94,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
     async redirect({ url }) {
       return process.env.NEXTAUTH_URL ? `${process.env.NEXTAUTH_URL}/home` : url
     },
-    async session({ session, token }: { session: any, token: any}) {
+    async session({ session, token }: { session: any, token: JWT}) {
     
       session.accessToken = token.access_token;
       session.idToken = token.id_token;
@@ -105,6 +106,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
       return session
     }
   },
-
-
 })

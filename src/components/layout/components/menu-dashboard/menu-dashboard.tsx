@@ -32,7 +32,7 @@ const MenuDashboard = () => {
               </NavItem>
               <NavItem href={URL_GENRE_SECTION}>
               <AddIncon />
-                    Genre
+                   {t('genre')}
               </NavItem>
            </>
             }

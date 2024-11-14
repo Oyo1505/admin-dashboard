@@ -9,6 +9,7 @@ import { getAuthorizedEmails } from '@/components/auth/action/action';
 import FormAddEmailAuthrizedEmail from '@/components/auth/components/form-add-email-authorized/form-add-email-authorized';
 import { EmailAuthrizedEmailRow } from '@/components/dashboard/components/email-user-authorized-row/email-user-authorized-row';
 import Title from '@/components/ui/components/title/title';
+import { User } from '@/models/user/user';
 
 
 const Page = async (
@@ -24,6 +25,7 @@ const Page = async (
   const { mails } = await getAuthorizedEmails()
 
   if(!session?.user) return redirect('/')
+
   return (
   <div className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6'>    
       <div className="flex items-center mb-8">
@@ -32,11 +34,11 @@ const Page = async (
   <div className="w-full mb-4">
     <Search value={searchParams.q} />
   </div>
-    <UsersTable users={users} offset={newOffset}  /> 
+    <UsersTable users={users}  offset={newOffset} />
     <div>
       <Title type='h3' translationText='emailAuthorized' translationTheme='Dashboard' className='text-3xlfont-semibold mb-6' />
-      {mails?.map((item: any) => (
-          <EmailAuthrizedEmailRow key={item?.id} email={item?.email} />
+      {mails?.map((item) => (
+          <EmailAuthrizedEmailRow key={item?.id} email={item?.email ?? ''} />
         ))}
       <FormAddEmailAuthrizedEmail />
       </div>

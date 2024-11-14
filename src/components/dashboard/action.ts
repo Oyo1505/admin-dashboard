@@ -1,12 +1,13 @@
 //@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
+import { IDirector } from "@/models/director/director";
 import { IMovie } from "@/models/movie/movie";
 import { URL_ADD_MOVIE, URL_USERS } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 
-export const getUsersWithPageParam = async (search:string, pageParam:number)=> {
+export const getUsersWithPageParam = async (search:string, pageParam:number):Promise<{users: User[], newOffset: number | null, status: number}>  =>{
 
  try{
     const users = search.trim() === '' ?
@@ -83,7 +84,7 @@ export const getAllMovies =  async ()=> {
   }
 } 
 
-export const addMovieToDb =  async (movie:any)=> {
+export const addMovieToDb =  async (movie:IMovie)=> {
   
     try {
   
@@ -274,7 +275,7 @@ export const getDirectorFromSection =  async () => {
   }
 } 
 
-export const createDirectorFromSection =  async (formDirector:any) => {
+export const createDirectorFromSection =  async (formDirector:IDirector) => {
   try{
     const director = await prisma.directorSection.create({
       data: {
@@ -293,7 +294,7 @@ export const createDirectorFromSection =  async (formDirector:any) => {
   }
 } 
 
-export const updateDirectorFromSection =  async (formDirector:any) => {
+export const updateDirectorFromSection =  async (formDirector:IDirector): Promise<{director: IDirector, status: number}> => {
  
   try
   {
@@ -337,7 +338,7 @@ export const deleteDirectorFromSection =  async (id:string) => {
   }
 } 
 
-export const getDirectorMovies =  async ()=> {
+export const getDirectorMovies = async ():Promise<{directorMovies: IMovie[] | null, director: string | null, imageBackdrop: string | null, status: number}> => {
   
   try {
     const director  = await getDirectorFromSection()
