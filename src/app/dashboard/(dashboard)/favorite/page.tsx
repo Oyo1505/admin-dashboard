@@ -15,7 +15,7 @@ import MoviesFavorite from '@/components/movies/components/movies-favorite/movie
 
 const Page = async () => {
 
-  const { movies} = await getData()
+  const { movies } = await getData()
   const moviesArray = movies?.map((movie: { movie: IMovie; }) => movie?.movie)
   return (
     <main className="flex flex-1 flex-col gap-4 md:gap-8 md:p-6">

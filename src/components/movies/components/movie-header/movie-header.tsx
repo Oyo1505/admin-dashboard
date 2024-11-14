@@ -86,9 +86,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
     </div>
       
       {movie?.tags &&<div>{movie?.tags?.map(tag => <span key={tag}>{tag}</span>)}</div> }
-      {movie?.subtitles && movie?.subtitles?.length > 0  &&<div className='flex flex-wrap gap-2'>{t('subtitles')}: {movie?.subtitles?.map(item => <span key={item}>{
-      //@ts-ignore
-      displaySubtitles(item)}</span>)}</div> }
+      {movie?.subtitles && movie?.subtitles?.length > 0  &&<div className='flex flex-wrap gap-2'>{t('subtitles')}: {movie?.subtitles?.map(item => <span key={item}>{displaySubtitles(item)}</span>)}</div> }
       {synopsis ? <div className='mt-6 font-normal'> {t('synopsis')} : { synopsis }</div> : movie?.synopsis && <div className='mt-6 font-normal'> {t('synopsis')} : {movie?.synopsis}</div>}
       <div className='mt-10 font-normal flex flex-col gap-3'> 
         <form>

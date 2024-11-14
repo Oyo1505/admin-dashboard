@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { URL_GENRE_SECTION } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
-export const getMovieDetail =  async (id:string)=> {
+export const getMovieDetail =  async (id:string): Promise<{movie: IMovie, suggestedMovies: IMovie[]}> => {
   try {
   const movieInDb = await prisma.movie.findUnique({
       where:{
@@ -47,7 +47,7 @@ export const getMovieDetail =  async (id:string)=> {
   }
 } 
 
-export const getMoviesByARandomGenreById =  async (genre: string) => {
+export const getMoviesByARandomGenreById =  async (genre: string): Promise<{movies: IMovie[], status: number}> => {
   try {
     const moviesInDb = await prisma.movie.findMany({
       where: {
@@ -66,7 +66,7 @@ export const getMoviesByARandomGenreById =  async (genre: string) => {
     }
 }
 
-export const getLastMovies =  async ()=> {
+export const getLastMovies =  async (): Promise<{movies: IMovie[], status: number}> => {
   try {
     const moviesInDb = await prisma.movie.findMany({
       where: {
@@ -90,9 +90,12 @@ export const getLastMovies =  async ()=> {
   }
 } 
 
-export const getMoviesByARandomCountry = async () => {
+export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], country: string, status: number}> => {
   try {
   const uniqueCountries = await prisma.movie.findMany({
+    where: {
+      publish: true
+    },
     select: {
       country: true,
     },
@@ -127,7 +130,7 @@ export const getMoviesByARandomCountry = async () => {
   }
 }
 
-export const getMoviesByARandomGenre = async () => {
+export const getMoviesByARandomGenre = async (): Promise<{movies: IMovie[], genre: IGenre, status: number}> => {
 try {
   const uniqueGenres = await prisma.genre.findMany({
     cacheStrategy: { ttl: 300 },
@@ -164,7 +167,7 @@ try {
 
 
 
-export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | undefined) => {
+export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | undefined): Promise<{status: number, message: string}> => {
   if (!idMovie) {
     return { status: 400, message: 'Le film n\'est pas défini' };
   }
@@ -210,7 +213,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
   }
 };
 
-export const getAllMovies =  async () => {
+export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: number}> => {
   
   try {
 
@@ -226,13 +229,16 @@ export const getAllMovies =  async () => {
   }
 } 
 
-export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }) => {
+export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }): Promise<{movies: IMovie[], status: number, prevOffset: number}> => {
  
   try {
 
     if (!search.trim()) {
      
       const movies = await prisma.movie.findMany({
+        where: {
+          publish: true
+        },
         orderBy: {
           createdAt: 'desc',
         },
@@ -350,7 +356,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
   }
 };
 
-  export const getMoviesCountries = async () => {
+export const getMoviesCountries = async (): Promise<{status: number, countries: string[]}> => {
     try {
       const countriesValues  = await prisma.movie.findMany({
         select: {
@@ -377,7 +383,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       }
     }
 
-export const getAllGenres = async () => {
+export const getAllGenres = async (): Promise<{status: number, genres: IGenre[]}> => {
   try {
     const genres = await prisma.genre.findMany();
     if (!genres) {
@@ -392,7 +398,7 @@ export const getAllGenres = async () => {
   }
 };
 
-export const addGenre = async (genre: IGenre) => {
+export const addGenre = async (genre: IGenre): Promise<{status: number, genres: IGenre[]}> => {
   try {
     const genres = await prisma.genre.create({
       data: genre,
@@ -410,7 +416,7 @@ export const addGenre = async (genre: IGenre) => {
   }
 };
 
-export const updateGenre = async (genre: IGenre) => {
+export const updateGenre = async (genre: IGenre): Promise<{status: number, genres: IGenre[]}> => {
   try {
     const genres = await prisma.genre.update({
       where: {
@@ -431,7 +437,7 @@ export const updateGenre = async (genre: IGenre) => {
   }
 };
 
-export const deleteGenre = async (id: string) => {
+export const deleteGenre = async (id: string): Promise<{status: number, genres: IGenre[]}> => {
   try {
     const genres = await prisma.genre.delete({
       where: {

@@ -43,7 +43,7 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
  }
 };
 
-export const deleteUserById =  async (id:string)=> {
+export const deleteUserById =  async (id:string): Promise<{status: number}> => {
 
   try {
     await prisma.user.delete({
@@ -60,7 +60,7 @@ export const deleteUserById =  async (id:string)=> {
     }
   }
 } 
-export const getAllMovies =  async ()=> {
+export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: number}> => {
   
   try {
    const movieInDb = await prisma.movie.findMany({
@@ -84,7 +84,7 @@ export const getAllMovies =  async ()=> {
   }
 } 
 
-export const addMovieToDb =  async (movie:IMovie)=> {
+export const addMovieToDb =  async (movie:IMovie): Promise<{status: number, message: string}> => {
   
     try {
   
@@ -135,7 +135,7 @@ export const addMovieToDb =  async (movie:IMovie)=> {
   }
 } 
 
-export const editMovieToDb =  async (movie:IMovie)=> {
+export const editMovieToDb =  async (movie:IMovie): Promise<{status: number, message: string}> => {
   
   try {
 
@@ -191,7 +191,7 @@ export const editMovieToDb =  async (movie:IMovie)=> {
   }
 } 
 
-export const deleteMovieById =  async (id:string)=> {
+export const deleteMovieById =  async (id:string): Promise<{status: number}> => {
   
   try {
    if(id){
@@ -240,7 +240,7 @@ export const publishedMovieById =  async (id:string): Promise<{publish: boolean,
   }
 } 
 
-export const getFavoriteMovies =  async (id:string)=> {
+export const getFavoriteMovies =  async (id:string): Promise<{movies: IFavoriteMovieResponse[] | null, status: number}> => {
   
   try {
     const movies = await prisma.userFavoriteMovies.findMany({
@@ -262,7 +262,7 @@ export const getFavoriteMovies =  async (id:string)=> {
   }
 } 
 
-export const getDirectorFromSection =  async () => {
+export const getDirectorFromSection =  async (): Promise<{directorMovies: IDirector | null, status: number}> => {
   try {
     const directorMovies = await prisma.directorSection.findFirst();
     return { directorMovies , status: 200 };
@@ -275,7 +275,7 @@ export const getDirectorFromSection =  async () => {
   }
 } 
 
-export const createDirectorFromSection =  async (formDirector:IDirector) => {
+export const createDirectorFromSection =  async (formDirector:IDirector): Promise<{director: IDirector, status: number}> => {
   try{
     const director = await prisma.directorSection.create({
       data: {
@@ -319,7 +319,7 @@ export const updateDirectorFromSection =  async (formDirector:IDirector): Promis
   }
 } 
 
-export const deleteDirectorFromSection =  async (id:string) => {
+export const deleteDirectorFromSection =  async (id:string): Promise<{director: IDirector, status: number}> => {
 
   try
   {
@@ -346,6 +346,7 @@ export const getDirectorMovies = async ():Promise<{directorMovies: IMovie[] | nu
      
       const directorMovies = await prisma.movie.findMany({
         where:{
+          publish: true,
           director: director?.directorMovies.director
         },
         cacheStrategy: { ttl: 60 * 5 },

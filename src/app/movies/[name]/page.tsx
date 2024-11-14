@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic'
 import React, { Suspense } from 'react'
 import Iframe from 'react-iframe'
 import { getMovieDetail } from '@/components/movies/action'
@@ -17,6 +16,7 @@ import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-p
 import { PageProps } from '.next/types/app/page'
 //const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
+
 const lobster = Lobster({
   weight: '400',
   display: 'swap',
@@ -50,7 +50,7 @@ const Page = async (props:PageProps) => {
             className='w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]'   
             width="auto" 
             height="450px"
-         
+            ariaLabel="video player"
             />}
 
           {
@@ -75,7 +75,6 @@ const Page = async (props:PageProps) => {
         <Title translationTheme='MoviePage' className={clsx(lobster.className,'text-2xl md:text-3xl')} translationText='trailer' type='h2' />
         <VideoPlayerYoutube movie={movie?.trailer} />  
       </div>
-
     </>
     }
     {suggestedMovies && suggestedMovies?.length > 0 ?

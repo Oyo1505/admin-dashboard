@@ -1,3 +1,10 @@
+export interface IFavoriteMovieResponse {
+  id: string,
+  movieId: string,
+  userId: string
+  movie: IMovie
+}
+
 export interface IMovie {
   id: string
   title: string
