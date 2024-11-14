@@ -5,7 +5,7 @@ import Container from '@/components/ui/components/container/container'
 import Title from '@/components/ui/components/title/title';
 import React from 'react'
 
-const revalidate = 60;
+export const revalidate = 60;
 
 const getData = async () => {
   const { genres } = await getAllGenres();

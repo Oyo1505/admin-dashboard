@@ -38,6 +38,7 @@ const Page =  async () => {
   const { moviesLastFive, moviesByARandomCountry, favorites, directorMovies, moviesByARandomGenre, genre, country,  director, imageBackdrop } = await getData();
 
   const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
+
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   const userAgent =  (await headers()).get('user-agent') ;
   const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));   

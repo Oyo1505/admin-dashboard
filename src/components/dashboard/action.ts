@@ -240,7 +240,7 @@ export const publishedMovieById =  async (id:string): Promise<{publish: boolean,
   }
 } 
 
-export const getFavoriteMovies =  async (id:string): Promise<{movies: IMovie[] | null, status: number}> => {
+export const getFavoriteMovies =  async (id:string): Promise<{movies: IFavoriteMovieResponse[] | null, status: number}> => {
   
   try {
     const movies = await prisma.userFavoriteMovies.findMany({
@@ -346,6 +346,7 @@ export const getDirectorMovies = async ():Promise<{directorMovies: IMovie[] | nu
      
       const directorMovies = await prisma.movie.findMany({
         where:{
+          publish: true,
           director: director?.directorMovies.director
         },
         cacheStrategy: { ttl: 60 * 5 },

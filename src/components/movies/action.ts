@@ -93,6 +93,9 @@ export const getLastMovies =  async (): Promise<{movies: IMovie[], status: numbe
 export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], country: string, status: number}> => {
   try {
   const uniqueCountries = await prisma.movie.findMany({
+    where: {
+      publish: true
+    },
     select: {
       country: true,
     },
@@ -233,6 +236,9 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
     if (!search.trim()) {
      
       const movies = await prisma.movie.findMany({
+        where: {
+          publish: true
+        },
         orderBy: {
           createdAt: 'desc',
         },
