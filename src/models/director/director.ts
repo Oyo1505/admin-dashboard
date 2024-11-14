@@ -1,5 +1,5 @@
 export interface IDirector {
-  id: string
+  id?: string
   director: string
-  imageBackdrop?: string | null
+  imageBackdrop?: string | null | undefined
 }

@@ -13,12 +13,11 @@ import { deleteUserById } from '../components/dashboard/action';
 import { User } from '@/models/user/user';
 import useUserStore from 'store/user/user-store';
 
-
  const UsersTable = ({
   users,
   offset,
 }: {
-  users?: any[];
+  users: User[];
   offset?: number | null;
 }) => {
   const router = useRouter();
@@ -26,7 +25,6 @@ import useUserStore from 'store/user/user-store';
   function onClick() {
     router.replace(`/dashboard/users?offset=${offset}`);
   }
-
   return (
     <>
       <form className="border shadow-sm rounded-lg">
@@ -72,7 +70,7 @@ function UserRow({ user }: { user: User }) {
     <TableRow>
       <TableCell className="font-medium">{user.name}</TableCell>
       <TableCell className="hidden md:table-cell">{user.email}</TableCell>
-      <TableCell>{user.role}</TableCell>
+      <TableCell>{user.role ?? 'USER'}</TableCell>
       {userId !==  userConnected?.id && userConnected?.role === 'ADMIN' && 
             <TableCell>
             <Button

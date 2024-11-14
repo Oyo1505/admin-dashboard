@@ -56,6 +56,7 @@
     "dashboard":"ダッシュボード",
     "users":"ユーザー",
     "director":"ディレクター",
+    "genre":"ジャンル",
     "add-movie":"映画を追加",
     "favorite":"お気に入り",
     "settings":"設定"
@@ -109,6 +110,13 @@
     "download": "映画をダウンロード",
     "titleWebSubtitles": "サイトの字幕リスト",
     "Suggestion": "提案"
+  },
+  "GenrePage": {
+    "title": "ジャンル",
+    "addGenre": "ジャンルを追加",
+    "LabelFrench": "フランス語",
+    "LabelEnglish": "英語",
+    "LabelJapanese": "日本語"
   },
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",

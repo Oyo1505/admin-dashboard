@@ -1,9 +1,10 @@
 import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
+import { Session } from 'next-auth';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React from 'react'
 
-const MenuMobileItem = ({session, setIsActive, isActive}: {session: any, setIsActive: any, isActive: boolean}) => {
+const MenuMobileItem = ({session, setIsActive, isActive}: {session: Session | null, setIsActive: React.Dispatch<React.SetStateAction<boolean>>, isActive: boolean}) => {
   const t = useTranslations('Menu');
 
   return (

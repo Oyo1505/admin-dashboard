@@ -58,6 +58,7 @@
     "users":"Users",
     "director":"Section Director",
     "add-movie":"Add movie",
+    "genre":"Genre",
     "favorite":"Favorite",
     "settings":"Settings"
   },
@@ -110,6 +111,13 @@
     "download": "Download Movie",
     "titleWebSubtitles": "List of site web subtitles",
     "Suggestion": "Suggestion"
+  },
+  "GenrePage": {
+    "title": "Genres",
+    "addGenre": "Add a genre",
+    "LabelFrench": "French",
+    "LabelEnglish": "English",
+    "LabelJapanese": "Japanese"
   },
   "SettingsPage": {
     "anyHelp": "Any help you need?",

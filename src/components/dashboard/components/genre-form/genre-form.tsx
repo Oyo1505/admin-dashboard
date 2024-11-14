@@ -2,13 +2,16 @@
 import { addGenre } from '@/components/movies/action'
 import { Button } from '@/components/ui/components/button/button'
 import { Input } from '@/components/ui/components/input/input'
+import LabelForm from '@/components/ui/components/label-form/label-form'
+import Title from '@/components/ui/components/title/title'
 import { genreSchema, GenreSectionSchema } from '@/shared/schema/movieSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
 const GenreForm = () => {
-
+  const  t  = useTranslations('GenrePage')
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       nameFR: '',
@@ -29,19 +32,19 @@ const GenreForm = () => {
 
   return (
     <div>
-      <h3 className='text-xl mb-5'>Ajout d&apos;un genre</h3>
+      <Title type='h3' translationText='addGenre' className='mb-3' translationTheme='GenrePage' />
       <form onSubmit={handleSubmit(onSubmit)}>
         <fieldset className='flex flex-col gap-2'>
           <div>
-            <label htmlFor='nameFr'>Francais</label>
+            <LabelForm titleLabel={t('LabelFrench')} className='text-white' htmlFor='nameFR' />
             <Input className='text-black' type='text' {...register('nameFR')} />
           </div>
           <div>
-            <label htmlFor='nameEN'>Anglais</label>
+           <LabelForm titleLabel={t('LabelEnglish')} className='text-white' htmlFor='nameEN' />
             <Input className='text-black' type='text' {...register('nameEN')} />
           </div>
           <div>
-            <label htmlFor='nameJP'>Japonais</label>
+            <LabelForm titleLabel={t('LabelJapanese')} className='text-white' htmlFor='nameJP' />
             <Input className='text-black' type='text' {...register('nameJP')} />
           </div>
         </fieldset>

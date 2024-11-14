@@ -14,6 +14,7 @@ import Loading from './loading'
 import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
 import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube'
+import { PageProps } from '.next/types/app/page'
 //const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
 const lobster = Lobster({
@@ -24,7 +25,8 @@ const lobster = Lobster({
 
 export const revalidate = 60;  
 
-const Page = async (props:any) => {
+const Page = async (props:PageProps) => {
+
   const params = await props.params;
   const userAgent =  (await headers()).get('user-agent');
   const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));

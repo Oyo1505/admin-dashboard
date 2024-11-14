@@ -1,13 +1,13 @@
 export interface  User  {
   id: string;
-  name: string | undefined;
-  email: string | undefined;
-  emailVerified?: Date | undefined;
-  image: string | undefined;
-  role?: UserRole
+  name?: string | null;
+  email?: string | null;
+  emailVerified?: Date | null;
+  image?: string | null;
+  role: UserRole;
 }
 
-enum UserRole {
+export enum UserRole {
   ADMIN = 'ADMIN',
   USER = 'USER',
 }

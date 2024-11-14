@@ -58,6 +58,7 @@
     "users":"Utilisateurs",
     "director":"Section Réalisateur",
     "add-movie":"Ajouter film",
+    "genre":"Genre",
     "favorite":"Favoris",
     "settings":"Paramètres"
   },
@@ -110,6 +111,13 @@
     "download": "Télécharger le film",
     "titleWebSubtitles" : "Liste des sites de sous-titres",
     "Suggestion": "Suggestion"
+  },
+  "GenrePage": {
+    "title": "Genres",
+    "addGenre": "Ajouter un genre",
+    "LabelFrench": "Français",
+    "LabelEnglish": "Anglais",
+    "LabelJapanese": "Japonais"
   },
   "SettingsPage": {
     "title": "Settings" ,

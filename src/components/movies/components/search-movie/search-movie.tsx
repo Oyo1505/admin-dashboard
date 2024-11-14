@@ -14,7 +14,7 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
   const {filters, setFiltersData, hasBeenSearched, setHasBeenSearched} = useFiltersMovieStore();
   const { setMoviesStore } = useMovieFormStore();
 
-  function onChangeSearch(e: any) {  
+  function onChangeSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setFiltersData({...filters, q: e.target.value});
   }
 
@@ -54,7 +54,7 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
       <Input
         ref={inputRef}
         value={filters?.q || search} 
-        onInput={(e) => onChangeSearch(e)}
+        onInput={(e) => onChangeSearch(e as React.ChangeEvent<HTMLInputElement>)}
         spellCheck={false}
         className="w-full bg-white shadow-none text-background appearance-none pl-8"
         placeholder={t('placeholderSearch')}
