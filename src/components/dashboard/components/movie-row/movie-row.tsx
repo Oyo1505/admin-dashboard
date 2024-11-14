@@ -13,7 +13,7 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
   const [isOpen, setIsOpen] = React.useState(false)
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
 
-  const onClickDeleteMovie = async () => {
+  const onClickDeleteMovie = async (): Promise<void> => {
     movie?.id && (await deleteMovieById(movie?.id))
   }
 

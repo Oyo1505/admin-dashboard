@@ -1,5 +1,7 @@
-"use server"; // if you are using reactjs remove this line this is for nextjs only
+"use server"; 
 import { google, GoogleApis } from "googleapis";
+import { revalidatePath } from "next/cache";
+import { URL_ADD_MOVIE } from "./shared/route";
 
 export const findExistingFile = async (driveService:GoogleApis, fileName:string) => {
     try {
@@ -8,9 +10,9 @@ export const findExistingFile = async (driveService:GoogleApis, fileName:string)
             fields: "files(id, webViewLink)",
         });const files = response.data.files;
         if (files && files.length > 0) {
-            return files[0]; // Return the first matching file
+            return files[0]; 
         } else {
-            return null; // File not found
+            return null; 
         }
     } catch (error) {
         console.error("Error searching for file:", error);
@@ -45,9 +47,55 @@ export const getDataFromGoogleDrive = async () => {
     const movies = await drive.files.list({q: "mimeType='video/mp4' and '1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD' in parents"})
         
    // const files = res.data
-    return {  movies : movies.data.files}
+    return { movies : movies.data.files}
   } catch (error: any) {
     console.error("Error fetching files:", error.message)
     return null
   }
 }
+const checkPermissions = async (fileId: string) => {
+  const drive = google.drive({ version: "v3", auth })
+  try {
+    const permissions = await drive.permissions.list({
+      fileId,
+      fields: 'permissions(id, role, type, emailAddress)',
+    });
+    return permissions.data.permissions
+  } catch (error: any) {
+    console.error("Error checking permissions:", error.message);
+  }
+};
+
+const transferOwnership = async (id:string,fileId: string) => {
+  const drive = google.drive({ version: "v3", auth })
+  try {
+    await drive.permissions.update({
+      fileId,
+      permissionId: id, 
+      requestBody: {
+        role: 'owner',
+      },
+      transferOwnership: true,
+    });
+    console.log("Ownership transferred to the service account.");
+  } catch (error: any) {
+    console.error("Error transferring ownership:", error);
+  }
+};
+
+export const deleteFileFromGoogleDrive = async (fileId: string) => {
+  const drive = google.drive({ version: "v3", auth })
+  try {
+    const data = await checkPermissions(fileId);
+    const user = data?.filter(d => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'writer')
+    if(user && user[0].id){
+      await transferOwnership(user[0].id,fileId);
+    }
+    revalidatePath(URL_ADD_MOVIE)
+
+  } catch (error) {
+    revalidatePath(URL_ADD_MOVIE)
+    console.error("Error deleting file:", error);
+    throw error;
+  }
+};

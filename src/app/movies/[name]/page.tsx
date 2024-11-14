@@ -75,7 +75,6 @@ const Page = async (props:PageProps) => {
         <Title translationTheme='MoviePage' className={clsx(lobster.className,'text-2xl md:text-3xl')} translationText='trailer' type='h2' />
         <VideoPlayerYoutube movie={movie?.trailer} />  
       </div>
-
     </>
     }
     {suggestedMovies && suggestedMovies?.length > 0 ?

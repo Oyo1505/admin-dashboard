@@ -1,7 +1,7 @@
 'use client'
 import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
 import { Input } from '@/components/ui/components/input/input';
-import React, { useEffect, useRef, useTransition } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
 import qs from 'qs';
 import { useTranslations } from 'next-intl';
