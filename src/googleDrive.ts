@@ -77,7 +77,7 @@ const transferOwnership = async (id:string,fileId: string) => {
       },
       transferOwnership: true,
     });
-    console.log("Ownership transferred to the service account.");
+
   } catch (error: any) {
     console.error("Error transferring ownership:", error);
   }

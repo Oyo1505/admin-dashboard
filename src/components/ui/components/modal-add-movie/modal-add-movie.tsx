@@ -353,7 +353,7 @@ return(
             />
           }
 
-        <iframe src={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>
+       { formData?.idGoogleDive && <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>} 
 
         <div className="mt-[25px] flex justify-end">
          
