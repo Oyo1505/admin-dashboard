@@ -2,6 +2,7 @@
 import { google, GoogleApis } from "googleapis";
 import { revalidatePath } from "next/cache";
 import { URL_ADD_MOVIE } from "./shared/route";
+import { Readable } from "stream";
 
 export const findExistingFile = async (driveService:GoogleApis, fileName:string) => {
     try {
@@ -35,7 +36,7 @@ const auth = new google.auth.GoogleAuth({
     client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
     universe_domain: process.env.UNIVERSE_DOMAIN,
   },
-  scopes: ["https://www.googleapis.com/auth/drive"],
+  scopes: ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"],
 });
 
 
@@ -94,8 +95,43 @@ export const deleteFileFromGoogleDrive = async (fileId: string) => {
     revalidatePath(URL_ADD_MOVIE)
 
   } catch (error) {
-    revalidatePath(URL_ADD_MOVIE)
     console.error("Error deleting file:", error);
     throw error;
   }
 };
+
+
+export const addFileToGoogleDrive = async (file: FormData)=>{
+  if(!file) return null;
+  const drive = google.drive({ version: "v3", auth })
+  
+  const formData = file.get('file') as File;
+
+  if (!formData) throw new Error('No file found');
+  if (formData.size < 1) throw new Error('File is empty');
+
+  const buffer = Buffer.from(await formData.arrayBuffer());
+  const bufferStream = Readable.from(buffer);
+  try {
+    const fileMetadata = {
+      name: formData.name, 
+      parents: ['1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD'], 
+    };
+  
+    const media = {
+      mimeType: formData.type || 'application/octet-stream',
+      body: bufferStream,
+    };
+
+    const response = await drive.files.create({
+      requestBody: fileMetadata,
+      media: media,
+      fields: 'id, webViewLink, webContentLink, name',
+    });
+   
+    return response.data.id;
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
+  }
+} 
