@@ -104,25 +104,6 @@ export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status
     throw error;
   }
 };
-const countLines = async (file: File): Promise<number> => {
-  let count = 1;
-  const stream = file.stream().pipeThrough(new TextDecoderStream());
-  const reader = stream.getReader();
-
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const lineBreaks = value.match(/\n/g)?.length ?? 0;
-      count += lineBreaks;
-    }
-  } finally {
-    reader.releaseLock();
-  }
-
-  return count;
-};
-
 
 export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, status: number} | null>  =>{
 
@@ -139,7 +120,6 @@ export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, 
   const buffer = Buffer.from(await formData.arrayBuffer());
 
   const bufferStream = Readable.from(buffer);
-
   try {
     const fileMetadata = {
       name: formData.name, 
@@ -164,4 +144,4 @@ export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, 
     console.error('Error uploading file:', error);
     throw error;
   }
-} 
+}
