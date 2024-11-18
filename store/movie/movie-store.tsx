@@ -1,8 +1,9 @@
-import { getAllGenres } from '@/components/movies/action';
+
+import { addFileToGoogleDrive } from '@/googleDrive';
 import { IFilters, IGenre, IMovie } from '@/models/movie/movie';
 import {create} from 'zustand';
 
-interface FormData {
+interface FormDataStore {
   title: string;
   link: string;
   year: number;
@@ -14,7 +15,7 @@ interface FormData {
 }
 
 interface MovieFormState {
-  formData: FormData
+  formData: FormDataStore
   setFormData: (data: Partial<MovieFormState>) => void;
   moviesFromStore : IMovie[]
   setMoviesStore: (data: IMovie[]) => void;
@@ -90,5 +91,23 @@ const useGenreStore = create<IGenreStore>((set) => ({
   },
 }));
 
+const useMovieGoogleDiveStore = create((set) => ({
+  movie: [],
+  isLoading: false,
+  uploadGoogleDive: async (file:FormData) => {
+    set({ isLoading: true });
+    try {
+     const { data } = await addFileToGoogleDrive(file);
+     
+     if(data && data.id){
+      set({ isLoading: false });
+     }
+    }
+    catch (error) {
+      console.log(error);
+    }
+   
+  }
+}));
 
-export { useFiltersMovieStore, useMovieFormStore, useGenreStore };
+export { useFiltersMovieStore, useMovieFormStore, useGenreStore, useMovieGoogleDiveStore };

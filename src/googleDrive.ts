@@ -2,7 +2,8 @@
 import { google, GoogleApis } from "googleapis";
 import { revalidatePath } from "next/cache";
 import { URL_ADD_MOVIE } from "./shared/route";
-import { Readable } from "stream";
+import { Readable, Stream } from "stream";
+
 
 export const findExistingFile = async (driveService:GoogleApis, fileName:string) => {
     try {
@@ -84,29 +85,47 @@ const transferOwnership = async (id:string,fileId: string) => {
   }
 };
 
-export const deleteFileFromGoogleDrive = async (fileId: string) => {
+export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status: number}> => {
   const drive = google.drive({ version: "v3", auth })
- 
-  try {
-    // const data = await checkPermissions(fileId);
-    // const user = data?.filter(d => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'writer')
-   
-    drive.files.delete({fileId})
-    // if(user && user[0].id){
-    //  //await transferOwnership(user[0].id,fileId);
-      
-    // }
-    
-    revalidatePath(URL_ADD_MOVIE)
 
+  try {   
+    const permissions = await checkPermissions(fileId);
+    const user = permissions?.filter(d => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'owner')
+   if(user && user[0].id){
+    const response = await drive.files.delete({fileId})
+    if(response.statusText === 'No Content' ){
+      revalidatePath(URL_ADD_MOVIE)
+      return {status : 200};
+    }
+   }
+   return {status : 404};
   } catch (error) {
     console.error("Error deleting file:", error);
     throw error;
   }
 };
+const countLines = async (file: File): Promise<number> => {
+  let count = 1;
+  const stream = file.stream().pipeThrough(new TextDecoderStream());
+  const reader = stream.getReader();
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const lineBreaks = value.match(/\n/g)?.length ?? 0;
+      count += lineBreaks;
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  return count;
+};
 
 
-export const addFileToGoogleDrive = async (file: FormData)=>{
+export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, status: number} | null>  =>{
+
   if(!file) return null;
   const drive = google.drive({ version: "v3", auth })
   
@@ -115,8 +134,12 @@ export const addFileToGoogleDrive = async (file: FormData)=>{
   if (!formData) throw new Error('No file found');
   if (formData.size < 1) throw new Error('File is empty');
 
+  // Créer un ReadableStream directement à partir de l'objet File
+
   const buffer = Buffer.from(await formData.arrayBuffer());
+
   const bufferStream = Readable.from(buffer);
+
   try {
     const fileMetadata = {
       name: formData.name, 
@@ -133,8 +156,10 @@ export const addFileToGoogleDrive = async (file: FormData)=>{
       media: media,
       fields: 'id, webViewLink, webContentLink, name',
     });
-    console.log(response.data)
-    return response.data.id;
+    if(response.data.id){
+      return {data : response.data, status : 200};
+    }
+    return {data : null, status : 404};
   } catch (error) {
     console.error('Error uploading file:', error);
     throw error;

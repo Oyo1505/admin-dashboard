@@ -54,9 +54,11 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
             <Button variant={'destructive'} className='font-bold' formAction={onClickDeleteMovie} >
                Supprimer
             </Button>
-            <Button variant={'destructive'} className='font-bold' formAction={onDeleteMovieOnGoogleDrive} >
-               Supprimer sur Google
-            </Button>
+           {isMoviePublished === undefined && 
+           <Button variant={'destructive'} className='font-bold' formAction={onDeleteMovieOnGoogleDrive} >
+              Supprimer sur Google
+           </Button>
+           } 
           </TableCell>
         </TableRow>
        {isOpen &&  <DialogAddMovie  movie={movie} editMovie={editMovie}  setIsOpen={setIsOpen} />}
