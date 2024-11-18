@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/components/button/button'
 import { deleteMovieById, publishedMovieById } from '../../action'
 import Toggle from '@/components/ui/components/toggle/toggle'
 import { useQuery } from '@tanstack/react-query'
+import { deleteFileFromGoogleDrive } from '@/googleDrive'
 
 function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index?: number}) {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -28,6 +29,9 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
       setIsMoviePublished(data.publish)
     }
   },[data, status]);
+  const onDeleteMovieOnGoogleDrive = async (): Promise<void> => {
+    movie?.id && (await deleteFileFromGoogleDrive(movie?.id))
+  }
 
   return (
     movie && movie.id &&
@@ -49,6 +53,9 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
           <TableCell> 
             <Button variant={'destructive'} className='font-bold' formAction={onClickDeleteMovie} >
                Supprimer
+            </Button>
+            <Button variant={'destructive'} className='font-bold' formAction={onDeleteMovieOnGoogleDrive} >
+               Supprimer sur Google
             </Button>
           </TableCell>
         </TableRow>

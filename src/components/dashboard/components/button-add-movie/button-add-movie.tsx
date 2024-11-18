@@ -26,7 +26,7 @@ const ButtonAddMovie = () => {
         {canBeUploaded && 
         <>
           <div>{fileName}</div>
-          <Input className='w-32 mt-2' type='submit'/>
+          <Input className='w-32 mt-2 hover:cursor-pointer' type='submit'/>
         </>
     
         }

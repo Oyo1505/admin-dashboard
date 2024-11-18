@@ -7,7 +7,7 @@ const nextConfig = {
   pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
   experimental: {
     serverActions: {
-      bodySizeLimit: '2000mb',
+      bodySizeLimit: '4000mb',
     },
   },
   images: {

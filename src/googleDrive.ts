@@ -86,12 +86,17 @@ const transferOwnership = async (id:string,fileId: string) => {
 
 export const deleteFileFromGoogleDrive = async (fileId: string) => {
   const drive = google.drive({ version: "v3", auth })
+ 
   try {
-    const data = await checkPermissions(fileId);
-    const user = data?.filter(d => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'writer')
-    if(user && user[0].id){
-      await transferOwnership(user[0].id,fileId);
-    }
+    // const data = await checkPermissions(fileId);
+    // const user = data?.filter(d => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'writer')
+   
+    drive.files.delete({fileId})
+    // if(user && user[0].id){
+    //  //await transferOwnership(user[0].id,fileId);
+      
+    // }
+    
     revalidatePath(URL_ADD_MOVIE)
 
   } catch (error) {
@@ -128,7 +133,7 @@ export const addFileToGoogleDrive = async (file: FormData)=>{
       media: media,
       fields: 'id, webViewLink, webContentLink, name',
     });
-   
+    console.log(response.data)
     return response.data.id;
   } catch (error) {
     console.error('Error uploading file:', error);
