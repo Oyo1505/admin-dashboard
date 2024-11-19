@@ -38,6 +38,7 @@
     "next": "15.0.1",
     "next-auth": "5.0.0-beta.25",
     "next-intl": "^3.23.3",
+    "nextjs-chunk-upload-action": "^9.0.0",
     "npm": "^10.9.0",
     "path": "^0.12.7",
     "postcss": "^8.4.47",
@@ -72,6 +73,7 @@
     "trailingComma": "none"
   },
   "devDependencies": {
+    "@builder.io/partytown": "^0.10.2",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.1",
     "prisma": "^5.22.0"

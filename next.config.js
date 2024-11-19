@@ -9,6 +9,7 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '4000mb',
     },
+    nextScriptWorkers: true,
   },
   images: {
     formats: ['image/avif', 'image/webp'],
