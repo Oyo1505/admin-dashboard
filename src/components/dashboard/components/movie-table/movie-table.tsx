@@ -4,6 +4,7 @@ import React, { Suspense } from 'react'
 import { IMovie, } from '@/models/movie/movie'
 import MovieRow from '../movie-row/movie-row'
 import { useTranslations } from 'next-intl'
+import ButtonAddMovie from '../button-add-movie/button-add-movie'
 
 const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInDb: IMovie[]}) => {
 
@@ -16,6 +17,7 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
     <Suspense  fallback={<p>Chargement...</p>}>
 
     <div className='flex flex-1 flex-col gap-4  md:gap-8 md:p-6'>
+      <ButtonAddMovie />
       {filteredMoviesNotAdded && filteredMoviesNotAdded?.length > 0 ? ( 
         <form className="border  bg-primary text-background shadow-sm rounded-lg">
         <Table>

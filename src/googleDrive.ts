@@ -2,6 +2,21 @@
 import { google, GoogleApis } from "googleapis";
 import { revalidatePath } from "next/cache";
 import { URL_ADD_MOVIE } from "./shared/route";
+import { Readable } from "stream";
+import fs, { open } from "fs/promises";
+import path, { join } from "path";
+import { createReadStream } from "fs";
+import { Buffer } from 'buffer';
+import type { ChunkUploadHandler } from 'nextjs-chunk-upload-action';
+
+const UPLOAD_DIR = path.join(process.cwd(), "tmp");
+async function ensureUploadDir() {
+  try {
+    await fs.access(UPLOAD_DIR);
+  } catch {
+    await fs.mkdir(UPLOAD_DIR, { recursive: true });
+  }
+}
 
 export const findExistingFile = async (driveService:GoogleApis, fileName:string) => {
     try {
@@ -35,7 +50,7 @@ const auth = new google.auth.GoogleAuth({
     client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
     universe_domain: process.env.UNIVERSE_DOMAIN,
   },
-  scopes: ["https://www.googleapis.com/auth/drive"],
+  scopes: ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"],
 });
 
 
@@ -66,6 +81,24 @@ const checkPermissions = async (fileId: string) => {
   }
 };
 
+
+export const chunkUploadAction: ChunkUploadHandler<{ name: string }> = async (
+  chunkFormData,
+  metadata
+) => {
+  await ensureUploadDir();
+  const blob = chunkFormData.get('blob');
+  const offset = Number(chunkFormData.get('offset'));
+  const buffer = Buffer.from(await blob.arrayBuffer());
+  const filePath = join(UPLOAD_DIR, metadata.name);
+  let fileHandle: any | undefined;
+  try {
+    fileHandle = await open(filePath, offset === 0 ? 'w' : 'r+');
+    await fileHandle.write(buffer, 0, buffer.length, offset);
+  } finally {
+    await fileHandle?.close();
+  }
+};
 const transferOwnership = async (id:string,fileId: string) => {
   const drive = google.drive({ version: "v3", auth })
   try {
@@ -83,19 +116,92 @@ const transferOwnership = async (id:string,fileId: string) => {
   }
 };
 
-export const deleteFileFromGoogleDrive = async (fileId: string) => {
+export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status: number}> => {
   const drive = google.drive({ version: "v3", auth })
-  try {
-    const data = await checkPermissions(fileId);
-    const user = data?.filter(d => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'writer')
-    if(user && user[0].id){
-      await transferOwnership(user[0].id,fileId);
-    }
-    revalidatePath(URL_ADD_MOVIE)
 
+  try {   
+    const permissions = await checkPermissions(fileId);
+    const user = permissions?.filter(d => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'owner')
+   if(user && user[0].id){
+    const response = await drive.files.delete({fileId})
+    if(response.statusText === 'No Content' ){
+      revalidatePath(URL_ADD_MOVIE)
+      return {status : 200};
+    }
+   }
+   return {status : 404};
   } catch (error) {
-    revalidatePath(URL_ADD_MOVIE)
     console.error("Error deleting file:", error);
     throw error;
   }
 };
+
+export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, status: number} | null>  =>{
+
+  if(!file) return null;
+  const drive = google.drive({ version: "v3", auth })
+  
+  const formData = file.get('file') as File;
+
+  if (!formData) throw new Error('No file found');
+  if (formData.size < 1) throw new Error('File is empty');
+
+  // Créer un ReadableStream directement à partir de l'objet File
+
+  const buffer = Buffer.from(await formData.arrayBuffer());
+
+  const bufferStream = Readable.from(buffer);
+  try {
+    const fileMetadata = {
+      name: formData.name, 
+      parents: ['1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD'], 
+    };
+  
+    const media = {
+      mimeType:'application/octet-stream',
+      body: bufferStream,
+    };
+
+    const response = await drive.files.create(
+      {
+      requestBody: fileMetadata,
+      uploadType: 'resumable',
+      media: media,
+      fields: 'id, webViewLink, webContentLink, name',
+    },      
+  );
+    const uploadUrl = response.headers.location;
+    console.log(response, 'uploadUrl');
+    if(response){
+      return {data : uploadUrl, status : 200};
+    }
+    return {data : null, status : 404};
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
+  }
+}
+
+
+
+
+
+export async function handleChunkUpload(fileName: string) {
+  await ensureUploadDir();
+    const filePath = path.join(UPLOAD_DIR, fileName);
+    const drive = google.drive({ version: "v3", auth })
+    const fileMetadata = {
+      name: fileName, 
+      parents: ['1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD'], 
+    };
+    const media = { mimeType: "application/octet-stream", body: createReadStream(filePath) };
+
+    const response = await drive.files.create({
+      requestBody: fileMetadata,
+      media,
+      fields: "id",
+    });
+    if(response.data.id) await fs.unlink(filePath)
+    return { fileId: response.data.id };
+  // }
+}

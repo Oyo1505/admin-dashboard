@@ -1,8 +1,9 @@
-import { getAllGenres } from '@/components/movies/action';
+
+import { addFileToGoogleDrive, handleChunkUpload } from '@/googleDrive';
 import { IFilters, IGenre, IMovie } from '@/models/movie/movie';
 import {create} from 'zustand';
 
-interface FormData {
+interface FormDataStore {
   title: string;
   link: string;
   year: number;
@@ -14,7 +15,7 @@ interface FormData {
 }
 
 interface MovieFormState {
-  formData: FormData
+  formData: FormDataStore
   setFormData: (data: Partial<MovieFormState>) => void;
   moviesFromStore : IMovie[]
   setMoviesStore: (data: IMovie[]) => void;
@@ -89,6 +90,26 @@ const useGenreStore = create<IGenreStore>((set) => ({
     }));  
   },
 }));
+interface IUploadGoogleDriveStore {
+  isLoading: boolean;
+  uploadGoogleDive: (file: string) => Promise<void>;
+}
+const useMovieGoogleDiveStore = create<IUploadGoogleDriveStore>((set) => ({
+  isLoading: false,
+  uploadGoogleDive: async (file:string) => {
+    console.log(file)
+    set({ isLoading: true });
+    try {
+     const response = await handleChunkUpload(file);
 
+     if(response?.fileId){
+      set({ isLoading: false });
+     }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+}));
 
-export { useFiltersMovieStore, useMovieFormStore, useGenreStore };
+export { useFiltersMovieStore, useMovieFormStore, useGenreStore, useMovieGoogleDiveStore };

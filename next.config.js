@@ -5,6 +5,12 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
   pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '4000mb',
+    },
+    nextScriptWorkers: true,
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
