@@ -13,8 +13,7 @@ const Page = async () => {
   const handleSubmitGoogleDrive = async (formData: FormData) => {
     'use server';
     try {
-      const res = await addFileToGoogleDriveAction(formData);
-      return res;
+      await addFileToGoogleDriveAction(formData);
     } catch (error) {
       console.log(error);
     }
