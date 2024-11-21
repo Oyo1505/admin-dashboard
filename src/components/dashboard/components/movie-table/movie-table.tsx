@@ -6,7 +6,7 @@ import MovieRow from '../movie-row/movie-row'
 import { useTranslations } from 'next-intl'
 import ButtonAddMovie from '../button-add-movie/button-add-movie'
 
-const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInDb: IMovie[]}) => {
+const MovieTable = ({movies, movieInDb, handleSubmitGoogleDrive}: {movies: IMovie[] | undefined, movieInDb: IMovie[], handleSubmitGoogleDrive: (formData: FormData) => Promise<any>}) => {
 
   const t = useTranslations('Dashboard');
   const filteredMoviesNotAdded = movies?.filter(testMovie => !movieInDb?.some(dataMovie => dataMovie.idGoogleDive === testMovie.id));
@@ -17,7 +17,7 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
     <Suspense  fallback={<p>Chargement...</p>}>
 
     <div className='flex flex-1 flex-col gap-4  md:gap-8 md:p-6'>
-      <ButtonAddMovie />
+      <ButtonAddMovie handleSubmitGoogleDrive={handleSubmitGoogleDrive} />
       {filteredMoviesNotAdded && filteredMoviesNotAdded?.length > 0 ? ( 
         <form className="border  bg-primary text-background shadow-sm rounded-lg">
         <Table>
