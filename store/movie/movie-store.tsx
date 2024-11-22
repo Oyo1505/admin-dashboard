@@ -1,5 +1,4 @@
-
-import { addFileToGoogleDrive, handleChunkUpload } from '@/googleDrive';
+import { addFileToGoogleDriveAction } from '@/googleDrive';
 import { IFilters, IGenre, IMovie } from '@/models/movie/movie';
 import {create} from 'zustand';
 
@@ -90,26 +89,6 @@ const useGenreStore = create<IGenreStore>((set) => ({
     }));  
   },
 }));
-interface IUploadGoogleDriveStore {
-  isLoading: boolean;
-  uploadGoogleDive: (file: string) => Promise<void>;
-}
-const useMovieGoogleDiveStore = create<IUploadGoogleDriveStore>((set) => ({
-  isLoading: false,
-  uploadGoogleDive: async (file:string) => {
-    console.log(file)
-    set({ isLoading: true });
-    try {
-     const response = await handleChunkUpload(file);
 
-     if(response?.fileId){
-      set({ isLoading: false });
-     }
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
-}));
 
-export { useFiltersMovieStore, useMovieFormStore, useGenreStore, useMovieGoogleDiveStore };
+export { useFiltersMovieStore, useMovieFormStore, useGenreStore };

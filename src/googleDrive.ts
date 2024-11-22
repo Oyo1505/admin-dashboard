@@ -35,7 +35,7 @@ export const findExistingFile = async (driveService:GoogleApis, fileName:string)
     }
 };
 
-const auth = new google.auth.GoogleAuth({
+ const auth = new google.auth.GoogleAuth({
   credentials: {
     type: process.env.TYPE,
     project_id: process.env.PROJECT_ID,
@@ -136,12 +136,12 @@ export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status
   }
 };
 
-export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, status: number} | null>  =>{
+export const addFileToGoogleDriveAction = async (formData: File): Promise<{data: any, status: number} | null>  =>{
 
-  if(!file) return null;
+  if(!formData) return null;
   const drive = google.drive({ version: "v3", auth })
   
-  const formData = file.get('file') as File;
+  //const formData = file.get('file') as File;
 
   if (!formData) throw new Error('No file found');
   if (formData.size < 1) throw new Error('File is empty');
@@ -170,10 +170,10 @@ export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, 
       fields: 'id, webViewLink, webContentLink, name',
     },      
   );
-    const uploadUrl = response.headers.location;
-    console.log(response, 'uploadUrl');
+
     if(response){
-      return {data : uploadUrl, status : 200};
+      revalidatePath(URL_ADD_MOVIE);
+      return {data : response, status : 200};
     }
     return {data : null, status : 404};
   } catch (error) {
@@ -182,12 +182,8 @@ export const addFileToGoogleDrive = async (file: FormData): Promise<{data: any, 
   }
 }
 
-
-
-
-
 export async function handleChunkUpload(fileName: string) {
-  await ensureUploadDir();
+    await ensureUploadDir();
     const filePath = path.join(UPLOAD_DIR, fileName);
     const drive = google.drive({ version: "v3", auth })
     const fileMetadata = {
@@ -203,5 +199,4 @@ export async function handleChunkUpload(fileName: string) {
     });
     if(response.data.id) await fs.unlink(filePath)
     return { fileId: response.data.id };
-  // }
 }
