@@ -50,3 +50,11 @@ export const directorSectionSchema = z.object({
   imageBackdrop: z.string(),
 });
 
+
+export type MovieUploadSchema = z.infer<typeof movieUploadSchema>;
+export const movieUploadSchema = z.object({
+  file: z.any().optional(),
+});
+
+
+

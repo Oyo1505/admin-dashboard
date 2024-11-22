@@ -136,12 +136,12 @@ export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status
   }
 };
 
-export const addFileToGoogleDriveAction = async (file: FormData): Promise<{data: any, status: number} | null>  =>{
+export const addFileToGoogleDriveAction = async (formData: File): Promise<{data: any, status: number} | null>  =>{
 
-  if(!file) return null;
+  if(!formData) return null;
   const drive = google.drive({ version: "v3", auth })
   
-  const formData = file.get('file') as File;
+  //const formData = file.get('file') as File;
 
   if (!formData) throw new Error('No file found');
   if (formData.size < 1) throw new Error('File is empty');
