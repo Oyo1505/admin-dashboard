@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query'
 
-const ButtonAddMovie = ({handleSubmitGoogleDrive}: { handleSubmitGoogleDrive: (formData: FormData) => Promise<void> }) => {
+const ButtonAddMovie = () => {
 
   const [canBeUploaded, setCanBeUploaded] = React.useState(false);
   const [fileName , setFileName] = useState('');

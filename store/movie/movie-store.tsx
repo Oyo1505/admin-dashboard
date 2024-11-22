@@ -89,31 +89,6 @@ const useGenreStore = create<IGenreStore>((set) => ({
     }));  
   },
 }));
-interface IUploadGoogleDriveStore {
-  isLoading: boolean;
-  movieId: string | null;
-  uploadGoogleDive: (file: FormData) => Promise<void>;
-}
-const useMovieGoogleDiveStore = create<IUploadGoogleDriveStore>((set) => ({
-  isLoading: false,
-  movieId: null,
-  uploadGoogleDive: async (file:FormData) => {
-    set({ isLoading: true });
-    try {
-     const response = (await addFileToGoogleDriveAction(file));
-     if(response?.data?.id){
-      set({ isLoading: false });
-     }
-    }
-    catch (error) {
-      console.log(error);
-    }
-  },
-  setIsLoading: () => {
-    set((state) => ({
-      isLoading: !state.isLoading,
-    })); 
-  },
-}));
 
-export { useFiltersMovieStore, useMovieFormStore, useGenreStore, useMovieGoogleDiveStore };
+
+export { useFiltersMovieStore, useMovieFormStore, useGenreStore };

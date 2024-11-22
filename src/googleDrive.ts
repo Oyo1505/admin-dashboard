@@ -182,16 +182,6 @@ export const addFileToGoogleDriveAction = async (formData: File): Promise<{data:
   }
 }
 
-export const handleSubmitGoogleDrive = async (formData: FormData) => {
-  try {
-    const res = await addFileToGoogleDriveAction(formData);
-    return res; // Résultat de l'action côté serveur
-  } catch (error) {
-    console.error(error);
-    throw new Error('Failed to upload file to Google Drive');
-  }
-};
-
 export async function handleChunkUpload(fileName: string) {
     await ensureUploadDir();
     const filePath = path.join(UPLOAD_DIR, fileName);

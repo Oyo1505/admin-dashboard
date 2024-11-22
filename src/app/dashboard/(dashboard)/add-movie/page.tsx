@@ -10,15 +10,7 @@ const Page = async () => {
   const { movies } = await getDataFromGoogleDrive() as {movies: IMovie[]}
   const { movieInDb } = await getAllMovies();
   
-  const handleSubmitGoogleDrive = async (formData: FormData) => {
-    'use server';
-    try {
-      await addFileToGoogleDriveAction(formData);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-    return <MovieTable movies={movies} handleSubmitGoogleDrive={handleSubmitGoogleDrive} movieInDb={movieInDb as IMovie[]} />
+    return <MovieTable movies={movies}  movieInDb={movieInDb as IMovie[]} />
 }
 
 export default Page
