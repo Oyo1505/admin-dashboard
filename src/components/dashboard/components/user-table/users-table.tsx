@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/components/table/table';
 import { Button } from '@/components/ui/components/button/button';
 import { useRouter } from 'next/navigation';
-import { deleteUserById } from '../components/dashboard/action';
+import { deleteUserById } from '../../action';
 import { User } from '@/models/user/user';
 import useUserStore from 'store/user/user-store';
 

@@ -1,16 +1,14 @@
 
 import React from 'react'
 import { redirect } from 'next/navigation';
-import  Search  from '@/app/search';
-import UsersTable from '@/app/users-table';
+import  Search  from '@/components/dashboard/components/search-user/search-user';
+import UsersTable from '@/components/dashboard/components/user-table/users-table';
 import { auth } from '@/lib/auth';
 import { getUsersWithPageParam } from '@/components/dashboard/action';
 import { getAuthorizedEmails } from '@/components/auth/action/action';
 import FormAddEmailAuthrizedEmail from '@/components/auth/components/form-add-email-authorized/form-add-email-authorized';
 import { EmailAuthrizedEmailRow } from '@/components/dashboard/components/email-user-authorized-row/email-user-authorized-row';
 import Title from '@/components/ui/components/title/title';
-import { User } from '@/models/user/user';
-
 
 const Page = async (
   props: {

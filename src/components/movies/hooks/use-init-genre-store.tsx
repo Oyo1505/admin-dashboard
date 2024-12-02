@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getAllGenres } from '../action'
 import { usePathname } from 'next/navigation';
-import { set } from 'zod';
 import { useGenreStore } from 'store/movie/movie-store';
 
 

@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IMovie } from "@/models/movie/movie";
-import { URL_ADD_MOVIE, URL_USERS } from "@/shared/route";
+import { URL_ADD_MOVIE } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 
@@ -323,7 +323,7 @@ export const deleteDirectorFromSection =  async (id:string): Promise<{director: 
 
   try
   {
-    const director = await prisma.directorSection.delete({
+    await prisma.directorSection.delete({
       where: {
         id,
       },

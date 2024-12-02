@@ -1,14 +1,13 @@
 'use client'
 import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
-import { useRouter } from 'next/router';
+
 import { Input } from '@/components/ui/components/input/input';
-import React, { useEffect, useRef, useState, useTransition } from 'react'
+import React, { useRef, useState, useTransition } from 'react'
 
 const SearchBar  = (props: { value?: string }) => {
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [value, setValue] = useState(props.value);
-  const [isPending, startTransition] = useTransition();
+  const [value, ] = useState(props.value);
+  const [isPending,] = useTransition();
 
   // useEffect(() => {
   //   const params = new URLSearchParams(window.location.search);
@@ -34,7 +33,7 @@ const SearchBar  = (props: { value?: string }) => {
       <Input
         ref={inputRef}
         value={value ?? ''}
-        onInput={(e) => {
+        onInput={() => {
           // setValue(e.currentTarget.value);
         }}
         spellCheck={false}

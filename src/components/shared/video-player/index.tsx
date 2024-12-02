@@ -1,6 +1,6 @@
 "use client"
 import Artplayer from 'artplayer';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 type Props = {
   src?:string
   subtitles?:string
@@ -14,7 +14,7 @@ type Props = {
 }
 
 
-const VideoPlayer = ({ option, getInstance, ...rest }:Props) => {
+const VideoPlayer = ({ option, ...rest }:Props) => {
 
   const artRef = useRef<HTMLDivElement>(null);
   useEffect(() => {

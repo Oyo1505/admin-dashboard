@@ -1,5 +1,5 @@
 'use client'
-import { NavItem } from '@/app/nav-item'
+import { NavItem } from '@/components/layout/components/menu-dashboard-nav-item/menu-dashboard-nav-item'
 import { AddIncon, Favorite, Home, SettingsIcon, UsersIcon } from '@/components/ui/components/icons/icons'
 import { URL_ADD_MOVIE, URL_DASHBOARD, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_GENRE_SECTION, URL_SETTINGS, URL_USERS } from '@/shared/route'
 import { useTranslations } from 'next-intl'

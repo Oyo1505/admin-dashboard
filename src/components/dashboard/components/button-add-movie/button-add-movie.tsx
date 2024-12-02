@@ -5,27 +5,27 @@ import { Input } from '@/components/ui/components/input/input'
 import { addFileToGoogleDriveAction } from '@/googleDrive';
 import {  movieUploadSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm, Controller } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query'
 
 const ButtonAddMovie = () => {
 
-  const [canBeUploaded, setCanBeUploaded] = React.useState(false);
-  const [fileName , setFileName] = useState('');
-  const [file , setFile] = useState<File>();
+  // const [canBeUploaded, setCanBeUploaded] = React.useState(false);
+  // const [fileName , setFileName] = useState('');
+  // const [file , setFile] = useState<File>();
   
-  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(event.target.files && event.target.files.length > 0){
-    const fileUploaded = event.target.files[0];
-    if(fileUploaded.size > 0 && fileUploaded.type === 'video/mp4'){
-        setCanBeUploaded(true);
-        setFileName(fileUploaded.name);
-        setFile(fileUploaded)
-      }
-    }
-  };
-  const { mutate, isSuccess, isPending } =  useMutation({
+  // const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if(event.target.files && event.target.files.length > 0){
+  //   const fileUploaded = event.target.files[0];
+  //   if(fileUploaded.size > 0 && fileUploaded.type === 'video/mp4'){
+  //       setCanBeUploaded(true);
+  //       setFileName(fileUploaded.name);
+  //       setFile(fileUploaded)
+  //     }
+  //   }
+  // };
+  const { mutate, isPending } =  useMutation({
     mutationFn: (data:any) => addFileToGoogleDriveAction(data.file),
   });
   
@@ -38,7 +38,7 @@ const ButtonAddMovie = () => {
   //   }
   // }, [isPending, fileName]);
   
-  const { handleSubmit, register, control, formState: { errors } } = useForm({
+  const { handleSubmit, control, } = useForm({
    resolver: zodResolver(movieUploadSchema)
   },
 );
@@ -64,14 +64,14 @@ const  onSubmit = async (data : any) => {
          />
        )}
      />
-
+{/* 
      {canBeUploaded && 
       <>
         <div>{fileName}</div>
 
       </>
       
-     }
+     } */}
 
 <Button  type='submit' variant='outline' >Submit</Button>
    </form>

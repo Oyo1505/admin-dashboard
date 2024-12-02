@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export interface  User  {
   id: string;
   name?: string | null;

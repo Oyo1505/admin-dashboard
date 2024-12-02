@@ -1,10 +1,8 @@
 'use client'
-import { useTranslations } from 'next-intl'
 import React from 'react'
 
 
 const ContinueWatching = () => {
-  const t = useTranslations('Dashboard')
   return (
     <div className='mt-7'>
     
