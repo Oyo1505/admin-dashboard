@@ -8,7 +8,7 @@ import imageDefault from '../../../../assets/image/default-placeholder.png'
 import { useTranslations } from 'next-intl';
 
 
-const MoviesFavorite = ({movies, offset, newOffset}:{movies?:IMovie[], offset?:number, newOffset?:number}) => {
+const MoviesFavorite = ({movies}:{movies?:IMovie[]}) => {
   const t = useTranslations('Dashboard')
   return (
       <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-start'>

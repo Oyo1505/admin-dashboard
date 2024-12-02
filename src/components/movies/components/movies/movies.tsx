@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import qs from 'qs';
 import { URL_MOVIES } from '@/shared/route'

@@ -4,7 +4,8 @@ import React, { FC } from 'react'
 interface SelectGenreMovieForm {
   optionsList: IGenre[];
   locale: string;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
   className?: string;
 }
 const SelectGenreMovieForm: FC<SelectGenreMovieForm> = ({

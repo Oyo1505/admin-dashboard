@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/components/button/button';
 import { deleteUserById } from '@/components/dashboard/action';
 import { useTranslations } from 'next-intl'
-import React, { useState } from 'react'
+import React from 'react'
 import * as Dialog  from '@radix-ui/react-dialog'
 import { useSession } from 'next-auth/react';
 import useUserStore from 'store/user/user-store';

@@ -1,9 +1,8 @@
 'use client'
-import React, { Suspense } from 'react'
+import React from 'react'
 import Title from '@/components/ui/components/title/title'
 import 'react-multi-carousel/lib/styles.css';
 import { IMovie } from '@/models/movie/movie';
-import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
 import { useLocale } from 'next-intl';
 import MovieItemTheme from '../movie-item-theme/movie-item-theme';
 import Container from '@/components/ui/components/container/container';

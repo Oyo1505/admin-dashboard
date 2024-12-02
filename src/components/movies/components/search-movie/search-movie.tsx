@@ -1,5 +1,5 @@
 'use client'
-import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
+import { SearchIcon } from '@/components/ui/components/icons/icons';
 import { Input } from '@/components/ui/components/input/input';
 import React, { useEffect, useRef } from 'react'
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';

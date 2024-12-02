@@ -1,5 +1,5 @@
 'use client'
-import React, { ChangeEventHandler } from 'react'
+import React from 'react'
 import { Input } from '../input/input'
 import { useTranslations } from 'next-intl';
 

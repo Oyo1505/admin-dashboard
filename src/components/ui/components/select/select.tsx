@@ -5,7 +5,8 @@ interface SelectInputProps {
   formData: Record<string, any>;
   formDataKey: string;
   locale: string;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
   className?: string;
 }
 

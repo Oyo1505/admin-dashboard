@@ -1,6 +1,6 @@
 import { getAllMovies } from '@/components/dashboard/action';
 import MovieTable from '@/components/dashboard/components/movie-table/movie-table';
-import { addFileToGoogleDriveAction, getDataFromGoogleDrive } from '@/googleDrive';
+import { getDataFromGoogleDrive } from '@/googleDrive';
 import { IMovie } from '@/models/movie/movie';
 import React from 'react';
 

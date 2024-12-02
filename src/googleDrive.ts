@@ -8,6 +8,7 @@ import path, { join } from "path";
 import { createReadStream } from "fs";
 import { Buffer } from 'buffer';
 import type { ChunkUploadHandler } from 'nextjs-chunk-upload-action';
+import { auth } from "./lib/google-api";
 
 const UPLOAD_DIR = path.join(process.cwd(), "tmp");
 async function ensureUploadDir() {
@@ -34,25 +35,6 @@ export const findExistingFile = async (driveService:GoogleApis, fileName:string)
         throw error;
     }
 };
-
- const auth = new google.auth.GoogleAuth({
-  credentials: {
-    type: process.env.TYPE,
-    project_id: process.env.PROJECT_ID,
-    private_key_id: process.env.PRIVATE_KEY_ID,
-    private_key: process.env.PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    client_email: process.env.CLIENT_EMAIL,
-    client_id: process.env.CLIENT_ID,
-    //@ts-ignore
-    auth_uri: process.env.AUTH_URI,
-    token_uri: process.env.TOKEN_URI,
-    auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
-    client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
-    universe_domain: process.env.UNIVERSE_DOMAIN,
-  },
-  scopes: ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/drive.file"],
-});
-
 
 export const getDataFromGoogleDrive = async () => {
   // allows you to use drive API methods e.g. listing files, creating files.
@@ -99,22 +81,23 @@ export const chunkUploadAction: ChunkUploadHandler<{ name: string }> = async (
     await fileHandle?.close();
   }
 };
-const transferOwnership = async (id:string,fileId: string) => {
-  const drive = google.drive({ version: "v3", auth })
-  try {
-    await drive.permissions.update({
-      fileId,
-      permissionId: id, 
-      requestBody: {
-        role: 'owner',
-      },
-      transferOwnership: true,
-    });
 
-  } catch (error: any) {
-    console.error("Error transferring ownership:", error);
-  }
-};
+// const transferOwnership = async (id:string,fileId: string) => {
+//   const drive = google.drive({ version: "v3", auth })
+//   try {
+//     await drive.permissions.update({
+//       fileId,
+//       permissionId: id, 
+//       requestBody: {
+//         role: 'owner',
+//       },
+//       transferOwnership: true,
+//     });
+
+//   } catch (error: any) {
+//     console.error("Error transferring ownership:", error);
+//   }
+// };
 
 export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status: number}> => {
   const drive = google.drive({ version: "v3", auth })

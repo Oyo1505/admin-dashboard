@@ -1,8 +1,8 @@
 'use client'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/button';
-import { IGenre, IGenreResponse, IMovie } from '@/models/movie/movie';
+import { IGenre, IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 import countriesList from '@/shared/constants/countries';
@@ -263,7 +263,7 @@ return(
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
           <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('genre')} htmlFor="genresIds" />
-          <div className='inline-flex flex-wrap gap-2' >{genresMovie.length > 0 && genresMovie?.map(item => <LabelGenre key={item.id} id={item.id} nameFR={item.nameFR} nameEN={item.nameEN} nameJP={item.nameJP} onClick={() => handleGenreDelete(item.id)} locale={locale} />)}</div>
+          <div className='inline-flex flex-wrap gap-2' >{genresMovie.length > 0 && genresMovie?.map(item => <LabelGenre key={item.id} nameFR={item.nameFR} nameEN={item.nameEN} nameJP={item.nameJP} onClick={() => handleGenreDelete(item.id)} locale={locale} />)}</div>
           <SelectGenreMovieForm 
             optionsList={genres} 
             locale={locale} 

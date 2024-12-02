@@ -1,5 +1,5 @@
 'use client'
-import React, { Suspense } from 'react'
+import React from 'react'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';

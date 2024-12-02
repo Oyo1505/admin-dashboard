@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import ButtonLogout from '../components/ui/components/button-logout/button-logout';
+import ButtonLogout from '../../../ui/components/button-logout/button-logout';
 import { useSession } from 'next-auth/react';
 
 export function User({mobile=false}: {mobile: boolean}) {

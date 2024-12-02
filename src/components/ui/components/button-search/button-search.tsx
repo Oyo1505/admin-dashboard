@@ -1,4 +1,4 @@
-import React, { startTransition } from 'react'
+import React from 'react'
 import { Button } from '../button/button';
 import clsx from 'clsx';
 

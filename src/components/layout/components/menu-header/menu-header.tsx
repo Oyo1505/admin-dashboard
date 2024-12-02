@@ -1,4 +1,4 @@
-import { User } from '@/app/user';
+import { User } from '@/components/layout/components/menu-user-items/menu-user-items';
 import Container from '@/components/ui/components/container/container';
 import LocaleSwitcher from '@/components/ui/components/LocaleSwitcher/locale-switcher';
 import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
@@ -8,7 +8,6 @@ import MenuMobile from '../menu-mobile/menu-mobile';
 import { headers } from 'next/headers';
 import { getTranslations } from 'next-intl/server';
 import { Session } from 'next-auth';
-import { SessionProviderProps } from 'next-auth/react';
 
 const MenuHeader = async ({session}: {session: Session | null}) => {
   const t = await getTranslations('Menu');

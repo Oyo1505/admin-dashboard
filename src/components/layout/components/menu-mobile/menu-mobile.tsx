@@ -1,16 +1,14 @@
 'use client'
 import LocaleSwitcher from '@/components/ui/components/LocaleSwitcher/locale-switcher';
-import { useTranslations } from 'next-intl';
-import React from 'react'
+import React, { useState } from 'react'
 import MenuMobileItem from '../menu-mobile-item/menu-mobile-item';
-import { User } from '@/app/user';
+import { User } from '@/components/layout/components/menu-user-items/menu-user-items';
 import clsx from 'clsx';
 import { BurgerIcon, CrossIcon } from '@/components/ui/components/icons/icons';
 import { Session } from 'next-auth';
 
 const MenuMobile= ({session}: {session: Session | null}) => {
-  const t = useTranslations('Menu');
-  const [isActive, setIsActive] = React.useState(false);
+  const [isActive, setIsActive] = useState(false);
   return (
     <div className="flex pl-6 items-centerpl-3 justify-between shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] py-8">
       <nav >
