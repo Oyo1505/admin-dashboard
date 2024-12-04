@@ -1,5 +1,5 @@
 'use client'
-import React, { startTransition, useEffect } from 'react'
+import React, { startTransition, useEffect, useLayoutEffect, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { URL_MOVIES } from '@/shared/route'
@@ -13,11 +13,11 @@ import countriesList from '@/shared/constants/countries'
 import { IGenre } from '@/models/movie/movie'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
 
-const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined}) => {
+const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, decadeParams}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined, decadeParams?:number, q?:string}) => {
   const locale = useLocale()
   const router = useRouter();
   const t = useTranslations('Filters');
-
+  const [isMounted, setIsMounted] = useState(false);
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
   const listCountries = countriesList.filter(country => countries?.includes(country.value));
@@ -35,6 +35,20 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
       q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
     })}),
   });
+
+  useLayoutEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+
+  useEffect(() => {
+    if(isMounted && (genre !== '' || language !== ''  || subtitles !== '' || q !== '' ||  decadeParams && decadeParams > 0)){
+      setFiltersData({...filters, genre, language, subtitles, decade: decadeParams, q})
+      setIsMounted(false)
+      refetch()
+    }
+  }, [filters, setFiltersData, isMounted, genre, language, refetch, status, subtitles, decadeParams, q])
+
 
   function onChangeSubtitles(e: React.ChangeEvent<HTMLSelectElement>) {
     const params = new URLSearchParams(window.location.search);
@@ -129,8 +143,11 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
         </div>
         <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('language')}</label>
-          <select   onChange={onChangeCountry} defaultValue={language ?? filters?.language} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-            <option> </option>
+          <select   
+            onChange={onChangeCountry} 
+            defaultValue={language ?? filters?.language} 
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+          <option> </option>
           {listCountries.map((country, index) => (
               <option  key={`${
               //@ts-ignore
@@ -143,8 +160,11 @@ const MovieFilters = ({subtitles, language, genres, genre, offset, countries}:{s
         </div>
         <div  className="flex flex-col gap-2 md:w-64">
           <label>{t('decade')}</label>
-          <select   onChange={onChangeDecade}  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-            <option> </option>
+          <select   
+            onChange={onChangeDecade} 
+            defaultValue={String(decadeParams ?? filters?.decade)}  
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+          <option> </option>
           {decade?.decade.map((dec, index) => (
               <option  key={`${dec}-${index}`} value={dec}>
                 {dec}

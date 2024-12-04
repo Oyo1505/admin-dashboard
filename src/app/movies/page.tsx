@@ -17,7 +17,7 @@ async function getData() {
  const Page  = async (
    props: {
     searchParams: Promise<{
-      language: string; q: string; subtitles: string; langage: string, genre: string
+      language: string; q: string; subtitles: string; langage: string, genre: string, decade: string
   }>;
   }
  ) => {
@@ -27,10 +27,12 @@ async function getData() {
    const subtitles = searchParams.subtitles ?? '';
    const language = searchParams.language ?? '';
    const genre = searchParams.genre ?? '';
+   const decade = Number(searchParams.decade) ?? 0;
    const offset = 12
+
    return (<>
        <SearchMovie search={search} offset={offset} />
-       <MovieFilters subtitles={subtitles} offset={offset} language={language} genres={genres} genre={genre} countries={countries as string[]}/>
+       <MovieFilters subtitles={subtitles} q={search} offset={offset} decadeParams={decade} language={language} genres={genres} genre={genre} countries={countries as string[]}/>
        <Suspense fallback={<MoviesSkeleton />}>
          <Movies searchParams={searchParams} offset={offset} />
        </Suspense>

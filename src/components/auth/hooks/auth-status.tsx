@@ -1,4 +1,3 @@
-//@ts-nocheck
 'use client'
 import { URL_HOME, URL_LEGAL_MENTIONS, URL_PRIVACY } from "@/shared/route"
 import { useSession } from "next-auth/react"
