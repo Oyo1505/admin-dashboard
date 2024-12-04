@@ -25,13 +25,13 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
   const { moviesFromStore, setMoviesStore } = useMovieFormStore();
   const locale = useLocale();
   const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: searchParams && Object.keys(searchParams).length > 0 ? qs.stringify({ 
-    subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
-    language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
-    decade: filters?.decade && filters?.decade > 0 ? filters?.decade : undefined,
-    genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : undefined,
-    q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
+    subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles :  searchParams.subtitles  ? searchParams.subtitles : undefined,
+    language: filters?.language && filters?.language?.length > 0 ? filters?.language :  searchParams.language ? searchParams.language : undefined,
+    decade: filters?.decade && filters?.decade > 0  ? filters?.decade :   Number(searchParams.decade) > 0 ? Number(searchParams.decade) : undefined,
+    genre: filters?.genre && filters?.genre?.length > 0 ? filters?.genre : searchParams.genre ? searchParams.genre : undefined,
+    q :  filters?.q && filters?.q?.length > 0 ? filters?.q : searchParams.q ? searchParams.q : undefined,
   }) : ''});
- 
+
   const t = useTranslations('MoviesPage')
 
   const filteredMovies = useMemo(() => {
@@ -66,8 +66,8 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
   };
 
   if (status === 'pending' && isFetching) return <LoadingSpinner className='flex justify-center h-screen' />
-
-  return (
+  
+  return (  
     <>
   <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start'>
     {moviesFromStore && moviesFromStore.length > 0 ? moviesFromStore.map((movie, index) => 

@@ -13,10 +13,8 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
   const t = useTranslations('Filters')
   const {filters, setFiltersData, hasBeenSearched, setHasBeenSearched} = useFiltersMovieStore();
   const { setMoviesStore } = useMovieFormStore();
+  const [localSearch, setLocalSearch] = React.useState(search || "");
 
-  function onChangeSearch(e: React.ChangeEvent<HTMLInputElement>) {
-    setFiltersData({...filters, q: e.target.value});
-  }
 
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
@@ -31,7 +29,7 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
       q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
     })}),
   });
-
+  
   useEffect(() => {
     if(hasBeenSearched){
       refetch()
@@ -53,8 +51,12 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-background" />
       <Input
         ref={inputRef}
-        value={filters?.q || search} 
-        onInput={(e) => onChangeSearch(e as React.ChangeEvent<HTMLInputElement>)}
+        value={localSearch}
+        onInput={(e) => {
+          const value = (e.target as HTMLInputElement).value;
+          setLocalSearch(value);
+          setFiltersData({ ...filters,q: value });
+        }}
         spellCheck={false}
         className="w-full bg-white shadow-none text-background appearance-none pl-8"
         placeholder={t('placeholderSearch')}
