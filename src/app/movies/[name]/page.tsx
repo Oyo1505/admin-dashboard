@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { cache, Suspense } from 'react'
 import Iframe from 'react-iframe'
 import { getMovieDetail } from '@/components/movies/action'
 import MovieHeader from '@/components/movies/components/movie-header/movie-header'
@@ -14,6 +14,7 @@ import { Lobster } from 'next/font/google'
 import clsx from 'clsx'
 import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube'
 import { PageProps } from '.next/types/app/page'
+import { notFound } from 'next/navigation'
 //const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
 
@@ -25,13 +26,19 @@ const lobster = Lobster({
 
 export const revalidate = 60;  
 
+const getMovie = cache(async(name: string) => {
+  const { movie, suggestedMovies } =  await getMovieDetail(name)
+  if (!movie) notFound()
+  return { movie, suggestedMovies }
+})
+
 const Page = async (props:PageProps) => {
 
   const params = await props.params;
   const userAgent =  (await headers()).get('user-agent');
   const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
   const { name }= params
-  const { movie, suggestedMovies } = await getMovieDetail(name)
+  const { movie,suggestedMovies } = await getMovie(name)
   const session = await auth();
 
   const favoriteMovives = session?.user?.id &&  (await getFavoriteMovies(session?.user?.id))

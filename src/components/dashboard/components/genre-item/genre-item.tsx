@@ -5,7 +5,7 @@ import { useLocale } from 'next-intl'
 import React from 'react'
 
 export const GenreItem = ({item}:{item:IGenre}) => {
-  const {nameFR, nameEN, nameJP} = item
+  const { nameFR, nameEN, nameJP } = item
   const locale = useLocale()
   const onDelete = async () => {
     try {

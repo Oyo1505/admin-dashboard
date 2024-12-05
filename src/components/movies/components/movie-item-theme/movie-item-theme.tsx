@@ -1,4 +1,5 @@
 import { IMovie } from '@/models/movie/movie'
+import { URL_MOVIE_ID } from '@/shared/route'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -6,7 +7,7 @@ import { titleOnlocale } from 'utilities/string/titleOnlocale'
 
 const MovieItemTheme = ({image, locale, movie, id }: {image: string, locale: string, movie: IMovie, id: string}) => {
   return (
-    <Link href={`/movies/${id}`} >
+    <Link href={URL_MOVIE_ID(id) } >
     <div className='group flex h-56 relative w-28 md:w-44 lg:w-80 rounded-lg  flex-col justify-between '>
         <div className='w-full rounded-lg h-full relative overflow-hidden'>
           <div className='relative w-full h-full'>

@@ -8,9 +8,9 @@ import { useSession } from 'next-auth/react';
 import useUserStore from 'store/user/user-store';
 
 const ButtonDeleteAccount = ({ translationTheme, translationText, className}: { translationTheme: string, translationText: string, className:string }) => {
-  const {logout} = useUserStore(state => state);
+  const { logout } = useUserStore(state => state);
   const t = useTranslations(translationTheme);
-  const {data: session} = useSession();
+  const { data: session } = useSession();
 
   const deleteUser = async () => {
     session?.user?.id && (await deleteUserById(session?.user?.id))

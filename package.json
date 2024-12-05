@@ -70,7 +70,10 @@
     "arrowParens": "always",
     "singleQuote": true,
     "tabWidth": 2,
-    "trailingComma": "none"
+    "prettier.bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.10.2",

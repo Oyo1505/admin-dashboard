@@ -1,10 +1,11 @@
 //@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
-import { URL_GENRE_SECTION } from "@/shared/route";
+import { URL_GENRE_SECTION, URL_MOVIE_ID } from "@/shared/route";
 import { revalidatePath } from "next/cache";
+import { cache } from "react";
 
-export const getMovieDetail =  async (id:string): Promise<{movie: IMovie, suggestedMovies: IMovie[]}> => {
+export const getMovieDetail = cache(async (id:string): Promise<{movie: IMovie, suggestedMovies: IMovie[]}> => {
   try {
   const movieInDb = await prisma.movie.findUnique({
       where:{
@@ -45,8 +46,7 @@ export const getMovieDetail =  async (id:string): Promise<{movie: IMovie, sugges
       status : 500
     }
   }
-} 
-
+} )
 export const getMoviesByARandomGenreById =  async (genre: string): Promise<{movies: IMovie[], status: number}> => {
   try {
     const moviesInDb = await prisma.movie.findMany({
@@ -191,7 +191,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
         }
       });
       
-      revalidatePath(`/movies/${idMovie}`);
+      revalidatePath(URL_MOVIE_ID(idMovie));
       return { status: 200, message: 'Supprimé des favoris avec succès' };
     }
      await prisma.userFavoriteMovies.create({
@@ -201,7 +201,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
       }
     });
 
-    revalidatePath(`/movies/${idMovie}`);
+    revalidatePath(URL_MOVIE_ID(idMovie));
     return { status: 200, message: 'Ajouté aux favoris avec succès' };
 
   } catch (error) {
@@ -229,8 +229,8 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
   }
 } 
 
-export const fetchMovies = async ({ pageParam, search }: { pageParam: number, search: string }): Promise<{movies: IMovie[], status: number, prevOffset: number}> => {
- 
+export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: number, search: string }): Promise<{movies: IMovie[], status: number, prevOffset: number}> => {
+
   try {
 
     if (!search.trim()) {
@@ -354,7 +354,7 @@ export const fetchMovies = async ({ pageParam, search }: { pageParam: number, se
       message: 'Erreur serveur. Impossible de récupérer les films.',
     };
   }
-};
+});
 
 export const getMoviesCountries = async (): Promise<{status: number, countries: string[]}> => {
     try {
@@ -371,9 +371,9 @@ export const getMoviesCountries = async (): Promise<{status: number, countries: 
         return { status: 400, message: 'Pas de pays' };
       }
   
-    const countries = countriesValues?.flatMap(item => item.country)
+     const countries = countriesValues?.flatMap(item => item.country)
 
-      return { status: 200, countries};
+     return { status: 200, countries};
   
         } catch (error) {
         console.log(error)

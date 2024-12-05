@@ -27,7 +27,7 @@ async function getData() {
   const { movies: moviesByARandomCountry, country} = await getMoviesByARandomCountry();
   const { movies: moviesByARandomGenre, genre } = await getMoviesByARandomGenre();
   const { movies: favorites} = await getFavoriteMovies("clzl1br370003zt5x1ipm2ojv");
-  const { directorMovies, director, imageBackdrop} = await getDirectorMovies();
+  const { directorMovies, director, imageBackdrop } = await getDirectorMovies();
 
   return { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, genre, favorites, directorMovies, country,  director, imageBackdrop, }
 }
