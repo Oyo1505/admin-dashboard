@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import qs from 'qs';
-import { URL_MOVIES } from '@/shared/route'
+import { URL_MOVIE_ID } from '@/shared/route'
 import Image from 'next/image';
 import imageDefault from '../../../../assets/image/default-placeholder.png'
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
@@ -66,7 +66,7 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
   };
 
   if (status === 'pending' && isFetching) return <LoadingSpinner className='flex justify-center h-screen' />
-  
+
   return (  
     <>
   <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start'>
@@ -74,7 +74,7 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
       movie?.title && (
         <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center transition-all duration-300'
           key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
-          href={`${URL_MOVIES}/${movie?.id}`}>
+          href={`${URL_MOVIE_ID(movie?.id)}`}>
           
           <div className='flex relative w-full rounded-lg flex-col justify-between h-full'>
             <div className='w-full h-72 rounded-lg relative overflow-hidden'>

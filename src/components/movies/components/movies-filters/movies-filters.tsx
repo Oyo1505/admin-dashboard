@@ -12,6 +12,7 @@ import { fetchMovies } from '../../action'
 import countriesList from '@/shared/constants/countries'
 import { IGenre } from '@/models/movie/movie'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
+import LabelForm from '@/components/ui/components/label-form/label-form'
 
 const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, decadeParams}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined, decadeParams?:number, q?:string}) => {
   const locale = useLocale()
@@ -133,7 +134,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
     <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
         <div className="flex flex-col gap-2 md:w-64">
-          <label>{t('subtitles')}</label>
+        <LabelForm titleLabel={t('subtitles')} className='text-white' htmlFor='subtitles' />
           <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             <option value="EN">{t('subtitlesEN')}</option>
@@ -142,7 +143,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
           </select>
         </div>
         <div  className="flex flex-col gap-2 md:w-64">
-          <label>{t('language')}</label>
+        <LabelForm titleLabel={t('language')} className='text-white' htmlFor='language' />
           <select   
             onChange={onChangeCountry} 
             defaultValue={language ?? filters?.language} 
@@ -159,7 +160,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
           </select>
         </div>
         <div  className="flex flex-col gap-2 md:w-64">
-          <label>{t('decade')}</label>
+          <LabelForm titleLabel={t('decade')}className='text-white' htmlFor='decade' />
           <select   
             onChange={onChangeDecade} 
             defaultValue={String(decadeParams ?? filters?.decade)}  
@@ -173,7 +174,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
           </select>
         </div>
         <div  className="flex flex-col gap-2 md:w-64">
-          <label>{t('genre')}</label>
+          <LabelForm titleLabel={t('genre')} className='text-white' htmlFor='genre' />
           <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
             <option> </option>
             {genres?.map((genre, index) => (

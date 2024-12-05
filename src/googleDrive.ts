@@ -11,6 +11,7 @@ import type { ChunkUploadHandler } from 'nextjs-chunk-upload-action';
 import { auth } from "./lib/google-api";
 
 const UPLOAD_DIR = path.join(process.cwd(), "tmp");
+
 async function ensureUploadDir() {
   try {
     await fs.access(UPLOAD_DIR);

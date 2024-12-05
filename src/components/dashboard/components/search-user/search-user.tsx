@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/components/input/input';
 import { SearchIcon, Spinner } from '@/components/ui/components/icons/icons';
 import { useRouter } from 'next/navigation';
 import { useTransition, useEffect, useRef, useState } from 'react';
+import { URL_USERS } from '@/shared/route';
 
  const  Search = (props: { value?: string }) => {
   const router = useRouter();
@@ -25,7 +26,7 @@ import { useTransition, useEffect, useRef, useState } from 'react';
     startTransition(() => {
       // All navigations are transitions automatically
       // But wrapping this allow us to observe the pending state
-      router.replace(`/dashboard/users?${params.toString()}`);
+      router.replace(`${URL_USERS}?${params.toString()}`);
     });
   }, [router, value]);
 

@@ -3,16 +3,16 @@ import MovieFilters from '@/components/movies/components/movies-filters/movies-f
 import Movies from '@/components/movies/components/movies/movies'
 import SearchMovie from '@/components/movies/components/search-movie/search-movie'
 import MoviesSkeleton from '@/components/skeleton/components/movies-skeleton/movies-skeleton';
-import React, { Suspense } from 'react'
+import React, { cache, Suspense } from 'react'
 
 export const revalidate = 60;  
 
-async function getData() {
+  const getData = cache(async () => {
   const { genres } = await getAllGenres();
   const { countries } = await getMoviesCountries();
 
   return { genres, countries }
-}
+})
 
  const Page  = async (
    props: {

@@ -2,7 +2,7 @@
 "use server"
 import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
-import { IMovie } from "@/models/movie/movie";
+import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
 import { URL_ADD_MOVIE } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
@@ -240,8 +240,7 @@ export const publishedMovieById =  async (id:string): Promise<{publish: boolean,
   }
 } 
 
-export const getFavoriteMovies =  async (id:string): Promise<{movies: IFavoriteMovieResponse[] | null, status: number}> => {
-  
+export const getFavoriteMovies = async (id: string): Promise<{ movies: IFavoriteMovieResponse[], status: number }> => {  
   try {
     const movies = await prisma.userFavoriteMovies.findMany({
       relationLoadStrategy: 'join',
@@ -252,7 +251,7 @@ export const getFavoriteMovies =  async (id:string): Promise<{movies: IFavoriteM
         movie: true
       },
     });
-    return { movies , status: 200 };
+    return { movies, status: 200 };
   
   } catch (error) {
     console.log(error)

@@ -1,8 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../action';
+import { cache } from 'react';
 
 
-const fetchMoviesParams = async ({ pageParam = 12, search = '' }) =>  await fetchMovies({pageParam, search});
+const fetchMoviesParams = cache(async ({ pageParam = 12, search = '' }) =>  await fetchMovies({pageParam, search}));
 
 const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, search?:string}) => {
   
