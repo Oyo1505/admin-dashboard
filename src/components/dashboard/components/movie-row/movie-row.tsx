@@ -2,16 +2,15 @@
 import { TableCell, TableRow } from '@/components/ui/components/table/table'
 import React, { useEffect, useState } from 'react'
 import { IMovie } from '@/models/movie/movie'
-import DialogAddMovie from '@/components/ui/components/modal-add-movie/modal-add-movie'
-import * as Dialog  from '@radix-ui/react-dialog'
 import { Button } from '@/components/ui/components/button/button'
 import { deleteMovieById, publishedMovieById } from '../../action'
 import Toggle from '@/components/ui/components/toggle/toggle'
 import { useQuery } from '@tanstack/react-query'
 import { deleteFileFromGoogleDrive } from '@/googleDrive'
+import Link from 'next/link'
+import { URL_DASHBOARD_MOVIE_ADD, URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route'
 
-function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText: string, editMovie?: boolean, index?: number}) {
-  const [isOpen, setIsOpen] = React.useState(false)
+function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, index?: number}) {
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
 
   const onClickDeleteMovie = async (): Promise<void> => {
@@ -32,11 +31,10 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
   const onDeleteMovieOnGoogleDrive = async (): Promise<void> => {
     movie?.id && (await deleteFileFromGoogleDrive(movie?.id))
   }
-
+ 
   return (
     movie && movie.id &&
      <>
-     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <TableRow className='border-b border-background border-opacity-20'>
         <TableCell className="font-bold">{index}. {movie.title ?? movie.id}</TableCell>
           {movie.title &&   
@@ -44,11 +42,13 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
              <Toggle toggle={refetch} publish={isMoviePublished} isFetching={isFetching} />
           </TableCell>}
           <TableCell>
-            <Dialog.Trigger asChild>
-            <Button  onClick={() => setIsOpen(true)}  variant={'outline'} className='font-bold  text-primary' >
+            {isMoviePublished !== undefined ? 
+            <Link href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)} className='font-bold bg-black p-3 rounded-md text-primary' >
               {btnText}
-            </Button>
-            </Dialog.Trigger>
+            </Link> : 
+            <Link href={URL_DASHBOARD_MOVIE_ADD(movie?.id)} className='font-bold bg-black p-3 rounded-md text-primary' >
+              {btnText}
+            </Link>}
           </TableCell>
           <TableCell> 
             <Button variant={'destructive'} className='font-bold' formAction={onClickDeleteMovie} >
@@ -61,8 +61,6 @@ function MovieRow({ movie, btnText, editMovie, index}: { movie:IMovie , btnText:
            } 
           </TableCell>
         </TableRow>
-       {isOpen &&  <DialogAddMovie  movie={movie} editMovie={editMovie}  setIsOpen={setIsOpen} />}
-      </Dialog.Root>
       </>
   );
 }

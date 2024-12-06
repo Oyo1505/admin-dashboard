@@ -1,29 +1,27 @@
 'use client'
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import * as Dialog from '@radix-ui/react-dialog';
-import { Button } from '../button/button';
+import React, { useState } from 'react'
 import { IGenre, IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
-import { CrossIcon } from '../icons/icons';
-import { Input } from '../input/input';
-import { Textarea } from '../textarea/textarea';
-import { Checkbox } from '../checkbox/checkbox';
-import SelectInput from '../select/select';
 import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useGenreStore } from 'store/movie/movie-store';
-import LabelForm from '../label-form/label-form';
 import SelectGenreMovieForm from '@/components/movies/components/select-genre-movie-form/select-genre-movie-form';
-import LabelGenre from '../label-genre/label-genre';
+import LabelForm from '@/components/ui/components/label-form/label-form';
+import { Input } from '@/components/ui/components/input/input';
+import Title from '@/components/ui/components/title/title';
+import SelectInput from '@/components/ui/components/select/select';
+import { Checkbox } from '@/components/ui/components/checkbox/checkbox';
+import { Button } from '@/components/ui/components/button/button';
+import { Textarea } from '@/components/ui/components/textarea/textarea';
+import LabelGenre from '@/components/ui/components/label-genre/label-genre';
 
 
-const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, editMovie?: boolean, setIsOpen: Dispatch<SetStateAction<boolean>>}) => {
+const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie, editMovie?: boolean, idFromGoogleDrive?: string}) => {
   const t = useTranslations('AddMovie');
-
   const [genresMovie, setGenresMovie] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
   const { genres } = useGenreStore();
 
@@ -52,7 +50,7 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       country: movie?.country ?? '',
       langage: movie?.language ?? '',
       subtitles: movie?.subtitles ?? [],
-      idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
+      idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : idFromGoogleDrive ?? ""
     },
     resolver: zodResolver(FormDataMovieSchema)
   });
@@ -60,7 +58,7 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
   const locale = useLocale();
 
   const [formData,] = useState<MovieSchema>({
-    id : movie?.id,
+    id : movie?.id ?? '',
     title: movie?.title ?? '',
     originalTitle: movie?.originalTitle ?? '',
     titleJapanese: movie?.titleJapanese ?? '',
@@ -69,23 +67,23 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
     director : movie?.director ?? '',
     imdbId : movie?.imdbId ?? '',
     year: movie?.year ?? new Date().getFullYear(), 
-    genresIds : movie.genresIds as any ?? [],
+    genresIds : movie?.genresIds as any ?? [],
     trailer: movie?.trailer ?? '', 
     duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '', 
     country: movie?.country ?? '',
     langage: movie?.language ?? '',
     subtitles: movie?.subtitles ?? [],
-    idGoogleDive: movie?.idGoogleDive ? movie?.idGoogleDive : movie?.id ?? ""
+    idGoogleDive: idFromGoogleDrive ? idFromGoogleDrive : movie?.idGoogleDive ? movie?.idGoogleDive : ""
   });
   
   const createMovie = async (data : MovieSchema) => {
+   try{
     const rawFormData = {
       title: data.title,
       titleJapanese: data.titleJapanese,
       titleEnglish: data.titleEnglish,
       idGoogleDive: data.idGoogleDive,
-      releaseDate: Date.now(),
       director : data.director,
       imdbId : data.imdbId,
       subtitles: data.subtitles,
@@ -99,11 +97,15 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       trailer: data.trailer,
       link: data.link,
     }
-    await addMovieToDb(rawFormData as any)
-    setIsOpen(false)
+
+   await addMovieToDb(rawFormData as any)
+  }catch(err){
+    console.log(err)
+  }
   }
  
   const onClickEditMovie = async (data: MovieSchema) => {
+    try{
     const rawFormData = {
       id: data.id,
       idGoogleDive: data.idGoogleDive,
@@ -114,7 +116,6 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       director : data.director,
       imdbId : data.imdbId,
       language  : data.langage, 
-      releaseDate: Date.now(),
       year: data.year,
       duration : data.duration,
       genresIds: data?.genresIds,
@@ -124,9 +125,11 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
       link: data.link,
       subtitles: data.subtitles,
     }
-
+    
      await editMovieToDb(rawFormData as any)
-     setIsOpen(false)
+     }catch(err){
+      console.log(err, 'err')
+    }
   }
 
   const subtitles = watch('subtitles', []);
@@ -178,10 +181,9 @@ const DialogAddMovie = ({movie, editMovie = false, setIsOpen}:{ movie:IMovie, ed
   }
 
 return(
-    <Dialog.Portal>
-      <Dialog.Overlay className="bg-blackA6 data-[state=open]:animate-overlayShow fixed inset-0" />
-      <Dialog.Title >Ajouter Film</Dialog.Title>
-      <Dialog.Content className="data-[state=open]:animate-contentShow overflow-scroll text-background fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[950px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+    <div className='bg-white'>
+      <Title type='h1' translationTheme='AddMovie' translationText='title'/>
+      <div className=" text-background p-3 ">
         <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
         <div className="mb-[15px]  flex flex-col items-center gap-2">
           <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleMovie')} htmlFor="title" />
@@ -252,7 +254,7 @@ return(
           </div>
           <div className="mb-[15px] flex flex-col items-center gap-5">
             <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('country')} htmlFor="country" />
-            <SelectInput 
+            <SelectInput
               optionsList={countriesList} 
               formData={formData} 
               formDataKey='country' 
@@ -357,7 +359,7 @@ return(
 
         <div className="mt-[25px] flex justify-end">
          
-            <Button 
+            <Button
               size="sm"
               variant="outline"
               type='submit'
@@ -367,18 +369,10 @@ return(
             </Button> 
             
         </div>
-        <Dialog.Close asChild>
-          <button
-            className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
-            aria-label="Close"
-          >
-          <CrossIcon  color='black'/>
-          </button>
-        </Dialog.Close>
         </form>
-      </Dialog.Content>
-    </Dialog.Portal>
+      </div>
+    </div>
     )
 }
 
-export default DialogAddMovie
+export default FormMovie

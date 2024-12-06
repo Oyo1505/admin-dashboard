@@ -10,23 +10,23 @@ export const genreSchema = z.object({
 });
 
 export const FormDataMovieSchema = z.object({
-  id : z.string(),
+  id: z.string().optional(),
   title: z.string().min(1, 'Un titre est requis'),
   originalTitle: z.string().min(1, 'Un titre original est requis'),
-  titleEnglish: z.string(),
-  titleJapanese: z.string(),
-  synopsis: z.string(),
-  director : z.string(),
-  imdbId : z.string(),
-  genresIds : z.array(z.string()).min(1, 'Un genre est requis'),
-  country: z.string(),
-  duration: z.number(),
-  langage: z.string(),
-  link: z.string(),
-  trailer : z.string(),
-  year: z.number().min(1890, 'L\'année doit être valide').max(new Date().getFullYear(), 'L\'année ne peut pas être dans le futur'),
-  subtitles: z.array(z.string()).optional(),
-  idGoogleDive: z.string().min(1, 'Un id google dive est requis'),
+  titleEnglish: z.string().optional(),
+  titleJapanese: z.string().optional(),
+  synopsis: z.string().optional(),
+  director: z.string().optional(),
+  imdbId: z.string().optional(),
+  genresIds: z.array(z.string()).min(1, 'Un genre est requis'),
+  country: z.string().optional(),
+  duration: z.preprocess((val) => Number(val), z.number()),
+  langage: z.string().optional(),
+  link: z.string().optional(),
+  trailer: z.string().optional(),
+  year: z.preprocess((val) => Number(val), z.number().min(1890).max(new Date().getFullYear())),
+  subtitles: z.array(z.string()).optional().default([]),
+  idGoogleDive: z.string().min(1, 'Un id google drive est requis'),
 });
 
 export type MovieSchema = z.infer<typeof FormDataMovieSchema>;

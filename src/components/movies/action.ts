@@ -21,16 +21,16 @@ export const getMovieDetail = cache(async (id:string): Promise<{movie: IMovie, s
       cacheStrategy: { ttl: 120 },
     });
 
-  const randomGenre = movieInDb.genresIds[Math.floor(Math.random() * movieInDb.genresIds.length)];
+  const randomGenre = movieInDb?.genresIds[Math.floor(Math.random() * movieInDb?.genresIds.length)];
   
   const suggestedMovies = await prisma.movie.findMany({
     where: {
       genresIds: {
         some: {
-            genreId: { contains: randomGenre.genre.id, mode : 'insensitive'},
+            genreId: { contains: randomGenre?.genre?.id, mode : 'insensitive'},
         },},
       NOT: {
-        id: movieInDb.id
+        id: movieInDb?.id
       }
     },
     cacheStrategy: { ttl: 600 },
