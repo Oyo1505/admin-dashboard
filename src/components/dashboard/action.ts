@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
-import { URL_ADD_MOVIE } from "@/shared/route";
+import { URL_DASHBOARD_MOVIE } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 
@@ -84,56 +84,59 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
   }
 } 
 
-export const addMovieToDb =  async (movie:IMovie): Promise<{status: number, message: string}> => {
+export const addMovieToDb = async (movie: IMovie): Promise<{ status: number; message: string }> => {
   
-    try {
-  
-   const movieInDb = await prisma.movie.findUnique({
-      where:{
-        idGoogleDive: movie.idGoogleDive
-      }
-    })
-    if(movieInDb){
-      return {status: 409, message :'Le film existe déjà' };
+
+  try {
+    const existingMovie = await prisma.movie.findUnique({
+      where: { idGoogleDive: movie.idGoogleDive },
+    });
+    if (existingMovie) {
+      return { status: 409, message: 'Le film existe déjà' };
     }
-    
+
+    if (!movie.genresIds || !Array.isArray(movie.genresIds) || movie.genresIds.length === 0) {
+      throw new Error('Au moins un genre est requis.');
+    }
+    console.log(movie)
     await prisma.movie.create({
       data: {
-        title: movie.title ?? 'Nouveau film',
-        titleEnglish: movie.titleEnglish,
-        titleJapanese: movie.titleJapanese,
+        title: movie?.title,
+        titleEnglish: movie?.titleEnglish,
+        titleJapanese: movie?.titleJapanese,
         link: movie?.link,
         image: movie?.link,
-        director : movie?.director,
-        imdbId : movie?.imdbId,
-        originalTitle: movie.originalTitle,
-        subtitles: movie.subtitles,
-        language: movie.language,
-        genresIds:{
-          create: movie.genresIds.map((genreId) => ({
+        director: movie?.director,
+        imdbId: movie?.imdbId,
+        originalTitle: movie?.originalTitle,
+        duration: Number(movie?.duration),
+        idGoogleDive: movie?.idGoogleDive,
+        language: movie?.language,
+        subtitles: movie?.subtitles || [],
+        year: Number(movie?.year),
+        genresIds: {
+          create: movie?.genresIds?.map((genreId) => ({
             genre: {
-              connect: { id: genreId }
-            }
-          }))
-        },
-        duration: Number(movie.duration),
-        idGoogleDive: movie.idGoogleDive,
-        year: Number(movie.year),
-        country: movie.country,
-        synopsis: movie.synopsis,
-        trailer: movie.trailer,
+              connect: { id: genreId },
+            },
+          })),
+        },        
+        country: movie?.country,
+        synopsis: movie?.synopsis,
+        trailer: movie?.trailer,
       },
-    })
+    });
+    
 
-    revalidatePath(URL_ADD_MOVIE)
-    return {status: 200 };
+    revalidatePath(URL_DASHBOARD_MOVIE)
+    return { status: 200, message: 'Film ajouté avec succès' };
+
   } catch (error) {
-    console.log(error)
-    return {
-      status : 500
-    }
+    console.error('Erreur lors de l’ajout du film:', error);
+    return { status: 500, message: 'Erreur interne' };
   }
-} 
+};
+
 
 export const editMovieToDb =  async (movie:IMovie): Promise<{status: number, message: string}> => {
   
@@ -148,41 +151,41 @@ export const editMovieToDb =  async (movie:IMovie): Promise<{status: number, mes
   if (!movieInDb) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
-  
+
   await prisma.movie.update({
     where: {
       id: movie.id
     },
     data: {
-      title: movie.title,
-      titleEnglish: movie.titleEnglish,
-      titleJapanese: movie.titleJapanese,
+      title: movie?.title,
+      titleEnglish: movie?.titleEnglish,
+      titleJapanese: movie?.titleJapanese,
       link: movie?.link,
       image: movie?.link,
       director: movie?.director,
       imdbId: movie?.imdbId,
       originalTitle: movie.originalTitle,
       duration:  Number(movie.duration),
-      idGoogleDive: movie.idGoogleDive,
-      language: movie.language,
-      subtitles: movie.subtitles,
+      idGoogleDrive: movie.idGoogleDrive,
+      language: movie?.language,
+      subtitles: movie?.subtitles,
       year: Number(movie.year),
       genresIds:{
         deleteMany:{},
-        create: movie.genresIds.map((genreId) => ({
+        create: movie?.genresIds.map((genreId) => ({
           genre: {
             connect: { id: genreId }
           }
         }))
       },
-      country: movie.country,
-      synopsis: movie.synopsis,
-      trailer: movie.trailer,
+      country: movie?.country,
+      synopsis: movie?.synopsis,
+      trailer: movie?.trailer,
     },
   })
 
-  revalidatePath(URL_ADD_MOVIE)
-  return {status: 200 };
+  revalidatePath(URL_DASHBOARD_MOVIE)
+  return { status: 200 };
 } catch (error) {
   console.log(error)
     return {

@@ -46,6 +46,7 @@
     "users":"Users",
     "emailAuthorized":"Email Authorized",
     "addButton":"Add",
+    "editButton":"Edit",
     "deleteButton":"Delete",
     "noMovie":"No movies available",
     "movieAdded": "Movie published",
@@ -58,6 +59,7 @@
     "users":"Users",
     "director":"Section Director",
     "add-movie":"Add movie",
+    "movies":"Movies",
     "genre":"Genre",
     "favorite":"Favorite",
     "settings":"Settings"

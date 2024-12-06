@@ -1,7 +1,7 @@
 "use server"; 
 import { google, GoogleApis } from "googleapis";
 import { revalidatePath } from "next/cache";
-import { URL_ADD_MOVIE } from "./shared/route";
+import { URL_DASHBOARD_MOVIE } from "./shared/route";
 import { Readable } from "stream";
 import fs, { open } from "fs/promises";
 import path, { join } from "path";
@@ -109,7 +109,7 @@ export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status
    if(user && user[0].id){
     const response = await drive.files.delete({fileId})
     if(response.statusText === 'No Content' ){
-      revalidatePath(URL_ADD_MOVIE)
+      revalidatePath(URL_DASHBOARD_MOVIE)
       return {status : 200};
     }
    }
@@ -156,7 +156,7 @@ export const addFileToGoogleDriveAction = async (formData: File): Promise<{data:
   );
 
     if(response){
-      revalidatePath(URL_ADD_MOVIE);
+      revalidatePath(URL_DASHBOARD_MOVIE);
       return {data : response, status : 200};
     }
     return {data : null, status : 404};

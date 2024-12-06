@@ -45,6 +45,7 @@
     "continue" : "続きを見る",
     "emailAuthorized":"Email 承認済み",
     "addButton":"追加",
+    "editButton":"編集",
     "deleteButton":"削除",
     "noMovie":"映画がありません",
     "movieAdded": "追加",
@@ -58,6 +59,7 @@
     "director":"ディレクター",
     "genre":"ジャンル",
     "add-movie":"映画を追加",
+    "movies":"映画",
     "favorite":"お気に入り",
     "settings":"設定"
   },
