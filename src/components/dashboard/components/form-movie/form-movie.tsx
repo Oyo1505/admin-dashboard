@@ -18,13 +18,17 @@ import { Checkbox } from '@/components/ui/components/checkbox/checkbox';
 import { Button } from '@/components/ui/components/button/button';
 import { Textarea } from '@/components/ui/components/textarea/textarea';
 import LabelGenre from '@/components/ui/components/label-genre/label-genre';
+import { toast } from 'react-toastify';
+import { URL_DASHBOARD_MOVIE } from '@/shared/route';
+import { useRouter } from 'next/navigation';
+
 
 
 const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie, editMovie?: boolean, idFromGoogleDrive?: string}) => {
   const t = useTranslations('AddMovie');
   const [genresMovie, setGenresMovie] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
   const { genres } = useGenreStore();
-
+  const router = useRouter();
   const {
     register,
     setValue,
@@ -98,7 +102,13 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       link: data.link,
     }
 
-   await addMovieToDb(rawFormData as any)
+  const { status } = await addMovieToDb(rawFormData as any)
+  if(status === 200){
+    toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
+    router.push(URL_DASHBOARD_MOVIE)
+    return
+  }
+  return toast.error(t('toastMovieMessageSuccessDelete'), { position: "top-center" });
   }catch(err){
     console.log(err)
   }
@@ -126,7 +136,13 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       subtitles: data.subtitles,
     }
     
-     await editMovieToDb(rawFormData as any)
+     const { status } = await editMovieToDb(rawFormData as any)
+     if(status === 200){
+       toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
+       router.push(URL_DASHBOARD_MOVIE)
+       return
+     }
+     return toast.error(t('toastMovieMessageSuccessDelete'), { position: "top-center" });
      }catch(err){
       console.log(err, 'err')
     }

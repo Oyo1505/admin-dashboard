@@ -80,7 +80,9 @@
     "subtitles": "字幕",
     "titleJapanese": "日本語タイトル",
     "titleEnglish": "英語タイトル",
-    "imdbId": "IMDB ID"
+    "imdbId": "IMDB ID",
+    "toastMovieMessageSuccess": "映画をお気に入りに追加しました",
+    "toastMovieMessageSuccessDelete": "お気に入りリストから削除されました"
   },
   "DirectorSectionForm": {
     "title": "ディレクターセクションを追加",

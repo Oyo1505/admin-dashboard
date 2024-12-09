@@ -81,7 +81,9 @@
     "subtitles": "Sous-titres",
     "titleJapanese": "Titre japonais",
     "titleEnglish": "Titre anglais",
-    "imdbId": "IMDB ID"
+    "imdbId": "IMDB ID",
+    "toastMovieMessageSuccess": "Edition du film réussie",
+    "toastMovieMessageSuccessDelete": "Une erreur est survenue"
   },
   "DirectorSectionForm": {
     "title": "Ajouter une section réalisateur",
