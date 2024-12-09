@@ -81,7 +81,9 @@
     "subtitles": "Subtitles",
     "titleJapanese": "Japanese Title",
     "titleEnglish": "English Title",
-    "imdbId": "IMDB ID"
+    "imdbId": "IMDB ID",
+    "toastMovieMessageSuccess": "Movie added to favorites",
+    "toastMovieMessageSuccessDelete": "An error occurred"
   },
   "DirectorSectionForm": {
     "title": "Add Director Section",
