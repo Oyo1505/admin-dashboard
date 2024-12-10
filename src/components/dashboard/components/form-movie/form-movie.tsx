@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/components/textarea/textarea';
 import LabelGenre from '@/components/ui/components/label-genre/label-genre';
 import { toast } from 'react-toastify';
 import { URL_DASHBOARD_MOVIE } from '@/shared/route';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 
 
