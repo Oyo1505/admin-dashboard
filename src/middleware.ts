@@ -16,11 +16,10 @@ export default auth(async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  
   const secret = process.env.NEXTAUTH_SECRET;
 
   if (!secret) {
-    return 
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   const session = await getToken({

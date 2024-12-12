@@ -5,7 +5,6 @@ import MovieHeader from '@/components/movies/components/movie-header/movie-heade
 import Title from '@/components/ui/components/title/title'
 import { auth } from '@/lib/auth'
 import { getFavoriteMovies } from '@/components/dashboard/action'
-import { IMovie } from '@/models/movie/movie'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 import MovieCarouselSuggestion from '@/components/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
 import { headers } from 'next/headers'
@@ -41,9 +40,9 @@ const Page = async (props:PageProps) => {
   const { movie,suggestedMovies } = await getMovie(name)
   const session = await auth();
 
-  const favoriteMovives = session?.user?.id &&  (await getFavoriteMovies(session?.user?.id))
-  //@ts-ignore
-  const isFavorite = favoriteMovives?.movies?.find((movieFromDb: {movieFromDb :IMovie} )=> movieFromDb?.movieId === movie?.id)
+  const favoriteMovives = !session?.user?.id ? null : await getFavoriteMovies(session.user.id);
+ 
+  const isFavorite = Boolean(favoriteMovives?.movies?.find((movieFromDb: { movieId: string }) => movieFromDb.movieId === movie?.id));
 
   return (  
   <div className='h-auto pt-6 flex flex-col justify-start items-start'>

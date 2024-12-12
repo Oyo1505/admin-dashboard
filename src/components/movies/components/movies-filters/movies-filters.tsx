@@ -13,9 +13,10 @@ import countriesList from '@/shared/constants/countries'
 import { IGenre } from '@/models/movie/movie'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
 import LabelForm from '@/components/ui/components/label-form/label-form'
+import { Locale } from '@/models/lang/lang'
 
 const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, decadeParams}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined, decadeParams?:number, q?:string}) => {
-  const locale = useLocale()
+  const locale = useLocale() as Locale
   const router = useRouter();
   const t = useTranslations('Filters');
   const [isMounted, setIsMounted] = useState(false);
@@ -151,9 +152,8 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
           <option> </option>
           {listCountries.map((country, index) => (
               <option  key={`${
-              //@ts-ignore
               country?.label?.[locale]}-${index}`} value={country?.value}>
-                {//@ts-ignore
+                {
                 country?.label?.[locale]}
               </option>
             ))}

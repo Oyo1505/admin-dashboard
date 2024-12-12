@@ -138,61 +138,68 @@ export const addMovieToDb = async (movie: IMovie): Promise<{ status: number; mes
 };
 
 
-export const editMovieToDb =  async (movie:IMovie): Promise<{status: number, message: string}> => {
-  
+export const editMovieToDb = async (movie: IMovie): Promise<{status: number, message: string}> => {
   try {
+    // Vérifier si le film existe
+    const movieInDb = await prisma.movie.findUnique({
+      where: {
+        id: movie.id
+      }
+    })
 
-  const movieInDb = await prisma.movie.findUnique({
-    where:{
-      id: movie.id
+    if (!movieInDb) {
+      return { status: 404, message: 'Le film n\'existe pas' };
     }
-  })
 
-  if (!movieInDb) {
-    return { status: 404, message: 'Le film n\'existe pas' };
-  }
+    // Vérifier que les genres sont valides
+    if (!movie.genresIds || !Array.isArray(movie.genresIds) || movie.genresIds.length === 0) {
+      return { status: 400, message: 'Au moins un genre est requis' };
+    }
 
-  await prisma.movie.update({
-    where: {
-      id: movie.id
-    },
-    data: {
-      title: movie?.title,
-      titleEnglish: movie?.titleEnglish,
-      titleJapanese: movie?.titleJapanese,
-      link: movie?.link,
-      image: movie?.link,
-      director: movie?.director,
-      imdbId: movie?.imdbId,
-      originalTitle: movie.originalTitle,
-      duration:  Number(movie.duration),
-      idGoogleDrive: movie.idGoogleDrive,
-      language: movie?.language,
-      subtitles: movie?.subtitles,
-      year: Number(movie.year),
-      genresIds:{
-        deleteMany:{},
-        create: movie?.genresIds.map((genreId) => ({
-          genre: {
-            connect: { id: genreId }
-          }
-        }))
+    // Mise à jour du film
+    await prisma.movie.update({
+      where: {
+        id: movie.id
       },
-      country: movie?.country,
-      synopsis: movie?.synopsis,
-      trailer: movie?.trailer,
-    },
-  })
+      data: {
+        title: movie.title,
+        titleEnglish: movie.titleEnglish,
+        titleJapanese: movie.titleJapanese,
+        link: movie.link,
+        image: movie.link,
+        director: movie.director,
+        imdbId: movie.imdbId,
+        originalTitle: movie.originalTitle,
+        duration: Number(movie.duration),
+        idGoogleDrive: movie.idGoogleDrive,
+        language: movie.language,
+        subtitles: movie.subtitles || [],
+        year: Number(movie.year),
+        genresIds: {
+          deleteMany: {},
+          create: movie.genresIds.map((genreId) => ({
+            genre: {
+              connect: { id: genreId }
+            }
+          }))
+        },
+        country: movie.country,
+        synopsis: movie.synopsis,
+        trailer: movie.trailer,
+      },
+    })
 
-  revalidatePath(URL_DASHBOARD_MOVIE)
-  return { status: 200 };
-} catch (error) {
-  console.log(error)
+    revalidatePath(URL_DASHBOARD_MOVIE)
+    return { status: 200, message: 'Film modifié avec succès' };
+
+  } catch (error) {
+    console.error('Erreur lors de la modification du film:', error);
     return {
-      status : 500
+      status: 500,
+      message: 'Erreur interne du serveur'
     }
   }
-} 
+}
 
 export const deleteMovieById =  async (id:string): Promise<{status: number}> => {
   
