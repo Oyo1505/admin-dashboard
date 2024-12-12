@@ -42,7 +42,7 @@ const Page = async (props:PageProps) => {
 
   const favoriteMovives = !session?.user?.id ? null : await getFavoriteMovies(session.user.id);
  
-  const isFavorite = favoriteMovives?.movies?.find((movieFromDb: { movieId: string }) => movieFromDb.movieId === movie?.id);
+  const isFavorite = Boolean(favoriteMovives?.movies?.find((movieFromDb: { movieId: string }) => movieFromDb.movieId === movie?.id));
 
   return (  
   <div className='h-auto pt-6 flex flex-col justify-start items-start'>
