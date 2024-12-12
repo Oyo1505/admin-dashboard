@@ -77,10 +77,10 @@
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.10.2",
+    "cross-spawn": "^7.0.3",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.1",
-    "prisma": "^6.0.1",
-    "cross-spawn": ">=7.0.5"
+    "prisma": "^6.0.1"
   },
   "pnpm": {
     "overrides": {
