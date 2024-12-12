@@ -5,7 +5,6 @@ import MovieHeader from '@/components/movies/components/movie-header/movie-heade
 import Title from '@/components/ui/components/title/title'
 import { auth } from '@/lib/auth'
 import { getFavoriteMovies } from '@/components/dashboard/action'
-import { IMovie } from '@/models/movie/movie'
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
 import MovieCarouselSuggestion from '@/components/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
 import { headers } from 'next/headers'
