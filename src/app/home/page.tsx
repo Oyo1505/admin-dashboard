@@ -14,6 +14,7 @@ import MoviesHomeSectionSkeleton from '@/components/skeleton/components/movie-ho
 import MoviesHomeThemeSkeleton from '@/components/skeleton/components/movies-home-theme/movies-home-theme'
 import { headers } from 'next/headers'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
+import { Locale } from '@/models/lang/lang'
 export const revalidate = 60; 
 
 const lobster = Lobster({
@@ -33,7 +34,7 @@ async function getData() {
 }
 
 const Page =  async () => {
-  const locale = await getLocale();
+  const locale = await getLocale() as Locale;
 
   const { moviesLastFive, moviesByARandomCountry, favorites, directorMovies, moviesByARandomGenre, genre, country,  director, imageBackdrop } = await getData();
 
@@ -42,7 +43,7 @@ const Page =  async () => {
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   const userAgent =  (await headers()).get('user-agent') ;
   const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));   
-  //@ts-ignore
+
   const countryChosen = findCountry?.[0]?.label?.[locale] 
   return (
     <div className='flex flex-col mt-6 gap-8'>

@@ -13,6 +13,7 @@ import { DoawloadLogo, Favorite } from '@/components/ui/components/icons/icons';
 import { toast } from 'react-toastify';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
+import { Locale } from '@/models/lang/lang';
 interface MovieHeaderProps {
   movie?: IMovie | null;
   isFavorite: boolean;
@@ -20,7 +21,7 @@ interface MovieHeaderProps {
 
 const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   const t = useTranslations('MoviePage')
-  const locale = useLocale()
+  const locale = useLocale() as Locale
   const [isLoading, setIsLoading] = useState(false);
   const { data: movieDetails } = useGetDetailsMovie({id:movie?.imdbId ?? '', language:locale})
   const [genresMovie,] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
@@ -77,11 +78,11 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
       {movie?.year && <div className='inline'>{t('release')}: {movie?.year}</div>}
       {genresMovie && genresMovie.length > 0  &&  <div className='inline'>{t('genre')}:  {genresMovie?.map(item => <span className='mr-1' key={item.id}>{displayGenreTranslated(item, locale)}</span>)}</div>}
       {movie?.country && <div className='inline'>{t('country')}: { 
-        //@ts-ignore
+      
       findCountry?.[0]?.label?.[locale]}</div>}
       {movie?.duration && movie?.duration > 0 &&<span>{t('duration')}: {heuresEnMinutes(movie?.duration)}</span> }
       {movie?.language &&<span>{t('langage')}: {
-        //@ts-ignore
+  
       language?.[0]?.label?.[locale]}</span> }
     </div>
       

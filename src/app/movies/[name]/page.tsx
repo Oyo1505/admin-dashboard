@@ -41,9 +41,9 @@ const Page = async (props:PageProps) => {
   const { movie,suggestedMovies } = await getMovie(name)
   const session = await auth();
 
-  const favoriteMovives = session?.user?.id &&  (await getFavoriteMovies(session?.user?.id))
-  //@ts-ignore
-  const isFavorite = favoriteMovives?.movies?.find((movieFromDb: {movieFromDb :IMovie} )=> movieFromDb?.movieId === movie?.id)
+  const favoriteMovives = !session?.user?.id ? null : await getFavoriteMovies(session.user.id);
+ 
+  const isFavorite = favoriteMovives?.movies?.find((movieFromDb: { movieId: string }) => movieFromDb.movieId === movie?.id);
 
   return (  
   <div className='h-auto pt-6 flex flex-col justify-start items-start'>
