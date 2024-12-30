@@ -1,5 +1,5 @@
 'use client'
-import LocaleSwitcher from '@/components/ui/components/LocaleSwitcher/locale-switcher';
+import LocaleSwitcher from '@/components/ui/components/locale-switcher/locale-switcher';
 import React, { useState } from 'react'
 import MenuMobileItem from '../menu-mobile-item/menu-mobile-item';
 import { User } from '@/components/layout/components/menu-user-items/menu-user-items';

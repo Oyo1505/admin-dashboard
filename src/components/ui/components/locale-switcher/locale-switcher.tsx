@@ -1,4 +1,4 @@
-import {useLocale, useTranslations} from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import LocaleSwitcherSelect from '../locale-switcher-select/locale-switcher-select';
 
 

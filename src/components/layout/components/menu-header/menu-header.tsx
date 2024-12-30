@@ -1,6 +1,6 @@
 import { User } from '@/components/layout/components/menu-user-items/menu-user-items';
 import Container from '@/components/ui/components/container/container';
-import LocaleSwitcher from '@/components/ui/components/LocaleSwitcher/locale-switcher';
+import LocaleSwitcher from '@/components/ui/components/locale-switcher/locale-switcher';
 import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
 import Link from 'next/link'
 import React from 'react'
