@@ -6,7 +6,7 @@ import ContinueWatching from '../continue-watching/continue-watching'
 
 const TitleDashboard = () => {
   const t = useTranslations('Dashboard')
-  const {user} = useUserStore(state => state)
+  const { user } = useUserStore(state => state)
   
   return (
     <div>

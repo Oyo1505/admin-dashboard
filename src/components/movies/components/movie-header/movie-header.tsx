@@ -125,7 +125,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
             <div className='mt-5'>
              <Link  
               className="inline-flex gap-2 rounded-md  p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary" 
-              href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)}><EditMovieLogo /> {t('editMovie')}</Link> 
+              href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)} prefetch><EditMovieLogo /> {t('editMovie')}</Link> 
             </div>}
           <div className='flex flex-col gap-2 mt-4'>
               <h4 className='font-bold'>{t('titleWebSubtitles')}</h4>
