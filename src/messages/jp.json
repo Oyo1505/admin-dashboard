@@ -72,6 +72,7 @@
     "country": "国",
     "trailer": "トレーラー",
     "synopsis": "概要",
+    "idGoogleDive" : "ID Google Drive",
     "link": "画像リンク",
     "save": "保存",
     "duration": "時間",
@@ -113,7 +114,8 @@
     "toastMessageError": "エラーが発生しました",
     "download": "映画をダウンロード",
     "titleWebSubtitles": "サイトの字幕リスト",
-    "Suggestion": "提案"
+    "Suggestion": "提案",
+    "editMovie" : "Modifier Film"
   },
   "GenrePage": {
     "title": "ジャンル",

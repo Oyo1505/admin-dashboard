@@ -9,11 +9,13 @@ import useUserStore from 'store/user/user-store';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
-import { DoawloadLogo, Favorite } from '@/components/ui/components/icons/icons';
+import { DownloadLogo, EditMovieLogo, Favorite } from '@/components/ui/components/icons/icons';
 import { toast } from 'react-toastify';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import { Locale } from '@/models/lang/lang';
+import Link from 'next/link';
+import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
 interface MovieHeaderProps {
   movie?: IMovie | null;
   isFavorite: boolean;
@@ -115,10 +117,16 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
           className='inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-green-700'
           target='_blank' download>
             {
-              <DoawloadLogo />
+              <DownloadLogo />
             }
-          {t('download')}
-            </a>
+           {t('download')}
+          </a>
+          {user?.role === 'ADMIN' && movie?.id && 
+            <div className='mt-5'>
+             <Link  
+              className="inline-flex gap-2 rounded-md  p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary" 
+              href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)}><EditMovieLogo /> {t('editMovie')}</Link> 
+            </div>}
           <div className='flex flex-col gap-2 mt-4'>
               <h4 className='font-bold'>{t('titleWebSubtitles')}</h4>
               <ul>
@@ -128,7 +136,14 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
                      - OpenSubtitles
                   </a>
                 </li>
-                {movie?.imdbId && <li><a href={`https://yifysubtitles.ch/movie-imdb/${movie?.imdbId}`} target='_blank' rel='noreferrer'>- Yifi Subtitles</a></li>}
+                <li>
+                  <a href={`https://subdl.org/search/?srcname=${titleCompute(movie?.titleEnglish)}`} 
+                    target='_blank' rel='noreferrer'>
+                     - Subdl.org
+                  </a>
+                </li>
+                {movie?.imdbId && 
+                <li><a href={`https://yifysubtitles.ch/movie-imdb/${movie?.imdbId}`} target='_blank' rel='noreferrer'>- Yifi Subtitles</a></li>}
                 <li><a href={`https://www.subtitlecat.com/index.php?search=${movie?.titleEnglish?.replaceAll(' ', '+')?.toLocaleLowerCase()}`} target='_blank' rel='noreferrer'>- SubtitleCat</a></li>
               </ul>
           </div>

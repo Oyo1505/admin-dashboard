@@ -75,6 +75,7 @@
     "synopsis": "Synopsis",
     "link": "Lien Image",
     "save": "Enregistrer",
+    "idGoogleDive" : "ID Google Drive",
     "duration": "Durée",
     "originalTitle": "Titre original",
     "langage": "Langue",
@@ -114,7 +115,8 @@
     "toastMessageError": "Une Erreur est survenue",
     "download": "Télécharger le film",
     "titleWebSubtitles" : "Liste des sites de sous-titres",
-    "Suggestion": "Suggestion"
+    "Suggestion": "Suggestion",
+    "editMovie" : "Modifier Film"
   },
   "GenrePage": {
     "title": "Genres",
