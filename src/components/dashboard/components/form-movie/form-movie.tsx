@@ -149,7 +149,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
   }
 
   const subtitles = watch('subtitles', []);
-  const idGoogleDive = watch('idGoogleDive', '');
+  //const idGoogleDive = watch('idGoogleDive', '');
 
   const handleCheckboxChange = (value : string) => {
     const newValue = subtitles.includes(value)
@@ -198,11 +198,12 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
 
 return(
     <div className='bg-white'>
-      <Title type='h1' translationTheme='AddMovie' translationText='title'/>
+      
       <div className=" text-background p-3 ">
+      <Title type='h1' textColor='text-background text-lg mb-3' translationTheme='AddMovie' translationText='title'/>
         <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
         <div className="mb-[15px]  flex flex-col items-center gap-2">
-          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleMovie')} htmlFor="title" />
+          <LabelForm className="text-left w-full text-md" titleLabel={t('titleMovie')} htmlFor="title" />
           <Input
            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
            {...register('title')}
@@ -211,7 +212,7 @@ return(
         </div>
 
         <div className="mb-[15px] flex flex-col items-center gap-2">
-          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('originalTitle')} htmlFor="originalTitle" />
+        <LabelForm className="text-left w-full text-md" titleLabel={t('originalTitle')} htmlFor="originalTitle" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('originalTitle')}
@@ -219,7 +220,7 @@ return(
         </div>
 
         <div className="mb-[15px] flex flex-col items-center gap-2">
-          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleJapanese')} htmlFor="titleJapanese" />
+        <LabelForm className="text-left w-full text-md" titleLabel={t('titleJapanese')} htmlFor="titleJapanese" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleJapanese')}
@@ -227,14 +228,14 @@ return(
         </div>
 
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11  text-right  text-[15px]" titleLabel={t('titleEnglish')} htmlFor="titleEnglish" />
+        <LabelForm className="text-left w-full text-md" titleLabel={t('titleEnglish')} htmlFor="titleEnglish" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('titleEnglish')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('director')} htmlFor="director" />
+        <LabelForm className="text-left w-full text-md" titleLabel={t('director')} htmlFor="director" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="director"
@@ -242,7 +243,7 @@ return(
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('link')} htmlFor="link" />
+          <LabelForm className="text-left w-full text-md" titleLabel={t('link')} htmlFor="link" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="link"
@@ -250,7 +251,7 @@ return(
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('imdbId')} htmlFor="imdbId" />
+        <LabelForm className="text-left w-full text-md" titleLabel={t('imdbId')} htmlFor="imdbId" />
           <Input
             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             id="imdbId"
@@ -322,59 +323,60 @@ return(
         </div>
        
         <div className='grid grid-cols-3 gap-3'>
-        <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('year')} htmlFor="year" />
-          <Input
-            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            type='number'
-            step="1" 
-            {...register('year', {
-              required: 'L\'année est requis',
-              min: { value: 1890, message: 'L\'année doit être supérieure à 1890' },
-              max: { value: new Date().getFullYear(), message: 'L\'année ne peut pas être dans le futur' },
-              valueAsNumber: true,
-            })}
-          />
+          <div className="mb-[15px] flex flex-col items-center gap-5">
+            <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('year')} htmlFor="year" />
+            <Input
+              className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              type='number'
+              step="1" 
+              {...register('year', {
+                required: 'L\'année est requis',
+                min: { value: 1890, message: 'L\'année doit être supérieure à 1890' },
+                max: { value: new Date().getFullYear(), message: 'L\'année ne peut pas être dans le futur' },
+                valueAsNumber: true,
+              })}
+            />
+          </div>
+          <div className="mb-[15px] flex flex-col items-center gap-5">
+            <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('duration')} htmlFor="duration" />
+            <Input
+              className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              type='number'
+              {...register('duration', {
+                valueAsNumber: true,
+              })}
+            />
+          </div>
         </div>
+
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('duration')} htmlFor="duration" />
-          <Input
-            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-            type='number'
-            {...register('duration', {
-              valueAsNumber: true,
-            })}
-          />
-        </div>
-        </div>
-        <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('trailer')} htmlFor="trailer" />
+        <LabelForm className="text-left w-full text-md" titleLabel={t('trailer')} htmlFor="trailer" />
           <Input
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('trailer')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
-          <LabelForm className="text-violet11 text-right text-[15px]" titleLabel={t('synopsis')} htmlFor="synopsis" />
+        <LabelForm className="text-left w-full text-md" titleLabel={t('synopsis')} htmlFor="synopsis" />
           <Textarea
             className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
             {...register('synopsis')}
           />
         </div>
-
-        {idGoogleDive && 
+   
+           <div className="mb-[15px] flex flex-col items-center gap-5">
+           <LabelForm className="text-left w-full text-md" titleLabel={t('idGoogleDive')} htmlFor="idGoogleDive" />
             <Input
-              className="text-violet11 hidden shadow-violet7 focus:shadow-violet8  h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              type="text"
+              className="text-violet11 shadow-violet7 focus:shadow-violet8  h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
               id="idGoogleDive"
-              type='hidden'
               {...register('idGoogleDive')}
             />
-          }
+          </div>
+          
 
-       { formData?.idGoogleDive && <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>} 
-
+       {formData?.idGoogleDive && <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>} 
         <div className="mt-[25px] flex justify-end">
-         
             <Button
               size="sm"
               variant="outline"
@@ -383,7 +385,6 @@ return(
             >
                {t('save')}
             </Button> 
-            
         </div>
         </form>
       </div>
