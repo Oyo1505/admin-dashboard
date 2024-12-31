@@ -23,9 +23,9 @@ const MenuHeader = async ({session}: {session: Session | null}) => {
     <Container className='flex flex-row items-center justify-between gap-5'>
       <div className='flex items-center justify-start gap-5 '>
         {session && <>
-        <Link className='hover:text-red-600 text-primary transition-all duration-300' href={URL_HOME}>{t('home')}</Link>
-        <Link className='hover:text-red-600 text-primary transition-all duration-300' href={URL_MOVIES}>{t('movies')}</Link>
-        <Link className='hover:text-red-600 text-primary transition-all duration-300' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
+        <Link className='hover:text-red-600 text-primary transition-all duration-300' prefetch href={URL_HOME}>{t('home')}</Link>
+        <Link className='hover:text-red-600 text-primary transition-all duration-300' prefetch href={URL_MOVIES}>{t('movies')}</Link>
+        <Link className='hover:text-red-600 text-primary transition-all duration-300' prefetch href={URL_DASHBOARD}>{t('dashboard')}</Link> 
         </>}
       </div>
       <div className='flex items-center justify-end gap-5'>
