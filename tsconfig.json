@@ -23,8 +23,12 @@
       {
         "name": "next"
       }
+    ],
+    "types": [
+      "jest",
+      "@testing-library/jest-dom"
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/shared/utils/file/fileUpload.worker.js"],
+  "include": ["next-env.d.ts", "jest.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/shared/utils/file/fileUpload.worker.js"],
   "exclude": ["node_modules"]
 }

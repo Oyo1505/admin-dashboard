@@ -16,6 +16,7 @@ import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated
 import { Locale } from '@/models/lang/lang';
 import Link from 'next/link';
 import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
+import Title from '@/components/ui/components/title/title';
 interface MovieHeaderProps {
   movie?: IMovie | null;
   isFavorite: boolean;
@@ -72,7 +73,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   return (
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
-    <h1 className='text-3xl font-bold'>{movie && titleOnlocale(movie, locale)}</h1>
+    <Title type='h1' className='text-3xl font-bold'>{movie && titleOnlocale(movie, locale)}</Title>
       {movie?.originalTitle && <div className='mt-2 mb-2  font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
       {movie?.director && <div className='mt-2 mb-2  font-bold'> {t('director')}: {movie?.director}</div>}
     </div>
@@ -83,9 +84,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
       
       findCountry?.[0]?.label?.[locale]}</div>}
       {movie?.duration && movie?.duration > 0 &&<span>{t('duration')}: {heuresEnMinutes(movie?.duration)}</span> }
-      {movie?.language &&<span>{t('langage')}: {
-  
-      language?.[0]?.label?.[locale]}</span> }
+      {movie?.language &&<span>{t('langage')}: {language?.[0]?.label?.[locale]}</span> }
     </div>
       
       {movie?.tags &&<div>{movie?.tags?.map(tag => <span key={tag}>{tag}</span>)}</div> }
@@ -115,11 +114,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
           <a 
           href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`} 
           className='inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-green-700'
-          target='_blank' download>
-            {
-              <DownloadLogo />
-            }
-           {t('download')}
+          target='_blank' download>{<DownloadLogo />}{t('download')}
           </a>
           {user?.role === 'ADMIN' && movie?.id && 
             <div className='mt-5'>
