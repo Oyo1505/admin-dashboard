@@ -9,7 +9,13 @@ const LayoutLogic =  ({ children }: { children? : ReactNode}) => {
   useAuthStatus()
   useClearFiltersData()
   useInitGenreStore()
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
+})
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
