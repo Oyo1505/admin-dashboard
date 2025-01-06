@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
-import { URL_DASHBOARD, URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS } from "@/shared/route";
+import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 
