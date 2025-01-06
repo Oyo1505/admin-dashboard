@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
-import { URL_DASHBOARD_MOVIE } from "@/shared/route";
+import { URL_DASHBOARD, URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 
@@ -13,13 +13,13 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
     const users = search.trim() === '' ?
     await prisma.user.findMany({
       take:pageParam,
-      cacheStrategy: { ttl: 60 },
+
      })
     : await prisma.user.findMany({
     where:{
       name: search
     },
-    cacheStrategy: { ttl: 60 },
+
     take:pageParam
    });
 
@@ -51,7 +51,7 @@ export const deleteUserById =  async (id:string): Promise<{status: number}> => {
         id
       },
     })
-   
+    revalidatePath(URL_DASHBOARD_USERS)
     return { status: 200 };
   } catch (error) {
     console.log(error)

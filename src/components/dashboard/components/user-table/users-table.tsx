@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { deleteUserById } from '../../action';
 import { User } from '@/models/user/user';
 import useUserStore from 'store/user/user-store';
+import { useOptimistic } from 'react';
 
  const UsersTable = ({
   users,
@@ -60,9 +61,15 @@ import useUserStore from 'store/user/user-store';
 function UserRow({ user }: { user: User }) {
   const userId = user.id;
   const { user:userConnected } = useUserStore(state => state);
-  
+  const [optimitiscUser, setOptimitiscUser] = useOptimistic(userId);
+
   const deleteUser = async () => {
-    userId && (await deleteUserById(userId))
+    setOptimitiscUser('')
+    try{
+      userId && (await deleteUserById(userId))
+    }catch(err){
+      throw new Error('User not deleted')
+    }
   }
 
   return (
@@ -71,7 +78,7 @@ function UserRow({ user }: { user: User }) {
       <TableCell className="font-medium">{user.name}</TableCell>
       <TableCell className="hidden md:table-cell">{user.email}</TableCell>
       <TableCell>{user.role ?? 'USER'}</TableCell>
-      {userId !==  userConnected?.id && userConnected?.role === 'ADMIN' && 
+      {optimitiscUser !==  userConnected?.id && userConnected?.role === 'ADMIN' && 
             <TableCell>
             <Button
               className="w-full font-bold"

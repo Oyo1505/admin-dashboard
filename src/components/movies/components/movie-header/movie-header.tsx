@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/components/button/button';
 import { IGenre, IMovie } from '@/models/movie/movie'
 import { useLocale, useTranslations } from 'next-intl'
-import React, { useState } from 'react'
+import React, { useState, useTransition } from 'react'
 import { heuresEnMinutes } from 'utilities/number/minutesToHours'
 import { addOrRemoveToFavorite } from '../../action';
 import useUserStore from 'store/user/user-store';
@@ -24,7 +24,6 @@ interface MovieHeaderProps {
 const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   const t = useTranslations('MoviePage')
   const locale = useLocale() as Locale
-  const [isLoading, setIsLoading] = useState(false);
   const { data: movieDetails } = useGetDetailsMovie({id:movie?.imdbId ?? '', language:locale})
   const [genresMovie,] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
 
@@ -46,23 +45,24 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   const { user } = useUserStore((state) => state)
   const findCountry = countriesList?.filter((item) => item?.value === movie?.country)
   const language = languagesList?.filter((item) => item?.value === movie?.language)
+  const [loading, startTransiton] = useTransition()
+
   const handleFavorite =  async() => {
     if (user?.id) {
-      setIsLoading(true); 
-     
-      try {
-       const res  = await addOrRemoveToFavorite(user?.id, movie?.id);
-        if (res?.status === 200 && res?.message === 'Ajouté aux favoris avec succès') {
-          toast.success(t('toastMessageSuccess'), { position: "top-center" });
-        } else if (res?.status === 200 && res?.message === 'Supprimé des favoris avec succès') {
-          toast.success(t('toastMessageSuccessDelete'), { position: "top-center" });
-        }
-
-      } catch (err) {
-        toast.error(t('toastMessageError'), { position: "top-center" });
-      } finally {
-        setIsLoading(false); 
-      }
+      startTransiton(async ()=> {
+        try {
+          const res  = user?.id && await addOrRemoveToFavorite(user?.id, movie?.id);
+          if (res && typeof res !== 'string' && res.status === 200) {
+           if (res?.message === 'Ajouté aux favoris avec succès') {
+             toast.success(t('toastMessageSuccess'), { position: "top-center" });
+           } else if (res?.message === 'Supprimé des favoris avec succès') {
+             toast.success(t('toastMessageSuccessDelete'), { position: "top-center" });
+           }
+          }
+         } catch (err) {
+           toast.error(t('toastMessageError'), { position: "top-center" });
+         }
+      })
     }
   };
   const titleCompute = (title: string | undefined | null) => {
@@ -94,7 +94,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
       <div className='mt-10 font-normal flex flex-col gap-3'> 
         <form>
           <Button
-            disabled={isLoading}
+            disabled={loading}
             className='flex justify-start items-center gap-2' 
             formAction={handleFavorite}
           >
