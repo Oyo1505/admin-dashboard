@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const createNextIntlPlugin = require('next-intl/plugin');
+const { hostname } = require('os');
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
@@ -32,7 +33,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname : 'media.senscritique.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'a.ltrbxd.com'
       }
+
     ]
   }
 };
