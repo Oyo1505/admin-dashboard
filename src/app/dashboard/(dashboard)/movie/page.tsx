@@ -9,7 +9,7 @@ export const revalidate = 60;
 const Page = async () => {
   const { movies } = await getDataFromGoogleDrive() as {movies: IMovie[]}
   const { movieInDb } = await getAllMovies();
-  
+
     return <Suspense fallback={null}>
           <MovieTable movies={movies}  movieInDb={movieInDb as IMovie[]} />
       </Suspense>
