@@ -43,9 +43,13 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
  }
 };
 
-export const deleteUserById =  async (id:string): Promise<{status: number}> => {
+export const deleteUserById =  async (id:string, user:User): Promise<{status: number}> => {
 
   try {
+    if(user.role !== 'ADMIN') return {
+      status: 403,
+      message: 'Unautorized'
+    }
     await prisma.user.delete({
       where:{
         id
@@ -84,10 +88,13 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
   }
 } 
 
-export const addMovieToDb = async (movie: IMovie): Promise<{ status: number; message: string }> => {
+export const addMovieToDb = async (movie: IMovie, user:User): Promise<{ status: number; message: string }> => {
   
-
   try {
+    if(user.role !== 'ADMIN') return {
+      status: 403,
+      message: 'Unautorized'
+    }
     const existingMovie = await prisma.movie.findUnique({
       where: { idGoogleDive: movie.idGoogleDive },
     });
@@ -98,7 +105,7 @@ export const addMovieToDb = async (movie: IMovie): Promise<{ status: number; mes
     if (!movie.genresIds || !Array.isArray(movie.genresIds) || movie.genresIds.length === 0) {
       throw new Error('Au moins un genre est requis.');
     }
-    console.log(movie)
+
     await prisma.movie.create({
       data: {
         title: movie?.title,
@@ -138,9 +145,13 @@ export const addMovieToDb = async (movie: IMovie): Promise<{ status: number; mes
 };
 
 
-export const editMovieToDb = async (movie: IMovie): Promise<{status: number, message: string}> => {
+export const editMovieToDb = async (movie: IMovie, user:User): Promise<{status: number, message: string}> => {
+
   try {
-    // Vérifier si le film existe
+    if(user.role !== 'ADMIN') return {
+      status: 403,
+      message: 'Unautorized'
+    }
     const movieInDb = await prisma.movie.findUnique({
       where: {
         id: movie.id
@@ -201,9 +212,13 @@ export const editMovieToDb = async (movie: IMovie): Promise<{status: number, mes
   }
 }
 
-export const deleteMovieById =  async (id:string): Promise<{status: number}> => {
+export const deleteMovieById =  async (id:string, user:User): Promise<{status: number}> => {
   
   try {
+    if(user.role !== 'ADMIN') return {
+      status: 403,
+      message: 'Unautorized'
+    }
    if(id){
     await prisma.movie.delete({
         where: {

@@ -9,12 +9,13 @@ import { useQuery } from '@tanstack/react-query'
 import { deleteFileFromGoogleDrive } from '@/googleDrive'
 import Link from 'next/link'
 import { URL_DASHBOARD_MOVIE_ADD, URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route'
+import useUserStore from 'store/user/user-store'
 
 function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, index?: number}) {
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
-
+  const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
-    movie?.id && (await deleteMovieById(movie?.id))
+    movie?.id && (await deleteMovieById(movie?.id, user))
   }
 
   const { data, isFetching, status, refetch } = useQuery({
