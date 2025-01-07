@@ -21,6 +21,7 @@ import LabelGenre from '@/components/ui/components/label-genre/label-genre';
 import { toast } from 'react-toastify';
 import { URL_DASHBOARD_MOVIE } from '@/shared/route';
 import { useRouter } from 'next/navigation';
+import useUserStore from 'store/user/user-store';
 
 
 
@@ -29,6 +30,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
   const [genresMovie, setGenresMovie] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
   const { genres } = useGenreStore();
   const router = useRouter();
+  const { user } = useUserStore()
   const {
     register,
     setValue,
@@ -102,7 +104,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       link: data.link,
     }
 
-  const { status } = await addMovieToDb(rawFormData as any)
+  const { status } = await addMovieToDb(rawFormData as any, user)
   if(status === 200){
     toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
     router.push(URL_DASHBOARD_MOVIE)
@@ -136,7 +138,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       subtitles: data.subtitles,
     }
     
-     const { status } = await editMovieToDb(rawFormData as any)
+     const { status } = await editMovieToDb(rawFormData as any, user)
      if(status === 200){
        toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
        router.push(URL_DASHBOARD_MOVIE)

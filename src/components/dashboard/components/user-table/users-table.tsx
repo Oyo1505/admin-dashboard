@@ -66,7 +66,7 @@ function UserRow({ user }: { user: User }) {
   const deleteUser = async () => {
     setOptimitiscUser('')
     try{
-      userId && (await deleteUserById(userId))
+      userId && (await deleteUserById(userId, user))
     }catch(err){
       throw new Error('User not deleted')
     }
