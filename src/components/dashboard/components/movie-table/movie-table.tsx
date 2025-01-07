@@ -9,7 +9,6 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
 
   const t = useTranslations('Dashboard');
   const filteredMoviesNotAdded = movies?.filter(testMovie => !movieInDb?.some(dataMovie => dataMovie.idGoogleDive === testMovie.id));
- 
   const filteredMoviesAdded = movieInDb?.filter(testMovie => movies?.some(dataMovie => dataMovie.id === testMovie.idGoogleDive));
  
   return (
