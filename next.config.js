@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 const createNextIntlPlugin = require('next-intl/plugin');
-const { hostname } = require('os');
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
