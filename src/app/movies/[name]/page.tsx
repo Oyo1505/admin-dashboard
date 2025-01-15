@@ -30,7 +30,7 @@ export const dynamicParams = true
 export async function generateStaticParams() {
   const { movieInDb } = await getAllMovies()
   return movieInDb?.map((movie) => ({
-    id: String(movie.id),
+    name: movie.id,
   }))
 }
  
