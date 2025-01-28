@@ -31,7 +31,7 @@ export default async function RootLayout({
         <meta name="googlebot" content="noindex, nofollow"></meta>
         <meta name="robots" content="noindex, nofollow"></meta>
       </head>
-      <body className="h-full mb-14 relative background-background font-semibold">
+      <body className="h-full mb-14 relative bg-background  text-primary font-semibold">
         <SessionProvider session={session} >
         <ToastContainer />
         <NextIntlClientProvider messages={messages}>

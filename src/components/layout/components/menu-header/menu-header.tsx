@@ -19,8 +19,8 @@ const MenuHeader = async ({session}: {session: Session | null}) => {
   return (
     
     isMobileView ? <MenuMobile session={session as Session | null}/> :
-    <header className="group fixed w-full top-0 flex h-15  pt-2 pb-2 items-center gap-4 bg-background bg-opacity-90  z-20 justify-between lg:justify-end">
-    <Container className='flex flex-row items-center justify-between gap-5'>
+    <header className="group fixed w-full top-0 flex h-15  pt-2 pb-2 items-center gap-4 bg-background opacity-90  z-20 justify-between lg:justify-between">
+    <Container className='flex flex-row items-center w-full justify-between gap-5'>
       <div className='flex items-center justify-start gap-5 '>
         {session && <>
         <Link className='hover:text-red-600 text-primary transition-all duration-300' prefetch href={URL_HOME}>{t('home')}</Link>

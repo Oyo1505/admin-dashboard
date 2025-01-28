@@ -136,7 +136,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
         <div className="flex flex-col gap-2 md:w-64">
         <LabelForm titleLabel={t('subtitles')} className='text-white' htmlFor='subtitles' />
-          <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+          <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
             <option> </option>
             <option value="EN">{t('subtitlesEN')}</option>
             <option value="JP">{t('subtitlesJP')}</option>
@@ -148,7 +148,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
           <select   
             onChange={onChangeCountry} 
             defaultValue={language ?? filters?.language} 
-            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 '>
           <option> </option>
           {listCountries.map((country, index) => (
               <option  key={`${
@@ -164,7 +164,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
           <select   
             onChange={onChangeDecade} 
             defaultValue={String(decadeParams ?? filters?.decade)}  
-            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
           <option> </option>
           {decade?.decade.map((dec, index) => (
               <option  key={`${dec}-${index}`} value={dec}>
@@ -175,7 +175,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
         </div>
         <div  className="flex flex-col gap-2 md:w-64">
           <LabelForm titleLabel={t('genre')} className='text-white' htmlFor='genre' />
-          <select   onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+          <select  onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
             <option> </option>
             {genres?.map((genre, index) => (
               <option  key={`${genre.id}-${index}`} value={displayGenreTranslated(genre, locale)}>
@@ -186,7 +186,7 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
           </select>
         </div>
     </div>
-      <ButtonSearch className='w-full md:w-full lg:max-w-56 transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
+      <ButtonSearch className='w-full hover:cursor-pointer md:w-full lg:max-w-56 transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
     </div>
   )
 }

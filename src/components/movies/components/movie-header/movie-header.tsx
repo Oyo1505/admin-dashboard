@@ -73,7 +73,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
     <h1 className='text-3xl font-bold'>{movie && titleOnlocale(movie, locale)}</h1>
-      {movie?.originalTitle && <div className='mt-2 mb-2  font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
+      {movie?.originalTitle && <div className='mt-2 mb-2 font-normal italic'> {t('originalTitle')}: {movie?.originalTitle}</div>}
       {movie?.director && <div className='mt-2 mb-2  font-bold'> {t('director')}: {movie?.director}</div>}
     </div>
     <div className='mb-4 flex flex-col gap-2'>
@@ -95,7 +95,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
         <form>
           <Button
             disabled={loading}
-            className='flex justify-start items-center gap-2' 
+            className='flex justify-start cursor-pointer items-center gap-2' 
             formAction={handleFavorite}
           >
           {isFavorite ?

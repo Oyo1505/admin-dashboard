@@ -16,7 +16,7 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
 
     <div className='flex flex-1 flex-col gap-4  md:gap-8 md:p-6'>
       {filteredMoviesNotAdded && filteredMoviesNotAdded?.length > 0 ? ( 
-        <form className="border  bg-primary text-background shadow-sm rounded-lg">
+        <form className="border  bg-primary text-background shadow-xs rounded-lg">
         <Table>
           <TableHeader>
           <TableRow className='border-b border-background border-opacity-20'>
@@ -32,7 +32,7 @@ const MovieTable = ({movies, movieInDb}: {movies: IMovie[] | undefined, movieInD
         </Table>
       </form>) : null}
     {filteredMoviesAdded &&   filteredMoviesAdded?.length > 0 && <>      
-      <form className="border  bg-primary text-background shadow-sm rounded-lg mt-4">
+      <form className="border  bg-primary text-background shadow-xs rounded-lg mt-4">
       <Table >
           <TableHeader>
             <TableRow className='border-b border-background border-opacity-20'>

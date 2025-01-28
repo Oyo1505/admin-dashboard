@@ -28,7 +28,7 @@ import { useOptimistic } from 'react';
   }
   return (
     <>
-      <form className="border shadow-sm rounded-lg">
+      <form className="border shadow-xs rounded-lg">
         <Table>
           <TableHeader>
           <TableRow className='border-b  border-background border-opacity-20'>
