@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+@plugin "@tailwindcss/typography";
 
 @layer base {
-  :root {
+  @theme {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -34,6 +34,13 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+    --text: '#F5F5F5';
+    --border: '#F5F5F5';
+    --input: 'hsl(var(--input))';
+    --ring: 'hsl(var(--ring))';
+    --background: '#121212';
+    --foreground: '#F5F5F5';
+   
   }
  
   .dark {
@@ -65,13 +72,16 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
+  @theme extend {
+    --font-family-display: Poppins, sans-serif; 
+  }
 }
  
 @layer base {
   * {
-    @apply border-border;
+    @reference border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @reference bg-background text-foreground;
   }
 }
