@@ -15,10 +15,10 @@ export default function Layout({
   children: React.ReactNode;
 }) { 
   return (
-    <Container className="pt-14">
+    <Container className="pt-18" marginSide={false}>
       <Suspense fallback={<LoadingSpinner />}>
       <div className="grid md:min-h-screen h-full w-full lg:grid-cols-[280px_1fr] ">
-      <div className="border-r h-52 md:h-full bg-gray-100/80 lg:block dark:bg-gray-800/40">
+      <div className="border-r h-52 md:h-full bg-primary lg:block ">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <MenuDashboard />
         </div>

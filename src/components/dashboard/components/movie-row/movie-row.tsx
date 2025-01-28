@@ -44,10 +44,10 @@ function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, in
           </TableCell>}
           <TableCell>
             {isMoviePublished !== undefined ? 
-            <Link href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)} className='font-bold bg-black p-3 rounded-md text-primary' >
+            <Link href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)} className='font-bold bg-background p-3 rounded-md text-primary' >
               {btnText}
             </Link> : 
-            <Link href={URL_DASHBOARD_MOVIE_ADD(movie?.id)} className='font-bold bg-black p-3 rounded-md text-primary' >
+            <Link href={URL_DASHBOARD_MOVIE_ADD(movie?.id)} className='font-bold bg-background p-3 rounded-md text-primary' >
               {btnText}
             </Link>}
           </TableCell>

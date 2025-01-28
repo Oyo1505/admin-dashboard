@@ -207,7 +207,7 @@ return(
         <div className="mb-[15px]  flex flex-col items-center gap-2">
           <LabelForm className="text-left w-full text-md" titleLabel={t('titleMovie')} htmlFor="title" />
           <Input
-           className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+           className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
            {...register('title')}
           />
           {errors.title && <p className="text-red-600 text-xs">{errors.title.message}</p>}
@@ -216,7 +216,7 @@ return(
         <div className="mb-[15px] flex flex-col items-center gap-2">
         <LabelForm className="text-left w-full text-md" titleLabel={t('originalTitle')} htmlFor="originalTitle" />
           <Input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             {...register('originalTitle')}
           />
         </div>
@@ -224,7 +224,7 @@ return(
         <div className="mb-[15px] flex flex-col items-center gap-2">
         <LabelForm className="text-left w-full text-md" titleLabel={t('titleJapanese')} htmlFor="titleJapanese" />
           <Input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             {...register('titleJapanese')}
           />
         </div>
@@ -232,14 +232,14 @@ return(
         <div className="mb-[15px] flex flex-col items-center gap-5">
         <LabelForm className="text-left w-full text-md" titleLabel={t('titleEnglish')} htmlFor="titleEnglish" />
           <Input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             {...register('titleEnglish')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
         <LabelForm className="text-left w-full text-md" titleLabel={t('director')} htmlFor="director" />
           <Input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             id="director"
             {...register('director')}
           />
@@ -247,7 +247,7 @@ return(
         <div className="mb-[15px] flex flex-col items-center gap-5">
           <LabelForm className="text-left w-full text-md" titleLabel={t('link')} htmlFor="link" />
           <Input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             id="link"
             {...register('link')}
           />
@@ -255,7 +255,7 @@ return(
         <div className="mb-[15px] flex flex-col items-center gap-5">
         <LabelForm className="text-left w-full text-md" titleLabel={t('imdbId')} htmlFor="imdbId" />
           <Input
-            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             id="imdbId"
             {...register('imdbId')}
           />
@@ -328,7 +328,7 @@ return(
           <div className="mb-[15px] flex flex-col items-center gap-5">
             <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('year')} htmlFor="year" />
             <Input
-              className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
               type='number'
               step="1" 
               {...register('year', {
@@ -342,7 +342,7 @@ return(
           <div className="mb-[15px] flex flex-col items-center gap-5">
             <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('duration')} htmlFor="duration" />
             <Input
-              className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
               type='number'
               {...register('duration', {
                 valueAsNumber: true,
@@ -354,14 +354,14 @@ return(
         <div className="mb-[15px] flex flex-col items-center gap-5">
         <LabelForm className="text-left w-full text-md" titleLabel={t('trailer')} htmlFor="trailer" />
           <Input
-            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             {...register('trailer')}
           />
         </div>
         <div className="mb-[15px] flex flex-col items-center gap-5">
         <LabelForm className="text-left w-full text-md" titleLabel={t('synopsis')} htmlFor="synopsis" />
           <Textarea
-            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+            className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
             {...register('synopsis')}
           />
         </div>
@@ -370,7 +370,7 @@ return(
            <LabelForm className="text-left w-full text-md" titleLabel={t('idGoogleDive')} htmlFor="idGoogleDive" />
             <Input
               type="text"
-              className="text-violet11 shadow-violet7 focus:shadow-violet8  h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
+              className="text-violet11 shadow-violet7 focus:shadow-violet8  h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
               id="idGoogleDive"
               {...register('idGoogleDive')}
             />
@@ -383,7 +383,7 @@ return(
               size="sm"
               variant="outline"
               type='submit'
-              className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+              className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-hidden"
             >
                {t('save')}
             </Button> 

@@ -14,7 +14,7 @@ const ButtonLogout = () => {
   }
 
   return (
-    <Button className='transition-all duration-300' onClick={onClick}>{t('logout')}</Button>
+    <Button className='transition-all hover:cursor-pointer duration-300' onClick={onClick}>{t('logout')}</Button>
   )
 }
 

@@ -11,7 +11,7 @@ const MenuDashboard = () => {
   const t = useTranslations('DashboardNav');
 
   return (
-    <div className="flex-1 overflow-auto py-2">
+    <div className="flex-1 bg-primary  overflow-auto py-2">
           <nav className="grid items-start px-4 text-sm font-medium">
             <NavItem href={URL_DASHBOARD}>
             <Home />
