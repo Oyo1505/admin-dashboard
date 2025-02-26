@@ -1,20 +1,20 @@
 import { getDirectorMovies, getFavoriteMovies } from '@/components/dashboard/action'
-import {  getLastMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/components/movies/action'
-import MoviesHomeSection from '@/components/movies/components/movies-home-section/movies-home-section'
-import Title from '@/components/ui/components/title/title'
-import React, { Suspense } from 'react'
-import countriesList from '@/shared/constants/countries';
-import { getLocale } from 'next-intl/server'
-import MoviesHomeTheme from '@/components/movies/components/movies-home-theme/movies-home-theme'
-import Container from '@/components/ui/components/container/container'
-import { Lobster } from 'next/font/google'
-import clsx from 'clsx'
+import { getLastMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/components/movies/action'
 import MoviesHomeDirector from '@/components/movies/components/movies-home-director/movies-home-director'
+import MoviesHomeSection from '@/components/movies/components/movies-home-section/movies-home-section'
+import MoviesHomeTheme from '@/components/movies/components/movies-home-theme/movies-home-theme'
 import MoviesHomeSectionSkeleton from '@/components/skeleton/components/movie-home-section/movie-home-section'
 import MoviesHomeThemeSkeleton from '@/components/skeleton/components/movies-home-theme/movies-home-theme'
-import { headers } from 'next/headers'
-import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
+import Container from '@/components/ui/components/container/container'
+import Title from '@/components/ui/components/title/title'
 import { Locale } from '@/models/lang/lang'
+import countriesList from '@/shared/constants/countries'
+import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
+import clsx from 'clsx'
+import { getLocale } from 'next-intl/server'
+import { Lobster } from 'next/font/google'
+import { headers } from 'next/headers'
+import { Suspense } from 'react'
 export const revalidate = 60; 
 
 const lobster = Lobster({
@@ -47,7 +47,7 @@ const Page =  async () => {
   const countryChosen = findCountry?.[0]?.label?.[locale] 
   return (
     <div className='flex flex-col mt-6 gap-8'>
-      <Container className='pt-14'>
+      <Container  className='pt-14'>
           <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='lastFiveMovies' type='h3' />
           <Suspense fallback={<MoviesHomeSectionSkeleton />}>
             <MoviesHomeSection movies={moviesLastFive.movies} isMobileView={isMobileView} />

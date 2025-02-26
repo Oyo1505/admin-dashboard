@@ -1,10 +1,10 @@
-import NextAuth, { User } from "next-auth";
+import { getAuthorizedEmails } from "@/components/auth/action/action";
+import { URL_BASE } from "@/shared/route";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import { getAuthorizedEmails } from "@/components/auth/action/action";
-import authConfig from "./auth.config";
-import { URL_BASE } from "@/shared/route";
+import NextAuth, { User } from "next-auth";
 import { JWT } from "next-auth/jwt";
+import authConfig from "./auth.config";
 
 const prisma = new PrismaClient()
 
@@ -12,8 +12,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
   adapter: PrismaAdapter(prisma),
 ...authConfig,
   session: { strategy: "jwt",  
-    maxAge: 60 * 60 * 5, 
-    updateAge: 10 * 60, },
+    maxAge: 60 * 60 * 24 * 30, // 30 days
+    updateAge: 10 * 60, // 10 minutes
+   },
   callbacks: {
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()

@@ -1,7 +1,6 @@
 'use client'
-import { IMovie } from '@/models/movie/movie'
+import { IMovie } from '@/models/movie/movie';
 import { useLocale } from 'next-intl';
-import React from 'react'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
@@ -40,6 +39,7 @@ const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], is
       containerClass="h-48 md:h-72 lg:h-96 w-full mt-5 z-0"
       autoPlay={false}
       transitionDuration={500}
+      itemClass='flex justify-center'
       draggable={isMobileView ? true : false}
       infinite={true} 
       responsive={responsive} 
