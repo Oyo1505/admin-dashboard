@@ -1,16 +1,16 @@
 'use client'
-import React, { Suspense } from 'react'
-import Title from '@/components/ui/components/title/title'
-import 'react-multi-carousel/lib/styles.css';
-import { IMovie } from '@/models/movie/movie';
 import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner';
-import { useLocale } from 'next-intl';
-import MovieItemTheme from '../movie-item-theme/movie-item-theme';
 import Container from '@/components/ui/components/container/container';
-import Carousel from 'react-multi-carousel';
-import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
+import Title from '@/components/ui/components/title/title';
+import { IMovie } from '@/models/movie/movie';
 import clsx from 'clsx';
+import { useLocale } from 'next-intl';
+import { Suspense } from 'react';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import paramount from '../.../../../../../../public/images/paramount.webp';
+import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
+import MovieItemTheme from '../movie-item-theme/movie-item-theme';
 
 const MoviesHomeDirector = ({ movies, director, isMobileView, fontFamily, imageBackdrop }:{movies?:IMovie[], director?:string, isMobileView?:boolean, fontFamily?:string, imageBackdrop?:string | null}) => {
 
@@ -57,6 +57,7 @@ const backgroundStyle = imageBackdrop
             <Carousel
               containerClass="w-full mt-6 "
               autoPlay={false}
+              itemClass='flex justify-center'
               transitionDuration={500}
               draggable={true}
               infinite={true} 

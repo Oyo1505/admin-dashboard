@@ -1,10 +1,9 @@
 'use client'
-import React from 'react'
+import { IMovie } from '@/models/movie/movie';
+import { useLocale } from 'next-intl';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
-import { IMovie } from '@/models/movie/movie';
-import { useLocale } from 'next-intl';
 
 const MoviesHomeSection = ({ movies, isMobileView }:{movies?:IMovie[], isMobileView?:boolean}) => {
   const locale = useLocale()
@@ -37,6 +36,7 @@ const MoviesHomeSection = ({ movies, isMobileView }:{movies?:IMovie[], isMobileV
       ssr={true} 
       containerClass="h-48 md:h-72 lg:h-96 w-full mt-6 z-0"
       autoPlay={false}
+      itemClass='flex justify-center'
       transitionDuration={500}
       draggable={isMobileView ? true : false}
       infinite={true} 
