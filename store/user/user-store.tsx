@@ -3,7 +3,6 @@
 import { getUserConnected } from '@/components/auth/action/action';
 import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
-
 import { signIn, signOut } from 'next-auth/react';
 import { create } from 'zustand';
 import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
@@ -31,12 +30,12 @@ const persistOptions: PersistOptions<UserStore> = {
 const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      user: { id: '' },
+      user: {},
       connected: false,
       setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
         const { user } = await getUserConnected(email);
-        set({ user: user ? { ...user, id: user.id || '' } : { id: '' }, connected: !!user });
+        set({ user: user, connected: true });
       },
       login: async ()=> {
         await signIn('google', { callbackUrl: URL_HOME });

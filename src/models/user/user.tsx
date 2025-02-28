@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 export interface  User  {
-  id: string;
+  id?: string;
   name?: string | null;
   email?: string | null;
   emailVerified?: Date | null;

@@ -20,7 +20,7 @@ const useAuthStatus = async () => {
     };
     const logoutSession = async () => {
       try {
-        setUser({ id: '' }, false)
+        setUser({}, false)
         await logout()
       } catch (error) {
         console.log(error)
