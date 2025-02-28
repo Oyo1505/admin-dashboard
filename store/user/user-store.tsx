@@ -31,19 +31,19 @@ const persistOptions: PersistOptions<UserStore> = {
 const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      user: {},
+      user: { id: '' },
       connected: false,
       setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
         const { user } = await getUserConnected(email);
-        set({  user: user, connected: true });
+        set({ user: user ? { ...user, id: user.id || '' } : { id: '' }, connected: !!user });
       },
       login: async ()=> {
         await signIn('google', { callbackUrl: URL_HOME });
         set({ connected: true });
       },
       logout: async () =>{ 
-        set({ user: {}, connected: false, })
+        set({ user: { id: '' }, connected: false, })
         await signOut({ callbackUrl: URL_BASE});
       },
     }),

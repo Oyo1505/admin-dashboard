@@ -20,7 +20,7 @@ const useAuthStatus = async () => {
     };
     const logoutSession = async () => {
       try {
-        setUser({}, false)
+        setUser({ id: '' }, false)
         await logout()
       } catch (error) {
         console.log(error)
@@ -28,7 +28,7 @@ const useAuthStatus = async () => {
     };
     if (session && Object.keys(user).length === 0)  fetchSession();
     else if(session && (pathname === '/')){redirect(URL_HOME)}
-    else if(user && user.role !== 'ADMIN' && (pathname === URL_DASHBOARD_MOVIE || pathname.includes('edit-movie' || 'add-movie') )){redirect(URL_HOME)}
+    else if(user && user.role !== 'ADMIN' && (pathname === URL_DASHBOARD_MOVIE || pathname.includes('edit-movie') || pathname.includes('add-movie'))){redirect(URL_HOME)}
     else if (!session && pathname !== '/' &&  pathname !== URL_LEGAL_MENTIONS &&  pathname !== URL_PRIVACY) {
     logoutSession()
    }

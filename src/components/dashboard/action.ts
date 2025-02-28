@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
 import { User } from "@/models/user/user";
-import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS } from "@/shared/route";
+import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS, URL_HOME } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
 
@@ -87,6 +87,41 @@ export const deleteUserById = async ({id, user, token}:{id : string, user: User,
     });
 
     revalidatePath(URL_DASHBOARD_USERS);
+    return { status: 200, message: 'User deleted successfully' };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+      message: 'Internal server error'
+    };
+  }
+};
+
+export const deleteUserByIdFromUser = async (id): Promise<{ status: number, message?: string }> => {
+  if (!id) {
+    return {
+      status: 400,
+      message: 'User ID is required'
+    };
+  }
+
+  try {
+    const userToDelete = await prisma.user.findUnique({
+      where: { id }
+    });
+
+    if (!userToDelete) {
+      return {
+        status: 404,
+        message: 'User not found'
+      };
+    }
+
+    await prisma.user.delete({
+      where: { id }
+    });
+
+    revalidatePath(URL_HOME);
     return { status: 200, message: 'User deleted successfully' };
   } catch (error) {
     console.log(error);

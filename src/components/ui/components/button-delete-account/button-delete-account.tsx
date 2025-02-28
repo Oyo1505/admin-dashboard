@@ -1,19 +1,18 @@
 'use client'
+import { deleteUserByIdFromUser } from '@/components/dashboard/action';
 import { Button } from '@/components/ui/components/button/button';
-import { deleteUserById } from '@/components/dashboard/action';
-import { useTranslations } from 'next-intl'
-import React from 'react'
-import * as Dialog  from '@radix-ui/react-dialog'
+import * as Dialog from '@radix-ui/react-dialog';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import useUserStore from 'store/user/user-store';
 
 const ButtonDeleteAccount = ({ translationTheme, translationText, className}: { translationTheme: string, translationText: string, className:string }) => {
   const { logout } = useUserStore(state => state);
   const t = useTranslations(translationTheme);
   const { data: session } = useSession();
-	const { user } = useUserStore()
+	
   const deleteUser = async () => {
-    session?.user?.id && (await deleteUserById(session?.user?.id, user))
+    session?.user?.id && (await deleteUserByIdFromUser(session?.user?.id))
     logout()
   }
 
