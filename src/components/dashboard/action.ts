@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
+import { User } from "@/models/user/user";
 import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 
@@ -43,27 +44,58 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
  }
 };
 
-export const deleteUserById =  async (id:string, user:User): Promise<{status: number}> => {
+export const deleteUserById = async ({id, user, token}:{id : string, user: User, token: any}): Promise<{ status: number, message?: string }> => {
+  if (!id) {
+    return {
+      status: 400,
+      message: 'User ID is required'
+    };
+  }
 
   try {
-    if(user.role !== 'ADMIN') return {
-      status: 403,
-      message: 'Unautorized'
+    if (!token) {
+      return {
+        status: 401,
+        message: 'Token is required'
+      };
     }
+   // console.log(token)
+  //  const decodedToken = jwt.verify(token.idToken, process.env.JWT_SECRET as string, { 
+  //   algorithms: ['RS256'] // Change this to match the algorithm used when signing your token
+  // }) as { role: string };
+  //   console.log(decodedToken)
+    if (user.role !== 'ADMIN') {
+      return {
+        status: 403,
+        message: 'Unauthorized'
+      };
+    }
+
+    const userToDelete = await prisma.user.findUnique({
+      where: { id }
+    });
+
+    if (!userToDelete) {
+      return {
+        status: 404,
+        message: 'User not found'
+      };
+    }
+
     await prisma.user.delete({
-      where:{
-        id
-      },
-    })
-    revalidatePath(URL_DASHBOARD_USERS)
-    return { status: 200 };
+      where: { id }
+    });
+
+    revalidatePath(URL_DASHBOARD_USERS);
+    return { status: 200, message: 'User deleted successfully' };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
-      status : 500
-    }
+      status: 500,
+      message: 'Internal server error'
+    };
   }
-} 
+};
 export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: number}> => {
   
   try {
