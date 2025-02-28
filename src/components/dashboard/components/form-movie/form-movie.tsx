@@ -1,26 +1,26 @@
 'use client'
-import React, { useState } from 'react'
-import { IGenre, IMovie } from '@/models/movie/movie';
-import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/components/dashboard/action';
+import SelectGenreMovieForm from '@/components/movies/components/select-genre-movie-form/select-genre-movie-form';
+import { Button } from '@/components/ui/components/button/button';
+import { Checkbox } from '@/components/ui/components/checkbox/checkbox';
+import { Input } from '@/components/ui/components/input/input';
+import LabelForm from '@/components/ui/components/label-form/label-form';
+import LabelGenre from '@/components/ui/components/label-genre/label-genre';
+import SelectInput from '@/components/ui/components/select/select';
+import { Textarea } from '@/components/ui/components/textarea/textarea';
+import Title from '@/components/ui/components/title/title';
+import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
-import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useGenreStore } from 'store/movie/movie-store';
-import SelectGenreMovieForm from '@/components/movies/components/select-genre-movie-form/select-genre-movie-form';
-import LabelForm from '@/components/ui/components/label-form/label-form';
-import { Input } from '@/components/ui/components/input/input';
-import Title from '@/components/ui/components/title/title';
-import SelectInput from '@/components/ui/components/select/select';
-import { Checkbox } from '@/components/ui/components/checkbox/checkbox';
-import { Button } from '@/components/ui/components/button/button';
-import { Textarea } from '@/components/ui/components/textarea/textarea';
-import LabelGenre from '@/components/ui/components/label-genre/label-genre';
-import { toast } from 'react-toastify';
 import { URL_DASHBOARD_MOVIE } from '@/shared/route';
+import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useGenreStore } from 'store/movie/movie-store';
 import useUserStore from 'store/user/user-store';
 
 

@@ -1,11 +1,10 @@
 'use client'
-import React from 'react'
-import Link from 'next/link'
-import { URL_MOVIE_ID } from '@/shared/route'
-import Image from 'next/image';
 import { IMovie } from '@/models/movie/movie';
-import imageDefault from '../../../../assets/image/default-placeholder.png'
+import { URL_MOVIE_ID } from '@/shared/route';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import Link from 'next/link';
+import imageDefault from '../../../../assets/image/default-placeholder.png';
 
 
 const MoviesFavorite = ({movies}:{movies?:IMovie[]}) => {
@@ -19,7 +18,7 @@ const MoviesFavorite = ({movies}:{movies?:IMovie[]}) => {
         href={`${URL_MOVIE_ID(movie?.id)}`}>
           <Image className='object-fill h-72 w-full' src={movie?.image ? movie?.image : imageDefault} width={200} height={150} alt='movie' />
           <div className='w-full text-center text-ellipsis whitespace-nowrap overflow-hidden'>{movie?.title}</div>
-      </Link> ) : t('NoMovie')}
+      </Link> ) : t('noMovie')}
       
       </div>
   
