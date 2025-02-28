@@ -5,7 +5,7 @@ export interface  User  {
   email?: string | null;
   emailVerified?: Date | null;
   image?: string | null;
-  role: UserRole;
+  role?: UserRole;
 }
 
 export enum UserRole {
