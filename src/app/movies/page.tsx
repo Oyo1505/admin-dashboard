@@ -32,7 +32,7 @@ export const revalidate = 60;
 
    return (<>
        <SearchMovie search={search} offset={offset} />
-       <MovieFilters subtitles={subtitles} q={search} offset={offset} decadeParams={decade} language={language} genres={genres} genre={genre} countries={countries as string[]}/>
+       <MovieFilters subtitles={subtitles} q={search} offset={offset} decadeParams={decade} language={language} genres={genres} genre={genre}  countries={countries}/>
        <Suspense fallback={<MoviesSkeleton />}>
          <Movies searchParams={searchParams} offset={offset} />
        </Suspense>

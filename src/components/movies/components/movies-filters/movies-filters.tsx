@@ -56,7 +56,7 @@ type SelectLanguageProps = {
 const SelectLanguage = ({language, onChangeLanguage, filters, listLanguages}:SelectLanguageProps) => {
   const t = useTranslations('Filters');
   const locale = useLocale() as Locale
-
+  const listCountries = countriesList.filter(country => countries?.includes(country.value));
   return (
     <div  className="flex flex-col gap-2 md:w-64">
     <LabelForm titleLabel={t('language')} className='text-white' htmlFor='language' />
@@ -130,7 +130,7 @@ const SelectDecade = ({decade, onChangeDecade, defaultValue, filters}:SelectDeca
   )
 }
 
-const MovieFilters = ({subtitles, q, language, genres, genre, offset, decadeParams}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, decadeParams?:number, q?:string}) => {
+const MovieFilters = ({subtitles, q, language, genres, genre, offset, decadeParams, countries}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, decadeParams?:number, q?:string, countries:string[]}) => {
   const router = useRouter();
   const t = useTranslations('Filters');
   const [isMounted, setIsMounted] = useState(false);
