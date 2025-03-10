@@ -9,20 +9,102 @@ import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store
 import { decade } from '@/shared/constants/decade'
 import { useQuery } from '@tanstack/react-query'
 import { fetchMovies } from '../../action'
-import countriesList from '@/shared/constants/countries'
 import { IGenre } from '@/models/movie/movie'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
 import LabelForm from '@/components/ui/components/label-form/label-form'
 import { Locale } from '@/models/lang/lang'
+import { languagesList } from '@/shared/constants/lang'
+
+const SelectSubtitles = ({subtitles, onChangeSubtitles, filters}:{subtitles?:string, onChangeSubtitles: (e: React.ChangeEvent<HTMLSelectElement>) => void, filters?:{subtitles?:string}}) => {
+  const t = useTranslations('Filters');
+
+  const subtitlesList = {
+    EN: t('subtitlesEN'),
+    JP: t('subtitlesJP'),
+    FR: t('subtitlesFR')
+  }
+  return (
+    <div className="flex flex-col gap-2 md:w-64">
+    <LabelForm titleLabel={t('subtitles')} className='text-white' htmlFor='subtitles' />
+      <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
+        <option> </option>
+        {Object.entries(subtitlesList).map(([key, value], index) => (
+          <option key={`${key}-${index}`} value={key}>
+            {value}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+}
+
+const SelectLanguage = ({language, onChangeLanguage, filters, listLanguages}:{language?:string, onChangeLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void, filters?:{language?:string}, listLanguages: any}) => {
+  const t = useTranslations('Filters');
+  const locale = useLocale() as Locale
+
+  return (
+    <div  className="flex flex-col gap-2 md:w-64">
+    <LabelForm titleLabel={t('language')} className='text-white' htmlFor='language' />
+      <select   
+        onChange={onChangeLanguage} 
+        defaultValue={language ?? filters?.language} 
+        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 '>
+      <option> </option>
+      {listLanguages.map((language: any, index: number) => (
+          <option  key={`${language?.label?.[locale]}-${index}`} value={language?.value}>
+            {language?.label?.[locale]}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+}
+
+const SelectGenre = ({genre, onChangeGenre, filters, genres}:{genre?:string, onChangeGenre: (e: React.ChangeEvent<HTMLSelectElement>) => void, filters?:{genre?:string}, genres: any}) => {
+  const t = useTranslations('Filters');
+  const locale = useLocale() as Locale
+  return (
+      <div  className="flex flex-col gap-2 md:w-64">
+      <LabelForm titleLabel={t('genre')} className='text-white' htmlFor='genre' />
+      <select  onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
+        <option> </option>
+        {genres?.map((genre: any, index: number) => (
+          <option  key={`${genre.id}-${index}`} value={displayGenreTranslated(genre, locale)}>
+            {displayGenreTranslated(genre, locale)}
+          </option>
+        ))}
+    
+      </select>
+    </div>
+  )
+}
+
+const SelectDecade = ({decade, onChangeDecade, defaultValue, filters}:{decade?:number[], onChangeDecade: (e: React.ChangeEvent<HTMLSelectElement>) => void, defaultValue?:string, filters?:{decade?:string}}) => {
+  const t = useTranslations('Filters');
+  return (
+    <div  className="flex flex-col gap-2 md:w-64">
+    <LabelForm titleLabel={t('decade')}className='text-white' htmlFor='decade' />
+    <select   
+      onChange={onChangeDecade} 
+      defaultValue={defaultValue ?? filters?.decade}  
+      className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
+    <option> </option>
+    {decade?.map((dec: number, index: number) => (
+        <option  key={`${dec}-${index}`} value={dec}>
+          {dec}
+        </option>
+      ))}
+    </select>
+  </div>
+  )
+}
 
 const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, decadeParams}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined, decadeParams?:number, q?:string}) => {
-  const locale = useLocale() as Locale
   const router = useRouter();
   const t = useTranslations('Filters');
   const [isMounted, setIsMounted] = useState(false);
   const { setMoviesStore } = useMovieFormStore();
   const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } = useFiltersMovieStore();
-  const listCountries = countriesList.filter(country => countries?.includes(country.value));
 
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
@@ -134,58 +216,11 @@ const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, 
   return (
     <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
-        <div className="flex flex-col gap-2 md:w-64">
-        <LabelForm titleLabel={t('subtitles')} className='text-white' htmlFor='subtitles' />
-          <select onChange={onChangeSubtitles} defaultValue={subtitles ?? filters?.subtitles} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
-            <option> </option>
-            <option value="EN">{t('subtitlesEN')}</option>
-            <option value="JP">{t('subtitlesJP')}</option>
-            <option value="FR">{t('subtitlesFR')}</option>
-          </select>
-        </div>
-        <div  className="flex flex-col gap-2 md:w-64">
-        <LabelForm titleLabel={t('language')} className='text-white' htmlFor='language' />
-          <select   
-            onChange={onChangeCountry} 
-            defaultValue={language ?? filters?.language} 
-            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 '>
-          <option> </option>
-          {listCountries.map((country, index) => (
-              <option  key={`${
-              country?.label?.[locale]}-${index}`} value={country?.value}>
-                {
-                country?.label?.[locale]}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div  className="flex flex-col gap-2 md:w-64">
-          <LabelForm titleLabel={t('decade')}className='text-white' htmlFor='decade' />
-          <select   
-            onChange={onChangeDecade} 
-            defaultValue={String(decadeParams ?? filters?.decade)}  
-            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
-          <option> </option>
-          {decade?.decade.map((dec, index) => (
-              <option  key={`${dec}-${index}`} value={dec}>
-                {dec}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div  className="flex flex-col gap-2 md:w-64">
-          <LabelForm titleLabel={t('genre')} className='text-white' htmlFor='genre' />
-          <select  onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
-            <option> </option>
-            {genres?.map((genre, index) => (
-              <option  key={`${genre.id}-${index}`} value={displayGenreTranslated(genre, locale)}>
-                {displayGenreTranslated(genre, locale)}
-              </option>
-            ))}
-        
-          </select>
-        </div>
-    </div>
+        <SelectSubtitles subtitles={subtitles} onChangeSubtitles={onChangeSubtitles} filters={filters} />
+        <SelectLanguage language={language} onChangeLanguage={onChangeCountry} listLanguages={languagesList} filters={filters} />
+        <SelectDecade decade={decade?.decade} defaultValue={String(decadeParams ?? filters?.decade)} onChangeDecade={onChangeDecade} filters={{ decade: filters?.decade?.toString() }} />
+        <SelectGenre genre={genre} onChangeGenre={onChangeGenre} filters={filters} genres={genres} />
+      </div>
       <ButtonSearch className='w-full hover:cursor-pointer md:w-full lg:max-w-56 transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
     </div>
   )

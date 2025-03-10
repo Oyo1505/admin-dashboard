@@ -200,7 +200,6 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
 
 return(
     <div className='bg-white'>
-      
       <div className=" text-background p-3 ">
       <Title type='h1' textColor='text-background text-lg mb-3' translationTheme='AddMovie' translationText='title'/>
         <form onSubmit={handleSubmit(editMovie ? onClickEditMovie : createMovie)}>
