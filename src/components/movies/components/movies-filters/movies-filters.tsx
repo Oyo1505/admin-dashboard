@@ -15,7 +15,14 @@ import LabelForm from '@/components/ui/components/label-form/label-form'
 import { Locale } from '@/models/lang/lang'
 import { languagesList } from '@/shared/constants/lang'
 
-const SelectSubtitles = ({subtitles, onChangeSubtitles, filters}:{subtitles?:string, onChangeSubtitles: (e: React.ChangeEvent<HTMLSelectElement>) => void, filters?:{subtitles?:string}}) => {
+type SelectSubtitlesProps = {
+  subtitles?: string;
+  // eslint-disable-next-line no-unused-vars
+  onChangeSubtitles: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  filters?: { subtitles?: string };
+};
+
+const SelectSubtitles = ({subtitles, onChangeSubtitles, filters}:SelectSubtitlesProps) => {
   const t = useTranslations('Filters');
 
   const subtitlesList = {
@@ -38,7 +45,15 @@ const SelectSubtitles = ({subtitles, onChangeSubtitles, filters}:{subtitles?:str
   )
 }
 
-const SelectLanguage = ({language, onChangeLanguage, filters, listLanguages}:{language?:string, onChangeLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void, filters?:{language?:string}, listLanguages: any}) => {
+type SelectLanguageProps = {
+  language?: string;
+  // eslint-disable-next-line no-unused-vars
+  onChangeLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  filters?: { language?: string };
+  listLanguages: any;
+};
+
+const SelectLanguage = ({language, onChangeLanguage, filters, listLanguages}:SelectLanguageProps) => {
   const t = useTranslations('Filters');
   const locale = useLocale() as Locale
 
@@ -60,7 +75,15 @@ const SelectLanguage = ({language, onChangeLanguage, filters, listLanguages}:{la
   )
 }
 
-const SelectGenre = ({genre, onChangeGenre, filters, genres}:{genre?:string, onChangeGenre: (e: React.ChangeEvent<HTMLSelectElement>) => void, filters?:{genre?:string}, genres: any}) => {
+type SelectGenreProps = {
+  genre?: string;
+  // eslint-disable-next-line no-unused-vars
+  onChangeGenre: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  filters?: { genre?: string };
+  genres: any;
+};
+
+const SelectGenre = ({genre, onChangeGenre, filters, genres}:SelectGenreProps) => {
   const t = useTranslations('Filters');
   const locale = useLocale() as Locale
   return (
@@ -79,7 +102,15 @@ const SelectGenre = ({genre, onChangeGenre, filters, genres}:{genre?:string, onC
   )
 }
 
-const SelectDecade = ({decade, onChangeDecade, defaultValue, filters}:{decade?:number[], onChangeDecade: (e: React.ChangeEvent<HTMLSelectElement>) => void, defaultValue?:string, filters?:{decade?:string}}) => {
+type SelectDecadeProps = {
+  decade?: number[];
+  // eslint-disable-next-line no-unused-vars
+  onChangeDecade: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  defaultValue?: string;
+  filters?: { decade?: string };
+};
+
+const SelectDecade = ({decade, onChangeDecade, defaultValue, filters}:SelectDecadeProps) => {
   const t = useTranslations('Filters');
   return (
     <div  className="flex flex-col gap-2 md:w-64">
@@ -99,7 +130,7 @@ const SelectDecade = ({decade, onChangeDecade, defaultValue, filters}:{decade?:n
   )
 }
 
-const MovieFilters = ({subtitles,q, language, genres, genre, offset, countries, decadeParams}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, countries?:string[] | undefined, decadeParams?:number, q?:string}) => {
+const MovieFilters = ({subtitles, q, language, genres, genre, offset, decadeParams}:{subtitles?:string, language?:string, genres?:IGenre[], genre?:string, offset:number, decadeParams?:number, q?:string}) => {
   const router = useRouter();
   const t = useTranslations('Filters');
   const [isMounted, setIsMounted] = useState(false);
