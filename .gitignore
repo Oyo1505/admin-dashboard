@@ -62,3 +62,4 @@ y/*
 public/_next-video
 .env*.local
 
+.nvmrc
