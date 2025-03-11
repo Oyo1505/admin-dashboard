@@ -1,6 +1,7 @@
 
 
-import { getUserConnected } from '@/components/auth/action/action';
+
+import { getUserConnected } from '@/domains/auth/action/action';
 import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
 import { signIn, signOut } from 'next-auth/react';

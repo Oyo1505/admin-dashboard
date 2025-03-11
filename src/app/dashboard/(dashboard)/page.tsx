@@ -1,7 +1,7 @@
 import React from 'react'
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
-import TitleDashboard from '@/components/dashboard/components/title-dashoard/tite-dashboard';
+import TitleDashboard from '@/domains/dashboard/components/title-dashoard/tite-dashboard';
 
 const Page = async () => {
   const session = await auth()

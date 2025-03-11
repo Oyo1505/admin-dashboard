@@ -1,5 +1,5 @@
 
-import LandingPage from '@/components/auth/components/landing-page/landing-page';
+import LandingPage from '@/domains/auth/components/landing-page/landing-page';
 
 export default function IndexPage() {
   return (

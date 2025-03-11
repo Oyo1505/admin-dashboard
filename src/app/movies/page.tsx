@@ -1,8 +1,8 @@
-import { getAllGenres, getMoviesCountries } from '@/components/movies/action';
-import MovieFilters from '@/components/movies/components/movies-filters/movies-filters';
-import Movies from '@/components/movies/components/movies/movies'
-import SearchMovie from '@/components/movies/components/search-movie/search-movie'
-import MoviesSkeleton from '@/components/skeleton/components/movies-skeleton/movies-skeleton';
+import { getAllGenres, getMoviesCountries } from '@/domains/movies/action';
+import MovieFilters from '@/domains/movies/components/movies-filters/movies-filters';
+import Movies from '@/domains/movies/components/movies/movies'
+import SearchMovie from '@/domains/movies/components/search-movie/search-movie'
+import MoviesSkeleton from '@/domains/skeleton/components/movies-skeleton/movies-skeleton';
 import React, { cache, Suspense } from 'react'
 
 export const revalidate = 60;  
@@ -32,7 +32,7 @@ export const revalidate = 60;
 
    return (<>
        <SearchMovie search={search} offset={offset} />
-       <MovieFilters subtitles={subtitles} q={search} offset={offset} decadeParams={decade} language={language} genres={genres} genre={genre} countries={countries as string[]}/>
+       <MovieFilters subtitles={subtitles} q={search} offset={offset} decadeParams={decade} language={language} genres={genres} genre={genre}  countries={countries}/>
        <Suspense fallback={<MoviesSkeleton />}>
          <Movies searchParams={searchParams} offset={offset} />
        </Suspense>

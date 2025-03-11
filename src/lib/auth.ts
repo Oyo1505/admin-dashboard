@@ -1,11 +1,11 @@
-import { getAuthorizedEmails } from "@/components/auth/action/action";
+
 import { URL_BASE } from "@/shared/route";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import NextAuth, { User } from "next-auth";
-import { JWT } from "next-auth/jwt";
 import authConfig from "./auth.config";
-
+import NextAuth, { User } from "next-auth";
+import { getAuthorizedEmails } from "@/domains/auth/action/action";
+import { JWT } from "next-auth/jwt";
 const prisma = new PrismaClient()
 
 export const { handlers, auth, signIn, signOut } = NextAuth ({
@@ -18,8 +18,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth ({
   callbacks: {
     async signIn({ user }) {
       const { mails } = await getAuthorizedEmails()
-      const usersEmail = mails?.map((item) => item?.email)
-       if(user?.email && !usersEmail?.includes(user?.email)) return URL_BASE
+      const usersEmail = mails?.map((item) => item.email)
+      if(user?.email && !usersEmail?.includes(user?.email)) return URL_BASE
       return true
     },
     async jwt({ token, account, profile }) {

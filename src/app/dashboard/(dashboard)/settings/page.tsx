@@ -1,9 +1,9 @@
-import ButtonDeleteAccount from "@/components/ui/components/button-delete-account/button-delete-account";
-import Title from "@/components/ui/components/title/title";
+import ButtonDeleteAccount from "@/domains/ui/components/button-delete-account/button-delete-account";
+import Title from "@/domains/ui/components/title/title";
 import whatsapp from '../../../../assets/image/WhatsAppButtonGreenSmall.svg'
 import line  from '../../../../assets/image/LINE_Brand_icon.png'
 import Image from "next/image";
-import { InstagramLogo } from "@/components/ui/components/icons/icons";
+import { InstagramLogo } from "@/domains/ui/components/icons/icons";
 
 export default async function SettingsPage() {
  
@@ -14,13 +14,13 @@ export default async function SettingsPage() {
         </div>
         <div>
           <Title translationTheme="SettingsPage" type='h3' translationText='deleteAccount' />
-          <ButtonDeleteAccount className='mt-4 bg-red-500 text-white' translationTheme="SettingsPage" translationText='deleteAccount' />
+          <ButtonDeleteAccount className='mt-4 bg-red-500 text-white cursor-pointer' translationTheme="SettingsPage" translationText='deleteAccount' />
         </div>
         <div>
           <Title translationTheme="SettingsPage" type='h3' translationText='anyHelp' />
-          <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-start items-start">
+          <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-start items-start cursor-pointer">
               <a href="https://www.instagram.com/oyo1505" target="_blank" rel="noreferrer" className="flex h-11 w-48 sm:w-32 items-center justify-start gap-4">
-              <button className="w-full h-full flex items-center justify-center group rounded-lg bg-white  group">
+              <button className="w-full h-full flex items-center justify-center group rounded-lg bg-white group cursor-pointer">
                <InstagramLogo />
                  <span className='text-sm text-background font-bold'>Oyo1505</span>
             </button>
