@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 interface Props {
   className? : string
@@ -9,7 +9,7 @@ interface Props {
 
 const Container = ({className, children, marginSide=true}: Props) => {
   return (
-    <div className={cn(marginSide ? 'mr-12 ml-12' : null, 'container-center  pr-3 pl-3', className)}>{children}</div>
+    <div className={cn(marginSide ? 'mr-12 ml-12' : null, 'pr-3 pl-3 container mx-auto flex flex-col justify-center', className)}>{children}</div>
   )
 }
 

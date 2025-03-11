@@ -1,7 +1,5 @@
 'use client'
-import React, { useState } from 'react'
 import { IGenre, IMovie } from '@/models/movie/movie';
-import { useLocale, useTranslations } from 'next-intl';
 import { addMovieToDb, editMovieToDb } from '@/domains/dashboard/action';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
@@ -20,10 +18,11 @@ import { Textarea } from '@/domains/ui/components/textarea/textarea';
 import LabelGenre from '@/domains/ui/components/label-genre/label-genre';
 import { toast } from 'react-toastify';
 import { URL_DASHBOARD_MOVIE } from '@/shared/route';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import useUserStore from 'store/user/user-store';
-
-
+import { User } from 'next-auth';
 
 const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie, editMovie?: boolean, idFromGoogleDrive?: string}) => {
   const t = useTranslations('AddMovie');
@@ -104,7 +103,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       link: data.link,
     }
 
-  const { status } = await addMovieToDb(rawFormData as any, user)
+  const { status } = await addMovieToDb(rawFormData as any, user as User)
   if(status === 200){
     toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
     router.push(URL_DASHBOARD_MOVIE)
@@ -138,7 +137,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       subtitles: data.subtitles,
     }
     
-     const { status } = await editMovieToDb(rawFormData as any, user)
+     const { status } = await editMovieToDb(rawFormData as any, user as User)
      if(status === 200){
        toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
        router.push(URL_DASHBOARD_MOVIE)

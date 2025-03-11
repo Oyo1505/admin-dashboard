@@ -14,7 +14,7 @@ import MoviesHomeSectionSkeleton from '@/domains/skeleton/components/movie-home-
 import MoviesHomeThemeSkeleton from '@/domains/skeleton/components/movies-home-theme/movies-home-theme'
 import { headers } from 'next/headers'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
-import { Locale } from '@/models/lang/lang'
+import { Locale } from '@/config'
 export const revalidate = 60; 
 
 const lobster = Lobster({
@@ -47,7 +47,7 @@ const Page =  async () => {
   const countryChosen = findCountry?.[0]?.label?.[locale] 
   return (
     <div className='flex flex-col mt-6 gap-8'>
-      <Container className='pt-14'>
+      <Container  className='pt-14'>
           <Title translationTheme='HomePage' className={clsx(lobster.className, 'text-2xl md:text-3xl')} translationText='lastFiveMovies' type='h3' />
           <Suspense fallback={<MoviesHomeSectionSkeleton />}>
             <MoviesHomeSection movies={moviesLastFive.movies} isMobileView={isMobileView} />

@@ -4,13 +4,13 @@ import Link from 'next/link'
 import qs from 'qs';
 import { URL_MOVIE_ID } from '@/shared/route'
 import Image from 'next/image';
-import imageDefault from '../../../../assets/image/default-placeholder.png'
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/domains/ui/components/button/button';
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
+import imageDefault from '../../../../assets/image/default-placeholder.png';
 
 interface SearchParams {
   subtitles?: string;
@@ -69,7 +69,7 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
 
   return (  
     <>
-  <div className='flex flex-row gap-4 mt-6 items-start flex-wrap justify-center md:justify-start'>
+  <div className='grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6'>
     {moviesFromStore && moviesFromStore.length > 0 ? moviesFromStore.map((movie, index) => 
       movie?.title && (
         <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center transition-all duration-300'

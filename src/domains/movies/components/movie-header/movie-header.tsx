@@ -1,21 +1,22 @@
 'use client'
 import { Button } from '@/domains/ui/components/button/button';
 import { IGenre, IMovie } from '@/models/movie/movie'
-import { useLocale, useTranslations } from 'next-intl'
 import React, { useState, useTransition } from 'react'
 import { heuresEnMinutes } from 'utilities/number/minutesToHours'
 import { addOrRemoveToFavorite } from '../../action';
-import useUserStore from 'store/user/user-store';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
+import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
+import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
+import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { toast } from 'react-toastify';
+import useUserStore from 'store/user/user-store';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { DownloadLogo, EditMovieLogo, Favorite } from '@/domains/ui/components/icons/icons';
-import { toast } from 'react-toastify';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
-import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
-import { Locale } from '@/models/lang/lang';
-import Link from 'next/link';
-import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
+import { Locale } from '@/config';
+
 interface MovieHeaderProps {
   movie?: IMovie | null;
   isFavorite: boolean;
@@ -27,7 +28,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   const { data: movieDetails } = useGetDetailsMovie({id:movie?.imdbId ?? '', language:locale})
   const [genresMovie,] = useState<IGenre[]>(movie && movie?.genresIds && movie?.genresIds?.length > 0 ? movie?.genresIds.map((item) => item.genre).flat() : [] as IGenre[]);
 
-  const synopsis = movieDetails?.movie_results[0]?.overview
+  const synopsis = movieDetails?.movie_results?.[0]?.overview 
 
   const displaySubtitles = (value: string) => {
     switch (value) { 

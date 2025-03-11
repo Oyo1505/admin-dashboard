@@ -1,15 +1,15 @@
 
 
+
 import { getUserConnected } from '@/domains/auth/action/action';
+import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
-import { User } from 'next-auth';
 import { signIn, signOut } from 'next-auth/react';
-import { create } from 'zustand'
-import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware'
+import { create } from 'zustand';
+import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
 
 interface IUser extends User {
   token?: string;
-  role? : 'ADMIN' | 'USER';
 }
 
 interface UserStore {
@@ -36,14 +36,14 @@ const useUserStore = create<UserStore>()(
       setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
         const { user } = await getUserConnected(email);
-        set({  user: user, connected: true });
+        set({ user: user, connected: true });
       },
       login: async ()=> {
         await signIn('google', { callbackUrl: URL_HOME });
         set({ connected: true });
       },
       logout: async () =>{ 
-        set({ user: {}, connected: false, })
+        set({ user: { id: '' }, connected: false, })
         await signOut({ callbackUrl: URL_BASE});
       },
     }),

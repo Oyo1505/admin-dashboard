@@ -1,18 +1,19 @@
 'use client';
-import {
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableCell,
-  TableBody,
-  Table
-} from '@/domains/ui/components/table/table';
 import { Button } from '@/domains/ui/components/button/button';
-import { useRouter } from 'next/navigation';
-import { deleteUserById } from '../../action';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/domains/ui/components/table/table';
 import { User } from '@/models/user/user';
-import useUserStore from 'store/user/user-store';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useOptimistic } from 'react';
+import useUserStore from 'store/user/user-store';
+import { deleteUserById } from '../../action';
 
  const UsersTable = ({
   users,
@@ -62,11 +63,11 @@ function UserRow({ user }: { user: User }) {
   const userId = user.id;
   const { user:userConnected } = useUserStore(state => state);
   const [optimitiscUser, setOptimitiscUser] = useOptimistic(userId);
-
+  const session = useSession();
   const deleteUser = async () => {
     setOptimitiscUser('')
     try{
-      userId && (await deleteUserById(userId, user))
+      userId && (await deleteUserById({id:userId, user:userConnected, token:session?.data}))
     }catch(err){
       throw new Error('User not deleted')
     }

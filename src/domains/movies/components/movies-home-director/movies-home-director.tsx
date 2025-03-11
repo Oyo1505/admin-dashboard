@@ -8,9 +8,10 @@ import { useLocale } from 'next-intl';
 import MovieItemTheme from '../movie-item-theme/movie-item-theme';
 import Container from '@/domains/ui/components/container/container';
 import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import paramount from '../.../../../../../../public/images/paramount.webp';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
 import clsx from 'clsx';
-import paramount from '../.../../../../../../public/images/paramount.webp';
 
 const MoviesHomeDirector = ({ movies, director, isMobileView, fontFamily, imageBackdrop }:{movies?:IMovie[], director?:string, isMobileView?:boolean, fontFamily?:string, imageBackdrop?:string | null}) => {
 
@@ -57,6 +58,7 @@ const backgroundStyle = imageBackdrop
             <Carousel
               containerClass="w-full mt-6 "
               autoPlay={false}
+              itemClass='flex justify-center'
               transitionDuration={500}
               draggable={true}
               infinite={true} 

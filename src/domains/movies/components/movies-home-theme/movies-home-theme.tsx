@@ -3,12 +3,13 @@ import React from 'react'
 import Title from '@/domains/ui/components/title/title'
 import 'react-multi-carousel/lib/styles.css';
 import { IMovie } from '@/models/movie/movie';
+import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 import MovieItemTheme from '../movie-item-theme/movie-item-theme';
 import Container from '@/domains/ui/components/container/container';
 import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
-import clsx from 'clsx';
 
 const MoviesHomeTheme = ({ movies, country, isMobileView, fontFamily }:{movies?:IMovie[], country?:string, isMobileView?:boolean, fontFamily?:string}) => {
 
@@ -52,6 +53,7 @@ const MoviesHomeTheme = ({ movies, country, isMobileView, fontFamily }:{movies?:
               autoPlay={false}
               transitionDuration={500}
               draggable={true}
+              itemClass='flex justify-center'
               infinite={true} 
               responsive={responsive} 
             >

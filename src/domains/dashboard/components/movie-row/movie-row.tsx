@@ -10,12 +10,13 @@ import { deleteFileFromGoogleDrive } from '@/googleDrive'
 import Link from 'next/link'
 import { URL_DASHBOARD_MOVIE_ADD, URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route'
 import useUserStore from 'store/user/user-store'
+import { User } from 'next-auth'
 
 function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, index?: number}) {
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
   const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
-    movie?.id && (await deleteMovieById(movie?.id, user))
+    movie?.id && (await deleteMovieById(movie?.id, user as User))
   }
 
   const { data, isFetching, status, refetch } = useQuery({
