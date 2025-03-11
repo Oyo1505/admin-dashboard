@@ -56,7 +56,7 @@ type SelectLanguageProps = {
 const SelectLanguage = ({language, onChangeLanguage, filters, listLanguages}:SelectLanguageProps) => {
   const t = useTranslations('Filters');
   const locale = useLocale() as Locale
-  console.log(listLanguages)
+
   return (
     <div  className="flex flex-col gap-2 md:w-64">
     <LabelForm titleLabel={t('language')} className='text-white' htmlFor='language' />
