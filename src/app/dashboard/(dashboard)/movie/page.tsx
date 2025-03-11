@@ -1,5 +1,5 @@
-import { getAllMovies } from '@/components/dashboard/action';
-import MovieTable from '@/components/dashboard/components/movie-table/movie-table';
+import { getAllMovies } from '@/domains/dashboard/action';
+import MovieTable from '@/domains/dashboard/components/movie-table/movie-table';
 import { getDataFromGoogleDrive } from '@/googleDrive';
 import { IMovie } from '@/models/movie/movie';
 import React, { Suspense } from 'react';

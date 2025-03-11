@@ -1,5 +1,5 @@
 import { PageProps } from '.next/types/app/page';
-import FormMovie from '@/components/dashboard/components/form-movie/form-movie';
+import FormMovie from '@/domains/dashboard/components/form-movie/form-movie';
 
 import React from 'react'
 

@@ -1,10 +1,10 @@
 export const revalidate = 60;
 import React from 'react'
 import { auth } from '@/lib/auth';
-import { getFavoriteMovies } from '@/components/dashboard/action';
-import Title from '@/components/ui/components/title/title';
+import { getFavoriteMovies } from '@/domains/dashboard/action';
+import Title from '@/domains/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';
-import MoviesFavorite from '@/components/movies/components/movies-favorite/movies-favorite';
+import MoviesFavorite from '@/domains/movies/components/movies-favorite/movies-favorite';
 
 async function getData() {
   const session = await auth()

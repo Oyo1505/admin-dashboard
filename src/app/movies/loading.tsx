@@ -1,4 +1,4 @@
-import MoviesSkeleton from '@/components/skeleton/components/movies-skeleton/movies-skeleton';
+import MoviesSkeleton from '@/domains/skeleton/components/movies-skeleton/movies-skeleton';
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';

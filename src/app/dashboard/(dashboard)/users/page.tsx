@@ -1,14 +1,14 @@
 
 import React from 'react'
 import { redirect } from 'next/navigation';
-import  Search  from '@/components/dashboard/components/search-user/search-user';
-import UsersTable from '@/components/dashboard/components/user-table/users-table';
+import  Search  from '@/domains/dashboard/components/search-user/search-user';
+import UsersTable from '@/domains/dashboard/components/user-table/users-table';
 import { auth } from '@/lib/auth';
-import { getUsersWithPageParam } from '@/components/dashboard/action';
-import { getAuthorizedEmails } from '@/components/auth/action/action';
-import FormAddEmailAuthrizedEmail from '@/components/auth/components/form-add-email-authorized/form-add-email-authorized';
-import { EmailAuthrizedEmailRow } from '@/components/dashboard/components/email-user-authorized-row/email-user-authorized-row';
-import Title from '@/components/ui/components/title/title';
+import { getUsersWithPageParam } from '@/domains/dashboard/action';
+import { getAuthorizedEmails } from '@/domains/auth/action/action';
+import FormAddEmailAuthrizedEmail from '@/domains/auth/components/form-add-email-authorized/form-add-email-authorized';
+import { EmailAuthrizedEmailRow } from '@/domains/dashboard/components/email-user-authorized-row/email-user-authorized-row';
+import Title from '@/domains/ui/components/title/title';
 
 const Page = async (
   props: {

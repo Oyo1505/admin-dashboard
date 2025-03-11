@@ -1,4 +1,4 @@
-import Container from '@/components/ui/components/container/container';
+import Container from '@/domains/ui/components/container/container';
 import React, { ReactElement, Suspense } from 'react'
 import Loading from './loading';
 

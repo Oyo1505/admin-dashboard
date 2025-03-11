@@ -1,5 +1,5 @@
-import { getDirectorFromSection } from "@/components/dashboard/action";
-import DirectorSectionForm from "@/components/dashboard/components/director-section-form/director-section-form";
+import { getDirectorFromSection } from "@/domains/dashboard/action";
+import DirectorSectionForm from "@/domains/dashboard/components/director-section-form/director-section-form";
 
 export const revalidate = 60;
 

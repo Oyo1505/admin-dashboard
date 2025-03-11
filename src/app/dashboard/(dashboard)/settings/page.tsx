@@ -1,9 +1,9 @@
-import ButtonDeleteAccount from "@/components/ui/components/button-delete-account/button-delete-account";
-import Title from "@/components/ui/components/title/title";
+import ButtonDeleteAccount from "@/domains/ui/components/button-delete-account/button-delete-account";
+import Title from "@/domains/ui/components/title/title";
 import whatsapp from '../../../../assets/image/WhatsAppButtonGreenSmall.svg'
 import line  from '../../../../assets/image/LINE_Brand_icon.png'
 import Image from "next/image";
-import { InstagramLogo } from "@/components/ui/components/icons/icons";
+import { InstagramLogo } from "@/domains/ui/components/icons/icons";
 
 export default async function SettingsPage() {
  

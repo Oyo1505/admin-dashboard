@@ -1,7 +1,7 @@
 import NextAuth, { User } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import { getAuthorizedEmails } from "@/components/auth/action/action";
+import { getAuthorizedEmails } from "@/domains/auth/action/action";
 import authConfig from "./auth.config";
 import { URL_BASE } from "@/shared/route";
 import { JWT } from "next-auth/jwt";

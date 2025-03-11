@@ -1,12 +1,12 @@
 import React, { cache, Suspense } from 'react'
 import Iframe from 'react-iframe'
-import { getAllMovies, getMovieDetail } from '@/components/movies/action'
-import MovieHeader from '@/components/movies/components/movie-header/movie-header'
-import Title from '@/components/ui/components/title/title'
+import { getAllMovies, getMovieDetail } from '@/domains/movies/action'
+import MovieHeader from '@/domains/movies/components/movie-header/movie-header'
+import Title from '@/domains/ui/components/title/title'
 import { auth } from '@/lib/auth'
-import { getFavoriteMovies } from '@/components/dashboard/action'
-import LoadingSpinner from '@/components/shared/loading-spinner/loading-spinner'
-import MovieCarouselSuggestion from '@/components/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
+import { getFavoriteMovies } from '@/domains/dashboard/action'
+import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner'
+import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
 import { headers } from 'next/headers'
 import Loading from './loading'
 import { Lobster } from 'next/font/google'
@@ -15,7 +15,7 @@ import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-p
 import { notFound } from 'next/navigation'
 
 //const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
-// const VideoPlayer = dynamic(() => import('@/components/shared/video-player'), { ssr: false })
+// const VideoPlayer = dynamic(() => import('@/domains/shared/video-player'), { ssr: false })
 
 const lobster = Lobster({
   weight: '400',
