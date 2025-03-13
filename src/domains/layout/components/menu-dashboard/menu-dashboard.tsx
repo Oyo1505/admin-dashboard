@@ -2,6 +2,7 @@
 import { NavItem } from '@/domains/layout/components/menu-dashboard-nav-item/menu-dashboard-nav-item'
 import { AddIncon, Favorite, Home, SettingsIcon, UsersIcon } from '@/domains/ui/components/icons/icons'
 import { URL_DASHBOARD, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_DASHBOARD_MOVIE,URL_GENRE_SECTION, URL_SETTINGS, URL_USERS } from '@/shared/route'
+import checkPermissions from '@/shared/utils/permissions/checkPermissons'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import useUserStore from 'store/user/user-store'
@@ -9,7 +10,7 @@ import useUserStore from 'store/user/user-store'
 const MenuDashboard = () => {
   const { user } = useUserStore(state => state)
   const t = useTranslations('DashboardNav');
-
+  const hasPermission = checkPermissions(user, "can:delete", "user") && checkPermissions(user, "can:delete", "movie");
   return (
     <div className="flex-1 bg-primary  overflow-auto py-2">
           <nav className="grid items-start px-4 text-sm font-medium">
@@ -17,7 +18,7 @@ const MenuDashboard = () => {
             <Home />
               {t('dashboard')}
             </NavItem>
-            {user && user?.role === 'ADMIN' &&<>
+            {user && hasPermission &&<>
                <NavItem href={URL_USERS}>
                   <UsersIcon className="h-4 w-4" />
                     {t('users')}

@@ -5,7 +5,7 @@ import React from 'react'
 import { postAuthorizedEmail } from '../../action/action'
 import { useTranslations } from 'next-intl'
 
-const FormAddEmailAuthrizedEmail = () => {
+const FormAddEmailAuthrizedEmail = ({hasPermission}: {hasPermission: boolean}) => {
   const [email, setEmail] = React.useState('')
   const t = useTranslations('Dashboard')
   const postAuthorizedEmailForm = async () => {
@@ -16,8 +16,10 @@ const FormAddEmailAuthrizedEmail = () => {
   }
   return (
     <form>
+      {hasPermission && <>
       <Input placeholder='Email' type='email' value={email} onChange={(e)=> setEmail(e.target.value)} className='w-full mb-4  text-background bg-primary' />
       <Button  formAction={postAuthorizedEmailForm} className='w-full mb-4'>{t('addButton')}</Button>
+      </>}
     </form>
   )
 }
