@@ -16,6 +16,7 @@ import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { DownloadLogo, EditMovieLogo, Favorite } from '@/domains/ui/components/icons/icons';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
 import { Locale } from '@/config';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
 interface MovieHeaderProps {
   movie?: IMovie | null;
@@ -69,7 +70,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
   const titleCompute = (title: string | undefined | null) => {
     return title?.replaceAll(' ', '+')?.toLocaleLowerCase()
   }
-  
+  const hasPermission = checkPermissions(user, "can:update", "movie")
   return (
     <div className='w-full lg:w-1/2 mt-4 md:mt-0'>
     <div className='mb-4'>
@@ -122,7 +123,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
             }
            {t('download')}
           </a>
-          {user?.role === 'ADMIN' && movie?.id && 
+          {hasPermission && movie?.id && 
             <div className='mt-5'>
              <Link  
               className="inline-flex gap-2 rounded-md  p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary" 

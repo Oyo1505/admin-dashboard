@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { URL_DASHBOARD_MOVIE_ADD, URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route'
 import useUserStore from 'store/user/user-store'
 import { User } from 'next-auth'
+import checkPermissions from '@/shared/utils/permissions/checkPermissons'
 
 function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, index?: number}) {
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
@@ -33,7 +34,8 @@ function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, in
   const onDeleteMovieOnGoogleDrive = async (): Promise<void> => {
     movie?.id && (await deleteFileFromGoogleDrive(movie?.id))
   }
- 
+  const hasPermissionToDelete = checkPermissions(user, "can:delete", "movie")
+  const hasPermissionToUpdate = checkPermissions(user, "can:update", "movie")
   return (
     movie && movie.id &&
      <>
@@ -44,23 +46,27 @@ function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, in
              <Toggle toggle={refetch} publish={isMoviePublished} isFetching={isFetching} />
           </TableCell>}
           <TableCell>
-            {isMoviePublished !== undefined ? 
+         {hasPermissionToUpdate && <>
+          {isMoviePublished !== undefined ? 
             <Link href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)} className='font-bold bg-background p-3 rounded-md text-primary' >
               {btnText}
             </Link> : 
             <Link href={URL_DASHBOARD_MOVIE_ADD(movie?.id)} className='font-bold bg-background p-3 rounded-md text-primary' >
               {btnText}
             </Link>}
+            </>}
           </TableCell>
           <TableCell> 
+            {hasPermissionToDelete && 
             <Button variant={'destructive'} className='font-bold' formAction={onClickDeleteMovie} >
                Supprimer
             </Button>
-           {isMoviePublished === undefined && 
+           }
+           {isMoviePublished === undefined && hasPermissionToDelete && (
            <Button variant={'destructive'} className='font-bold' formAction={onDeleteMovieOnGoogleDrive} >
               Supprimer sur Google
            </Button>
-           } 
+           )} 
           </TableCell>
         </TableRow>
       </>
