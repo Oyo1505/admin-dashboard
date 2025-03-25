@@ -1,12 +1,12 @@
 'use client'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import React from 'react'
+import { useState } from 'react'
 import { getAuthorizedEmails } from '@/domains/auth/action/action'
 import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row'
 import { useTranslations } from 'next-intl'
 
 export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }) => {
-  const [page, setPage] = React.useState(0)
+  const [page, setPage] = useState(0)
 
   const { isPending, isError, error, data, isFetching, isPlaceholderData } =
     useQuery({
