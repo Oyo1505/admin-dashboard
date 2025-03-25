@@ -72,10 +72,9 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
   <div className='grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6'>
     {moviesFromStore && moviesFromStore.length > 0 ? moviesFromStore.map((movie, index) => 
       movie?.title && (
-        <Link prefetch className='w-52 group mb-5 flex h-full flex-col gap-3 justify-start items-center transition-all duration-300'
+        <Link prefetch className='w-52 group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5'
           key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
           href={`${URL_MOVIE_ID(movie?.id)}`}>
-          
           <div className='flex relative w-full rounded-lg flex-col justify-between h-full'>
             <div className='w-full h-72 rounded-lg relative overflow-hidden'>
               <Image

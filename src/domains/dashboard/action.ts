@@ -14,13 +14,14 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
     const users = search.trim() === '' ?
     await prisma.user.findMany({
       take:pageParam,
-
      })
     : await prisma.user.findMany({
     where:{
-      name: search
+      name: {
+        contains: search,
+        mode: 'insensitive'
+      }
     },
-
     take:pageParam
    });
 
