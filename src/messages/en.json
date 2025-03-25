@@ -52,7 +52,11 @@
     "movieAdded": "Movie published",
     "movieNotAdded": "Movie not published",
     "togglePublished": "Published",
-    "toggleUnpublished": "Unpublished"
+    "toggleUnpublished": "Unpublished",
+    "addEmailAuthorized": "Add Email Authorized",
+    "nextPage": "Next Page",
+    "previousPage": "Previous Page",
+    "loading": "Loading..."
   },
   "DashboardNav": {
     "dashboard":"Dashboard",

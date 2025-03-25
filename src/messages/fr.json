@@ -52,7 +52,11 @@
     "movieNotAdded": "Film non ajouté",
     "noMovie": "Aucun film",
     "togglePublished": "Publier",
-    "toggleUnpublished": "Dépublier"
+    "toggleUnpublished": "Dépublier",
+    "addEmailAuthorized": "Ajouter un email autorisé",
+    "nextPage": "Page suivante",
+    "previousPage": "Page précédente",
+    "loading": "Chargement..."
   },
   "DashboardNav": {
     "dashboard":"Espace Personnel",
