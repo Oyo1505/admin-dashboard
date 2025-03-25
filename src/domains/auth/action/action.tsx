@@ -42,7 +42,38 @@ export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:num
   }
 }
 
-export const getAuthorizedEmails = async ({ pageParam }: { pageParam: number}): Promise<{ 
+export const getAuthorizedEmails = async (): Promise<{ 
+  status?: number | undefined, 
+  mails?: User[] | undefined, 
+  prevCursor?: string | undefined,
+  nextCursor?: string | undefined,
+  total?: number | undefined 
+}> => {
+  try {
+    
+    const userauthorizedEmails = await prisma.authorizedEmail.findMany({
+      orderBy: {
+        email: 'asc'
+      },
+    })
+
+    if (!userauthorizedEmails) {
+      return { status: 400 };
+    }
+
+    return {
+      mails: userauthorizedEmails, 
+      status: 200, 
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      status: 500
+    }
+  }
+}
+
+export const getAuthorizedEmailsPagination = async ({ pageParam }: { pageParam?: number}): Promise<{ 
   status?: number | undefined, 
   mails?: User[] | undefined, 
   prevCursor?: string | undefined,

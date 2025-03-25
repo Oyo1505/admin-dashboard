@@ -1,7 +1,7 @@
 'use client'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
-import { getAuthorizedEmails } from '@/domains/auth/action/action'
+import React, { useState } from 'react'
+import { getAuthorizedEmailsPagination } from '@/domains/auth/action/action'
 import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row'
 import { useTranslations } from 'next-intl'
 
@@ -11,7 +11,7 @@ export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }
   const { isPending, isError, error, data, isFetching, isPlaceholderData } =
     useQuery({
       queryKey: ['mails', page],
-      queryFn: () => getAuthorizedEmails({ pageParam: page * 5 }),
+      queryFn: () => getAuthorizedEmailsPagination({ pageParam: page * 5 }),
       placeholderData: keepPreviousData,
       staleTime: 0,
       refetchOnWindowFocus: false,

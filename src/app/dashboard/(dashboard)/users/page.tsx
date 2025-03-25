@@ -40,7 +40,7 @@ const Page = async (
     <Title type='h3' translationText='addEmailAuthorized' translationTheme='Dashboard' className='text-3xlfont-semibold mb-6' />
     <FormAddEmailAuthrizedEmail hasPermission={hasPermission ?? false}/>
       <Title type='h3' translationText='emailAuthorized' translationTheme='Dashboard' className='text-3xlfont-semibold mb-6' />
-      <UserTableAuthrized hasPermission={hasPermission}  />
+      <UserTableAuthrized hasPermission={hasPermission} />
       </div>
   </div>
   )
