@@ -9,24 +9,6 @@ const SearchBar  = (props: { value?: string }) => {
   const [value, ] = useState(props.value);
   const [isPending,] = useTransition();
 
-  // useEffect(() => {
-  //   const params = new URLSearchParams(window.location.search);
-    
-  //   if (value === undefined) {
-  //     return;
-  //   } else if (value) {
-  //     params.set('q', value);
-  //   } else {
-  //     params.delete('q');
-  //   }
-
-  //   startTransition(() => {
-  //     // All navigations are transitions automatically
-  //     // But wrapping this allow us to observe the pending state
-  //     router.replace(`/movies/search?${params.toString()}`);
-  //   });
-  // }, [router, value]);
-
   return (
     <div className="relative">
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-gray-500" />
