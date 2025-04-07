@@ -9,7 +9,6 @@ export default function Error({
 }) {
   const [errorMessage, setErrorMessage] = useState('');
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error(error);
     setErrorMessage(error.message);
   }, [error]);

@@ -58,7 +58,7 @@ function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, in
           </TableCell>
           <TableCell> 
             {hasPermissionToDelete && 
-            <Button variant={'destructive'} className='font-bold' formAction={onClickDeleteMovie} >
+            <Button variant="destructive" className='font-bold' formAction={onClickDeleteMovie} >
                Supprimer
             </Button>
            }
