@@ -39,6 +39,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.2
         version: 1.1.2(react@19.0.0)(types-react@19.0.0-rc.1)
+      '@tailwindcss/oxide-darwin-arm64':
+        specifier: ^4.1.3
+        version: 4.1.3
       '@tailwindcss/postcss':
         specifier: ^4.0.15
         version: 4.0.15
@@ -157,8 +160,11 @@ importers:
         specifier: ^2.16.0
         version: 2.16.0(react@19.0.0)
       react-toastify:
-        specifier: ^10.0.6
-        version: 10.0.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^11.0.5
+        version: 11.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react@latest:
+        specifier: link:@vercel/analytics/react@latest
+        version: link:@vercel/analytics/react@latest
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -1300,6 +1306,12 @@ packages:
 
   '@tailwindcss/oxide-darwin-arm64@4.0.15':
     resolution: {integrity: sha512-ObVAnEpLepMhV9VoO0JSit66jiN5C4YCqW3TflsE9boo2Z7FIjV80RFbgeL2opBhtxbaNEDa6D0/hq/EP03kgQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@tailwindcss/oxide-darwin-arm64@4.1.3':
+    resolution: {integrity: sha512-mqkf2tLR5VCrjBvuRDwzKNShRu99gCAVMkVsaEOFvv6cCjlEKXRecPu9DEnxp6STk5z+Vlbh1M5zY3nQCXMXhw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -3843,11 +3855,11 @@ packages:
       '@types/react':
         optional: true
 
-  react-toastify@10.0.6:
-    resolution: {integrity: sha512-yYjp+omCDf9lhZcrZHKbSq7YMuK0zcYkDFTzfRFgTXkTFHZ1ToxwAonzA4JI5CxA91JpjFLmwEsZEgfYfOqI1A==}
+  react-toastify@11.0.5:
+    resolution: {integrity: sha512-EpqHBGvnSTtHYhCPLxML05NLY2ZX0JURbAdNYa6BUkk+amz4wbKBQvoKQAB0ardvSarUBuY4Q4s1sluAzZwkmA==}
     peerDependencies:
-      react: '>=18'
-      react-dom: '>=18'
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
 
   react@19.0.0:
     resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
@@ -3984,7 +3996,6 @@ packages:
 
   shaka-player@4.14.2:
     resolution: {integrity: sha512-PNhhTIDOmsif/Ghc63hJs6Z3hkSOxp0tF8RPTcK9g1B7bRBrAq3DLJ1g6X+2W6zUGpCAL5Nay/hrcyMdTwZpQw==}
-    engines: {node: '>=18'}
 
   sharp@0.33.5:
     resolution: {integrity: sha512-haPVm1EkS9pgvHrQ/F3Xy+hgcuMV0Wm9vfIBSiwZ05k+xgb0PkBQpGsAA/oWdDobNaZTH5ppvHtzCFbnSEwHVw==}
@@ -5554,6 +5565,8 @@ snapshots:
 
   '@tailwindcss/oxide-darwin-arm64@4.0.15':
     optional: true
+
+  '@tailwindcss/oxide-darwin-arm64@4.1.3': {}
 
   '@tailwindcss/oxide-darwin-x64@4.0.15':
     optional: true
@@ -8363,7 +8376,7 @@ snapshots:
     optionalDependencies:
       '@types/react': types-react@19.0.0-rc.1
 
-  react-toastify@10.0.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  react-toastify@11.0.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       clsx: 2.1.1
       react: 19.0.0

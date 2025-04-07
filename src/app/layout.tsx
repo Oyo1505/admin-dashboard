@@ -1,15 +1,14 @@
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import { auth } from '@/lib/auth';
-import { Analytics } from '@vercel/analytics/react';
-import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { SessionProvider } from "next-auth/react";
 import LayoutLogic from '@/domains/layout/components/layout-logic';
 import MenuHeader from '@/domains/layout/components/menu-header/menu-header';
 import { ReactElement, Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
 import './globals.css';
+import { getLocale, getMessages } from 'next-intl/server';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
   title: 'Nūberu Bāgu',

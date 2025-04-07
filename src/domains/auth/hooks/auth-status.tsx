@@ -2,45 +2,47 @@
 import { URL_DASHBOARD_MOVIE, URL_HOME, URL_LEGAL_MENTIONS, URL_PRIVACY } from "@/shared/route"
 import { useSession } from "next-auth/react"
 import { redirect, usePathname } from "next/navigation"
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import useUserStore from "store/user/user-store"
 
 const useAuthStatus = async () => {
-  const {user, fetchUser, connected, setUser, logout} = useUserStore((state) => state);
+  const {user, fetchUser, setUser, logout} = useUserStore((state) => state);
   const pathname = usePathname();
-  const {  data: session,  } = useSession();
-  const fetchSession = async () => {
+  const { data: session } = useSession();
+  
+  const fetchSession = useCallback(async () => {
     try {
-      session && session?.user?.email &&  (await fetchUser(session?.user?.email));  
+      if (session?.user?.email) {
+        await fetchUser(session.user.email);
+      }
     } catch (error) {
-      console.log(error)
+      console.error('Erreur lors de la récupération de l\'utilisateur:', error);
     }
-  };
-  const logoutSession = async () => {
+  }, [session, fetchUser]);
+
+  const logoutSession = useCallback(async () => {
     try {
-      setUser({}, false)
-      await logout()
+      await logout();
+      setUser({}, false);
     } catch (error) {
-      console.log(error)
+      console.error('Erreur lors de la déconnexion:', error);
+      setUser({}, false);
     }
-  };
+  }, [logout, setUser]);
   
   useEffect(() => {
-    // Gestion de la session
     if (session && Object.keys(user).length === 0) {
       fetchSession();
     }
   }, [session, user, fetchSession]);
 
   useEffect(() => {
-    // Gestion des redirections
     if (session && pathname === '/') {
       redirect(URL_HOME);
     }
   }, [session, pathname]);
 
   useEffect(() => {
-    // Gestion des autorisations
     if (user && 'role' in user && user.role !== 'ADMIN' && 
         (pathname === URL_DASHBOARD_MOVIE || 
          pathname.includes('edit-movie') || 
@@ -50,14 +52,13 @@ const useAuthStatus = async () => {
   }, [user, pathname]);
 
   useEffect(() => {
-    // Gestion de la déconnexion
     if (!session && 
         pathname !== '/' && 
         pathname !== URL_LEGAL_MENTIONS && 
         pathname !== URL_PRIVACY) {
       logoutSession();
     }
-  }, [session, pathname]);
+  }, [session, pathname, logoutSession]);
 
   return;
 }
