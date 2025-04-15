@@ -2,6 +2,7 @@
 
 
 import { getUserConnected } from '@/domains/auth/action/action';
+import { getFavoriteMovies } from '@/domains/dashboard/action';
 import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
 import { signIn, signOut } from 'next-auth/react';
@@ -36,7 +37,8 @@ const useUserStore = create<UserStore>()(
       setUser: (user: User, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
         const { user } = await getUserConnected(email);
-        set({ user: user, connected: true });
+        const {movies} = user?.id ? await getFavoriteMovies(user?.id) : { movies: [] };
+        set({ user: { ...user, favoriteMovies: movies }, connected: true });
       },
       login: async ()=> {
         await signIn('google', { callbackUrl: URL_HOME });

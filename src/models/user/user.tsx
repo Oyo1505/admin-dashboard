@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
+
 export interface  User  {
   id?: string;
   name?: string | null;
@@ -6,6 +8,7 @@ export interface  User  {
   emailVerified?: Date | null;
   image?: string | null;
   role?: UserRole;
+  favoriteMovies?: IFavoriteMovieResponse[];
 }
 
 export enum UserRole {

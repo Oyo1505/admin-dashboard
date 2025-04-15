@@ -11,6 +11,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/domains/ui/components/button/button';
 import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
 import imageDefault from '../../../../assets/image/default-placeholder.png';
+import useUserStore from 'store/user/user-store';
+import { Favorite } from '@/domains/ui/components/icons/icons';
 
 interface SearchParams {
   subtitles?: string;
@@ -22,6 +24,7 @@ interface SearchParams {
 
 const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, offset?:number}) => {
   const { filters } = useFiltersMovieStore();
+  const {user} = useUserStore();
   const { moviesFromStore, setMoviesStore } = useMovieFormStore();
   const locale = useLocale();
   const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: searchParams && Object.keys(searchParams).length > 0 ? qs.stringify({ 
@@ -66,15 +69,21 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
   };
 
   if (status === 'pending' && isFetching) return <LoadingSpinner className='flex justify-center h-screen' />
-
+  const isFavorite = (id: string) => {
+    console.log(user?.favoriteMovies?.some((favoriteMovie) => favoriteMovie.movieId === id))
+    return user?.favoriteMovies?.some((favoriteMovie) => favoriteMovie.movieId === id);
+  }
   return (  
     <>
   <div className='grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6'>
     {moviesFromStore && moviesFromStore.length > 0 ? moviesFromStore.map((movie, index) => 
       movie?.title && (
-        <Link prefetch className='w-52 group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5'
+        <Link prefetch className='w-52 relative group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5'
           key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
           href={`${URL_MOVIE_ID(movie?.id)}`}>
+          {isFavorite(movie?.id) && <div className='absolute z-1 top-1 right-1'>
+            <Favorite fill  />
+          </div>}
           <div className='flex relative w-full rounded-lg flex-col justify-between h-full'>
             <div className='w-full h-72 rounded-lg relative overflow-hidden'>
               <Image
