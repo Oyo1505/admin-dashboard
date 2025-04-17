@@ -3,7 +3,7 @@ import DirectorSectionForm from "@/domains/dashboard/components/director-section
 import { auth } from "@/lib/auth";
 import { getUserConnected } from "@/domains/auth/action/action";
 import checkPermissions from "@/shared/utils/permissions/checkPermissons";
-export const revalidate = 60;
+
 
 export default async function Page() {
   const session = await auth()
