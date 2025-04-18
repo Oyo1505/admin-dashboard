@@ -9,14 +9,14 @@ import { useQuery } from "@tanstack/react-query";
 import { ChatBotLogo } from "@/domains/ui/components/icons/icons";
 import { useTranslations } from "next-intl";
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
-
+import { usePathname } from "next/navigation";
 const ChatBot = () => {
     const t = useTranslations("ChatBot")
     const [isChatBotEnabled, setIsChatBotEnabled ] = useState(false);
     const [isAnimationComplete, setIsAnimationComplete] = useState(false);
     const [messages, setMessages] = useState<{role: string, message: string}[]>([{role: 'assistant', message: t("placeholder")}])
     const locale = useLocale();
-
+    const pathname = usePathname();
     const messagesEndRef = useRef<HTMLDivElement>(null);
    
     const { register, handleSubmit, reset, watch  } = useForm({
@@ -62,7 +62,8 @@ const ChatBot = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-
+    if(pathname === "/") return null
+    
     return (
         <div onClick={() => !isChatBotEnabled && setIsChatBotEnabled(true)} onTransitionEnd={handleTransitionEnd} className={clsx("fixed bottom-10 z-20 right-10 w-20 h-20 text-black  bg-white shadow-lg transition-all duration-300 ease-in-out", isChatBotEnabled  ? "rounded-lg h-96 w-90" : " rounded-full w-20 h-20 hover:cursor-pointer")}>
           {isChatBotEnabled && isAnimationComplete ? (
