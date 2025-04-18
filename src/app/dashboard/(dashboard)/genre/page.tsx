@@ -7,7 +7,6 @@ import Title from '@/domains/ui/components/title/title';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import React from 'react'
 import { auth } from '@/lib/auth';
-export const revalidate = 60;
 
 const getData = async () => {
   const { genres } = await getAllGenres();

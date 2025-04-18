@@ -1,4 +1,3 @@
-export const revalidate = 60;
 import React from 'react'
 import { auth } from '@/lib/auth';
 import { getFavoriteMovies } from '@/domains/dashboard/action';
