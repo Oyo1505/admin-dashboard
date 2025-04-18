@@ -78,7 +78,7 @@ const ChatBot = () => {
               <div ref={messagesEndRef} />
             </div>
             <div className="w-full">
-              <form  onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center gap-2">
+              <form  onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center gap-2 flex-wrap">
                 <Input placeholder={ error?.message ? error?.message : t("placeholderMessage")} className="w-full" {...register("message", {required: true})} />
                 <button type="submit" className="w-10 h-10">{t("send")}</button>
               </form>
