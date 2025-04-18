@@ -146,5 +146,12 @@
     "subtitlesJP": "Japonais",
     "subtitlesEN": "Anglais",
     "genre": "Genre"
+  },
+  "ChatBot": {
+    "title": "ChatBot",
+    "placeholder": "Salut je suis CineSensei le chatbot du site, comment puis-je t'aider a te conseiller des films ?",
+    "send": "Envoyer",
+    "close": "Fermer",
+    "placeholderMessage": "Votre message"
   }
 }

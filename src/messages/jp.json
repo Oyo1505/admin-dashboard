@@ -144,5 +144,12 @@
     "subtitlesJP": "日本語",
     "subtitlesEN": "英語",
     "genre": "ジャンル"
+  },
+  "ChatBot": {
+    "title": "チャットボット",
+    "placeholder": "こんにちは、私はCineSenseiです。映画について質問してください。",
+    "send": "送信",
+    "close": "閉じる",
+    "placeholderMessage": "あなたのメッセージ"
   }
 }
