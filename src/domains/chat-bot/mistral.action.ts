@@ -86,18 +86,16 @@ const threadChatBot = async (message: string, locale: string): Promise<{answer: 
             model: "mistral-large-latest",
             temperature: 0.2,
             messages: [
-                {role : 'system', content: `Tu es un assistant qui répond à des questions sur les films a conseiller sur la liste donnée et ne fait que cela, ne conseille pas des films en dehors de la liste. voir la liste des films: ${JSON.stringify(response.movies)}
-                ${locale === 'fr' ? `Tu reponds en français` : locale === 'en' ? `Tu reponds en anglais` : locale === 'jp' && `Tu reponds en japonais`} OBLIGATOIREMENT.`
-                },
-                {role: 'user', content: message}
+                {role : 'system', content: `Tu es un assistant qui répond à des questions sur les films a conseiller sur la liste donnée et ne fait que cela, ne conseille pas des films en dehors de la liste.${locale === 'fr' ? `Tu reponds en français` : locale === 'en' ? `Tu reponds en anglais` : locale === 'jp' && `Tu reponds en japonais`} OBLIGATOIREMENT.`},
+                {role: 'assistant', content: `Voici la liste des films: ${JSON.stringify(response.movies)}`},
+                {role: 'user', content: message},
             ],
             responseFormat: z.object({
                 answer: z.string().describe(`donne des informations sur le ou les films demandés, n'affiche pas l'id dans le texte de description, en donneant le lien vers le film si c'est possible qui se compose comme ceci: ${process.env.NEXTAUTH_URL}/movies/id. Respecet le nombre de films demandés. Si plusieurs films sont donnés, fais une liste à puce.`)
             }).describe(`en format html et le ou les liens vers le ou les films sont des liens html de couleur bleue. Si plusieurs films sont donnés, fais une liste à puce. ${locale === 'fr' ? `Tu reponds en français` : locale === 'en' ? `Tu reponds en anglais` : locale === 'jp' && `Tu reponds en japonais`} OBLIGATOIREMENT.
                 Ne propose pas de films qui n'ont pas de rapport avec le message de l'utilisateur. Respecet le nombre de films demandés. Si plusieurs films sont demandés, donne les informations pour chaque film.
                 `)
-            });
-       
+        })
         const answer = thread?.choices?.[0]?.message?.content as string;
         const parsedAnswer = JSON.parse(answer);
         return { 
