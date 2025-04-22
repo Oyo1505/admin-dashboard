@@ -31,7 +31,6 @@ const ChatBot = () => {
       enabled: false,
       queryFn: async () => {
         const {answer, status} = await threadChatBot(message, locale)
-        console.log(answer, 'answer')
         setMessages(prev => [...prev, {role: 'assistant', message: answer}])
         return {answer, status}
       }
@@ -64,7 +63,7 @@ const ChatBot = () => {
     }, [messages]);
 
     if(pathname === "/") return null
-    console.log(isLoading, 'isLoading')
+
     return (
         <div onClick={() => !isChatBotEnabled && setIsChatBotEnabled(true)} onTransitionEnd={handleTransitionEnd} className={clsx("fixed bottom-10 z-20 right-10 w-20 h-20 text-black hidden md:block  bg-white shadow-lg transition-all duration-300 ease-in-out", isChatBotEnabled  ? "rounded-lg h-96 w-90" : " rounded-full w-20 h-20 hover:cursor-pointer")}>
           {isChatBotEnabled && isAnimationComplete ? (
@@ -82,7 +81,7 @@ const ChatBot = () => {
             <div className="w-full">
               <form  onSubmit={handleSubmit(onSubmit)} className="flex items-center justify-center gap-2 flex-wrap">
                 <Input placeholder={ error?.message ? error?.message : t("placeholderMessage")} className="w-full" {...register("message", {required: true})} />
-                <button type="submit" disabled={isLoading} className="w-10 h-10 hover:cursor-pointer disabled:opacity-50">{t("send")}</button>
+                <button type="submit" disabled={isLoading} className={clsx("w-10 h-10 hover:cursor-pointer disabled:opacity-50", isLoading ? "hover:cursor-wait" : "hover:cursor-pointer")}>{t("send")}</button>
               </form>
             </div>
            </div>
