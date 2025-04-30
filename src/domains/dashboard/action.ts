@@ -60,11 +60,6 @@ export const deleteUserById = async ({id, user, token}:{id : string, user: User,
         message: 'Token is required'
       };
     }
-   // console.log(token)
-  //  const decodedToken = jwt.verify(token.idToken, process.env.JWT_SECRET as string, { 
-  //   algorithms: ['RS256'] // Change this to match the algorithm used when signing your token
-  // }) as { role: string };
-  //   console.log(decodedToken)
     if (user.role !== 'ADMIN') {
       return {
         status: 403,
