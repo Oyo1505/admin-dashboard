@@ -63,3 +63,6 @@ public/_next-video
 .env*.local
 
 .nvmrc
+
+# prisma
+prisma/src/generated/client
