@@ -1,6 +1,8 @@
 export interface IMistralService {
   chat: {
+    //ts-ignore
     complete: (params: MistralCompleteParams) => Promise<MistralResponse>;
+    //ts-ignore
     parse: (params: MistralParseParams) => Promise<MistralResponse>;
   };
 }

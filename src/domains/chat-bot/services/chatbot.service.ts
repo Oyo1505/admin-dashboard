@@ -8,8 +8,10 @@ const MILLISECONDS_DELAY = 1000;
 
 export class ChatbotService {
   constructor(
+    /* eslint-disable no-unused-vars */
     private mistralService: IMistralService,
     private movieService: IMovieService
+    /* eslint-enable no-unused-vars */
   ) {}
 
   private async functionCallMovies(message: string) {
