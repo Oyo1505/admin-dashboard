@@ -261,12 +261,11 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiNmYzYzVlOTUtMThmYi00NTMwLWFmY2UtNmZkYjlmNDU5YzZkIiwidGVuYW50X2lkIjoiMWNmMGY5OTBmNmUwODdlOGVhYTZkYzMzY2M3Y2QyODZiYWU0NDg2NTU1NzEzNjg1NTRiM2Y1NjE2ODkzYTQ3OCIsImludGVybmFsX3NlY3JldCI6IjA1YmVmOGZkLThmMDQtNDgzOS05Mzg3LTczMjU5OTVkMmE1NyJ9.22NleIt2D7PiMwUK7r_RxpV8DKJ-ewE3N6bFabK1IZE"
       }
     }
   },
