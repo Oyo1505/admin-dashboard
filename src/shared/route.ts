@@ -19,3 +19,4 @@ export const URL_DASHBOARD_MOVIE_EDIT = (id:string) => `${URL_DASHBOARD}/movie/e
 export const URL_USERS = `${URL_DASHBOARD}/users`
 export const URL_DIRECTOR_SECTION = `${URL_DASHBOARD}/director`
 export const URL_GENRE_SECTION = `${URL_DASHBOARD}/genre`
+export const URL_SUGGESTION = `${URL_DASHBOARD}/suggestion`

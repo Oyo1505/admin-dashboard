@@ -66,7 +66,8 @@
     "movies":"Movies",
     "genre":"Genre",
     "favorite":"Favorite",
-    "settings":"Settings"
+    "settings":"Settings",
+    "suggestion":"Suggestion"
   },
   "AddMovie": {
     "title": "Add Movie",

@@ -2,7 +2,8 @@ import React from 'react';
 
 interface SelectInputProps {
   optionsList: Array<{ value: string; label: Record<string, string> }>;
-  formData: Record<string, any>;
+  formData?: Record<string, any>;
+  defaultValue?: string;
   formDataKey: string;
   locale: string;
   // eslint-disable-next-line no-unused-vars
@@ -13,6 +14,7 @@ interface SelectInputProps {
 const SelectInput: React.FC<SelectInputProps> = ({
   optionsList,
   formData,
+  defaultValue,
   formDataKey,
   locale,
   onChange,
@@ -21,7 +23,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
   return (
     <select 
       onChange={onChange} 
-      defaultValue={formData?.[formDataKey]} 
+      defaultValue={defaultValue || formData?.[formDataKey]} 
       className={className}
     >
       <option value=""> </option>

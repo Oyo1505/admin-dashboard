@@ -70,7 +70,7 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
 
   if (status === 'pending' && isFetching) return <LoadingSpinner className='flex justify-center h-screen' />
   const isFavorite = (id: string) => {
-    console.log(user?.favoriteMovies?.some((favoriteMovie) => favoriteMovie.movieId === id))
+
     return user?.favoriteMovies?.some((favoriteMovie) => favoriteMovie.movieId === id);
   }
   return (  
