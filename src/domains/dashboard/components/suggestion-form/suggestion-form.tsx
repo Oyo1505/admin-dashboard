@@ -5,30 +5,53 @@ import { Textarea } from '@/domains/ui/components/textarea/textarea'
 import { Button } from '@/domains/ui/components/button/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { suggestionSchema } from '@/shared/schema/dashboardShema'
+import { sendEmail } from '../../action'
+import { toast } from 'react-toastify'
+import { useSession } from 'next-auth/react'
 
-const topicOptions = [
+type Topic = {  
+  value: string
+  label: {
+    en: string
+    fr: string
+    jp: string
+  }
+}
+
+const topicOptions: Topic[] = [
   { value: '1', label: { en: 'I have a problem', fr: 'J\'ai un problème', jp: '問題があります' } },
   { value: '2', label: { en: 'I have a suggestion', fr: 'J\'ai une suggestion', jp: '提案があります' } },
-]
+] 
 
 const SuggestionForm = () => {
   const locale = useLocale()
-  
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+  const { data: session } = useSession();
+
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm({
     defaultValues: {
       topic: '',
       message: '',
+      emailUser: session?.user?.email ?? '',
     },
     resolver: zodResolver(suggestionSchema),
   })
-  const onSubmit = (data: any) => {
-    console.log(data)
+
+  const onSubmit = async (data: any) => {
+  // @ts-ignore:next-line
+  const topic = topicOptions.find(option => option.value === data.topic)?.label[locale]
+  
+   const result = await sendEmail({message: data.message, topic: topic, emailUser: session?.user?.email ?? ''})
+   if(result.status === 200){
+    toast.success('Email sent successfully')
+   }else{
+    toast.error('Email not sent')
+   }
    
   }
   const handleTopicChange = (e: any) => {
     setValue('topic', e.target.value)
   }
-
+console.log(isSubmitting)
   return <>
 
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-8'>
@@ -59,7 +82,7 @@ const SuggestionForm = () => {
         />
         {errors.message && <p className='text-red-500'>{errors.message.message}</p>}
       </div>
-      <Button type='submit' className='bg-white text-black rounded-md p-2 md:w-1/2'>
+      <Button type='submit' disabled={isSubmitting} className='bg-white text-black rounded-md p-2 md:w-1/2'>
         Submit
       </Button>
     </form>

@@ -55,7 +55,8 @@
     "addEmailAuthorized": "Email 承認済みを追加",
     "nextPage": "次のページ",
     "previousPage": "前のページ",
-    "loading": "読み込み中..."
+    "loading": "読み込み中...",
+    "suggestion":"提案"
   },
   "DashboardNav": {
     "dashboard":"ダッシュボード",

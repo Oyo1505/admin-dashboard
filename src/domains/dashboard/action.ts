@@ -4,9 +4,9 @@ import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
 import { User } from "@/models/user/user";
-import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS, URL_HOME } from "@/shared/route";
+import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS, URL_HOME, URL_SUGGESTION } from "@/shared/route";
 import { revalidatePath } from "next/cache";
-
+import nodemailer from 'nodemailer'
 
 export const getUsersWithPageParam = async (search:string, pageParam:number):Promise<{users: User[], newOffset: number | null, status: number}>  =>{
 
@@ -449,5 +449,34 @@ export const getDirectorMovies = async ():Promise<{directorMovies: IMovie[] | nu
     return {
       status : 500
     }
+  }
+} 
+
+
+export const sendEmail = async ({message, topic, emailUser}:{message: string, topic: string, emailUser: string}): Promise<{status: number}> => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: process.env.SMTP_SERVICE,
+      auth: {
+        user: process.env.EMAIL_GMAIL,
+        pass: process.env.SMTP_PASS
+      }
+    })
+
+    const mailOptions = {
+      from: emailUser,
+      to: process.env.EMAIL_GMAIL,
+      subject: topic,
+      text: `
+      Message: ${message}
+      Email: ${emailUser}
+      `
+    }
+    const result = await transporter.sendMail(mailOptions)
+    revalidatePath(URL_SUGGESTION)
+    return { status: result.accepted.length > 0 ? 200 : 500 }
+  } catch (error) {
+    console.log(error)
+    return { suggestion: [], status: 500 }
   }
 } 

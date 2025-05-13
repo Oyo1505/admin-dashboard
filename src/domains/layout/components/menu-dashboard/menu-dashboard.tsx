@@ -1,7 +1,7 @@
 'use client'
 import { NavItem } from '@/domains/layout/components/menu-dashboard-nav-item/menu-dashboard-nav-item'
 import { AddIncon, Favorite, Home, SettingsIcon, UsersIcon } from '@/domains/ui/components/icons/icons'
-import { URL_DASHBOARD, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_DASHBOARD_MOVIE,URL_GENRE_SECTION, URL_SETTINGS, URL_USERS } from '@/shared/route'
+import { URL_DASHBOARD, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_DASHBOARD_MOVIE,URL_GENRE_SECTION, URL_SETTINGS, URL_USERS, URL_SUGGESTION } from '@/shared/route'
 import checkPermissions from '@/shared/utils/permissions/checkPermissons'
 import { useTranslations } from 'next-intl'
 import React from 'react'
@@ -18,6 +18,10 @@ const MenuDashboard = () => {
             <Home />
               {t('dashboard')}
             </NavItem>
+            <NavItem href={URL_SUGGESTION}>
+              <AddIncon />
+                   {t('suggestion')}
+              </NavItem>
             {user && hasPermission &&<>
                <NavItem href={URL_USERS}>
                   <UsersIcon className="h-4 w-4" />
