@@ -4,11 +4,10 @@ import Container from "@/domains/ui/components/container/container";
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { Suspense } from "react";
+import { URL_BASE } from "@/shared/route";
 
 export const metadata = {
   title: 'Dashboard',
-  description:
-    'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, and Prettier.'
 };
 
 export default async function Layout({
@@ -17,7 +16,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) { 
   const session = await auth()
-  if(!session?.user) return redirect('/')
+  if(!session?.user) return redirect(URL_BASE)
   return (
     <Container className="pt-18" marginSide={false}>
       <Suspense fallback={<LoadingSpinner />}>

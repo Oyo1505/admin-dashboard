@@ -15,6 +15,7 @@ import MoviesHomeThemeSkeleton from '@/domains/skeleton/components/movies-home-t
 import { headers } from 'next/headers'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
 import { Locale } from '@/config'
+
 export const revalidate = 60; 
 
 const lobster = Lobster({
