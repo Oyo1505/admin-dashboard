@@ -4,6 +4,7 @@ import { AddIncon, Favorite, Home, SettingsIcon, UsersIcon } from '@/domains/ui/
 import { URL_DASHBOARD, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_DASHBOARD_MOVIE,URL_GENRE_SECTION, URL_SETTINGS, URL_USERS, URL_SUGGESTION } from '@/shared/route'
 import checkPermissions from '@/shared/utils/permissions/checkPermissons'
 import { useTranslations } from 'next-intl'
+import { useSelectedLayoutSegment } from 'next/navigation'
 import React from 'react'
 import useUserStore from 'store/user/user-store'
 
