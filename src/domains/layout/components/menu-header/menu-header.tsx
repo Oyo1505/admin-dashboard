@@ -2,20 +2,18 @@ import { User } from '@/domains/layout/components/menu-user-items/menu-user-item
 import Container from '@/domains/ui/components/container/container';
 import LocaleSwitcher from '@/domains/ui/components/locale-switcher/locale-switcher';
 import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
-import Link from 'next/link'
 import React from 'react'
 import MenuMobile from '../menu-mobile/menu-mobile';
 import { headers } from 'next/headers';
-import { getTranslations } from 'next-intl/server';
 import { Session } from 'next-auth';
+import MenuHeaderItem from '../menu-header-item/menu-header-item';
 
 const MenuHeader = async ({session}: {session: Session | null}) => {
-  const t = await getTranslations('Menu');
   const userAgent = (await headers()).get('user-agent');
   const isMobileView = userAgent!.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
   );
- 
+
   return (
     
     isMobileView ? <MenuMobile session={session as Session | null}/> :
@@ -23,9 +21,9 @@ const MenuHeader = async ({session}: {session: Session | null}) => {
     <Container className='flex flex-row items-center w-full justify-between gap-5'>
       <div className='flex items-center justify-start gap-5 '>
         {session && <>
-        <Link className='hover:text-red-600 text-primary transition-all duration-300' prefetch href={URL_HOME}>{t('home')}</Link>
-        <Link className='hover:text-red-600 text-primary transition-all duration-300' prefetch href={URL_MOVIES}>{t('movies')}</Link>
-        <Link className='hover:text-red-600 text-primary transition-all duration-300' prefetch href={URL_DASHBOARD}>{t('dashboard')}</Link> 
+        <MenuHeaderItem pathname={URL_HOME} translation='home' />
+        <MenuHeaderItem pathname={URL_MOVIES} translation='movies' />
+        <MenuHeaderItem pathname={URL_DASHBOARD} translation='dashboard' />
         </>}
       </div>
       <div className='flex items-center justify-end gap-5'>

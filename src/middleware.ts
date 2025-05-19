@@ -29,11 +29,16 @@ export default auth(async function middleware(req: NextRequest) {
     cookieName: process.env.NEXTAUTH_ENV === 'production' ? '__Secure-authjs.session-token' : 'authjs.session-token',
     secureCookie: true,
   });
-
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set('x-url', req.url);
   if (!session) {
     return NextResponse.redirect(new URL("/", req.url));
   } 
-  return NextResponse.next();
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 });
 
 export const config = {
