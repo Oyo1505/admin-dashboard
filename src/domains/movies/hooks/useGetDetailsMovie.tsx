@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query';
 
 const useGetDetailsMovie = ({id, language}: {id:string, language:string}) => {
 

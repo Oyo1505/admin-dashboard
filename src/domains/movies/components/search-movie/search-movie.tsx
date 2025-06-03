@@ -1,11 +1,11 @@
 'use client'
 import { SearchIcon } from '@/domains/ui/components/icons/icons';
 import { Input } from '@/domains/ui/components/input/input';
-import React, { useEffect, useRef } from 'react'
-import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
-import qs from 'qs';
-import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import qs from 'qs';
+import React, { useEffect, useRef } from 'react';
+import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
 import { fetchMovies } from '../../action';
 
 const SearchMovie = ( { search, offset }: { search: string, offset:number }) => {
@@ -21,7 +21,7 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
     enabled: false,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
-    queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({ 
+    queryFn:  () => fetchMovies({pageParam: offset, search: qs.stringify({
       subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles : undefined,
       language: filters?.language && filters?.language?.length > 0 ? filters?.language : undefined,
       decade: filters?.decade && filters?.decade> 0 ? filters?.decade : undefined,
@@ -29,14 +29,14 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
       q :  filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
     })}),
   });
-  
+
   useEffect(() => {
     if(hasBeenSearched){
       refetch()
       setHasBeenSearched(false)
     }
   }, [hasBeenSearched, setHasBeenSearched, refetch]);
-  
+
   useEffect(() => {
     if(data && data?.movies && status === 'success'){
       setMoviesStore(data?.movies)
@@ -65,7 +65,7 @@ const SearchMovie = ( { search, offset }: { search: string, offset:number }) => 
             onPressEnter()
           }
         }}
-      />   
+      />
     </div>
   );
 }

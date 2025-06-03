@@ -1,12 +1,12 @@
 import ButtonDeleteAccount from "@/domains/ui/components/button-delete-account/button-delete-account";
-import Title from "@/domains/ui/components/title/title";
-import whatsapp from '../../../../assets/image/WhatsAppButtonGreenSmall.svg'
-import line  from '../../../../assets/image/LINE_Brand_icon.png'
-import Image from "next/image";
 import { InstagramLogo } from "@/domains/ui/components/icons/icons";
+import Title from "@/domains/ui/components/title/title";
+import Image from "next/image";
+import line from '../../../../assets/image/LINE_Brand_icon.png';
+import whatsapp from '../../../../assets/image/WhatsAppButtonGreenSmall.svg';
 
 export default async function SettingsPage() {
- 
+
     return (
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
         <div className="flex items-center">
@@ -24,7 +24,7 @@ export default async function SettingsPage() {
                <InstagramLogo />
                  <span className='text-sm text-background font-bold'>Oyo1505</span>
             </button>
-             
+
             </a>
             <a aria-label="Chat on WhatsApp" href="https://wa.me/+33783067240" className="h-11 w-full sm:w-48"><Image  alt="Chat on WhatsApp" src={whatsapp} width="190" height="90" /></a>
             <a href="https://line.me/ti/p/Fhs7Qtfv-d" target="_blank">

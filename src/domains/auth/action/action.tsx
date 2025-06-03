@@ -42,15 +42,15 @@ export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:num
   }
 }
 
-export const getAuthorizedEmails = async (): Promise<{ 
-  status?: number | undefined, 
-  mails?: User[] | undefined, 
+export const getAuthorizedEmails = async (): Promise<{
+  status?: number | undefined,
+  mails?: User[] | undefined,
   prevCursor?: string | undefined,
   nextCursor?: string | undefined,
-  total?: number | undefined 
+  total?: number | undefined
 }> => {
   try {
-    
+
     const userauthorizedEmails = await prisma.authorizedEmail.findMany({
       orderBy: {
         email: 'asc'
@@ -62,8 +62,8 @@ export const getAuthorizedEmails = async (): Promise<{
     }
 
     return {
-      mails: userauthorizedEmails, 
-      status: 200, 
+      mails: userauthorizedEmails,
+      status: 200,
     }
   } catch (error) {
     console.log(error)
@@ -73,21 +73,21 @@ export const getAuthorizedEmails = async (): Promise<{
   }
 }
 
-export const getAuthorizedEmailsPagination = async ({ pageParam }: { pageParam?: number}): Promise<{ 
-  status?: number | undefined, 
-  mails?: User[] | undefined, 
+export const getAuthorizedEmailsPagination = async ({ pageParam }: { pageParam?: number}): Promise<{
+  status?: number | undefined,
+  mails?: User[] | undefined,
   prevCursor?: string | undefined,
   nextCursor?: string | undefined,
-  total?: number | undefined 
+  total?: number | undefined
 }> => {
   try {
-    
+
     const userauthorizedEmails = await prisma.authorizedEmail.findMany({
       orderBy: {
         email: 'asc'
       },
       skip: pageParam,
-      take: 5, 
+      take: 5,
     })
 
     if (!userauthorizedEmails) {
@@ -95,8 +95,8 @@ export const getAuthorizedEmailsPagination = async ({ pageParam }: { pageParam?:
     }
 
     return {
-      mails: userauthorizedEmails, 
-      status: 200, 
+      mails: userauthorizedEmails,
+      status: 200,
     }
   } catch (error) {
     console.log(error)
@@ -111,7 +111,7 @@ export const deleteEmailAuthorized = async (email:string): Promise<{ status?:num
     const emailDeleted = await prisma.authorizedEmail.delete({
       where:{email}
     })
-  
+
     if(!emailDeleted){
       return {status:400}
     }

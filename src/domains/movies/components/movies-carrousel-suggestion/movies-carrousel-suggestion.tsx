@@ -18,38 +18,38 @@ const MovieCarouselSuggestion = ({ movies, isMobileView }:{movies?: IMovie[], is
     tablet: {
       breakpoint: { max: 1024, min: 465 },
       items: 3,
-      slidesToSlide: 1 
+      slidesToSlide: 1
     },
     tabletHorizontal: {
       breakpoint: { max: 1400, min: 1025 },
       items: 2,
-      slidesToSlide: 1 
+      slidesToSlide: 1
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 2,
-      slidesToSlide: 1 
+      slidesToSlide: 1
     }
   };
-  
+
   return (
     movies && movies?.length > 0 ?
     <Carousel
-      ssr={true} 
+      ssr={true}
       containerClass="h-48 md:h-72 lg:h-96 w-full mt-5 z-0"
       autoPlay={false}
       itemClass="flex justify-center items-center"
       transitionDuration={500}
       draggable={isMobileView ? true : false}
-      infinite={true} 
-      responsive={responsive} 
+      infinite={true}
+      responsive={responsive}
       >
         {movies.map((movie, index) => (
           <MovieItemCarousel key={index} locale={locale} movie={movie} image={movie.image} id={movie.id} />
         ))}
       </Carousel>
       : null
-    
+
   )
 }
 

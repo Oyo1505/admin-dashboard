@@ -6,7 +6,7 @@ import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
 import { User } from "@/models/user/user";
 import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS, URL_HOME, URL_SUGGESTION } from "@/shared/route";
 import { revalidatePath } from "next/cache";
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
 
 export const getUsersWithPageParam = async (search:string, pageParam:number):Promise<{users: User[], newOffset: number | null, status: number}>  =>{
 
@@ -25,7 +25,7 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
     take:pageParam
    });
 
-      if(users){  
+      if(users){
         const newOffset = users.length >= 20 ? pageParam + 20 : null;
         return {
           users,
@@ -128,7 +128,7 @@ export const deleteUserByIdFromUser = async (id): Promise<{ status: number, mess
   }
 };
 export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: number}> => {
-  
+
   try {
    const movieInDb = await prisma.movie.findMany({
         include: {
@@ -137,7 +137,7 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
               genre: true,
             },
           },
-        },   
+        },
         orderBy: {
         createdAt: 'desc'
       }
@@ -149,10 +149,10 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
       status : 500
     }
   }
-} 
+}
 
 export const addMovieToDb = async (movie: IMovie, user:User): Promise<{ status: number; message: string }> => {
-  
+
   try {
     if(user.role !== 'ADMIN') return {
       status: 403,
@@ -190,13 +190,13 @@ export const addMovieToDb = async (movie: IMovie, user:User): Promise<{ status: 
               connect: { id: genreId },
             },
           })),
-        },        
+        },
         country: movie?.country,
         synopsis: movie?.synopsis,
         trailer: movie?.trailer,
       },
     });
-    
+
 
     revalidatePath(URL_DASHBOARD_MOVIE)
     return { status: 200, message: 'Film ajouté avec succès' };
@@ -276,7 +276,7 @@ export const editMovieToDb = async (movie: IMovie, user:User): Promise<{status: 
 }
 
 export const deleteMovieById =  async (id:string, user:User): Promise<{status: number}> => {
-  
+
   try {
     if(user.role !== 'ADMIN') return {
       status: 403,
@@ -297,11 +297,11 @@ export const deleteMovieById =  async (id:string, user:User): Promise<{status: n
       status : 500
     }
   }
-} 
+}
 
 
 export const publishedMovieById =  async (id:string): Promise<{publish: boolean, status: number}> => {
- 
+
   try {
    if(id){
     const findedMovie = await prisma.movie.findUnique({
@@ -326,9 +326,9 @@ export const publishedMovieById =  async (id:string): Promise<{publish: boolean,
     console.log(error)
     return { publish: false, status: 500 };
   }
-} 
+}
 
-export const getFavoriteMovies = async (id: string): Promise<{ movies: IFavoriteMovieResponse[], status: number }> => {  
+export const getFavoriteMovies = async (id: string): Promise<{ movies: IFavoriteMovieResponse[], status: number }> => {
   try {
     const movies = await prisma.userFavoriteMovies.findMany({
       relationLoadStrategy: 'join',
@@ -340,27 +340,27 @@ export const getFavoriteMovies = async (id: string): Promise<{ movies: IFavorite
       },
     });
     return { movies, status: 200 };
-  
+
   } catch (error) {
     console.log(error)
     return {
       status : 500
     }
   }
-} 
+}
 
 export const getDirectorFromSection =  async (): Promise<{directorMovies: IDirector | null, status: number}> => {
   try {
     const directorMovies = await prisma.directorSection.findFirst();
     return { directorMovies , status: 200 };
-  
+
   } catch (error) {
     console.log(error)
     return {
       status : 500
     }
   }
-} 
+}
 
 export const createDirectorFromSection =  async (formDirector:IDirector): Promise<{director: IDirector, status: number}> => {
   try{
@@ -379,10 +379,10 @@ export const createDirectorFromSection =  async (formDirector:IDirector): Promis
       status : 500
     }
   }
-} 
+}
 
 export const updateDirectorFromSection =  async (formDirector:IDirector): Promise<{director: IDirector, status: number}> => {
- 
+
   try
   {
     if(formDirector.id){
@@ -404,7 +404,7 @@ export const updateDirectorFromSection =  async (formDirector:IDirector): Promis
       status : 500
     }
   }
-} 
+}
 
 export const deleteDirectorFromSection =  async (id:string): Promise<{director: IDirector, status: number}> => {
 
@@ -423,14 +423,14 @@ export const deleteDirectorFromSection =  async (id:string): Promise<{director: 
       status : 500
     }
   }
-} 
+}
 
 export const getDirectorMovies = async ():Promise<{directorMovies: IMovie[] | null, director: string | null, imageBackdrop: string | null, status: number}> => {
-  
+
   try {
     const director  = await getDirectorFromSection()
     if(director && director?.directorMovies?.director){
-     
+
       const directorMovies = await prisma.movie.findMany({
         where:{
           publish: true,
@@ -450,7 +450,7 @@ export const getDirectorMovies = async ():Promise<{directorMovies: IMovie[] | nu
       status : 500
     }
   }
-} 
+}
 
 
 export const sendEmail = async ({message, topic, emailUser}:{message: string, topic: string, emailUser: string}): Promise<{status: number}> => {
@@ -479,4 +479,4 @@ export const sendEmail = async ({message, topic, emailUser}:{message: string, to
     console.log(error)
     return { suggestion: [], status: 500 }
   }
-} 
+}

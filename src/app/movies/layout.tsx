@@ -1,5 +1,5 @@
 import Container from '@/domains/ui/components/container/container';
-import React, { ReactElement, Suspense } from 'react'
+import { ReactElement, Suspense } from 'react';
 import Loading from './loading';
 
 const Layout =  ({

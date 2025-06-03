@@ -1,11 +1,11 @@
 'use client'
-import LocaleSwitcher from '@/domains/ui/components/locale-switcher/locale-switcher';
-import React, { useState } from 'react'
-import MenuMobileItem from '../menu-mobile-item/menu-mobile-item';
 import { User } from '@/domains/layout/components/menu-user-items/menu-user-items';
-import clsx from 'clsx';
 import { BurgerIcon, CrossIcon } from '@/domains/ui/components/icons/icons';
+import LocaleSwitcher from '@/domains/ui/components/locale-switcher/locale-switcher';
+import clsx from 'clsx';
 import { Session } from 'next-auth';
+import { useState } from 'react';
+import MenuMobileItem from '../menu-mobile-item/menu-mobile-item';
 
 const MenuMobile= ({session}: {session: Session | null}) => {
   const [isActive, setIsActive] = useState(false);
@@ -15,11 +15,11 @@ const MenuMobile= ({session}: {session: Session | null}) => {
         <section className="flex lg:hidden">
           <div
             className="space-y-2"
-            onClick={() => setIsActive(!isActive)} 
+            onClick={() => setIsActive(!isActive)}
           >
           <BurgerIcon />
           </div>
-          <div className={clsx(isActive ? "showMenuNav" : "hideMenuNav")}> 
+          <div className={clsx(isActive ? "showMenuNav" : "hideMenuNav")}>
             <div
               className="absolute top-0 right-0 px-8 py-8"
               onClick={() => setIsActive(!isActive)} >

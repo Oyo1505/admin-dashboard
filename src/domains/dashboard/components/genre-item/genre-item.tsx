@@ -2,7 +2,6 @@
 import { deleteGenre } from '@/domains/movies/action'
 import { IGenre } from '@/models/movie/movie'
 import { useLocale } from 'next-intl'
-import React from 'react'
 
 export const GenreItem = ({item}:{item:IGenre}) => {
   const { nameFR, nameEN, nameJP } = item

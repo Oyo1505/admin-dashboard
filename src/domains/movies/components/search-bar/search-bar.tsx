@@ -2,7 +2,7 @@
 import { SearchIcon, Spinner } from '@/domains/ui/components/icons/icons';
 
 import { Input } from '@/domains/ui/components/input/input';
-import React, { useRef, useState, useTransition } from 'react'
+import { useRef, useState, useTransition } from 'react';
 
 const SearchBar  = (props: { value?: string }) => {
   const inputRef = useRef<HTMLInputElement>(null);

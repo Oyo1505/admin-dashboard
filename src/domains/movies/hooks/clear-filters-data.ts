@@ -7,14 +7,14 @@ import { useFiltersMovieStore } from 'store/movie/movie-store'
 const useClearFiltersData = () => {
   const {filters, setFiltersData} = useFiltersMovieStore(state => state);
   const pathname = usePathname();
-  
+
   useEffect(() => {
     if(
-      pathname !== URL_MOVIES && 
+      pathname !== URL_MOVIES &&
       (filters?.decade && filters?.decade > 0 ||
-       filters?.q && filters?.q?.length > 0 || 
-       filters?.language && filters?.language?.length > 0 || 
-       filters?.subtitles && filters?.subtitles?.length > 0 || 
+       filters?.q && filters?.q?.length > 0 ||
+       filters?.language && filters?.language?.length > 0 ||
+       filters?.subtitles && filters?.subtitles?.length > 0 ||
        filters?.genre && filters?.genre?.length > 0)){
       if (Object.keys(filters).length > 0) {
         setFiltersData({subtitles: "", language: "", genre: "", q: "", decade:0});

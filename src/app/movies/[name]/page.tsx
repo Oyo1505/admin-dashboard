@@ -1,18 +1,18 @@
-import React, { cache, Suspense } from 'react'
-import Iframe from 'react-iframe'
+import { getFavoriteMovies } from '@/domains/dashboard/action'
 import { getAllMovies, getMovieDetail } from '@/domains/movies/action'
 import MovieHeader from '@/domains/movies/components/movie-header/movie-header'
+import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
+import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner'
 import Title from '@/domains/ui/components/title/title'
 import { auth } from '@/lib/auth'
-import { getFavoriteMovies } from '@/domains/dashboard/action'
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner'
-import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
-import { headers } from 'next/headers'
-import Loading from './loading'
-import { Lobster } from 'next/font/google'
-import clsx from 'clsx'
 import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube'
+import clsx from 'clsx'
+import { Lobster } from 'next/font/google'
+import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { cache, Suspense } from 'react'
+import Iframe from 'react-iframe'
+import Loading from './loading'
 
 //const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
 // const VideoPlayer = dynamic(() => import('@/domains/shared/video-player'), { ssr: false })
@@ -23,7 +23,7 @@ const lobster = Lobster({
   subsets: ['latin'],
 });
 
-export const revalidate = 60;  
+export const revalidate = 60;
 
 export const dynamicParams = true
 
@@ -33,7 +33,7 @@ export async function generateStaticParams() {
     name: movie.id,
   }))
 }
- 
+
 
 const getMovie = cache(async(name: string) => {
   const { movie, suggestedMovies } =  await getMovieDetail(name)
@@ -55,20 +55,20 @@ const Page = async ({
   const session = await auth();
 
   const favoriteMovives = !session?.user?.id ? null : await getFavoriteMovies(session.user.id);
- 
+
   const isFavorite = Boolean(favoriteMovives?.movies?.find((movieFromDb: { movieId: string }) => movieFromDb.movieId === movie?.id));
 
-  return (  
+  return (
   <div className='h-auto pt-6 flex flex-col justify-start items-start'>
   <Suspense fallback={<Loading />}>
       <div className='justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col '>
-      {movie && 
+      {movie &&
       <div className='lg:grow-0 w-full'>
-          {movie?.idGoogleDive && 
-          <Iframe 
-            url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`} 
-            className='w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]'   
-            width="auto" 
+          {movie?.idGoogleDive &&
+          <Iframe
+            url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`}
+            className='w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]'
+            width="auto"
             height="450px"
             ariaLabel="video player"
             />}
@@ -89,11 +89,11 @@ const Page = async ({
   </Suspense>
   <div className='w-full  mt-14 mb-10 flex gap-7 flex-col lg:flex-row'>
 
-    {movie && movie?.trailer && 
+    {movie && movie?.trailer &&
     <>
       <div className='h-96 w-full lg:w-1/2'>
         <Title translationTheme='MoviePage' className={clsx(lobster.className,'text-2xl md:text-3xl')} translationText='trailer' type='h2' />
-        <VideoPlayerYoutube movie={movie?.trailer} />  
+        <VideoPlayerYoutube movie={movie?.trailer} />
       </div>
     </>
     }

@@ -9,12 +9,12 @@ import {
   TableRow
 } from '@/domains/ui/components/table/table';
 import { User } from '@/models/user/user';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useOptimistic } from 'react';
 import useUserStore from 'store/user/user-store';
 import { deleteUserById } from '../../action';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
  const UsersTable = ({
   users,
@@ -75,12 +75,12 @@ function UserRow({ user }: { user: User }) {
   }
   const hasPermission = checkPermissions(userConnected, "can:delete", "user");
   return (
-     
+
     <TableRow>
       <TableCell className="font-medium">{user.name}</TableCell>
       <TableCell className="hidden md:table-cell">{user.email}</TableCell>
       <TableCell>{user.role ?? 'USER'}</TableCell>
-      {optimitiscUser !==  userConnected?.id && hasPermission && 
+      {optimitiscUser !==  userConnected?.id && hasPermission &&
             <TableCell>
             <Button
               className="w-full font-bold"
@@ -91,7 +91,7 @@ function UserRow({ user }: { user: User }) {
               Delete
             </Button>
           </TableCell>
-      
+
       }
 
     </TableRow>

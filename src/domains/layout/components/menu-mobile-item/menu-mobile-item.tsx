@@ -2,7 +2,7 @@ import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
 import { Session } from 'next-auth';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import React from 'react'
+import React from 'react';
 
 const MenuMobileItem = ({session, setIsActive, isActive}: {session: Session | null, setIsActive: React.Dispatch<React.SetStateAction<boolean>>, isActive: boolean}) => {
   const t = useTranslations('Menu');
@@ -23,7 +23,7 @@ const MenuMobileItem = ({session, setIsActive, isActive}: {session: Session | nu
     >
       {t('movies')}
     </Link>
-    <Link  onClick={() => setIsActive(!isActive)}  className='hover:text-red-600' href={URL_DASHBOARD}>{t('dashboard')}</Link> 
+    <Link  onClick={() => setIsActive(!isActive)}  className='hover:text-red-600' href={URL_DASHBOARD}>{t('dashboard')}</Link>
     </>
   )
 }

@@ -1,15 +1,15 @@
 'use client'
-import { useForm } from 'react-hook-form'
-import { useLocale } from 'next-intl'
-import { Textarea } from '@/domains/ui/components/textarea/textarea'
 import { Button } from '@/domains/ui/components/button/button'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { Textarea } from '@/domains/ui/components/textarea/textarea'
 import { suggestionSchema } from '@/shared/schema/dashboardShema'
-import { sendEmail } from '../../action'
-import { toast } from 'react-toastify'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
+import { useLocale } from 'next-intl'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { sendEmail } from '../../action'
 
-type Topic = {  
+type Topic = {
   value: string
   label: {
     en: string
@@ -21,7 +21,7 @@ type Topic = {
 const topicOptions: Topic[] = [
   { value: '1', label: { en: 'I have a problem', fr: 'J\'ai un problème', jp: '問題があります' } },
   { value: '2', label: { en: 'I have a suggestion', fr: 'J\'ai une suggestion', jp: '提案があります' } },
-] 
+]
 
 const SuggestionForm = () => {
   const locale = useLocale()
@@ -39,14 +39,14 @@ const SuggestionForm = () => {
   const onSubmit = async (data: any) => {
   // @ts-ignore:next-line
   const topic = topicOptions.find(option => option.value === data.topic)?.label[locale]
-  
+
    const result = await sendEmail({message: data.message, topic: topic, emailUser: session?.user?.email ?? ''})
    if(result.status === 200){
     toast.success('Email sent successfully')
    }else{
     toast.error('Email not sent')
    }
-   
+
   }
   const handleTopicChange = (e: any) => {
     setValue('topic', e.target.value)
@@ -76,7 +76,7 @@ console.log(isSubmitting)
         className='focus:outline-none h-20 md:h-48 md:w-1/2'
         {...register('message', {
           required: true,
-  
+
         })}
         placeholder='Message'
         />

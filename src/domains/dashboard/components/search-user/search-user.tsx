@@ -1,10 +1,10 @@
 'use client';
 
-import { Input } from '@/domains/ui/components/input/input';
 import { SearchIcon, Spinner } from '@/domains/ui/components/icons/icons';
-import { useRouter } from 'next/navigation';
-import { useTransition, useEffect, useRef, useState } from 'react';
+import { Input } from '@/domains/ui/components/input/input';
 import { URL_USERS } from '@/shared/route';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState, useTransition } from 'react';
 
  const  Search = (props: { value?: string }) => {
   const router = useRouter();
@@ -14,7 +14,7 @@ import { URL_USERS } from '@/shared/route';
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    
+
     if (value === undefined) {
       return;
     } else if (value) {

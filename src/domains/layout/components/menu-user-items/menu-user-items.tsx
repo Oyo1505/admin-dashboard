@@ -1,7 +1,7 @@
 'use client';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import ButtonLogout from '../../../ui/components/button-logout/button-logout';
-import { useSession } from 'next-auth/react';
 
 export function User({mobile=false}: {mobile: boolean}) {
   const {data: session} =  useSession();
@@ -18,7 +18,7 @@ export function User({mobile=false}: {mobile: boolean}) {
         width={32}
         alt={`${user?.name} avatar`}
       />}
- 
+
     </div>
   );
 }

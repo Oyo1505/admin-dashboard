@@ -7,7 +7,6 @@ import Title from '@/domains/ui/components/title/title'
 import { genreSchema, GenreSectionSchema } from '@/shared/schema/movieSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import React from 'react'
 import { useForm } from 'react-hook-form'
 
 const GenreForm = () => {

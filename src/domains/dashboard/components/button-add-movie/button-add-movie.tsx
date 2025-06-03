@@ -1,13 +1,12 @@
 'use client';
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import { Button } from '@/domains/ui/components/button/button';
-import { Input } from '@/domains/ui/components/input/input'
+import { Input } from '@/domains/ui/components/input/input';
 import { addFileToGoogleDriveAction } from '@/googleDrive';
 import { movieUploadSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react'
-import { useForm, Controller } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query';
+import { Controller, useForm } from 'react-hook-form';
 
 interface FormValues {
   file: File;

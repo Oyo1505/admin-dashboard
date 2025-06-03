@@ -1,5 +1,4 @@
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner'
-import React from 'react'
 
 const Loading = () => {
   return (
