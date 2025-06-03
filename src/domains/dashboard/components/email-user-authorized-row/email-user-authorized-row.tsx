@@ -2,7 +2,6 @@
 import { deleteEmailAuthorized } from '@/domains/auth/action/action'
 import { Button } from '@/domains/ui/components/button/button'
 import { useTranslations } from 'next-intl'
-import React from 'react'
 
 export const EmailAuthrizedEmailRow = ({email, hasPermission}:{email:string, hasPermission: boolean}) => {
   const t = useTranslations('Dashboard')

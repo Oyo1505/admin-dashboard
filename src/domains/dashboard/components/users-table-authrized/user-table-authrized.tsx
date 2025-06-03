@@ -1,9 +1,9 @@
 'use client'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
 import { getAuthorizedEmailsPagination } from '@/domains/auth/action/action'
-import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
+import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row'
 
 export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }) => {
   const [page, setPage] = useState(0)
@@ -34,7 +34,7 @@ export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }
               />
             ))}
           </div>
-          
+
           <div className="flex gap-4 mt-4 justify-center">
             <button
               onClick={() => setPage((old) => Math.max(old - 1, 0))}

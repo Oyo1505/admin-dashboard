@@ -1,18 +1,18 @@
 'use client'
-import React, { useEffect, useMemo } from 'react'
-import Link from 'next/link'
-import qs from 'qs';
-import { URL_MOVIE_ID } from '@/shared/route'
-import Image from 'next/image';
-import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
-import { titleOnlocale } from 'utilities/string/titleOnlocale';
-import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/domains/ui/components/button/button';
-import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
-import imageDefault from '../../../../assets/image/default-placeholder.png';
-import useUserStore from 'store/user/user-store';
 import { Favorite } from '@/domains/ui/components/icons/icons';
+import { URL_MOVIE_ID } from '@/shared/route';
+import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
+import Link from 'next/link';
+import qs from 'qs';
+import { useEffect, useMemo } from 'react';
+import { useFiltersMovieStore, useMovieFormStore } from 'store/movie/movie-store';
+import useUserStore from 'store/user/user-store';
+import { titleOnlocale } from 'utilities/string/titleOnlocale';
+import imageDefault from '../../../../assets/image/default-placeholder.png';
+import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 
 interface SearchParams {
   subtitles?: string;
@@ -27,7 +27,7 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
   const {user} = useUserStore();
   const { moviesFromStore, setMoviesStore } = useMovieFormStore();
   const locale = useLocale();
-  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: searchParams && Object.keys(searchParams).length > 0 ? qs.stringify({ 
+  const { data, isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetMoviesInfiniteScroll({pageParam: offset, search: searchParams && Object.keys(searchParams).length > 0 ? qs.stringify({
     subtitles: filters?.subtitles && filters?.subtitles?.length > 0 ? filters?.subtitles :  searchParams.subtitles  ? searchParams.subtitles : undefined,
     language: filters?.language && filters?.language?.length > 0 ? filters?.language :  searchParams.language ? searchParams.language : undefined,
     decade: filters?.decade && filters?.decade > 0  ? filters?.decade :   Number(searchParams.decade) > 0 ? Number(searchParams.decade) : undefined,
@@ -42,14 +42,14 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
       if (searchParams && Object.keys(searchParams).length > 0) {
         return data?.pages[data.pages.length - 1]?.movies || [];
       } else if (searchParams && Object.keys(searchParams)?.length === 0){
- 
+
        return data?.pages[0]?.movies || [];
       }
     }
-  
+
     return [];
   }, [data, searchParams, status]);
-   
+
   useEffect(() => {
     if(filteredMovies?.length > 0){
       setMoviesStore(filteredMovies);
@@ -60,7 +60,7 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
     if (!isFetchingNextPage && hasNextPage) {
       fetchNextPage().then((res) => {
         if(res?.data?.pages){
-        setMoviesStore(res?.data.pages[res?.data?.pages?.length-1]?.movies ?? []) 
+        setMoviesStore(res?.data.pages[res?.data?.pages?.length-1]?.movies ?? [])
         }else{
           setMoviesStore([])
         }
@@ -73,13 +73,13 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
 
     return user?.favoriteMovies?.some((favoriteMovie) => favoriteMovie.movieId === id);
   }
-  return (  
+  return (
     <>
   <div className='grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6'>
-    {moviesFromStore && moviesFromStore.length > 0 ? moviesFromStore.map((movie, index) => 
+    {moviesFromStore && moviesFromStore.length > 0 ? moviesFromStore.map((movie, index) =>
       movie?.title && (
         <Link prefetch className='w-52 relative group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5'
-          key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`} 
+          key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
           href={`${URL_MOVIE_ID(movie?.id)}`}>
           {isFavorite(movie?.id) && <div className='absolute z-1 top-1 right-1'>
             <Favorite fill  />
@@ -101,12 +101,12 @@ const Movies = ({searchParams, offset}:{searchParams?:SearchParams | undefined, 
           </div>
         </Link>
       )) : <div className='w-full text-center mt-14 text-2xl'> {t('NoMovie')} </div>}
-  
+
   </div>
   <div className='flex justify-center mt-10'>
-  {isFetching || isFetchingNextPage && status !== 'success' ? 
-    <LoadingSpinner /> : 
-  !hasNextPage  || (moviesFromStore && moviesFromStore.length < 12) ? null : 
+  {isFetching || isFetchingNextPage && status !== 'success' ?
+    <LoadingSpinner /> :
+  !hasNextPage  || (moviesFromStore && moviesFromStore.length < 12) ? null :
     <Button variant={'outline'} onClick={() => fecthNextMovie()} className='min-w-80 flex align'>{t('btnLoadMore')}</Button>}
   </div>
   </>

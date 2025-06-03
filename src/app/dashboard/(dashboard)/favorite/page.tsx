@@ -1,15 +1,14 @@
-import React from 'react'
-import { auth } from '@/lib/auth';
 import { getFavoriteMovies } from '@/domains/dashboard/action';
-import Title from '@/domains/ui/components/title/title';
-import { IMovie } from '@/models/movie/movie';
 import MoviesFavorite from '@/domains/movies/components/movies-favorite/movies-favorite';
+import Title from '@/domains/ui/components/title/title';
+import { auth } from '@/lib/auth';
+import { IMovie } from '@/models/movie/movie';
 
 async function getData() {
   const session = await auth()
-  
+
   if (!session?.user?.id) return { movies: [] }
-  
+
   const response = await getFavoriteMovies(session.user.id)
   return { movies: response.movies }
 }

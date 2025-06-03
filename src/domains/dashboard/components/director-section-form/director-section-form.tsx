@@ -1,17 +1,17 @@
 "use client"
 import { Button } from "@/domains/ui/components/button/button";
 import { Input } from "@/domains/ui/components/input/input";
+import { IDirector } from "@/models/director/director";
 import { DirectorSectionSchema, directorSectionSchema } from "@/shared/schema/movieSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { createDirectorFromSection, deleteDirectorFromSection, updateDirectorFromSection } from "../../action";
-import { useTranslations } from "next-intl";
-import { IDirector } from "@/models/director/director";
 
 const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
 
   const t = useTranslations('DirectorSectionForm');
-  
+
   const {
     register,
     reset,
@@ -51,7 +51,7 @@ const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
     } catch (error) {
       console.log(error)
     }
-  } 
+  }
 
 
   return (
@@ -83,7 +83,7 @@ const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
       </div>
         <div className="mt-[25px] gap-2 flex justify-end">
          {director?.id &&
-         <Button 
+         <Button
            size="sm"
            variant='secondary'
            type="button"
@@ -92,14 +92,14 @@ const DirectorSectionForm = ({ director }:{director?:IDirector | null}) => {
          >
             {t('delete')}
          </Button> }
-         <Button 
+         <Button
            size="sm"
            variant="outline"
            type='submit'
            className="inline-flex h-[35px] hover:cursor-pointer items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-hidden"
          >
             {t('save')}
-         </Button>  
+         </Button>
         </div>
         </form>
     </div>

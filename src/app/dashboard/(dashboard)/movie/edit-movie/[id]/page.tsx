@@ -1,7 +1,6 @@
 import { PageProps } from '.next/types/app/page';
 import FormMovie from '@/domains/dashboard/components/form-movie/form-movie';
 import { getMovieDetail } from '@/domains/movies/action';
-import React from 'react'
 
 const getData = async (id:string)=>{
   try{

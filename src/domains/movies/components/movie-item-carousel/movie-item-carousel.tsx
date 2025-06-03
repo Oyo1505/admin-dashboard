@@ -3,7 +3,6 @@ import { IMovie } from '@/models/movie/movie'
 import { URL_MOVIE_ID } from '@/shared/route'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 import { titleOnlocale } from 'utilities/string/titleOnlocale'
 
 const MovieItemCarousel = ({image, locale, movie, id }: {image: string, locale: string, movie: IMovie, id: string}) => {
@@ -29,4 +28,4 @@ const MovieItemCarousel = ({image, locale, movie, id }: {image: string, locale: 
   )
 }
 
-export default MovieItemCarousel 
+export default MovieItemCarousel

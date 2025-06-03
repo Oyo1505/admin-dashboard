@@ -1,22 +1,22 @@
+import { Locale } from '@/config'
 import { getDirectorMovies, getFavoriteMovies } from '@/domains/dashboard/action'
-import {  getLastMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/domains/movies/action'
-import MoviesHomeSection from '@/domains/movies/components/movies-home-section/movies-home-section'
-import Title from '@/domains/ui/components/title/title'
-import React, { Suspense } from 'react'
-import countriesList from '@/shared/constants/countries';
-import { getLocale } from 'next-intl/server'  
-import MoviesHomeTheme from '@/domains/movies/components/movies-home-theme/movies-home-theme'
-import Container from '@/domains/ui/components/container/container'
-import { Lobster } from 'next/font/google'
-import clsx from 'clsx'
+import { getLastMovies, getMoviesByARandomCountry, getMoviesByARandomGenre } from '@/domains/movies/action'
 import MoviesHomeDirector from '@/domains/movies/components/movies-home-director/movies-home-director'
+import MoviesHomeSection from '@/domains/movies/components/movies-home-section/movies-home-section'
+import MoviesHomeTheme from '@/domains/movies/components/movies-home-theme/movies-home-theme'
 import MoviesHomeSectionSkeleton from '@/domains/skeleton/components/movie-home-section/movie-home-section'
 import MoviesHomeThemeSkeleton from '@/domains/skeleton/components/movies-home-theme/movies-home-theme'
-import { headers } from 'next/headers'
+import Container from '@/domains/ui/components/container/container'
+import Title from '@/domains/ui/components/title/title'
+import countriesList from '@/shared/constants/countries'
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated'
-import { Locale } from '@/config'
+import clsx from 'clsx'
+import { getLocale } from 'next-intl/server'
+import { Lobster } from 'next/font/google'
+import { headers } from 'next/headers'
+import { Suspense } from 'react'
 
-export const revalidate = 60; 
+export const revalidate = 60;
 
 const lobster = Lobster({
   weight: '400',
@@ -43,9 +43,9 @@ const Page =  async () => {
 
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   const userAgent =  (await headers()).get('user-agent') ;
-  const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));   
+  const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
 
-  const countryChosen = findCountry?.[0]?.label?.[locale] 
+  const countryChosen = findCountry?.[0]?.label?.[locale]
   return (
     <div className='flex flex-col mt-6 gap-8'>
       <Container  className='pt-14'>
@@ -66,7 +66,7 @@ const Page =  async () => {
         </Suspense>
       </Container>
       <Suspense fallback={<MoviesHomeThemeSkeleton />}>
-      {directorMovies && directorMovies?.length > 0 && director && 
+      {directorMovies && directorMovies?.length > 0 && director &&
         <div>
           <MoviesHomeDirector fontFamily={lobster.className} movies={directorMovies}  isMobileView={isMobileView} director={director} imageBackdrop={imageBackdrop} />
        </div>

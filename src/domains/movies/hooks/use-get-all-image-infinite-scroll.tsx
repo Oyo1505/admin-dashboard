@@ -1,12 +1,12 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { fetchMovies } from '../action';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { cache } from 'react';
+import { fetchMovies } from '../action';
 
 
 const fetchMoviesParams = cache(async ({ pageParam = 12, search = '' }) =>  await fetchMovies({pageParam, search}));
 
 const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, search?:string}) => {
-  
+
   const {
     data,
     error,
@@ -26,11 +26,11 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
       if (lastPage.prevOffset && lastPage.prevOffset > lastPage.movies?.length) {
         return undefined;
       }
-      return lastPage.prevOffset && lastPage.prevOffset + 12; 
+      return lastPage.prevOffset && lastPage.prevOffset + 12;
     },
   })
 
   return {data, error, hasNextPage, isFetching, status, fetchNextPage, isFetchingNextPage, refetch}
 }
 
-export { useGetMoviesInfiniteScroll }
+export { useGetMoviesInfiniteScroll };

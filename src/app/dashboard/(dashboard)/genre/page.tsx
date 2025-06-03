@@ -1,17 +1,16 @@
 import { getUserConnected } from '@/domains/auth/action/action';
-import GenreForm from '@/domains/dashboard/components/genre-form/genre-form'
+import GenreForm from '@/domains/dashboard/components/genre-form/genre-form';
 import { GenreList } from '@/domains/dashboard/components/genre-list/genre-list';
 import { getAllGenres } from '@/domains/movies/action';
-import Container from '@/domains/ui/components/container/container'
+import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import React from 'react'
 import { auth } from '@/lib/auth';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
 const getData = async () => {
   const { genres } = await getAllGenres();
   return { genres };
-} 
+}
 
 const Page = async () => {
   const { genres } = await getData();
@@ -24,7 +23,7 @@ const Page = async () => {
     <Container className='flex flex-col gap-6 justify-start'>
       <Title type='h1' translationTheme='GenrePage' translationText='title'  className='text-2xl' />
       <GenreList genres={genres} />
-      <GenreForm /> 
+      <GenreForm />
     </Container>
   )
 }

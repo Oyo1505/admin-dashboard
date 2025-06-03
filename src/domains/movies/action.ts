@@ -22,7 +22,7 @@ export const getMovieDetail = cache(async (id:string): Promise<{movie: IMovie, s
     });
 
   const randomGenre = movieInDb?.genresIds[Math.floor(Math.random() * movieInDb?.genresIds.length)];
-  
+
   const suggestedMovies = await prisma.movie.findMany({
     where: {
       genresIds: {
@@ -34,8 +34,8 @@ export const getMovieDetail = cache(async (id:string): Promise<{movie: IMovie, s
       }
     },
     cacheStrategy: { ttl: 600 },
-   }) 
-   
+   })
+
   if (!movieInDb && !suggestedMovies) {
     return { status: 404, message: 'Le film n\'existe pas' };
   }
@@ -77,7 +77,7 @@ export const getLastMovies =  async (): Promise<{movies: IMovie[], status: numbe
       },
       take: 5,
       cacheStrategy: { ttl: 300},
-     }) 
+     })
   if (!moviesInDb) {
     return { status: 404, message: 'Pas de films' };
   }
@@ -88,7 +88,7 @@ export const getLastMovies =  async (): Promise<{movies: IMovie[], status: numbe
       status : 500
     }
   }
-} 
+}
 
 export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], country: string, status: number}> => {
   try {
@@ -101,13 +101,13 @@ export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], co
     },
     distinct: ['country'],
     cacheStrategy: { ttl: 300 },
-    
+
   });
   if (!uniqueCountries) {
     return { status: 400, message: 'Pas de pays' };
   }
   const getARadomCountry = uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
-  
+
   const movies = await prisma.movie.findMany({
     where: {
       country:  getARadomCountry.country
@@ -117,7 +117,7 @@ export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], co
     },
     take: 3
    });
-  
+
    if (!movies) {
     return { status: 400, message: 'Pas de films' };
   }
@@ -137,9 +137,9 @@ try {
   });
   if (!uniqueGenres) {
     return { status: 400, message: 'Pas de genre' };
-  }  
+  }
   const randomGenre = uniqueGenres[Math.floor(Math.random() * uniqueGenres.length)];
-  
+
   const movies = await prisma.movie.findMany({
     where: {
       genresIds: {
@@ -190,7 +190,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
           }
         }
       });
-      
+
       revalidatePath(URL_MOVIE_ID(idMovie));
       return { status: 200, message: 'Supprimé des favoris avec succès' };
     }
@@ -214,7 +214,7 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
 };
 
 export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: number}> => {
-  
+
   try {
 
    const movieInDb = await prisma.movie.findMany({
@@ -227,14 +227,14 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
       status : 500
     }
   }
-} 
+}
 
 export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: number, search: string }): Promise<{movies: IMovie[], status: number, prevOffset: number}> => {
 
   try {
 
     if (!search.trim()) {
-     
+
       const movies = await prisma.movie.findMany({
         where: {
           publish: true
@@ -295,12 +295,12 @@ export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: numb
     }
 
     if (decade) {
-      const startOfDecade = Number(decade); 
+      const startOfDecade = Number(decade);
       const endOfDecade = startOfDecade + 9;
 
       conditions.AND.push({ year : {
-        gte: startOfDecade, 
-        lte: endOfDecade 
+        gte: startOfDecade,
+        lte: endOfDecade
       }
      });
     }
@@ -364,17 +364,17 @@ export const getMoviesCountries = async (): Promise<{status: number, countries: 
         },
         cacheStrategy: { ttl: 300 * 60 },
         distinct: ['country'],
-        
+
       });
-    
+
       if (!countriesValues) {
         return { status: 400, message: 'Pas de pays' };
       }
-  
+
      const countries = countriesValues?.flatMap(item => item.country)
 
      return { status: 200, countries};
-  
+
         } catch (error) {
         console.log(error)
         return {
@@ -455,4 +455,4 @@ export const deleteGenre = async (id: string): Promise<{status: number, genres: 
       status: 500,
     };
   }
-};  
+};

@@ -1,7 +1,7 @@
+import { getUserConnected } from "@/domains/auth/action/action";
 import { getDirectorFromSection } from "@/domains/dashboard/action";
 import DirectorSectionForm from "@/domains/dashboard/components/director-section-form/director-section-form";
 import { auth } from "@/lib/auth";
-import { getUserConnected } from "@/domains/auth/action/action";
 import checkPermissions from "@/shared/utils/permissions/checkPermissons";
 
 

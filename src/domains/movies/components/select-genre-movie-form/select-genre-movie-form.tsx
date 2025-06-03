@@ -1,5 +1,5 @@
 import { IGenre } from '@/models/movie/movie';
-import React, { FC } from 'react'
+import React, { FC } from 'react';
 
 interface SelectGenreMovieForm {
   optionsList: IGenre[];
@@ -15,14 +15,14 @@ const SelectGenreMovieForm: FC<SelectGenreMovieForm> = ({
   className = 'text-background',
 }) => {
   return (
-    <select 
-      onChange={onChange} 
+    <select
+      onChange={onChange}
       className={className}
     >
       <option value=""> </option>
       {optionsList.map((option, index) => (
-        <option 
-          key={`${option?.id}-${index}`} 
+        <option
+          key={`${option?.id}-${index}`}
           value={option?.id}
         >
           {locale === 'fr' ? option?.nameFR : locale === 'jp' ? option?.nameJP : option?.nameEN}

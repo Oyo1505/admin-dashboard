@@ -1,5 +1,4 @@
 import MoviesSkeleton from '@/domains/skeleton/components/movies-skeleton/movies-skeleton';
-import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -23,7 +22,7 @@ const Loading = () =>{
 
       {/* Skeleton for Movies Section */}
       <MoviesSkeleton />
-      
+
       {/* Skeleton for Load More Button */}
       <div className='flex justify-center mt-10'>
         <Skeleton className='animate-shimmer' width={120} height={40} />

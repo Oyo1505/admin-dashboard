@@ -1,10 +1,9 @@
 
 import Container from '@/domains/ui/components/container/container'
-import React from 'react'
 const Page = async () => {
   return (
     <Container className='pt-14'>
-    <div className='flex flex-col gap-5'>   
+    <div className='flex flex-col gap-5'>
     <h1>Règles de Confidentialité</h1>
 
         <p><strong>Date de dernière mise à jour :</strong> 17/08/2024</p>

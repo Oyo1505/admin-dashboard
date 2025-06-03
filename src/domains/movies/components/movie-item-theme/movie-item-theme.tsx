@@ -2,7 +2,6 @@ import { IMovie } from '@/models/movie/movie'
 import { URL_MOVIE_ID } from '@/shared/route'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 import { titleOnlocale } from 'utilities/string/titleOnlocale'
 
 const MovieItemTheme = ({image, locale, movie, id }: {image: string, locale: string, movie: IMovie, id: string}) => {
@@ -28,4 +27,4 @@ const MovieItemTheme = ({image, locale, movie, id }: {image: string, locale: str
   )
 }
 
-export default MovieItemTheme 
+export default MovieItemTheme

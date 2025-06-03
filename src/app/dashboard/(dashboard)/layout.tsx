@@ -1,10 +1,10 @@
 import MenuDashboard from "@/domains/layout/components/menu-dashboard/menu-dashboard";
 import LoadingSpinner from "@/domains/shared/loading-spinner/loading-spinner";
 import Container from "@/domains/ui/components/container/container";
-import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
-import { Suspense } from "react";
 import { URL_BASE } from "@/shared/route";
+import { redirect } from 'next/navigation';
+import { Suspense } from "react";
 
 export const metadata = {
   title: 'Dashboard',
@@ -14,7 +14,7 @@ export default async function Layout({
   children
 }: {
   children: React.ReactNode;
-}) { 
+}) {
   const session = await auth()
   if(!session?.user) return redirect(URL_BASE)
   return (
