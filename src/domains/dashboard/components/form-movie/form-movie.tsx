@@ -1,28 +1,28 @@
 'use client'
-import { IGenre, IMovie } from '@/models/movie/movie';
 import { addMovieToDb, editMovieToDb } from '@/domains/dashboard/action';
+import SelectGenreMovieForm from '@/domains/movies/components/select-genre-movie-form/select-genre-movie-form';
+import { Button } from '@/domains/ui/components/button/button';
+import { Checkbox } from '@/domains/ui/components/checkbox/checkbox';
+import { Input } from '@/domains/ui/components/input/input';
+import LabelForm from '@/domains/ui/components/label-form/label-form';
+import LabelGenre from '@/domains/ui/components/label-genre/label-genre';
+import SelectInput from '@/domains/ui/components/select/select';
+import { Textarea } from '@/domains/ui/components/textarea/textarea';
+import Title from '@/domains/ui/components/title/title';
+import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
-import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useGenreStore } from 'store/movie/movie-store';
-import SelectGenreMovieForm from '@/domains/movies/components/select-genre-movie-form/select-genre-movie-form';
-import LabelForm from '@/domains/ui/components/label-form/label-form';
-import { Input } from '@/domains/ui/components/input/input';
-import Title from '@/domains/ui/components/title/title';
-import SelectInput from '@/domains/ui/components/select/select';
-import { Checkbox } from '@/domains/ui/components/checkbox/checkbox';
-import { Button } from '@/domains/ui/components/button/button';
-import { Textarea } from '@/domains/ui/components/textarea/textarea';
-import LabelGenre from '@/domains/ui/components/label-genre/label-genre';
-import { toast } from 'react-toastify';
 import { URL_DASHBOARD_MOVIE } from '@/shared/route';
+import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { User } from 'next-auth';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useGenreStore } from 'store/movie/movie-store';
 import useUserStore from 'store/user/user-store';
-import { User } from 'next-auth';
 
 const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie, editMovie?: boolean, idFromGoogleDrive?: string}) => {
   const t = useTranslations('AddMovie');
@@ -46,12 +46,12 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       director : movie?.director ?? '',
       imdbId : movie?.imdbId ?? '',
       publish : movie?.publish ?? true,
-      link: movie?.link ?? '',  
-      year: movie?.year ?? new Date().getFullYear(), 
+      link: movie?.link ?? '',
+      year: movie?.year ?? new Date().getFullYear(),
       genresIds: genresMovie.map(item => item.id) ?? [],
-      trailer: movie?.trailer ?? '', 
+      trailer: movie?.trailer ?? '',
       duration: movie?.duration ?? 0,
-      synopsis: movie?.synopsis ?? '', 
+      synopsis: movie?.synopsis ?? '',
       country: movie?.country ?? '',
       langage: movie?.language ?? '',
       subtitles: movie?.subtitles ?? [],
@@ -68,20 +68,20 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
     originalTitle: movie?.originalTitle ?? '',
     titleJapanese: movie?.titleJapanese ?? '',
     titleEnglish: movie?.titleEnglish ?? '',
-    link: movie?.link ?? '',  
+    link: movie?.link ?? '',
     director : movie?.director ?? '',
     imdbId : movie?.imdbId ?? '',
-    year: movie?.year ?? new Date().getFullYear(), 
+    year: movie?.year ?? new Date().getFullYear(),
     genresIds : movie?.genresIds as any ?? [],
-    trailer: movie?.trailer ?? '', 
+    trailer: movie?.trailer ?? '',
     duration: movie?.duration ?? 0,
-    synopsis: movie?.synopsis ?? '', 
+    synopsis: movie?.synopsis ?? '',
     country: movie?.country ?? '',
     langage: movie?.language ?? '',
     subtitles: movie?.subtitles ?? [],
     idGoogleDive: idFromGoogleDrive ? idFromGoogleDrive : movie?.idGoogleDive ? movie?.idGoogleDive : ""
   });
-  
+
   const createMovie = async (data : MovieSchema) => {
    try{
     const rawFormData = {
@@ -114,7 +114,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
     console.log(err)
   }
   }
- 
+
   const onClickEditMovie = async (data: MovieSchema) => {
     try{
     const rawFormData = {
@@ -126,7 +126,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       titleJapanese: data.titleJapanese,
       director : data.director,
       imdbId : data.imdbId,
-      language  : data.langage, 
+      language  : data.langage,
       year: data.year,
       duration : data.duration,
       genresIds: data?.genresIds,
@@ -136,7 +136,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       link: data.link,
       subtitles: data.subtitles,
     }
-    
+
      const { status } = await editMovieToDb(rawFormData as any, user as User)
      if(status === 200){
        toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
@@ -157,11 +157,11 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       ? subtitles.filter((item) => item !== value)
       : [...subtitles, value];
 
-    setValue('subtitles', newValue); 
+    setValue('subtitles', newValue);
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setValue('country', e.target.value); 
+    setValue('country', e.target.value);
   };
   const handleLangageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue('langage', e.target.value);
@@ -173,9 +173,9 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
   }
 
   const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    
+
     if(genresMovie.find(item => item.id === e.target.value)) return
-    
+
     const newGenreEntry =  genres?.find(item => item.id === e.target.value)
     const newGenresMovie = [...genresMovie, newGenreEntry].filter(
       (item): item is IGenre => item !== undefined
@@ -196,7 +196,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
     setGenresMovie(newGenresMovie)
     setGenresValue(newGenresMovie)
   }
-
+  const langageSorted = languagesList.sort((a: any, b: any) => locale === 'fr' ? a.label.fr.localeCompare(b.label.fr) : locale === 'jp' ? a.label.jp.localeCompare(b.label.jp) : a.label.en.localeCompare(b.label.en))
 return(
     <div className='bg-white'>
       <div className=" text-background p-3 ">
@@ -261,21 +261,21 @@ return(
         <div className='grid grid-cols-2 gap-3'>
           <div className="mb-[15px] flex flex-col items-center gap-5">
             <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('langage')} htmlFor="langage" />
-            <SelectInput 
-              optionsList={languagesList} 
-              formData={formData} 
-              formDataKey='langage' 
-              locale={locale} 
+            <SelectInput
+              optionsList={langageSorted}
+              formData={formData}
+              formDataKey='langage'
+              locale={locale}
               onChange={handleLangageChange}
             />
           </div>
           <div className="mb-[15px] flex flex-col items-center gap-5">
             <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('country')} htmlFor="country" />
             <SelectInput
-              optionsList={countriesList} 
-              formData={formData} 
-              formDataKey='country' 
-              locale={locale} 
+              optionsList={countriesList}
+              formData={formData}
+              formDataKey='country'
+              locale={locale}
               onChange={handleCountryChange}
             />
           </div>
@@ -283,9 +283,9 @@ return(
         <div className="mb-[15px] flex flex-col items-center gap-5">
           <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('genre')} htmlFor="genresIds" />
           <div className='inline-flex flex-wrap gap-2' >{genresMovie.length > 0 && genresMovie?.map(item => <LabelGenre key={item.id} nameFR={item.nameFR} nameEN={item.nameEN} nameJP={item.nameJP} onClick={() => handleGenreDelete(item.id)} locale={locale} />)}</div>
-          <SelectGenreMovieForm 
-            optionsList={genres} 
-            locale={locale} 
+          <SelectGenreMovieForm
+            optionsList={genres}
+            locale={locale}
             onChange={handleGenreChange}
           />
           {errors.genresIds && <p className="text-red-600 text-xs">{errors.genresIds.message}</p>}
@@ -321,14 +321,14 @@ return(
           <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={'EN'} htmlFor="subtitles" />
           </div>
         </div>
-       
+
         <div className='grid grid-cols-3 gap-3'>
           <div className="mb-[15px] flex flex-col items-center gap-5">
             <LabelForm className="text-violet11  text-right text-[15px]" titleLabel={t('year')} htmlFor="year" />
             <Input
               className="text-violet11  shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
               type='number'
-              step="1" 
+              step="1"
               {...register('year', {
                 required: 'L\'année est requis',
                 min: { value: 1890, message: 'L\'année doit être supérieure à 1890' },
@@ -363,7 +363,7 @@ return(
             {...register('synopsis')}
           />
         </div>
-   
+
            <div className="mb-[15px] flex flex-col items-center gap-5">
            <LabelForm className="text-left w-full text-md" titleLabel={t('idGoogleDive')} htmlFor="idGoogleDive" />
             <Input
@@ -373,9 +373,9 @@ return(
               {...register('idGoogleDive')}
             />
           </div>
-          
 
-       {formData?.idGoogleDive && <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>} 
+
+       {formData?.idGoogleDive && <iframe src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`} width="100%" height="150" allow="autoplay"/>}
         <div className="mt-[25px] flex justify-end">
             <Button
               size="sm"
@@ -384,7 +384,7 @@ return(
               className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-hidden"
             >
                {t('save')}
-            </Button> 
+            </Button>
         </div>
         </form>
       </div>

@@ -66,7 +66,8 @@
     "add-movie":"映画を追加",
     "movies":"映画",
     "favorite":"お気に入り",
-    "settings":"設定"
+    "settings":"設定",
+    "suggestion":"提案"
   },
   "AddMovie": {
     "title":"映画を追加",
@@ -93,7 +94,7 @@
   "DirectorSectionForm": {
     "title": "ディレクターセクションを追加",
     "director": "ディレクター",
-    "image": "画像",  
+    "image": "画像",
     "delete": "削除",
     "save": "保存"
   },
