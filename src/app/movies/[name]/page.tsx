@@ -10,12 +10,9 @@ import clsx from 'clsx'
 import { Lobster } from 'next/font/google'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
-import { cache, Suspense } from 'react'
+import { Suspense, cache } from 'react'
 import Iframe from 'react-iframe'
 import Loading from './loading'
-
-//const VideoPlayerYoutube = dynamic(() => import('@/shared/components/video-player-youtube/video-player-youtube'), { ssr: false })
-// const VideoPlayer = dynamic(() => import('@/domains/shared/video-player'), { ssr: false })
 
 const lobster = Lobster({
   weight: '400',
@@ -72,16 +69,6 @@ const Page = async ({
             height="450px"
             ariaLabel="video player"
             />}
-
-          {
-          //TODO: add video player when I got a NAS
-          /* <VideoPlayer option={{url:movie?.sources[0]}}
-          style={{
-              width: '600px',
-              height: '400px',
-              margin: '60px auto 0',
-          }}
-        /> */}
         </div>
       }
       <MovieHeader movie={movie} isFavorite={isFavorite}/>

@@ -34,6 +34,7 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "movies": "Movies",
+    "ressources": "Ressources",
     "logout": "Logout"
   },
   "MoviesPage": {

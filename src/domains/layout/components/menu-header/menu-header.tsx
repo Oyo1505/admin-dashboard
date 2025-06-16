@@ -1,7 +1,7 @@
 import { User } from '@/domains/layout/components/menu-user-items/menu-user-items';
 import Container from '@/domains/ui/components/container/container';
 import LocaleSwitcher from '@/domains/ui/components/locale-switcher/locale-switcher';
-import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
+import { URL_DASHBOARD, URL_HOME, URL_MOVIES, URL_RESSOURCES } from '@/shared/route';
 import { Session } from 'next-auth';
 import { headers } from 'next/headers';
 import MenuHeaderItem from '../menu-header-item/menu-header-item';
@@ -22,6 +22,7 @@ const MenuHeader = async ({session}: {session: Session | null}) => {
         {session && <>
         <MenuHeaderItem pathname={URL_HOME} translation='home' />
         <MenuHeaderItem pathname={URL_MOVIES} translation='movies' />
+        <MenuHeaderItem pathname={URL_RESSOURCES} translation='ressources' />
         <MenuHeaderItem pathname={URL_DASHBOARD} translation='dashboard' />
         </>}
       </div>
