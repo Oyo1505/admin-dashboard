@@ -154,5 +154,9 @@
     "send": "送信",
     "close": "閉じる",
     "placeholderMessage": "あなたのメッセージ"
+  },
+  "RessourcesPage": {
+    "title": "リソース",
+    "noRessource": "リソースが見つかりません"
   }
 }

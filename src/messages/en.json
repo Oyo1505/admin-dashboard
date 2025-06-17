@@ -154,5 +154,9 @@
     "send": "Send",
     "close": "Close",
     "placeholderMessage": "Your message"
+  },
+  "RessourcesPage": {
+    "title": "Ressources",
+    "noRessource": "No resource found"
   }
 }

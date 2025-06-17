@@ -155,5 +155,9 @@
     "send": "Envoyer",
     "close": "Fermer",
     "placeholderMessage": "Votre message"
+  },
+  "RessourcesPage": {
+    "title": "Ressources",
+    "noRessource": "Aucune ressource trouvée"
   }
 }

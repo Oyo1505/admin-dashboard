@@ -4,6 +4,8 @@ import tv5 from "@/assets/image/ressourcePage/tv5.png";
 import youtube from "@/assets/image/ressourcePage/yt.avif";
 import Ressources from "@/domains/ressources/components/ressources";
 import Container from "@/domains/ui/components/container/container";
+import Title from "@/domains/ui/components/title/title";
+
 import { StaticImageData } from "next/image";
 
 type Ressource = {
@@ -34,28 +36,24 @@ const webSitesRessources: Ressource[] = [
     name: "Cinematheque Henri Langlois",
     url: "https://www.cinematheque.fr/henri",
     description: "Cinematheque Henri Langlois",
-    image: arteTv,
   },
   {
     id: 4,
     name: "RareFilmm",
     url: "https://rarefilmm.com/",
     description: "RareFilmm",
-    image: arteTv,
   },
   {
     id: 5,
     name: "Rarelust",
     url: "https://rarelust.com/",
     description: "Rarelust",
-    image: arteTv,
   },
   {
     id: 6,
     name: "Archive.org",
     url: "https://archive.org/details/moviesandfilms",
     description: "Archive.org",
-    image: arteTv,
   },
   {
     id: 7,
@@ -69,7 +67,6 @@ const webSitesRessources: Ressource[] = [
     name: "TF1",
     url: "https://www.tf1.fr/programmes-tv/films",
     description: "TF1",
-    image: arteTv,
   },
   {
     id: 9,
@@ -82,7 +79,7 @@ const webSitesRessources: Ressource[] = [
 
 const Page = () => {
   return <Container className="pt-14">
-    <h1 className="text-2xl font-bold">Ressources</h1>
+      <Title translationTheme="RessourcesPage" translationText="title" type="h1" className="mb-8 text-2xl font-bold" textColor="text-primary" />
       <Ressources listeRessources={webSitesRessources} />
     </Container>
 };
