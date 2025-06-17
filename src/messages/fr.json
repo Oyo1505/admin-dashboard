@@ -34,6 +34,7 @@
     "home": "Accueil",
     "dashboard": "Espace Personnel",
     "movies": "Films",
+    "ressources": "Ressources",
     "logout": "Déconnexion"
   },
   "MoviesPage": {
@@ -154,5 +155,9 @@
     "send": "Envoyer",
     "close": "Fermer",
     "placeholderMessage": "Votre message"
+  },
+  "RessourcesPage": {
+    "title": "Ressources",
+    "noRessource": "Aucune ressource trouvée"
   }
 }

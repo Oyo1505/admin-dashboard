@@ -34,6 +34,7 @@
     "home": "ホーム",
     "dashboard": "ダッシュボード",
     "movies": "映画",
+    "ressources": "リソース",
     "logout": "ログアウト"
   },
   "MoviesPage": {
@@ -153,5 +154,9 @@
     "send": "送信",
     "close": "閉じる",
     "placeholderMessage": "あなたのメッセージ"
+  },
+  "RessourcesPage": {
+    "title": "リソース",
+    "noRessource": "リソースが見つかりません"
   }
 }

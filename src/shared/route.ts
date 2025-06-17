@@ -1,7 +1,7 @@
 export const URL_BASE = '/'
 
 export const URL_HOME = '/home'
-
+export const URL_RESSOURCES = '/ressources'
 export const URL_MOVIES = '/movies'
 export const URL_MOVIE_ID = (id:string) => `${URL_MOVIES}/${id}`
 
