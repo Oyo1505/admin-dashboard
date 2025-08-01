@@ -1,24 +1,11 @@
 "use server";
 import { Buffer } from 'buffer';
-import { createReadStream } from "fs";
-import fs, { open } from "fs/promises";
 import { google, GoogleApis } from "googleapis";
 import { revalidatePath } from "next/cache";
-import type { ChunkUploadHandler } from 'nextjs-chunk-upload-action';
-import path, { join } from "path";
 import { Readable } from "stream";
 import { auth } from "./lib/google-api";
 import { URL_DASHBOARD_MOVIE } from "./shared/route";
 
-const UPLOAD_DIR = path.join(process.cwd(), "tmp");
-
-async function ensureUploadDir() {
-  try {
-    await fs.access(UPLOAD_DIR);
-  } catch {
-    await fs.mkdir(UPLOAD_DIR, { recursive: true });
-  }
-}
 
 export const findExistingFile = async (driveService:GoogleApis, fileName:string) => {
     try {
@@ -61,25 +48,6 @@ const checkPermissions = async (fileId: string) => {
     return permissions.data.permissions
   } catch (error: any) {
     console.error("Error checking permissions:", error.message);
-  }
-};
-
-
-export const chunkUploadAction: ChunkUploadHandler<{ name: string }> = async (
-  chunkFormData,
-  metadata
-) => {
-  await ensureUploadDir();
-  const blob = chunkFormData.get('blob');
-  const offset = Number(chunkFormData.get('offset'));
-  const buffer = Buffer.from(await blob.arrayBuffer());
-  const filePath = join(UPLOAD_DIR, metadata.name);
-  let fileHandle: any | undefined;
-  try {
-    fileHandle = await open(filePath, offset === 0 ? 'w' : 'r+');
-    await fileHandle.write(buffer, 0, buffer.length, offset);
-  } finally {
-    await fileHandle?.close();
   }
 };
 
@@ -147,23 +115,4 @@ export const addFileToGoogleDriveAction = async (formData: File): Promise<{data:
     console.error('Error uploading file:', error);
     throw error;
   }
-}
-
-export async function handleChunkUpload(fileName: string) {
-    await ensureUploadDir();
-    const filePath = path.join(UPLOAD_DIR, fileName);
-    const drive = google.drive({ version: "v3", auth })
-    const fileMetadata = {
-      name: fileName,
-      parents: ['1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD'],
-    };
-    const media = { mimeType: "application/octet-stream", body: createReadStream(filePath) };
-
-    const response = await drive.files.create({
-      requestBody: fileMetadata,
-      media,
-      fields: "id",
-    });
-    if(response.data.id) await fs.unlink(filePath)
-    return { fileId: response.data.id };
 }

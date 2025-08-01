@@ -1,6 +1,11 @@
-import { PageProps } from '.next/types/app/page';
+
 import FormMovie from '@/domains/dashboard/components/form-movie/form-movie';
 import { getMovieDetail } from '@/domains/movies/action';
+
+interface PageProps {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
 const getData = async (id:string)=>{
   try{

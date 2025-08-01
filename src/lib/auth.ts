@@ -6,6 +6,8 @@ import authConfig from "./auth.config";
 import NextAuth, { User } from "next-auth";
 import { getAuthorizedEmails } from "@/domains/auth/action/action";
 import { JWT } from "next-auth/jwt";
+
+
 const prisma = new PrismaClient()
 
 export const { handlers, auth, signIn, signOut } = NextAuth ({
