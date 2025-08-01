@@ -1,12 +1,12 @@
 
 import { URL_BASE } from "@/shared/route";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-
+import { PrismaClient } from "@prisma/client";
 import authConfig from "./auth.config";
 import NextAuth, { User } from "next-auth";
 import { getAuthorizedEmails } from "@/domains/auth/action/action";
 import { JWT } from "next-auth/jwt";
-import { PrismaClient } from "@prisma/client";
+
 
 const prisma = new PrismaClient()
 
