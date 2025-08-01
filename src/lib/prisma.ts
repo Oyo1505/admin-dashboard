@@ -1,5 +1,5 @@
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { PrismaClient } from '../../app/generated/prisma'
+import { PrismaClient } from '../../prisma/src/generated/client'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
