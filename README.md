@@ -57,8 +57,8 @@ Cette application est une plateforme complète de gestion de films avec authenti
 - **[Jest](https://jestjs.io/)** - Tests unitaires
 - **[pnpm](https://pnpm.io/)** - Gestionnaire de paquets
 ## Démo 
-- **[Visit](https://www.nuberubagu.fr/)** -
-- 
+- **[Visit](https://www.nuberubagu.fr/)**
+
 ## 🚀 Installation
 ### Prérequis
 - Node.js 18+ 
