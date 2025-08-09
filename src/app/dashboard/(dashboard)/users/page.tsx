@@ -34,7 +34,7 @@ const Page = async (
   <div className="w-full mb-4">
     <Search value={searchParams.q} />
   </div>
-    <UsersTable users={users}  offset={newOffset} />
+    <UsersTable users={users ?? []}  offset={newOffset} />
     <div>
     <Title type='h3' translationText='addEmailAuthorized' translationTheme='Dashboard' className='text-3xlfont-semibold mb-6' />
     <FormAddEmailAuthrizedEmail hasPermission={hasPermission ?? false}/>

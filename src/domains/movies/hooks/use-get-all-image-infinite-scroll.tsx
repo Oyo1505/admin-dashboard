@@ -23,7 +23,7 @@ const useGetMoviesInfiniteScroll = ({pageParam, search}:{pageParam?:number, sear
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage) => {
-      if (lastPage.prevOffset && lastPage.prevOffset > lastPage.movies?.length) {
+      if (lastPage.prevOffset && lastPage.prevOffset > (lastPage.movies?.length ?? 0)) {
         return undefined;
       }
       return lastPage.prevOffset && lastPage.prevOffset + 12;

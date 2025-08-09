@@ -1,4 +1,3 @@
-//@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
@@ -8,7 +7,7 @@ import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS, URL_HOME, URL_SUGGESTION } fr
 import { revalidatePath } from "next/cache";
 import nodemailer from 'nodemailer';
 
-export const getUsersWithPageParam = async (search:string, pageParam:number):Promise<{users: User[], newOffset: number | null, status: number}>  =>{
+export const getUsersWithPageParam = async (search:string, pageParam:number):Promise<{users?: User[], newOffset?: number | null, status: number}>  =>{
 
  try{
     const users = search.trim() === '' ?
@@ -28,7 +27,7 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
       if(users){
         const newOffset = users.length >= 20 ? pageParam + 20 : null;
         return {
-          users,
+          users: users as User[],
           status : 200,
           newOffset: newOffset
         }
@@ -93,7 +92,7 @@ export const deleteUserById = async ({id, user, token}:{id : string, user: User,
   }
 };
 
-export const deleteUserByIdFromUser = async (id): Promise<{ status: number, message?: string }> => {
+export const deleteUserByIdFromUser = async (id: string): Promise<{ status: number, message?: string }> => {
   if (!id) {
     return {
       status: 400,
@@ -127,6 +126,7 @@ export const deleteUserByIdFromUser = async (id): Promise<{ status: number, mess
     };
   }
 };
+
 export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: number}> => {
 
   try {
@@ -146,6 +146,7 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
   } catch (error) {
     console.log(error)
     return {
+      movieInDb: [],
       status : 500
     }
   }
@@ -159,7 +160,7 @@ export const addMovieToDb = async (movie: IMovie, user:User): Promise<{ status: 
       message: 'Unautorized'
     }
     const existingMovie = await prisma.movie.findUnique({
-      where: { idGoogleDive: movie.idGoogleDive },
+      where: { idGoogleDive: movie.idGoogleDive || '' },
     });
     if (existingMovie) {
       return { status: 409, message: 'Le film existe déjà' };
@@ -187,7 +188,7 @@ export const addMovieToDb = async (movie: IMovie, user:User): Promise<{ status: 
         genresIds: {
           create: movie?.genresIds?.map((genreId) => ({
             genre: {
-              connect: { id: genreId },
+              connect: { id: genreId.toString() },
             },
           })),
         },
@@ -225,12 +226,10 @@ export const editMovieToDb = async (movie: IMovie, user:User): Promise<{status: 
       return { status: 404, message: 'Le film n\'existe pas' };
     }
 
-    // Vérifier que les genres sont valides
     if (!movie.genresIds || !Array.isArray(movie.genresIds) || movie.genresIds.length === 0) {
       return { status: 400, message: 'Au moins un genre est requis' };
     }
 
-    // Mise à jour du film
     await prisma.movie.update({
       where: {
         id: movie.id
@@ -245,7 +244,7 @@ export const editMovieToDb = async (movie: IMovie, user:User): Promise<{status: 
         imdbId: movie.imdbId,
         originalTitle: movie.originalTitle,
         duration: Number(movie.duration),
-        idGoogleDrive: movie.idGoogleDrive,
+        idGoogleDive: movie.idGoogleDive,
         language: movie.language,
         subtitles: movie.subtitles || [],
         year: Number(movie.year),
@@ -253,7 +252,7 @@ export const editMovieToDb = async (movie: IMovie, user:User): Promise<{status: 
           deleteMany: {},
           create: movie.genresIds.map((genreId) => ({
             genre: {
-              connect: { id: genreId }
+              connect: { id: genreId.toString() }
             }
           }))
         },
@@ -275,12 +274,14 @@ export const editMovieToDb = async (movie: IMovie, user:User): Promise<{status: 
   }
 }
 
-export const deleteMovieById =  async (id:string, user:User): Promise<{status: number}> => {
+export const deleteMovieById =  async (id:string, user:User): Promise<{status: number, message?: string}> => {
 
   try {
-    if(user.role !== 'ADMIN') return {
-      status: 403,
-      message: 'Unautorized'
+    if(user.role !== 'ADMIN') {
+      return {
+        status: 403,
+        message: 'Accès refusé : vous n\'êtes pas administrateur'
+      };
     }
    if(id){
     await prisma.movie.delete({
@@ -297,8 +298,11 @@ export const deleteMovieById =  async (id:string, user:User): Promise<{status: n
       status : 500
     }
   }
+  return {
+    status: 400,
+    message: 'ID du film est requis'
+  };
 }
-
 
 export const publishedMovieById =  async (id:string): Promise<{publish: boolean, status: number}> => {
 
@@ -339,11 +343,15 @@ export const getFavoriteMovies = async (id: string): Promise<{ movies: IFavorite
         movie: true
       },
     });
-    return { movies, status: 200 };
+    return { movies: movies.map(movie => ({
+      ...movie,
+      id: movie.id.toString()
+    })), status: 200 };
 
   } catch (error) {
     console.log(error)
     return {
+      movies: [],
       status : 500
     }
   }
@@ -357,17 +365,18 @@ export const getDirectorFromSection =  async (): Promise<{directorMovies: IDirec
   } catch (error) {
     console.log(error)
     return {
+      directorMovies: null,
       status : 500
     }
   }
 }
 
-export const createDirectorFromSection =  async (formDirector:IDirector): Promise<{director: IDirector, status: number}> => {
+export const createDirectorFromSection =  async (formDirector:IDirector): Promise<{director?: IDirector, status: number}> => {
   try{
     const director = await prisma.directorSection.create({
       data: {
         director: formDirector.director,
-        imageBackdrop: formDirector.image,
+        imageBackdrop: formDirector.imageBackdrop,
       },
     })
     revalidatePath('dashboard/director')
@@ -381,7 +390,7 @@ export const createDirectorFromSection =  async (formDirector:IDirector): Promis
   }
 }
 
-export const updateDirectorFromSection =  async (formDirector:IDirector): Promise<{director: IDirector, status: number}> => {
+export const updateDirectorFromSection =  async (formDirector:IDirector): Promise<{director?: IDirector, status: number}> => {
 
   try
   {
@@ -401,12 +410,17 @@ export const updateDirectorFromSection =  async (formDirector:IDirector): Promis
   } catch (error) {
     console.log(error)
     return {
+     
       status : 500
     }
   }
+  return {
+    director: undefined,
+    status: 400
+  }
 }
 
-export const deleteDirectorFromSection =  async (id:string): Promise<{director: IDirector, status: number}> => {
+export const deleteDirectorFromSection =  async (id:string): Promise<{ status: number}> => {
 
   try
   {
@@ -436,17 +450,21 @@ export const getDirectorMovies = async ():Promise<{directorMovies: IMovie[] | nu
           publish: true,
           director: director?.directorMovies.director
         },
+        // @ts-ignore
         cacheStrategy: { ttl: 60 * 5 },
        })
 
-      return { directorMovies, director:director?.directorMovies?.director, imageBackdrop:director?.directorMovies?.imageBackdrop, status: 200 };
+      return { directorMovies, director: director?.directorMovies?.director ?? null, imageBackdrop: director?.directorMovies?.imageBackdrop ?? null, status: 200 };
     }else{
-      return { status: 200 };
+      return { directorMovies: null, director: null, imageBackdrop: null, status: 200 };
     }
 
   } catch (error) {
     console.log(error)
     return {
+      directorMovies: null,
+      director: null,
+      imageBackdrop: null,
       status : 500
     }
   }
@@ -477,6 +495,6 @@ export const sendEmail = async ({message, topic, emailUser}:{message: string, to
     return { status: result.accepted.length > 0 ? 200 : 500 }
   } catch (error) {
     console.log(error)
-    return { suggestion: [], status: 500 }
+    return { status: 500 }
   }
 }

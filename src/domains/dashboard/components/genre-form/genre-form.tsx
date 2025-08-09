@@ -4,6 +4,7 @@ import { Button } from '@/domains/ui/components/button/button'
 import { Input } from '@/domains/ui/components/input/input'
 import LabelForm from '@/domains/ui/components/label-form/label-form'
 import Title from '@/domains/ui/components/title/title'
+import { IGenre } from '@/models/movie/movie'
 import { genreSchema, GenreSectionSchema } from '@/shared/schema/movieSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
@@ -22,7 +23,7 @@ const GenreForm = () => {
 
   const onSubmit = async (data: GenreSectionSchema) => {
     try {
-      await addGenre(data);
+      await addGenre(data as IGenre);
       reset();
     } catch (error) {
       console.log(error);
