@@ -2,7 +2,6 @@ import { getFavoriteMovies } from '@/domains/dashboard/action'
 import { getAllMovies, getMovieDetail } from '@/domains/movies/action'
 import MovieHeader from '@/domains/movies/components/movie-header/movie-header'
 import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion'
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner'
 import Title from '@/domains/ui/components/title/title'
 import { auth } from '@/lib/auth'
 import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube'
@@ -25,8 +24,8 @@ export const revalidate = 60;
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const { movieInDb } = await getAllMovies()
-  return movieInDb?.map((movie) => ({
+  const { movieInDb } = await getAllMovies();
+  return (movieInDb ?? []).map((movie) => ({
     name: movie.id,
   }))
 }

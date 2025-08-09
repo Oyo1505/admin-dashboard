@@ -49,7 +49,9 @@ export const getMovieDetail = cache(async (id:string): Promise<{movie?: IMovie, 
       status: 500
     }
   }
-} )
+});
+
+
 export const getMoviesByARandomGenreById =  async (genreId: string): Promise<{movies?: IMovie[], status: number}> => {
   try {
     const moviesInDb = await prisma.movie.findMany({
