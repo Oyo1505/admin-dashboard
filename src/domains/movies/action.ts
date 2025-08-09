@@ -1,11 +1,12 @@
-//@ts-nocheck
 "use server"
 import prisma from "@/lib/prisma";
+import { IGenre, IMovie } from "@/models/movie/movie";
+import type { Prisma } from "@prisma/client";
 import { URL_GENRE_SECTION, URL_MOVIE_ID } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
-export const getMovieDetail = cache(async (id:string): Promise<{movie: IMovie, suggestedMovies: IMovie[]}> => {
+export const getMovieDetail = cache(async (id:string): Promise<{movie?: IMovie, suggestedMovies?: IMovie[], status: number}> => {
   try {
   const movieInDb = await prisma.movie.findUnique({
       where:{
@@ -18,6 +19,7 @@ export const getMovieDetail = cache(async (id:string): Promise<{movie: IMovie, s
           },
         },
       },
+      //@ts-ignore
       cacheStrategy: { ttl: 120 },
     });
 
@@ -33,27 +35,28 @@ export const getMovieDetail = cache(async (id:string): Promise<{movie: IMovie, s
         id: movieInDb?.id
       }
     },
+    //@ts-ignore
     cacheStrategy: { ttl: 600 },
    })
 
   if (!movieInDb && !suggestedMovies) {
-    return { status: 404, message: 'Le film n\'existe pas' };
+    return { status: 404 };
   }
-  return { movie : movieInDb, suggestedMovies, status: 200 };
+  return { movie: movieInDb as IMovie, suggestedMovies, status: 200 };
 } catch (error) {
   console.log(error)
     return {
-      status : 500
+      status: 500
     }
   }
 } )
-export const getMoviesByARandomGenreById =  async (genre: string): Promise<{movies: IMovie[], status: number}> => {
+export const getMoviesByARandomGenreById =  async (genreId: string): Promise<{movies?: IMovie[], status: number}> => {
   try {
     const moviesInDb = await prisma.movie.findMany({
       where: {
         genresIds: {
         some: {
-            genreId: { contains: genre.id, mode : 'insensitive'},
+            genreId: { contains: genreId, mode : 'insensitive'},
         },},
       },
     });
@@ -66,7 +69,7 @@ export const getMoviesByARandomGenreById =  async (genre: string): Promise<{movi
     }
 }
 
-export const getLastMovies =  async (): Promise<{movies: IMovie[], status: number}> => {
+export const getLastMovies =  async (): Promise<{movies?: IMovie[], status: number}> => {
   try {
     const moviesInDb = await prisma.movie.findMany({
       where: {
@@ -76,10 +79,11 @@ export const getLastMovies =  async (): Promise<{movies: IMovie[], status: numbe
         createdAt: 'desc'
       },
       take: 5,
+      //@ts-ignore
       cacheStrategy: { ttl: 300},
      })
   if (!moviesInDb) {
-    return { status: 404, message: 'Pas de films' };
+    return { status: 404 };
   }
   return {movies : moviesInDb, status: 200 };
 } catch (error) {
@@ -90,7 +94,7 @@ export const getLastMovies =  async (): Promise<{movies: IMovie[], status: numbe
   }
 }
 
-export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], country: string, status: number}> => {
+export const getMoviesByARandomCountry = async (): Promise<{movies?: IMovie[], country?: string, status: number}> => {
   try {
   const uniqueCountries = await prisma.movie.findMany({
     where: {
@@ -100,11 +104,12 @@ export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], co
       country: true,
     },
     distinct: ['country'],
+    //@ts-ignore
     cacheStrategy: { ttl: 300 },
 
   });
   if (!uniqueCountries) {
-    return { status: 400, message: 'Pas de pays' };
+    return { status: 400 };
   }
   const getARadomCountry = uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
 
@@ -119,9 +124,9 @@ export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], co
    });
 
    if (!movies) {
-    return { status: 400, message: 'Pas de films' };
+    return { status: 400  };
   }
-  return { status: 200, movies, country: getARadomCountry.country};
+  return { status: 200, movies, country: getARadomCountry.country as string};
   } catch (error) {
     console.log(error)
     return {
@@ -130,13 +135,14 @@ export const getMoviesByARandomCountry = async (): Promise<{movies: IMovie[], co
   }
 }
 
-export const getMoviesByARandomGenre = async (): Promise<{movies: IMovie[], genre: IGenre, status: number}> => {
+export const getMoviesByARandomGenre = async (): Promise<{movies?: IMovie[], genre?: IGenre, status: number}> => {
 try {
   const uniqueGenres = await prisma.genre.findMany({
+    //@ts-ignore
     cacheStrategy: { ttl: 300 },
   });
   if (!uniqueGenres) {
-    return { status: 400, message: 'Pas de genre' };
+    return { status: 400 };
   }
   const randomGenre = uniqueGenres[Math.floor(Math.random() * uniqueGenres.length)];
 
@@ -151,10 +157,11 @@ try {
       createdAt: 'desc'
     },
     take: 5,
+    //@ts-ignore
     cacheStrategy: { ttl: 300 },
    });
    if (!movies) {
-    return { status: 400, message: 'Pas de films' };
+    return { status: 400 };
   }
   return { status: 200, movies, genre: randomGenre};
     } catch (error) {
@@ -213,11 +220,12 @@ export const addOrRemoveToFavorite = async (idUser:string, idMovie:string | unde
   }
 };
 
-export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: number}> => {
+export const getAllMovies =  async (): Promise<{movieInDb?: IMovie[], status: number}> => {
 
   try {
 
    const movieInDb = await prisma.movie.findMany({
+    //@ts-ignore
     cacheStrategy: { ttl: 300 },})
 
     return {movieInDb, status: 200 };
@@ -229,7 +237,7 @@ export const getAllMovies =  async (): Promise<{movieInDb: IMovie[], status: num
   }
 }
 
-export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: number, search: string }): Promise<{movies: IMovie[], status: number, prevOffset: number}> => {
+export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: number, search: string }): Promise<{movies?: IMovie[], status: number, prevOffset?: number}> => {
 
   try {
 
@@ -243,6 +251,7 @@ export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: numb
           createdAt: 'desc',
         },
         take: pageParam,
+        //@ts-ignore
         cacheStrategy: { ttl: 300 },
       });
 
@@ -262,20 +271,7 @@ export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: numb
     const q = params.get('q');
 
     // Conditions pour la requête
-    const conditions: {
-      OR?: Array<{
-        title?: { contains: string; mode: 'insensitive' };
-        originalTitle?: { contains: string; mode: 'insensitive' };
-        titleJapanese?: { contains: string; mode: 'insensitive' };
-        titleEnglish?: { contains: string; mode: 'insensitive' };
-      }>;
-      AND?: Array<{
-        subtitles?: { has: string };
-        genre?: { has: string };
-        language?: { contains: string };
-        year?: { gte: number; lte: number };
-      }>;
-    } = {};
+    let conditions: Prisma.MovieWhereInput = {};
 
     // Ajout des conditions OR basées sur la recherche 'q'
     if (q && q.length > 0) {
@@ -326,7 +322,7 @@ export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: numb
     }
 
     // Concaténation des conditions OR et AND si elles existent
-    const whereClause = {
+    const whereClause: Prisma.MovieWhereInput = {
       ...(conditions.OR?.length ? { OR: conditions.OR } : {}),
       ...(conditions.AND?.length ? { AND: conditions.AND } : {}),
     };
@@ -338,6 +334,7 @@ export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: numb
         createdAt: 'desc',
       },
       take: pageParam,
+      //@ts-ignore
       cacheStrategy: { ttl: 300 },
     });
 
@@ -350,28 +347,30 @@ export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: numb
   } catch (err) {
     console.error('Erreur lors de la récupération des films:', err);
     return {
-      status: 500,
-      message: 'Erreur serveur. Impossible de récupérer les films.',
+      status: 500
     };
   }
 });
 
-export const getMoviesCountries = async (): Promise<{status: number, countries: string[]}> => {
+export const getMoviesCountries = async (): Promise<{status: number, countries?: string[]}> => {
     try {
       const countriesValues  = await prisma.movie.findMany({
         select: {
           country: true,
         },
+        //@ts-ignore
         cacheStrategy: { ttl: 300 * 60 },
         distinct: ['country'],
 
       });
 
       if (!countriesValues) {
-        return { status: 400, message: 'Pas de pays' };
+        return { status: 400 };
       }
 
-     const countries = countriesValues?.flatMap(item => item.country)
+     const countries = countriesValues
+       ?.flatMap(item => (item.country ? [item.country] : []))
+       ?? [];
 
      return { status: 200, countries};
 
@@ -383,7 +382,7 @@ export const getMoviesCountries = async (): Promise<{status: number, countries: 
       }
     }
 
-export const getAllGenres = async (): Promise<{status: number, genres: IGenre[]}> => {
+export const getAllGenres = async (): Promise<{status: number, genres?: IGenre[]}> => {
   try {
     const genres = await prisma.genre.findMany();
     if (!genres) {
@@ -398,16 +397,16 @@ export const getAllGenres = async (): Promise<{status: number, genres: IGenre[]}
   }
 };
 
-export const addGenre = async (genre: IGenre): Promise<{status: number, genres: IGenre[]}> => {
+export const addGenre = async (genre: IGenre): Promise<{status: number, genre?: IGenre}> => {
   try {
-    const genres = await prisma.genre.create({
+    const createdGenre = await prisma.genre.create({
       data: genre,
     });
-    if (!genres) {
-      return { status: 404, genres };
+    if (!createdGenre) {
+      return { status: 404 };
     }
     revalidatePath(URL_GENRE_SECTION)
-    return { status: 200, genres };
+    return { status: 200, genre: createdGenre };
   } catch (error) {
     console.log(error);
     return {
@@ -416,19 +415,19 @@ export const addGenre = async (genre: IGenre): Promise<{status: number, genres: 
   }
 };
 
-export const updateGenre = async (genre: IGenre): Promise<{status: number, genres: IGenre[]}> => {
+export const updateGenre = async (genre: IGenre): Promise<{status: number, genre?: IGenre}> => {
   try {
-    const genres = await prisma.genre.update({
+    const updatedGenre = await prisma.genre.update({
       where: {
         id: genre.id,
       },
       data: genre,
     });
-    if (!genres) {
-      return { status: 404, genres };
+    if (!updatedGenre) {
+      return { status: 404 };
     }
     revalidatePath(URL_GENRE_SECTION)
-    return { status: 200, genres };
+    return { status: 200, genre: updatedGenre };
   } catch (error) {
     console.log(error);
     return {
@@ -437,18 +436,18 @@ export const updateGenre = async (genre: IGenre): Promise<{status: number, genre
   }
 };
 
-export const deleteGenre = async (id: string): Promise<{status: number, genres: IGenre[]}> => {
+export const deleteGenre = async (id: string): Promise<{status: number, genre?: IGenre | undefined}> => {
   try {
-    const genres = await prisma.genre.delete({
+    const deletedGenre = await prisma.genre.delete({
       where: {
         id: id,
       },
     });
-    if (!genres) {
-      return { status: 404, genres };
+    if (!deletedGenre) {
+      return { status: 404 };
     }
     revalidatePath(URL_GENRE_SECTION)
-    return { status: 200, genres };
+    return { status: 200, genre: deletedGenre };
   } catch (error) {
     console.log(error);
     return {

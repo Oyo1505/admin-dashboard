@@ -30,7 +30,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.6.1",
-    "drizzle-orm": "^0.30.10",
     "file-loader": "^6.2.0",
     "fs": "0.0.1-security",
     "gapi-script": "^1.2.0",

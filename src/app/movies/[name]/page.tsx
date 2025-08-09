@@ -48,7 +48,7 @@ const Page = async ({
   const userAgent =  (await headers()).get('user-agent');
   const isMobileView = Boolean(userAgent?.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
 
-  const { movie,suggestedMovies } = await getMovie(name)
+  const { movie, suggestedMovies } = await getMovie(name)
   const session = await auth();
 
   const favoriteMovives = !session?.user?.id ? null : await getFavoriteMovies(session.user.id);
@@ -75,7 +75,7 @@ const Page = async ({
     </div>
   </Suspense>
   <div className='w-full  mt-14 mb-10 flex gap-7 flex-col lg:flex-row'>
-
+  <Suspense fallback={<Loading />}>
     {movie && movie?.trailer &&
     <>
       <div className='h-96 w-full lg:w-1/2'>
@@ -84,14 +84,16 @@ const Page = async ({
       </div>
     </>
     }
+     <Suspense fallback={null}>
     {suggestedMovies && suggestedMovies?.length > 0 ?
-      <Suspense fallback={<LoadingSpinner />}>
+     
         <div className='h-full w-full mt-10 lg:mt-0 lg:w-1/2'>
           <Title translationTheme='MoviePage' className={clsx(lobster.className,'text-2xl md:text-3xl')} translationText='Suggestion' type='h2' />
           <MovieCarouselSuggestion movies={suggestedMovies}  isMobileView={isMobileView}/>
         </div>
-        </Suspense>
     : null}
+      </Suspense>
+    </Suspense>
   </div>
 </div>
   )

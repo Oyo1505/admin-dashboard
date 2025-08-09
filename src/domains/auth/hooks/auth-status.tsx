@@ -5,7 +5,7 @@ import { redirect, usePathname } from "next/navigation"
 import { useEffect, useCallback } from 'react'
 import useUserStore from "store/user/user-store"
 
-const useAuthStatus = async () => {
+const useAuthStatus = () => {
   const {user, fetchUser, setUser, logout} = useUserStore((state) => state);
   const pathname = usePathname();
   const { data: session } = useSession();
