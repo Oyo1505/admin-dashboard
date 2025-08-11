@@ -2,7 +2,7 @@
 
 import { SearchIcon, Spinner } from '@/domains/ui/components/icons/icons';
 import { Input } from '@/domains/ui/components/input/input';
-import { URL_USERS } from '@/shared/route';
+import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, useTransition } from 'react';
 
@@ -26,7 +26,7 @@ import { useEffect, useRef, useState, useTransition } from 'react';
     startTransition(() => {
       // All navigations are transitions automatically
       // But wrapping this allow us to observe the pending state
-      router.replace(`${URL_USERS}?${params.toString()}`);
+      router.replace(`${URL_DASHBOARD_ROUTE.users}?${params.toString()}`);
     });
   }, [router, value]);
 

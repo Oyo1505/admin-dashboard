@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { IDirector } from "@/models/director/director";
 import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
 import { User } from "@/models/user/user";
-import { URL_DASHBOARD_MOVIE, URL_DASHBOARD_USERS, URL_HOME, URL_SUGGESTION } from "@/shared/route";
+import { URL_DASHBOARD_ROUTE, URL_HOME } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 import nodemailer from 'nodemailer';
 
@@ -44,7 +44,7 @@ export const getUsersWithPageParam = async (search:string, pageParam:number):Pro
  }
 };
 
-export const deleteUserById = async ({id, user, token}:{id : string, user: User, token: any}): Promise<{ status: number, message?: string }> => {
+export const deleteUserById = async ({id, user, token}:{id : string, user: User, token: unknown}): Promise<{ status: number, message?: string }> => {
   if (!id) {
     return {
       status: 400,
@@ -81,7 +81,7 @@ export const deleteUserById = async ({id, user, token}:{id : string, user: User,
       where: { id }
     });
 
-    revalidatePath(URL_DASHBOARD_USERS);
+    revalidatePath(URL_DASHBOARD_ROUTE.users);
     return { status: 200, message: 'User deleted successfully' };
   } catch (error) {
     console.log(error);
@@ -199,7 +199,7 @@ export const addMovieToDb = async (movie: IMovie, user:User): Promise<{ status: 
     });
 
 
-    revalidatePath(URL_DASHBOARD_MOVIE)
+    revalidatePath(URL_DASHBOARD_ROUTE.movie)
     return { status: 200, message: 'Film ajouté avec succès' };
 
   } catch (error) {
@@ -262,7 +262,7 @@ export const editMovieToDb = async (movie: IMovie, user:User): Promise<{status: 
       },
     })
 
-    revalidatePath(URL_DASHBOARD_MOVIE)
+    revalidatePath(URL_DASHBOARD_ROUTE.movie)
     return { status: 200, message: 'Film modifié avec succès' };
 
   } catch (error) {
@@ -491,7 +491,7 @@ export const sendEmail = async ({message, topic, emailUser}:{message: string, to
       `
     }
     const result = await transporter.sendMail(mailOptions)
-    revalidatePath(URL_SUGGESTION)
+    revalidatePath(URL_DASHBOARD_ROUTE.suggestion)
     return { status: result.accepted.length > 0 ? 200 : 500 }
   } catch (error) {
     console.log(error)

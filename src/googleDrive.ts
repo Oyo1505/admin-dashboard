@@ -4,7 +4,7 @@ import { google, GoogleApis } from "googleapis";
 import { revalidatePath } from "next/cache";
 import { Readable } from "stream";
 import { auth } from "./lib/google-api";
-import { URL_DASHBOARD_MOVIE } from "./shared/route";
+import { URL_DASHBOARD_ROUTE } from "./shared/route";
 
 
 export const findExistingFile = async (driveService:GoogleApis, fileName:string) => {
@@ -33,8 +33,8 @@ export const getDataFromGoogleDrive = async () => {
 
    // const files = res.data
     return { movies : movies.data.files}
-  } catch (error: any) {
-    console.error("Error fetching files:", error.message)
+  } catch (error) {
+    console.error("Error fetching files:", error)
     return null
   }
 }
@@ -46,8 +46,8 @@ const checkPermissions = async (fileId: string) => {
       fields: 'permissions(id, role, type, emailAddress)',
     });
     return permissions.data.permissions
-  } catch (error: any) {
-    console.error("Error checking permissions:", error.message);
+  } catch (error) {
+    console.error("Error checking permissions:", error);
   }
 };
 
@@ -60,7 +60,7 @@ export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status
    if(user && user[0].id){
     const response = await drive.files.delete({fileId})
     if(response.statusText === 'No Content' ){
-      revalidatePath(URL_DASHBOARD_MOVIE)
+      revalidatePath(URL_DASHBOARD_ROUTE.movie)
       return {status : 200};
     }
    }
@@ -71,7 +71,7 @@ export const deleteFileFromGoogleDrive = async (fileId: string): Promise<{status
   }
 };
 
-export const addFileToGoogleDriveAction = async (formData: File): Promise<{data: any, status: number} | null>  =>{
+export const addFileToGoogleDriveAction = async (formData: File): Promise<{data: unknown, status: number} | null>  =>{
 
   if(!formData) return null;
   const drive = google.drive({ version: "v3", auth })
@@ -107,7 +107,7 @@ export const addFileToGoogleDriveAction = async (formData: File): Promise<{data:
   );
 
     if(response){
-      revalidatePath(URL_DASHBOARD_MOVIE);
+      revalidatePath(URL_DASHBOARD_ROUTE.movie);
       return {data : response, status : 200};
     }
     return {data : null, status : 404};

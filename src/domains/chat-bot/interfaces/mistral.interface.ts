@@ -1,8 +1,6 @@
 export interface IMistralService {
   chat: {
-    //ts-ignore
     complete: (params: MistralCompleteParams) => Promise<MistralResponse>;
-    //ts-ignore
     parse: (params: MistralParseParams) => Promise<MistralResponse>;
   };
 }
@@ -10,7 +8,7 @@ export interface IMistralService {
 export interface MistralCompleteParams {
   model: string;
   temperature: number;
-  tools: any[];
+  tools: unknown[];
   toolChoice: string;
   parallelToolCalls: boolean;
   messages: Array<{
@@ -26,7 +24,7 @@ export interface MistralParseParams {
     role: string;
     content: string;
   }>;
-  responseFormat: any;
+  responseFormat: unknown;
 }
 
 export interface MistralResponse {

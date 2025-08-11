@@ -2,7 +2,7 @@
 import prisma from "@/lib/prisma";
 import { IGenre, IMovie } from "@/models/movie/movie";
 import type { Prisma } from "@prisma/client";
-import { URL_GENRE_SECTION, URL_MOVIE_ID } from "@/shared/route";
+import { URL_DASHBOARD_ROUTE, URL_MOVIE_ID } from "@/shared/route";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
@@ -273,7 +273,7 @@ export const fetchMovies = cache(async ({ pageParam, search }: { pageParam: numb
     const q = params.get('q');
 
     // Conditions pour la requête
-    let conditions: Prisma.MovieWhereInput = {};
+    const conditions: Prisma.MovieWhereInput = {};
 
     // Ajout des conditions OR basées sur la recherche 'q'
     if (q && q.length > 0) {
@@ -407,7 +407,7 @@ export const addGenre = async (genre: IGenre): Promise<{status: number, genre?: 
     if (!createdGenre) {
       return { status: 404 };
     }
-    revalidatePath(URL_GENRE_SECTION)
+    revalidatePath(URL_DASHBOARD_ROUTE.genre)
     return { status: 200, genre: createdGenre };
   } catch (error) {
     console.log(error);
@@ -428,7 +428,7 @@ export const updateGenre = async (genre: IGenre): Promise<{status: number, genre
     if (!updatedGenre) {
       return { status: 404 };
     }
-    revalidatePath(URL_GENRE_SECTION)
+    revalidatePath(URL_DASHBOARD_ROUTE.genre)
     return { status: 200, genre: updatedGenre };
   } catch (error) {
     console.log(error);
@@ -448,7 +448,7 @@ export const deleteGenre = async (id: string): Promise<{status: number, genre?: 
     if (!deletedGenre) {
       return { status: 404 };
     }
-    revalidatePath(URL_GENRE_SECTION)
+    revalidatePath(URL_DASHBOARD_ROUTE.genre)
     return { status: 200, genre: deletedGenre };
   } catch (error) {
     console.log(error);

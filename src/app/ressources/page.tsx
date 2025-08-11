@@ -5,16 +5,8 @@ import youtube from "@/assets/image/ressourcePage/yt.avif";
 import Ressources from "@/domains/ressources/components/ressources";
 import Container from "@/domains/ui/components/container/container";
 import Title from "@/domains/ui/components/title/title";
+import { Ressource } from "@/types";
 
-import { StaticImageData } from "next/image";
-
-type Ressource = {
-  id: number;
-  name: string;
-  url: string;
-  description: string;
-  image?: StaticImageData;
-}
 
 const webSitesRessources: Ressource[] = [
   {

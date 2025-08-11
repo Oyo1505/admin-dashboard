@@ -48,7 +48,7 @@ const ChatBot = () => {
         setIsChatBotEnabled(false)
     }
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: {message: string}) => {
       try {
         setMessages(prev => [...prev, {role: 'user', message: data.message}])
         refetch()

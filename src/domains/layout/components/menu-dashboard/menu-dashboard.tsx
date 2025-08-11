@@ -1,7 +1,7 @@
 'use client'
 import { NavItem } from '@/domains/layout/components/menu-dashboard-nav-item/menu-dashboard-nav-item'
 import { AddIncon, Favorite, Home, SettingsIcon, UsersIcon } from '@/domains/ui/components/icons/icons'
-import { URL_DASHBOARD, URL_DASHBOARD_MOVIE, URL_DIRECTOR_SECTION, URL_FAVORITE, URL_GENRE_SECTION, URL_SETTINGS, URL_SUGGESTION, URL_USERS } from '@/shared/route'
+import { URL_DASHBOARD, URL_DASHBOARD_ROUTE } from '@/shared/route'
 import checkPermissions from '@/shared/utils/permissions/checkPermissons'
 import { useTranslations } from 'next-intl'
 import useUserStore from 'store/user/user-store'
@@ -17,34 +17,34 @@ const MenuDashboard = () => {
             <Home />
               {t('dashboard')}
             </NavItem>
-            <NavItem href={URL_SUGGESTION}>
+            <NavItem href={URL_DASHBOARD_ROUTE.suggestion}>
               <AddIncon />
                    {t('suggestion')}
               </NavItem>
             {user && hasPermission &&<>
-               <NavItem href={URL_USERS}>
+               <NavItem href={URL_DASHBOARD_ROUTE.users}>
                   <UsersIcon className="h-4 w-4" />
                     {t('users')}
               </NavItem>
-               <NavItem href={URL_DASHBOARD_MOVIE}>
+               <NavItem href={URL_DASHBOARD_ROUTE.movie}>
               <AddIncon />
                 {t('movies')}
               </NavItem>
-              <NavItem href={URL_DIRECTOR_SECTION}>
+              <NavItem href={URL_DASHBOARD_ROUTE.director}>
               <AddIncon />
                     {t('director')}
               </NavItem>
-              <NavItem href={URL_GENRE_SECTION}>
+              <NavItem href={URL_DASHBOARD_ROUTE.genre}>
               <AddIncon />
                    {t('genre')}
               </NavItem>
            </>
             }
-          <NavItem href={URL_FAVORITE}>
+          <NavItem href={URL_DASHBOARD_ROUTE.favorite}>
            <Favorite />
             {t('favorite')}
             </NavItem>
-            <NavItem href={URL_SETTINGS}>
+            <NavItem href={URL_DASHBOARD_ROUTE.settings}>
               <SettingsIcon className="h-4 w-4" />
               {t('settings')}
             </NavItem>
