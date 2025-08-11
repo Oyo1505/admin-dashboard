@@ -36,7 +36,7 @@ const SuggestionForm = () => {
     resolver: zodResolver(suggestionSchema),
   })
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: {topic: string, message: string, emailUser: string}) => {
   // @ts-ignore:next-line
   const topic = topicOptions.find(option => option.value === data.topic)?.label[locale]
 
@@ -48,7 +48,7 @@ const SuggestionForm = () => {
    }
 
   }
-  const handleTopicChange = (e: any) => {
+  const handleTopicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue('topic', e.target.value)
   }
 console.log(isSubmitting)

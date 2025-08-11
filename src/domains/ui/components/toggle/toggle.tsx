@@ -3,7 +3,7 @@ import React from 'react'
 import { Input } from '../input/input'
 import { useTranslations } from 'next-intl';
 
-const Toggle = ({toggle, publish, isFetching}: {toggle:any, publish:boolean | undefined, isFetching:boolean}) => {
+const Toggle = ({toggle, publish, isFetching}: {toggle:React.ChangeEventHandler<HTMLInputElement>, publish:boolean | undefined, isFetching:boolean}) => {
   const t = useTranslations('Dashboard');
   
   return (

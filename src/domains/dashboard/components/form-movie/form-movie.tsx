@@ -12,7 +12,7 @@ import Title from '@/domains/ui/components/title/title';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
-import { URL_DASHBOARD_MOVIE } from '@/shared/route';
+import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from 'next-auth';
@@ -72,7 +72,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
     director : movie?.director ?? '',
     imdbId : movie?.imdbId ?? '',
     year: movie?.year ?? new Date().getFullYear(),
-    genresIds : movie?.genresIds as any ?? [],
+    genresIds : movie?.genresIds as unknown as string[] ?? [],
     trailer: movie?.trailer ?? '',
     duration: movie?.duration ?? 0,
     synopsis: movie?.synopsis ?? '',
@@ -103,10 +103,10 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       link: data.link,
     }
 
-  const { status } = await addMovieToDb(rawFormData as any, user as User)
+  const { status } = await addMovieToDb(rawFormData as unknown as IMovie, user as User)
   if(status === 200){
     toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
-    router.push(URL_DASHBOARD_MOVIE)
+    router.push(URL_DASHBOARD_ROUTE.movie)
     return
   }
   return toast.error(t('toastMovieMessageSuccessDelete'), { position: "top-center" });
@@ -137,10 +137,10 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
       subtitles: data.subtitles,
     }
 
-     const { status } = await editMovieToDb(rawFormData as any, user as User)
+     const { status } = await editMovieToDb(rawFormData as unknown as IMovie, user as User)
      if(status === 200){
        toast.success(t('toastMovieMessageSuccess'), { position: "top-center" });
-       router.push(URL_DASHBOARD_MOVIE)
+       router.push(URL_DASHBOARD_ROUTE.movie)
        return
      }
      return toast.error(t('toastMovieMessageSuccessDelete'), { position: "top-center" });
@@ -150,7 +150,6 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
   }
 
   const subtitles = watch('subtitles', []);
-  //const idGoogleDive = watch('idGoogleDive', '');
 
   const handleCheckboxChange = (value : string) => {
     const newValue = subtitles.includes(value)
@@ -196,7 +195,7 @@ const FormMovie = ({movie, editMovie = false, idFromGoogleDrive}:{ movie?:IMovie
     setGenresMovie(newGenresMovie)
     setGenresValue(newGenresMovie)
   }
-  const langageSorted = languagesList.sort((a: any, b: any) => locale === 'fr' ? a.label.fr.localeCompare(b.label.fr) : locale === 'jp' ? a.label.jp.localeCompare(b.label.jp) : a.label.en.localeCompare(b.label.en))
+  const langageSorted = languagesList.sort((a: {label: {fr: string, jp: string, en: string}}, b: {label: {fr: string, jp: string, en: string}}) => locale === 'fr' ? a.label.fr.localeCompare(b.label.fr) : locale === 'jp' ? a.label.jp.localeCompare(b.label.jp) : a.label.en.localeCompare(b.label.en))
 return(
     <div className='bg-white'>
       <div className=" text-background p-3 ">

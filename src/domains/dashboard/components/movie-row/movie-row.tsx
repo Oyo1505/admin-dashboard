@@ -17,7 +17,9 @@ function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, in
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(movie.publish);
   const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
-    movie?.id && (await deleteMovieById(movie?.id, user as User))
+    if (movie?.id) {
+      await deleteMovieById(movie?.id, user as User);
+    }
   }
 
   const { data, isFetching, status, refetch } = useQuery({
@@ -31,11 +33,16 @@ function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, in
       setIsMoviePublished(data.publish)
     }
   },[data, status]);
+  
   const onDeleteMovieOnGoogleDrive = async (): Promise<void> => {
-    movie?.id && (await deleteFileFromGoogleDrive(movie?.id))
+    if (movie?.id) {
+      await deleteFileFromGoogleDrive(movie?.id);
+    }
   }
-  const hasPermissionToDelete = checkPermissions(user, "can:delete", "movie")
-  const hasPermissionToUpdate = checkPermissions(user, "can:update", "movie")
+
+  const hasPermissionToDelete = checkPermissions(user, "can:delete", "movie");
+  const hasPermissionToUpdate = checkPermissions(user, "can:update", "movie");
+
   return (
     movie && movie.id &&
      <>
@@ -43,7 +50,7 @@ function MovieRow({ movie, btnText, index}: { movie:IMovie , btnText: string, in
         <TableCell className="font-bold">{index}. {movie.title ?? movie.id}</TableCell>
           {movie.title &&
           <TableCell>
-             <Toggle toggle={refetch} publish={isMoviePublished} isFetching={isFetching} />
+             <Toggle toggle={() => refetch()} publish={isMoviePublished} isFetching={isFetching} />
           </TableCell>}
           <TableCell>
          {hasPermissionToUpdate && <>

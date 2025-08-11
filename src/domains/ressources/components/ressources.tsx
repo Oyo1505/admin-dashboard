@@ -1,9 +1,10 @@
 "use client"
 import { WebLogo } from "@/domains/ui/components/icons/icons";
+import { Ressource } from "@/types";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-const Ressources = ({ listeRessources }: { listeRessources: any[] }) => {
+const Ressources = ({ listeRessources }: { listeRessources: Ressource[] }) => {
   const t = useTranslations("RessourcesPage");
   return <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 h-screen">
     {listeRessources && listeRessources.length > 0 ? listeRessources?.map((ressource) => (

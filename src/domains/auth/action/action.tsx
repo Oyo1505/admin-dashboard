@@ -1,6 +1,6 @@
 "use server"
 import prisma from "@/lib/prisma";
-import { URL_USERS } from "@/shared/route";
+import { URL_DASHBOARD_ROUTE } from "@/shared/route";
 import { User } from "next-auth";
 import { revalidatePath } from "next/cache";
 
@@ -30,7 +30,7 @@ export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:num
           email: email,
         }
       })
-      revalidatePath(URL_USERS)
+      revalidatePath(URL_DASHBOARD_ROUTE.users)
       return {status:200}
     }
     return {message:'User Already authorized', status:409 }
@@ -115,7 +115,7 @@ export const deleteEmailAuthorized = async (email:string): Promise<{ status?:num
     if(!emailDeleted){
       return {status:400}
     }
-    revalidatePath(URL_USERS)
+    revalidatePath(URL_DASHBOARD_ROUTE.users)
     return { status:200 }
   } catch (error) {
     console.log(error)

@@ -1,11 +1,11 @@
 'use client'
-import { URL_DASHBOARD_MOVIE, URL_HOME, URL_LEGAL_MENTIONS, URL_PRIVACY } from "@/shared/route"
+import { URL_DASHBOARD_ROUTE, URL_HOME, URL_LEGAL_MENTIONS, URL_PRIVACY } from "@/shared/route"
 import { useSession } from "next-auth/react"
 import { redirect, usePathname } from "next/navigation"
 import { useEffect, useCallback } from 'react'
 import useUserStore from "store/user/user-store"
 
-const useAuthStatus = async () => {
+const useAuthStatus = () => {
   const {user, fetchUser, setUser, logout} = useUserStore((state) => state);
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -44,7 +44,7 @@ const useAuthStatus = async () => {
 
   useEffect(() => {
     if (user && 'role' in user && user.role !== 'ADMIN' && 
-        (pathname === URL_DASHBOARD_MOVIE || 
+        (pathname === URL_DASHBOARD_ROUTE.movie || 
          pathname.includes('edit-movie') || 
          pathname.includes('add-movie'))) {
       redirect(URL_HOME);

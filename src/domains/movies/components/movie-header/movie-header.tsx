@@ -62,6 +62,7 @@ const MovieHeader = ({ movie, isFavorite }:MovieHeaderProps) => {
            }
           }
          } catch (err) {
+          console.log(err)
            toast.error(t('toastMessageError'), { position: "top-center" });
          }
       })

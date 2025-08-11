@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { IFavoriteMovieResponse, IMovie } from "@/models/movie/movie";
+import { IFavoriteMovieResponse } from "@/models/movie/movie";
 
 export interface  User  {
   id?: string;

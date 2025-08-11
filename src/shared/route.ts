@@ -10,13 +10,19 @@ export const URL_LEGAL_MENTIONS = '/mentions-legales'
 
 //DASHBOARD
 export const URL_DASHBOARD = '/dashboard'
-export const URL_SETTINGS = `${URL_DASHBOARD}/settings`
-export const URL_FAVORITE = `${URL_DASHBOARD}/favorite`
-export const URL_DASHBOARD_MOVIE = `${URL_DASHBOARD}/movie`
-export const URL_DASHBOARD_USERS = `${URL_DASHBOARD}/users`
-export const URL_DASHBOARD_MOVIE_ADD = (id:string) =>  `${URL_DASHBOARD}/movie/add-movie/${id}`
-export const URL_DASHBOARD_MOVIE_EDIT = (id:string) => `${URL_DASHBOARD}/movie/edit-movie/${id}`
-export const URL_USERS = `${URL_DASHBOARD}/users`
-export const URL_DIRECTOR_SECTION = `${URL_DASHBOARD}/director`
-export const URL_GENRE_SECTION = `${URL_DASHBOARD}/genre`
-export const URL_SUGGESTION = `${URL_DASHBOARD}/suggestion`
+export const URL_MOVIE = 'movie'
+export const URL_DASHBOARD_ROUTE =  {
+  settings: `${URL_DASHBOARD}/settings`,
+  favorite: `${URL_DASHBOARD}/favorite`,
+  movie: `${URL_DASHBOARD}/${URL_MOVIE}`,
+  users: `${URL_DASHBOARD}/users`,
+  movieAdd: `${URL_DASHBOARD}/${URL_MOVIE}/add-movie`,
+  movieEdit: `${URL_DASHBOARD}/${URL_MOVIE}/edit-movie`,
+  director: `${URL_DASHBOARD}/director`,
+  genre: `${URL_DASHBOARD}/genre`,
+  suggestion: `${URL_DASHBOARD}/suggestion`,
+}
+
+export const URL_DASHBOARD_MOVIE_ADD = (id:string) =>  `${URL_DASHBOARD_ROUTE.movieAdd}/${id}`
+export const URL_DASHBOARD_MOVIE_EDIT = (id:string) => `${URL_DASHBOARD_ROUTE.movieEdit}/${id}`
+

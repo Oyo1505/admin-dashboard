@@ -65,7 +65,7 @@ const SelectLanguage = ({language, onChangeLanguage, filters, listLanguages}:Sel
         defaultValue={language ?? filters?.language}
         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 '>
       <option> </option>
-      {listLanguages.map((language: any, index: number) => (
+      {listLanguages.map((language: {label: {fr: string, jp: string, en: string}, value: string}, index: number) => (
           <option  key={`${language?.label?.[locale]}-${index}`} value={language?.value}>
             {language?.label?.[locale]}
           </option>
@@ -80,20 +80,20 @@ type SelectGenreProps = {
   // eslint-disable-next-line no-unused-vars
   onChangeGenre: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   filters?: { genre?: string };
-  genres: any;
+  genres: IGenre[];
 };
 
 const SelectGenre = ({genre, onChangeGenre, filters, genres}:SelectGenreProps) => {
   const t = useTranslations('Filters');
   const locale = useLocale() as Locale
-  const genresSorted = genres.sort((a: any, b: any) => locale === 'fr' ? a.nameFR.localeCompare(b.nameFR) : locale === 'jp' ? a.nameJP.localeCompare(b.nameJP) : a.nameEN.localeCompare(b.nameEN));
+  const genresSorted = genres.sort((a: {nameFR: string, nameJP: string, nameEN: string}, b: {nameFR: string, nameJP: string, nameEN: string}) => locale === 'fr' ? a.nameFR.localeCompare(b.nameFR) : locale === 'jp' ? a.nameJP.localeCompare(b.nameJP) : a.nameEN.localeCompare(b.nameEN));
 
   return (
       <div  className="flex flex-col gap-2 md:w-64">
       <LabelForm titleLabel={t('genre')} className='text-white' htmlFor='genre' />
       <select  onChange={onChangeGenre} defaultValue={genre ?? filters?.genre} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5'>
         <option> </option>
-        {genresSorted?.map((genre: any, index: number) => (
+        {genresSorted?.map((genre: {id: string, nameFR: string, nameJP: string, nameEN: string}, index: number) => (
           <option  key={`${genre.id}-${index}`} value={displayGenreTranslated(genre, locale)}>
             {displayGenreTranslated(genre, locale)}
           </option>
@@ -252,7 +252,7 @@ const MovieFilters = ({subtitles, q, language, genres, genre, offset, decadePara
         <SelectSubtitles subtitles={subtitles} onChangeSubtitles={onChangeSubtitles} filters={filters} />
         <SelectLanguage language={language} onChangeLanguage={onChangeCountry} listLanguages={listCountries} filters={filters} />
         <SelectDecade decade={decade?.decade} defaultValue={String(decadeParams ?? filters?.decade)} onChangeDecade={onChangeDecade} filters={{ decade: filters?.decade?.toString() }} />
-        <SelectGenre genre={genre} onChangeGenre={onChangeGenre} filters={filters} genres={genres?.sort()} />
+        <SelectGenre genre={genre} onChangeGenre={onChangeGenre} filters={filters} genres={genres?.sort((a, b) => a.nameFR.localeCompare(b.nameFR)) as IGenre[] } />
       </div>
       <ButtonSearch className='w-full hover:cursor-pointer md:w-full lg:max-w-56 transition-all duration-300' btnText={t('btnSearch')} onClick={onClick} />
     </div>
