@@ -22,7 +22,7 @@
   "LandingPage": {
     "login": "ログイン",
     "logout": "ログアウト",
-    "welcome":"ヌーベルバーグへようこそ！",
+    "welcome": "ヌーベルバーグへようこそ！",
     "title": "Google に接続",
     "privacy": "プライバシーポリシー",
     "legalMentions": "法的なお知らせ"
@@ -38,40 +38,40 @@
     "logout": "ログアウト"
   },
   "MoviesPage": {
-    "NoMovie":"映画がありません",
+    "NoMovie": "映画がありません",
     "btnLoadMore": "もっと読み込む"
   },
   "Dashboard": {
     "welcome": "ようこそ",
-    "continue" : "続きを見る",
-    "emailAuthorized":"Email 承認済み",
-    "addButton":"追加",
-    "editButton":"編集",
-    "deleteButton":"削除",
-    "noMovie":"映画がありません",
+    "continue": "続きを見る",
+    "emailAuthorized": "Email 承認済み",
+    "addButton": "追加",
+    "editButton": "編集",
+    "deleteButton": "削除",
+    "noMovie": "映画がありません",
     "movieAdded": "追加",
     "movieNotAdded": "映画がありません",
-    "togglePublished" : "公開",
+    "togglePublished": "公開",
     "toggleUnpublished": "非公開",
     "addEmailAuthorized": "Email 承認済みを追加",
     "nextPage": "次のページ",
     "previousPage": "前のページ",
     "loading": "読み込み中...",
-    "suggestion":"提案"
+    "suggestion": "提案"
   },
   "DashboardNav": {
-    "dashboard":"ダッシュボード",
-    "users":"ユーザー",
-    "director":"ディレクター",
-    "genre":"ジャンル",
-    "add-movie":"映画を追加",
-    "movies":"映画",
-    "favorite":"お気に入り",
-    "settings":"設定",
-    "suggestion":"提案"
+    "dashboard": "ダッシュボード",
+    "users": "ユーザー",
+    "director": "ディレクター",
+    "genre": "ジャンル",
+    "add-movie": "映画を追加",
+    "movies": "映画",
+    "favorite": "お気に入り",
+    "settings": "設定",
+    "suggestion": "提案"
   },
   "AddMovie": {
-    "title":"映画を追加",
+    "title": "映画を追加",
     "titleMovie": "タイトル",
     "director": "ディレクター",
     "year": "年",
@@ -79,7 +79,7 @@
     "country": "国",
     "trailer": "トレーラー",
     "synopsis": "概要",
-    "idGoogleDive" : "ID Google Drive",
+    "idGoogleDive": "ID Google Drive",
     "link": "画像リンク",
     "save": "保存",
     "duration": "時間",
@@ -122,7 +122,7 @@
     "download": "映画をダウンロード",
     "titleWebSubtitles": "サイトの字幕リスト",
     "Suggestion": "提案",
-    "editMovie" : "Modifier Film"
+    "editMovie": "Modifier Film"
   },
   "GenrePage": {
     "title": "ジャンル",
@@ -134,7 +134,7 @@
   "SettingsPage": {
     "anyHelp": "ご協力が必要ですか？",
     "deleteAccount": "アカウントを削除",
-    "areYouSure" : "本当にアカウントを削除しますか？",
+    "areYouSure": "本当にアカウントを削除しますか？",
     "cancel": "キャンセル"
   },
   "Filters": {
@@ -159,7 +159,7 @@
     "title": "リソース",
     "noRessource": "リソースが見つかりません"
   },
-  "ErrorMessage" :{
+  "ErrorMessage": {
     "notPermitted": "あなたはこのページにアクセスする権限がありません"
   }
 }

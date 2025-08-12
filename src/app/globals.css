@@ -3,13 +3,13 @@ layer(base);
 @import 'tailwindcss';
 
 @theme {
-  --color-text: #F5F5F5;
-  --color-border: #F5F5F5;
+  --color-text: #f5f5f5;
+  --color-border: #f5f5f5;
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   --color-background: #121212;
-  --color-foreground: #F5F5F5;
-  --color-primary: #F5F5F5;
+  --color-foreground: #f5f5f5;
+  --color-primary: #f5f5f5;
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
   --color-destructive: hsl(var(--destructive));
@@ -39,17 +39,31 @@ layer(base);
   --border-radius-md: calc(var(--radius) - 2px);
   --border-radius-sm: calc(var(--radius) - 4px);
   --keyframes-shimmer: {
-    0%: { background-color: #f0f0f0; }
-    50%: { background-color: #e0e0e0; }
-    100%: { background-color: #f0f0f0; }
+    0%: {
+      background-color: #f0f0f0;
+    }
+    50%: {
+      background-color: #e0e0e0;
+    }
+    100%: {
+      background-color: #f0f0f0;
+    }
   };
   --keyframes-accordion-down: {
-    from: { height: 0; }
-    to: { height: var(--radix-accordion-content-height); }
+    from: {
+      height: 0;
+    }
+    to: {
+      height: var(--radix-accordion-content-height);
+    }
   };
   --keyframes-accordion-up: {
-    from: { height: var(--radix-accordion-content-height); }
-    to: { height: 0; }
+    from: {
+      height: var(--radix-accordion-content-height);
+    }
+    to: {
+      height: 0;
+    }
   };
   --animation-accordion-down: accordion-down 0.2s ease-out;
   --animation-accordion-up: accordion-up 0.2s ease-out;
@@ -57,7 +71,7 @@ layer(base);
   --background-image-paramount: url('/images/paramount.jpg');
   --background-image-chicago: url('/images/chicago.avif');
   --background-image-ticket: url('/images/ticket.jpg');
-  --background-image-forest: url('/images/forest.jpg')
+  --background-image-forest: url('/images/forest.jpg');
 }
 
 @layer base {
@@ -67,34 +81,33 @@ layer(base);
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
- 
-    --primary: #F5F5F5;
+
+    --primary: #f5f5f5;
     --primary-foreground: 210 40% 98%;
- 
-    --secondary: #F5F5F5;
+
+    --secondary: #f5f5f5;
     --secondary-foreground: 222.2 47.4% 11.2%;
- 
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
- 
+
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
- 
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
- 
+
     --radius: 0.5rem;
   }
-
 }
- 
+
 @layer base {
   * {
     @reference border-border;

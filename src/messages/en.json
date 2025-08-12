@@ -19,10 +19,10 @@
     "label": "Language",
     "HomePage": "ホーム"
   },
- "LandingPage": {
+  "LandingPage": {
     "login": "Login",
     "logout": "Logout",
-    "welcome":"Welcome to Nūberu Bāgu !",
+    "welcome": "Welcome to Nūberu Bāgu !",
     "title": "Sign in with Google",
     "privacy": "Privacy Policy",
     "legalMentions": "Legal mentions"
@@ -38,18 +38,18 @@
     "logout": "Logout"
   },
   "MoviesPage": {
-    "NoMovie":"No movies available",
+    "NoMovie": "No movies available",
     "btnLoadMore": "Load more"
   },
   "Dashboard": {
     "welcome": "Welcome",
-    "continue" : "Continue Watching",
-    "users":"Users",
-    "emailAuthorized":"Email Authorized",
-    "addButton":"Add",
-    "editButton":"Edit",
-    "deleteButton":"Delete",
-    "noMovie":"No movies available",
+    "continue": "Continue Watching",
+    "users": "Users",
+    "emailAuthorized": "Email Authorized",
+    "addButton": "Add",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "noMovie": "No movies available",
     "movieAdded": "Movie published",
     "movieNotAdded": "Movie not published",
     "togglePublished": "Published",
@@ -60,15 +60,15 @@
     "loading": "Loading..."
   },
   "DashboardNav": {
-    "dashboard":"Dashboard",
-    "users":"Users",
-    "director":"Section Director",
-    "add-movie":"Add movie",
-    "movies":"Movies",
-    "genre":"Genre",
-    "favorite":"Favorite",
-    "settings":"Settings",
-    "suggestion":"Suggestion"
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "director": "Section Director",
+    "add-movie": "Add movie",
+    "movies": "Movies",
+    "genre": "Genre",
+    "favorite": "Favorite",
+    "settings": "Settings",
+    "suggestion": "Suggestion"
   },
   "AddMovie": {
     "title": "Add Movie",
@@ -80,7 +80,7 @@
     "trailer": "Trailer",
     "synopsis": "Synopsis",
     "link": "Link Image",
-    "idGoogleDive" : "ID Google Drive",
+    "idGoogleDive": "ID Google Drive",
     "save": "Save",
     "duration": "Duration",
     "originalTitle": "Original Title",
@@ -102,7 +102,7 @@
   "MoviePage": {
     "duration": "Duration",
     "release": "Release date",
-    "director" : "Director",
+    "director": "Director",
     "genre": "Genre",
     "country": "Country",
     "synopsis": "Synopsis",
@@ -122,7 +122,7 @@
     "download": "Download Movie",
     "titleWebSubtitles": "List of site web subtitles",
     "Suggestion": "Suggestion",
-    "editMovie" : "Edit Movie"
+    "editMovie": "Edit Movie"
   },
   "GenrePage": {
     "title": "Genres",
