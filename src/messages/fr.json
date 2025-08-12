@@ -22,7 +22,7 @@
   "LandingPage": {
     "login": "Connexion",
     "logout": "Déconnexion",
-    "welcome":"Bienvenue sur Nūberu Bāgu !",
+    "welcome": "Bienvenue sur Nūberu Bāgu !",
     "title": "Connectez-vous avec Google",
     "privacy": "Politique de confidentialité",
     "legalMentions": "Mentions légales"
@@ -38,18 +38,18 @@
     "logout": "Déconnexion"
   },
   "MoviesPage": {
-    "NoMovie":"Aucun film disponible",
+    "NoMovie": "Aucun film disponible",
     "btnLoadMore": "Charger plus"
   },
   "Dashboard": {
     "welcome": "Bienvenue",
-    "continue" : "Reprise de vos vidéo en cours",
-    "emailAuthorized":"Email autorisé",
-    "addButton":"Ajouter",
-    "editButton":"Editer",
-    "deleteButton":"Supprimer",
-    "NoMovie":"Aucun film disponible",
-    "movieAdded" : "Film ajouté",
+    "continue": "Reprise de vos vidéo en cours",
+    "emailAuthorized": "Email autorisé",
+    "addButton": "Ajouter",
+    "editButton": "Editer",
+    "deleteButton": "Supprimer",
+    "NoMovie": "Aucun film disponible",
+    "movieAdded": "Film ajouté",
     "movieNotAdded": "Film non ajouté",
     "noMovie": "Aucun film",
     "togglePublished": "Publier",
@@ -60,18 +60,18 @@
     "loading": "Chargement..."
   },
   "DashboardNav": {
-    "dashboard":"Espace Personnel",
-    "users":"Utilisateurs",
-    "director":"Section Réalisateur",
-    "movies":"Films",
-    "add-movie":"Ajouter film",
-    "genre":"Genre",
-    "favorite":"Favoris",
-    "settings":"Paramètres",
-    "suggestion":"Suggestion"
+    "dashboard": "Espace Personnel",
+    "users": "Utilisateurs",
+    "director": "Section Réalisateur",
+    "movies": "Films",
+    "add-movie": "Ajouter film",
+    "genre": "Genre",
+    "favorite": "Favoris",
+    "settings": "Paramètres",
+    "suggestion": "Suggestion"
   },
   "AddMovie": {
-    "title":"Ajouter un film",
+    "title": "Ajouter un film",
     "titleMovie": "Titre du Film",
     "year": "Année",
     "director": "Réalisateur",
@@ -81,7 +81,7 @@
     "synopsis": "Synopsis",
     "link": "Lien Image",
     "save": "Enregistrer",
-    "idGoogleDive" : "ID Google Drive",
+    "idGoogleDive": "ID Google Drive",
     "duration": "Durée",
     "originalTitle": "Titre original",
     "langage": "Langue",
@@ -120,9 +120,9 @@
     "toastMessageSuccessDelete": "Film supprimé des favoris",
     "toastMessageError": "Une Erreur est survenue",
     "download": "Télécharger le film",
-    "titleWebSubtitles" : "Liste des sites de sous-titres",
+    "titleWebSubtitles": "Liste des sites de sous-titres",
     "Suggestion": "Suggestion",
-    "editMovie" : "Modifier Film"
+    "editMovie": "Modifier Film"
   },
   "GenrePage": {
     "title": "Genres",
@@ -132,7 +132,7 @@
     "LabelJapanese": "Japonais"
   },
   "SettingsPage": {
-    "title": "Settings" ,
+    "title": "Settings",
     "anyHelp": "Besoin d'aide ?",
     "areYouSure": "Etes vous sûr de vouloir supprimer votre compte ?",
     "cancel": "Annuler",
@@ -160,7 +160,7 @@
     "title": "Ressources",
     "noRessource": "Aucune ressource trouvée"
   },
-  "ErrorMessage" :{
+  "ErrorMessage": {
     "notPermitted": "Vous n&lsquo;avez pas les permissions pour accéder à cette page"
   }
 }
