@@ -1,13 +1,13 @@
-'use client'
+'use client';
 import { SearchIcon, Spinner } from '@/domains/ui/components/icons/icons';
 
 import { Input } from '@/domains/ui/components/input/input';
 import { useRef, useState, useTransition } from 'react';
 
-const SearchBar  = (props: { value?: string }) => {
+const SearchBar = (props: { value?: string }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [value, ] = useState(props.value);
-  const [isPending,] = useTransition();
+  const [value] = useState(props.value);
+  const [isPending] = useTransition();
 
   return (
     <div className="relative">
@@ -24,7 +24,7 @@ const SearchBar  = (props: { value?: string }) => {
       />
       {isPending && <Spinner />}
     </div>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;

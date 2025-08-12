@@ -1,16 +1,27 @@
-'use client'
-import React, { ChangeEvent, useState } from 'react'
+'use client';
+import React, { ChangeEvent, useState } from 'react';
 import { Input } from '../input/input';
 
-const Fieldset = ({ label, id, defaultValue }: { label: string, id: string, defaultValue?: string }) => {
+const Fieldset = ({
+  label,
+  id,
+  defaultValue,
+}: {
+  label: string;
+  id: string;
+  defaultValue?: string;
+}) => {
   const [value, setValue] = useState<string>();
 
-  const handleChange = (event:ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
   return (
     <div className="mb-[15px] flex items-center gap-5">
-      <label className="text-violet11 w-[90px] text-right text-[15px]" htmlFor={id}>
+      <label
+        className="text-violet11 w-[90px] text-right text-[15px]"
+        htmlFor={id}
+      >
         {label}
       </label>
       <Input
@@ -22,6 +33,6 @@ const Fieldset = ({ label, id, defaultValue }: { label: string, id: string, defa
       />
     </div>
   );
-}
+};
 
-export default Fieldset
+export default Fieldset;

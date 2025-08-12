@@ -158,5 +158,8 @@
   "RessourcesPage": {
     "title": "リソース",
     "noRessource": "リソースが見つかりません"
+  },
+  "ErrorMessage" :{
+    "notPermitted": "あなたはこのページにアクセスする権限がありません"
   }
 }

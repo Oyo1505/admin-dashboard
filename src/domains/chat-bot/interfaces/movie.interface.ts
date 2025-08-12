@@ -13,4 +13,4 @@ export interface IMovieDetails extends IMovieBasicInfo {
 
 export interface IMovieService {
   getAllMovies: () => Promise<IMovieDetails[]>;
-} 
+}

@@ -7,7 +7,7 @@ interface SelectInputProps {
   formDataKey: string;
   locale: string;
   // eslint-disable-next-line no-unused-vars
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
 }
 
@@ -21,15 +21,15 @@ const SelectInput: React.FC<SelectInputProps> = ({
   className = 'text-background',
 }) => {
   return (
-    <select 
-      onChange={onChange} 
-      defaultValue={defaultValue || formData?.[formDataKey]} 
+    <select
+      onChange={onChange}
+      defaultValue={defaultValue || formData?.[formDataKey]}
       className={className}
     >
       <option value=""> </option>
       {optionsList.map((option, index) => (
-        <option 
-          key={`${option?.label?.[locale]}-${index}`} 
+        <option
+          key={`${option?.label?.[locale]}-${index}`}
           value={option?.value}
         >
           {option?.label?.[locale]}

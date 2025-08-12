@@ -9,11 +9,14 @@ const MoviesHomeThemeSkeleton = () => {
       <Container className="h-full pt-6 pb-6 flex relative flex-col justify-start items-start">
         {/* Skeleton for the Title */}
         <SkeletonBox className="h-10 w-48 animate-shimmer md:h-16 md:w-64 mb-4" />
-        
+
         <div className="h-full flex flex-wrap justify-start items-end gap-2">
           {/* Skeletons for Movie Items (non-mobile view) */}
           {[...Array(4)].map((_, index) => (
-            <SkeletonBox key={index} className="w-28 h-40 animate-shimmer bg-gray-200 md:w-40 md:h-56" />
+            <SkeletonBox
+              key={index}
+              className="w-28 h-40 animate-shimmer bg-gray-200 md:w-40 md:h-56"
+            />
           ))}
         </div>
 
@@ -21,7 +24,10 @@ const MoviesHomeThemeSkeleton = () => {
         <div className="w-full mt-6 block md:hidden">
           <div className="w-full flex gap-4 overflow-x-auto">
             {[...Array(3)].map((_, index) => (
-              <SkeletonBox key={index} className="w-28 h-40 animate-shimmer bg-gray-200" />
+              <SkeletonBox
+                key={index}
+                className="w-28 h-40 animate-shimmer bg-gray-200"
+              />
             ))}
           </div>
         </div>

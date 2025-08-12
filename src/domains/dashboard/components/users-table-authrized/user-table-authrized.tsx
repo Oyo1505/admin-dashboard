@@ -1,12 +1,16 @@
-'use client'
-import { getAuthorizedEmailsPagination } from '@/domains/auth/action/action'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useTranslations } from 'next-intl'
-import { useState } from 'react'
-import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row'
+'use client';
+import { getAuthorizedEmailsPagination } from '@/domains/auth/action/action';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row';
 
-export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }) => {
-  const [page, setPage] = useState(0)
+export const UserTableAuthrized = ({
+  hasPermission,
+}: {
+  hasPermission: boolean;
+}) => {
+  const [page, setPage] = useState(0);
 
   const { isPending, isError, error, data, isFetching, isPlaceholderData } =
     useQuery({
@@ -15,12 +19,14 @@ export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }
       placeholderData: keepPreviousData,
       staleTime: 0,
       refetchOnWindowFocus: false,
-    })
-    const  t  = useTranslations('Dashboard')
+    });
+  const t = useTranslations('Dashboard');
   return (
     <div>
       {isPending || isFetching ? (
-        <div className="mt-2 block text-center min-h-[400px]">{t('loading')}</div>
+        <div className="mt-2 block text-center min-h-[400px]">
+          {t('loading')}
+        </div>
       ) : isError ? (
         <div>Erreur: {error.message}</div>
       ) : (
@@ -39,18 +45,18 @@ export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }
             <button
               onClick={() => setPage((old) => Math.max(old - 1, 0))}
               disabled={page === 0}
-              className='bg-blue-500 text-white p-2 rounded-md cursor-pointer disabled:opacity-50'
+              className="bg-blue-500 text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
             >
-                {t('previousPage')}
+              {t('previousPage')}
             </button>
             <button
               onClick={() => {
                 if (!isPlaceholderData && data?.mails?.length === 5) {
-                  setPage((old) => old + 1)
+                  setPage((old) => old + 1);
                 }
               }}
               disabled={isPlaceholderData || (data?.mails?.length ?? 0) < 5}
-              className='bg-blue-500 text-white p-2 rounded-md cursor-pointer disabled:opacity-50'
+              className="bg-blue-500 text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
             >
               {t('nextPage')}
             </button>
@@ -58,5 +64,5 @@ export const UserTableAuthrized = ({ hasPermission }: { hasPermission: boolean }
         </div>
       )}
     </div>
-  )
-}
+  );
+};

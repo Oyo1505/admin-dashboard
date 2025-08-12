@@ -1,6 +1,6 @@
 // Types globaux pour l'application
 
-import { StaticImageData } from "next/image";
+import { StaticImageData } from 'next/image';
 
 export interface User {
   id: string;
@@ -52,11 +52,10 @@ export interface SearchParams {
   language?: string;
 }
 
-
 export type Ressource = {
   id: number;
   name: string;
   url: string;
   description: string;
   image?: StaticImageData;
-}
+};

@@ -1,11 +1,11 @@
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner'
+import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 
 const Loading = () => {
   return (
-    <div className='flex w-full h-screen justify-center items-center'>
+    <div className="flex w-full h-screen justify-center items-center">
       <LoadingSpinner />
     </div>
-  )
-}
+  );
+};
 
-export default Loading
+export default Loading;

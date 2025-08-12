@@ -10,22 +10,36 @@ import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 const getData = async () => {
   const { genres } = await getAllGenres();
   return { genres };
-}
+};
 
 const Page = async () => {
   const { genres } = await getData();
-  const session = await auth()
-  const userConnected = await getUserConnected(session?.user?.email ?? '')
-  const hasPermission =  userConnected?.user && checkPermissions(userConnected?.user, "can:update", "genre") && checkPermissions(userConnected?.user, "can:create", "genre") && checkPermissions(userConnected?.user, "can:delete", "genre")
-  if(!hasPermission) return <div className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6'>Vous n&lsquo;avez pas les permissions pour accéder à cette page</div>
+  const session = await auth();
+  const userConnected = await getUserConnected(session?.user?.email ?? '');
+  const hasPermission =
+    userConnected?.user &&
+    checkPermissions(userConnected?.user, 'can:update', 'genre') &&
+    checkPermissions(userConnected?.user, 'can:create', 'genre') &&
+    checkPermissions(userConnected?.user, 'can:delete', 'genre');
+  if (!hasPermission)
+    return (
+      <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+        Vous n&lsquo;avez pas les permissions pour accéder à cette page
+      </div>
+    );
 
   return (
-    <Container className='flex flex-col gap-6 justify-start'>
-      <Title type='h1' translationTheme='GenrePage' translationText='title'  className='text-2xl' />
+    <Container className="flex flex-col gap-6 justify-start">
+      <Title
+        type="h1"
+        translationTheme="GenrePage"
+        translationText="title"
+        className="text-2xl"
+      />
       <GenreList genres={genres} />
       <GenreForm />
     </Container>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
