@@ -15,6 +15,8 @@ import { getLocale } from 'next-intl/server'
 import { Lobster } from 'next/font/google'
 import { headers } from 'next/headers'
 import { Suspense } from 'react'
+import { auth } from '@/lib/auth'
+import { IMovie } from '@/models/movie/movie'
 
 export const revalidate = 60;
 
@@ -25,13 +27,35 @@ const lobster = Lobster({
 });
 
 async function getData() {
-  const moviesLastFive = await getLastMovies();
-  const { movies: moviesByARandomCountry, country} = await getMoviesByARandomCountry();
-  const { movies: moviesByARandomGenre, genre } = await getMoviesByARandomGenre();
-  const { movies: favorites} = await getFavoriteMovies("clzl1br370003zt5x1ipm2ojv");
-  const { directorMovies, director, imageBackdrop } = await getDirectorMovies();
+  const [
+    moviesLastFive,
+    moviesByARandomCountryData,
+    moviesByARandomGenreData,
+    favorites,
+    directorMoviesData
+  ] = await Promise.all([
+    getLastMovies(),
+    getMoviesByARandomCountry(),
+    getMoviesByARandomGenre(),
+    getFavoriteMovies("clzl1br370003zt5x1ipm2ojv"),
+    getDirectorMovies()
+  ]);
 
-  return { moviesLastFive, moviesByARandomCountry, moviesByARandomGenre, genre, favorites, directorMovies, country,  director, imageBackdrop, }
+  const { movies: moviesByARandomCountry, country } = moviesByARandomCountryData;
+  const { movies: moviesByARandomGenre, genre } = moviesByARandomGenreData;
+  const { directorMovies, director, imageBackdrop } = directorMoviesData;
+
+  return { 
+    moviesLastFive, 
+    moviesByARandomCountry, 
+    moviesByARandomGenre, 
+    genre, 
+    favorites, 
+    directorMovies, 
+    country, 
+    director, 
+    imageBackdrop 
+  };
 }
 
 const Page =  async () => {
@@ -39,7 +63,8 @@ const Page =  async () => {
 
   const { moviesLastFive, moviesByARandomCountry, favorites, directorMovies, moviesByARandomGenre, genre, country,  director, imageBackdrop } = await getData();
 
-  const extractFavoriteMovie = favorites?.map((movie) => movie.movie)
+ 
+  const extractFavoriteMovie = favorites?.movies?.map((movie: { movie: IMovie; }) => movie?.movie) || [];
 
   const findCountry = countriesList?.filter((movie) => movie?.value === country)
   const userAgent =  (await headers()).get('user-agent') ;

@@ -159,5 +159,8 @@
   "RessourcesPage": {
     "title": "Ressources",
     "noRessource": "Aucune ressource trouvée"
+  },
+  "ErrorMessage" :{
+    "notPermitted": "Vous n&lsquo;avez pas les permissions pour accéder à cette page"
   }
 }
