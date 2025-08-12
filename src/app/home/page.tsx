@@ -15,7 +15,6 @@ import { getLocale } from 'next-intl/server'
 import { Lobster } from 'next/font/google'
 import { headers } from 'next/headers'
 import { Suspense } from 'react'
-import { auth } from '@/lib/auth'
 import { IMovie } from '@/models/movie/movie'
 
 export const revalidate = 60;
