@@ -1,61 +1,63 @@
-"use server"
-import prisma from "@/lib/prisma";
-import { URL_DASHBOARD_ROUTE } from "@/shared/route";
-import { User } from "next-auth";
-import { revalidatePath } from "next/cache";
+'use server';
+import prisma from '@/lib/prisma';
+import { URL_DASHBOARD_ROUTE } from '@/shared/route';
+import { User } from 'next-auth';
+import { revalidatePath } from 'next/cache';
 
-export const getUserConnected = async (email:string): Promise<{ user?: User | undefined, status?:number | undefined }> => {
+export const getUserConnected = async (
+  email: string
+): Promise<{ user?: User | undefined; status?: number | undefined }> => {
   try {
     const user = await prisma.user.findUnique({
-      where:{ email },
-    })
-    return {user : user ? user : {}, status:200 }
+      where: { email },
+    });
+    return { user: user ? user : {}, status: 200 };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
-      status : 500
-    }
+      status: 500,
+    };
   }
-}
+};
 
-export const postAuthorizedEmail = async (email:string, ): Promise<{ status?:number | undefined, message?:string | undefined }> => {
+export const postAuthorizedEmail = async (
+  email: string
+): Promise<{ status?: number | undefined; message?: string | undefined }> => {
   try {
-
     const user = await prisma.authorizedEmail.findUnique({
-      where:{email}
-    })
-    if(!user){
+      where: { email },
+    });
+    if (!user) {
       await prisma.authorizedEmail.create({
-        data:{
+        data: {
           email: email,
-        }
-      })
-      revalidatePath(URL_DASHBOARD_ROUTE.users)
-      return {status:200}
+        },
+      });
+      revalidatePath(URL_DASHBOARD_ROUTE.users);
+      return { status: 200 };
     }
-    return {message:'User Already authorized', status:409 }
+    return { message: 'User Already authorized', status: 409 };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
-      status : 500
-    }
+      status: 500,
+    };
   }
-}
+};
 
 export const getAuthorizedEmails = async (): Promise<{
-  status?: number | undefined,
-  mails?: User[] | undefined,
-  prevCursor?: string | undefined,
-  nextCursor?: string | undefined,
-  total?: number | undefined
+  status?: number | undefined;
+  mails?: User[] | undefined;
+  prevCursor?: string | undefined;
+  nextCursor?: string | undefined;
+  total?: number | undefined;
 }> => {
   try {
-
     const userauthorizedEmails = await prisma.authorizedEmail.findMany({
       orderBy: {
-        email: 'asc'
+        email: 'asc',
       },
-    })
+    });
 
     if (!userauthorizedEmails) {
       return { status: 400 };
@@ -64,31 +66,34 @@ export const getAuthorizedEmails = async (): Promise<{
     return {
       mails: userauthorizedEmails,
       status: 200,
-    }
+    };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
-      status: 500
-    }
+      status: 500,
+    };
   }
-}
+};
 
-export const getAuthorizedEmailsPagination = async ({ pageParam }: { pageParam?: number}): Promise<{
-  status?: number | undefined,
-  mails?: User[] | undefined,
-  prevCursor?: string | undefined,
-  nextCursor?: string | undefined,
-  total?: number | undefined
+export const getAuthorizedEmailsPagination = async ({
+  pageParam,
+}: {
+  pageParam?: number;
+}): Promise<{
+  status?: number | undefined;
+  mails?: User[] | undefined;
+  prevCursor?: string | undefined;
+  nextCursor?: string | undefined;
+  total?: number | undefined;
 }> => {
   try {
-
     const userauthorizedEmails = await prisma.authorizedEmail.findMany({
       orderBy: {
-        email: 'asc'
+        email: 'asc',
       },
       skip: pageParam,
       take: 5,
-    })
+    });
 
     if (!userauthorizedEmails) {
       return { status: 400 };
@@ -97,30 +102,32 @@ export const getAuthorizedEmailsPagination = async ({ pageParam }: { pageParam?:
     return {
       mails: userauthorizedEmails,
       status: 200,
-    }
+    };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
-      status: 500
-    }
+      status: 500,
+    };
   }
-}
+};
 
-export const deleteEmailAuthorized = async (email:string): Promise<{ status?:number | undefined, }> => {
+export const deleteEmailAuthorized = async (
+  email: string
+): Promise<{ status?: number | undefined }> => {
   try {
     const emailDeleted = await prisma.authorizedEmail.delete({
-      where:{email}
-    })
+      where: { email },
+    });
 
-    if(!emailDeleted){
-      return {status:400}
+    if (!emailDeleted) {
+      return { status: 400 };
     }
-    revalidatePath(URL_DASHBOARD_ROUTE.users)
-    return { status:200 }
+    revalidatePath(URL_DASHBOARD_ROUTE.users);
+    return { status: 200 };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
-      status : 500
-    }
+      status: 500,
+    };
   }
-}
+};

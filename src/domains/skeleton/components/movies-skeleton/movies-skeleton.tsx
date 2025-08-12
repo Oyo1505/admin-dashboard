@@ -1,9 +1,9 @@
 import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
+import 'react-loading-skeleton/dist/skeleton.css';
 const MoviesSkeleton = () => {
   return (
     <>
-  <div className="flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start">
+      <div className="flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start">
         {/* Skeletons for Movie Items */}
         {[...Array(12)].map((_, index) => (
           <div
@@ -12,10 +12,14 @@ const MoviesSkeleton = () => {
           >
             <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
               {/* Skeleton for image */}
-              <Skeleton height={288} width="100%" className="rounded-lg animate-shimmer" />
+              <Skeleton
+                height={288}
+                width="100%"
+                className="rounded-lg animate-shimmer"
+              />
             </div>
             {/* Skeleton for movie title */}
-            <Skeleton  className='animate-shimmer' width="80%" height={24} />
+            <Skeleton className="animate-shimmer" width="80%" height={24} />
           </div>
         ))}
       </div>

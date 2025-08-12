@@ -6,7 +6,7 @@ import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, useTransition } from 'react';
 
- const  Search = (props: { value?: string }) => {
+const Search = (props: { value?: string }) => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(props.value);
@@ -46,5 +46,5 @@ import { useEffect, useRef, useState, useTransition } from 'react';
       {isPending && <Spinner />}
     </div>
   );
-}
-export default Search
+};
+export default Search;

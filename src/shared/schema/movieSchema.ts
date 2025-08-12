@@ -24,7 +24,10 @@ export const FormDataMovieSchema = z.object({
   langage: z.string().optional(),
   link: z.string().optional(),
   trailer: z.string().optional(),
-  year: z.preprocess((val) => Number(val), z.number().min(1890).max(new Date().getFullYear())),
+  year: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1890).max(new Date().getFullYear())
+  ),
   subtitles: z.array(z.string()).optional().default([]),
   idGoogleDive: z.string().min(1, 'Un id google drive est requis'),
 });
@@ -33,10 +36,13 @@ export type MovieSchema = z.infer<typeof FormDataMovieSchema>;
 
 export const emailSchema = z.object({
   email: z
-  .string()
-  .regex(new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/), "L'email est incorrect.")
-  .min(1, "L'email est requis.")
-  .max(50, "L'email doit faire moins de 50 characters"),
+    .string()
+    .regex(
+      new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/),
+      "L'email est incorrect."
+    )
+    .min(1, "L'email est requis.")
+    .max(50, "L'email doit faire moins de 50 characters"),
 });
 
 export const FormDeleteAccountSchema = z.object({
@@ -50,11 +56,7 @@ export const directorSectionSchema = z.object({
   imageBackdrop: z.string(),
 });
 
-
 export type MovieUploadSchema = z.infer<typeof movieUploadSchema>;
 export const movieUploadSchema = z.object({
   file: z.any().optional(),
 });
-
-
-

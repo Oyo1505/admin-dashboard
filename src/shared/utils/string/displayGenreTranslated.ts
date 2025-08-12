@@ -1,8 +1,8 @@
-import { IGenre } from "@/models/movie/movie";
+import { IGenre } from '@/models/movie/movie';
 
 const displayGenreTranslated = (genre: IGenre | undefined, locale: string) => {
   if (!genre) return '';
-  
+
   switch (locale) {
     case 'fr':
       return genre.nameFR;
@@ -11,6 +11,6 @@ const displayGenreTranslated = (genre: IGenre | undefined, locale: string) => {
     default:
       return genre.nameJP;
   }
-}
+};
 
 export default displayGenreTranslated;

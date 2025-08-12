@@ -18,7 +18,7 @@ const ButtonAddMovie = () => {
   });
 
   const { handleSubmit, control } = useForm<FormValues>({
-    resolver: zodResolver(movieUploadSchema)
+    resolver: zodResolver(movieUploadSchema),
   });
 
   const onSubmit = async (data: FormValues) => {

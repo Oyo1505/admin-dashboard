@@ -1,14 +1,12 @@
-'use client'
-
+'use client';
 
 const ContinueWatching = () => {
   return (
-    <div className='mt-7'>
-
+    <div className="mt-7">
       {/* <h1 className='text-lg text-primary'>{t('continue')}</h1> */}
       <div>{/*TODO ONE DAY */}</div>
     </div>
-  )
-}
+  );
+};
 
-export default ContinueWatching
+export default ContinueWatching;

@@ -5,7 +5,7 @@ interface SelectGenreMovieForm {
   optionsList: IGenre[];
   locale: string;
   // eslint-disable-next-line no-unused-vars
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
 }
 const SelectGenreMovieForm: FC<SelectGenreMovieForm> = ({
@@ -15,21 +15,19 @@ const SelectGenreMovieForm: FC<SelectGenreMovieForm> = ({
   className = 'text-background',
 }) => {
   return (
-    <select
-      onChange={onChange}
-      className={className}
-    >
+    <select onChange={onChange} className={className}>
       <option value=""> </option>
       {optionsList.map((option, index) => (
-        <option
-          key={`${option?.id}-${index}`}
-          value={option?.id}
-        >
-          {locale === 'fr' ? option?.nameFR : locale === 'jp' ? option?.nameJP : option?.nameEN}
+        <option key={`${option?.id}-${index}`} value={option?.id}>
+          {locale === 'fr'
+            ? option?.nameFR
+            : locale === 'jp'
+              ? option?.nameJP
+              : option?.nameEN}
         </option>
       ))}
     </select>
   );
 };
 
-export default SelectGenreMovieForm
+export default SelectGenreMovieForm;

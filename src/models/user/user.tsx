@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { IFavoriteMovieResponse } from "@/models/movie/movie";
+import { IFavoriteMovieResponse } from '@/models/movie/movie';
 
-export interface  User  {
+export interface User {
   id?: string;
   name?: string | null;
   email?: string | null;

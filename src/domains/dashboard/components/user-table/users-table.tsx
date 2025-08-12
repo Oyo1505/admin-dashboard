@@ -6,7 +6,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from '@/domains/ui/components/table/table';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
@@ -16,7 +16,7 @@ import { useOptimistic } from 'react';
 import useUserStore from 'store/user/user-store';
 import { deleteUserById } from '../../action';
 
- const UsersTable = ({
+const UsersTable = ({
   users,
   offset,
 }: {
@@ -33,11 +33,19 @@ import { deleteUserById } from '../../action';
       <form className="border shadow-xs rounded-lg">
         <Table>
           <TableHeader>
-          <TableRow className='border-b  border-background border-opacity-20'>
-              <TableHead className="max-w-[150px] text-primary font-bold">Name</TableHead>
-              <TableHead className="hidden md:table-cell text-primary font-bold">Email</TableHead>
-              <TableHead className="hidden md:table-cell text-primary font-bold">Role</TableHead>
-              <TableHead className="hidden md:table-cell text-primary font-bold">Action</TableHead>
+            <TableRow className="border-b  border-background border-opacity-20">
+              <TableHead className="max-w-[150px] text-primary font-bold">
+                Name
+              </TableHead>
+              <TableHead className="hidden md:table-cell text-primary font-bold">
+                Email
+              </TableHead>
+              <TableHead className="hidden md:table-cell text-primary font-bold">
+                Role
+              </TableHead>
+              <TableHead className="hidden md:table-cell text-primary font-bold">
+                Action
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -58,47 +66,48 @@ import { deleteUserById } from '../../action';
       )}
     </>
   );
-}
+};
 
 function UserRow({ user }: { user: User }) {
   const userId = user.id;
-  const { user:userConnected } = useUserStore(state => state);
+  const { user: userConnected } = useUserStore((state) => state);
   const [optimitiscUser, setOptimitiscUser] = useOptimistic(userId);
   const session = useSession();
   const deleteUser = async () => {
-    setOptimitiscUser('')
-    try{
+    setOptimitiscUser('');
+    try {
       if (userId) {
-        await deleteUserById({id:userId, user:userConnected, token:session?.data})
+        await deleteUserById({
+          id: userId,
+          user: userConnected,
+          token: session?.data,
+        });
       }
-    }catch(err){
-      console.log(err)
-      throw new Error('User not deleted')
+    } catch (err) {
+      console.log(err);
+      throw new Error('User not deleted');
     }
-  }
-  const hasPermission = checkPermissions(userConnected, "can:delete", "user");
+  };
+  const hasPermission = checkPermissions(userConnected, 'can:delete', 'user');
   return (
-
     <TableRow>
       <TableCell className="font-medium">{user.name}</TableCell>
       <TableCell className="hidden md:table-cell">{user.email}</TableCell>
       <TableCell>{user.role ?? 'USER'}</TableCell>
-      {optimitiscUser !==  userConnected?.id && hasPermission &&
-            <TableCell>
-            <Button
-              className="w-full font-bold"
-              size="sm"
-              variant="destructive"
-              formAction={deleteUser}
-            >
-              Delete
-            </Button>
-          </TableCell>
-
-      }
-
+      {optimitiscUser !== userConnected?.id && hasPermission && (
+        <TableCell>
+          <Button
+            className="w-full font-bold"
+            size="sm"
+            variant="destructive"
+            formAction={deleteUser}
+          >
+            Delete
+          </Button>
+        </TableCell>
+      )}
     </TableRow>
   );
 }
 
-export default UsersTable
+export default UsersTable;

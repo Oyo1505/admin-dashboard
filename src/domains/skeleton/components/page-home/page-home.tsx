@@ -32,7 +32,7 @@ const PageSkeleton = () => {
       {/* Skeleton for Favorite Movies */}
       <div className="w-full bg-primary pb-6 pt-6">
         <SkeletonBox className="h-8 w-48 mb-4" /> {/* Title Skeleton */}
-        <MoviesHomeSectionSkeleton /> 
+        <MoviesHomeSectionSkeleton />
       </div>
     </div>
   );

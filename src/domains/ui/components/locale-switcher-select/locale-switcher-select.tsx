@@ -4,21 +4,20 @@ import * as Select from '@radix-ui/react-select';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 
-import {useTransition} from 'react';
+import { useTransition } from 'react';
 import { setUserLocale } from 'utilities/services/locale';
 import { LanguageLogo } from '../icons/icons';
 
-
 type Props = {
   defaultValue: string;
-  items: Array<{value: string; label: string}>;
+  items: Array<{ value: string; label: string }>;
   label: string;
 };
 
 export default function LocaleSwitcherSelect({
   defaultValue,
   items,
-  label
+  label,
 }: Props) {
   const [isPending, startTransition] = useTransition();
   const locale = useLocale();
@@ -30,9 +29,13 @@ export default function LocaleSwitcherSelect({
     });
   }
 
-  const flags = [{lang:"jp", flag : '🇯🇵' }, {lang:"en", flag : '🇬🇧' }, {lang:"fr", flag : '🇫🇷' }]
-  const flagFilter = flags.filter(flag => flag.lang === locale )[0]
- 
+  const flags = [
+    { lang: 'jp', flag: '🇯🇵' },
+    { lang: 'en', flag: '🇬🇧' },
+    { lang: 'fr', flag: '🇫🇷' },
+  ];
+  const flagFilter = flags.filter((flag) => flag.lang === locale)[0];
+
   return (
     <div>
       <Select.Root defaultValue={defaultValue} onValueChange={onChange}>
@@ -43,7 +46,7 @@ export default function LocaleSwitcherSelect({
             isPending && 'pointer-events-none '
           )}
         >
-          <Select.Icon className='w-55 flex gap-2'>
+          <Select.Icon className="w-55 flex gap-2">
             <LanguageLogo />
             {flagFilter.flag}
           </Select.Icon>
@@ -65,7 +68,6 @@ export default function LocaleSwitcherSelect({
                 </Select.Item>
               ))}
             </Select.Viewport>
-
           </Select.Content>
         </Select.Portal>
       </Select.Root>

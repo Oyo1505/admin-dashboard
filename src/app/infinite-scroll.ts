@@ -16,7 +16,7 @@ export function useInfiniteScroll(onIntersect: () => void) {
         }
       },
       {
-        rootMargin: '50px 0px 0px 0px'
+        rootMargin: '50px 0px 0px 0px',
       }
     );
 
