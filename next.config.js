@@ -15,31 +15,30 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'avatars.githubusercontent.com'
+        hostname: 'avatars.githubusercontent.com',
       },
       {
         protocol: 'https',
-        hostname: 'avatar.vercel.sh'
+        hostname: 'avatar.vercel.sh',
       },
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com'
+        hostname: 'lh3.googleusercontent.com',
       },
       {
         protocol: 'https',
-        hostname : 'fr.web.img6.acsta.net'
+        hostname: 'fr.web.img6.acsta.net',
       },
       {
         protocol: 'https',
-        hostname : 'media.senscritique.com'
+        hostname: 'media.senscritique.com',
       },
       {
         protocol: 'https',
-        hostname: 'a.ltrbxd.com'
-      }
-
-    ]
-  }
+        hostname: 'a.ltrbxd.com',
+      },
+    ],
+  },
 };
 
 module.exports = withNextIntl(nextConfig);

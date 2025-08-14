@@ -6,7 +6,7 @@ const VideoPlayerYoutube = ({ movie }: { movie: string }) => {
   return (
     <ReactPlayer
       className="mt-6  h-28 lg:w-72 lg:h-72"
-      url={movie}
+      src={movie}
       controls={true}
       width="100%"
       height="100%"
