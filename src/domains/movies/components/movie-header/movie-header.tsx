@@ -214,7 +214,7 @@ const MovieHeader = ({ movie, isFavorite }: MovieHeaderProps) => {
             </div>
           )}
           <div className="flex flex-col gap-2 mt-4">
-            <h4 className="font-bold">{t('titleWebSubtitles')}</h4>
+            <h4 className="font-bold">{t('subtitles')}</h4>
             <ul>
               <li>
                 <a
