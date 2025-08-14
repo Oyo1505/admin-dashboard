@@ -1,7 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import useUserStore from 'store/user/user-store';
-import ContinueWatching from '../continue-watching/continue-watching';
 
 const TitleDashboard = () => {
   const t = useTranslations('Dashboard');
@@ -12,7 +11,6 @@ const TitleDashboard = () => {
       <h1 className="text-2xl text-primary">
         {t('welcome')}, {user?.name} 👋
       </h1>
-      <ContinueWatching />
     </div>
   );
 };
