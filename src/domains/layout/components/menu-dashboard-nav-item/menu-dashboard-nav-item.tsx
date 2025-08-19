@@ -16,9 +16,9 @@ export function NavItem({
     <Link
       href={href}
       className={clsx(
-        'flex items-center gap-3 rounded-lg  px-3 py-2 text-background  transition-all hover:text-gray-600',
+        'flex items-center gap-3 rounded-lg  px-3 py-2 text-white  transition-all hover:text-gray-400',
         {
-          'bg-background text-primary': segment ? href.includes(segment) : null,
+          'bg-neutral-500 text-white': segment ? href.includes(segment) : null,
         }
       )}
     >

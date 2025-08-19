@@ -2,7 +2,7 @@ import SuggestionForm from '@/domains/dashboard/components/suggestion-form/sugge
 
 const Page = async () => {
   return (
-    <div className="px-4 flex flex-col gap-4">
+    <div className="px-4 flex flex-col gap-4 w-full">
       <h1 className="text-2xl font-bold">Suggestion</h1>
       <SuggestionForm />
     </div>

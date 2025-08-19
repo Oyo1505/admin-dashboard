@@ -67,7 +67,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
           director?.id ? uploadDirectorSection : createDirectorSection
         )}
       >
-        <div className="mb-[15px]  flex flex-col items-center gap-2">
+        <div className="mb-[15px] flex flex-col items-center gap-2">
           <label
             className="text-violet11  text-right  text-[15px]"
             htmlFor="director"
