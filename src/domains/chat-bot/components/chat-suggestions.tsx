@@ -1,5 +1,3 @@
-import { useTranslations } from 'next-intl';
-
 interface ChatSuggestionsProps {
   onSuggestionClick: (suggestion: string) => void;
   isVisible: boolean;
@@ -9,8 +7,6 @@ const ChatSuggestions = ({
   onSuggestionClick,
   isVisible,
 }: ChatSuggestionsProps) => {
-  const t = useTranslations('ChatBot');
-
   const suggestions = [
     "Peux-tu me recommander des films d'action récents ?",
     'Quels sont les meilleurs films de 2024 ?',

@@ -112,9 +112,9 @@ const ChatDebug = () => {
           <div className="mt-2 text-xs text-gray-600">
             <p>Exemples pour tester les liens :</p>
             <ul className="list-disc list-inside mt-1">
-              <li>"Recommande-moi 3 films avec des liens"</li>
-              <li>"Films d'action récents avec liens"</li>
-              <li>"Meilleurs films de 2024 avec pages"</li>
+              <li>&ldquo;Recommande-moi 3 films avec des liens&rdquo;</li>
+              <li>&ldquo;Films d&apos;action récents avec liens&rdquo;</li>
+              <li>&ldquo;Meilleurs films de 2024 avec pages&rdquo;</li>
             </ul>
           </div>
         </div>

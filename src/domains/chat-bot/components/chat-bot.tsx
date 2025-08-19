@@ -24,7 +24,7 @@ const ChatBot = () => {
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          return parsed.map((msg: any) => ({
+          return parsed.map((msg: ChatMessage) => ({
             ...msg,
             timestamp: new Date(msg.timestamp),
           }));
