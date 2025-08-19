@@ -57,7 +57,9 @@
     "addEmailAuthorized": "Ajouter un email autorisé",
     "nextPage": "Page suivante",
     "previousPage": "Page précédente",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "userEmailAdded": "Email ajouté",
+    "deleting": "Suppression..."
   },
   "DashboardNav": {
     "dashboard": "Espace Personnel",

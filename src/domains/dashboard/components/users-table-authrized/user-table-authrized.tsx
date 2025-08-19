@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row';
 
-export const UserTableAuthrized = ({
+export const UserTableAuthorized = ({
   hasPermission,
 }: {
   hasPermission: boolean;
@@ -14,13 +14,15 @@ export const UserTableAuthrized = ({
 
   const { isPending, isError, error, data, isFetching, isPlaceholderData } =
     useQuery({
-      queryKey: ['mails', page],
-      queryFn: () => getAuthorizedEmailsPagination({ pageParam: page * 5 }),
+      queryKey: ['users-mails-authorized', page],
+      queryFn: async () =>
+        await getAuthorizedEmailsPagination({ pageParam: page * 5 }),
       placeholderData: keepPreviousData,
-      staleTime: 0,
       refetchOnWindowFocus: false,
     });
+
   const t = useTranslations('Dashboard');
+
   return (
     <div>
       {isPending || isFetching ? (
@@ -45,7 +47,7 @@ export const UserTableAuthrized = ({
             <button
               onClick={() => setPage((old) => Math.max(old - 1, 0))}
               disabled={page === 0}
-              className="bg-blue-500 text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
+              className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
             >
               {t('previousPage')}
             </button>
@@ -56,7 +58,7 @@ export const UserTableAuthrized = ({
                 }
               }}
               disabled={isPlaceholderData || (data?.mails?.length ?? 0) < 5}
-              className="bg-blue-500 text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
+              className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
             >
               {t('nextPage')}
             </button>

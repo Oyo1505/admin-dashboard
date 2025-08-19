@@ -18,8 +18,9 @@ const MenuDashboard = () => {
   const hasPermission =
     checkPermissions(user, 'can:delete', 'user') &&
     checkPermissions(user, 'can:delete', 'movie');
+
   return (
-    <div className="flex-1 bg-primary  overflow-auto py-2">
+    <div className="flex-1 bg-neutral-700 overflow-auto py-2 rounded-md">
       <nav className="grid items-start px-4 text-sm font-medium">
         <NavItem href={URL_DASHBOARD}>
           <Home />

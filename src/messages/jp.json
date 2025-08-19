@@ -57,7 +57,8 @@
     "nextPage": "次のページ",
     "previousPage": "前のページ",
     "loading": "読み込み中...",
-    "suggestion": "提案"
+    "userEmailAdded": "Email 追加済み",
+    "deleting": "削除中..."
   },
   "DashboardNav": {
     "dashboard": "ダッシュボード",

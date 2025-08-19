@@ -78,13 +78,16 @@ const SuggestionForm = () => {
   const handleTopicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue('topic', e.target.value);
   };
-  console.log(isSubmitting);
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-8 w-full"
+      >
+        <div className="flex flex-col gap-2 w-full">
           <select
-            className="text-white border-2 border-white rounded-md p-2 md:w-1/2"
+            className="border-2 w-full border-white text-black bg-white rounded-md p-2 md:w-1/2 cursor-pointer [&>option]:bg-white [&>option]:text-black"
             {...register('topic', {
               required: true,
               onChange: handleTopicChange,

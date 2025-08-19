@@ -3,7 +3,7 @@ import FormAddEmailAuthrizedEmail from '@/domains/auth/components/form-add-email
 import { getUsersWithPageParam } from '@/domains/dashboard/action';
 import Search from '@/domains/dashboard/components/search-user/search-user';
 import UsersTable from '@/domains/dashboard/components/user-table/users-table';
-import { UserTableAuthrized } from '@/domains/dashboard/components/users-table-authrized/user-table-authrized';
+import { UserTableAuthorized } from '@/domains/dashboard/components/users-table-authrized/user-table-authrized';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
@@ -55,7 +55,7 @@ const Page = async (props: {
           translationTheme="Dashboard"
           className="text-3xlfont-semibold mb-6"
         />
-        <UserTableAuthrized hasPermission={hasPermission} />
+        <UserTableAuthorized hasPermission={hasPermission} />
       </div>
     </div>
   );

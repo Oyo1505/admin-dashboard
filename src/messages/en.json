@@ -57,7 +57,9 @@
     "addEmailAuthorized": "Add Email Authorized",
     "nextPage": "Next Page",
     "previousPage": "Previous Page",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "userEmailAdded": "User email added",
+    "deleting": "Deleting..."
   },
   "DashboardNav": {
     "dashboard": "Dashboard",
