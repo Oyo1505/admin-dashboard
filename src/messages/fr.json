@@ -151,11 +151,15 @@
     "genre": "Genre"
   },
   "ChatBot": {
-    "title": "ChatBot",
-    "placeholder": "Salut je suis CineSensei le chatbot du site, comment puis-je t'aider a te conseiller des films ?",
+    "title": "Assistant Cinéphile",
+    "placeholder": "Salut ! Je suis CineSensei, votre assistant cinéphile personnel. Je peux vous aider à découvrir des films, faire des recommandations et discuter de cinéma. Que souhaitez-vous explorer aujourd'hui ?",
     "send": "Envoyer",
     "close": "Fermer",
-    "placeholderMessage": "Votre message"
+    "placeholderMessage": "Posez votre question sur les films...",
+    "clearChat": "Effacer la conversation",
+    "thinking": "L'assistant réfléchit...",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "welcome": "Bienvenue ! Comment puis-je vous aider avec vos questions cinéma ?"
   },
   "RessourcesPage": {
     "title": "Ressources",

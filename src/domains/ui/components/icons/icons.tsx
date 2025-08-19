@@ -369,13 +369,14 @@ export const EditMovieLogo = () => {
   );
 };
 
-export const ChatBotLogo = () => {
+export const ChatBotLogo = ({ className }: { className?: string }) => {
   return (
     <svg
       width="80"
       height="80"
       viewBox="0 0 80 80"
       xmlns="http://www.w3.org/2000/svg"
+      className={cn(className)}
     >
       <circle cx="40" cy="40" r="38" fill="#E53935" />
       <g transform="translate(20, 16)">

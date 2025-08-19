@@ -153,7 +153,11 @@
     "placeholder": "こんにちは、私はCineSenseiです。映画について質問してください。",
     "send": "送信",
     "close": "閉じる",
-    "placeholderMessage": "あなたのメッセージ"
+    "placeholderMessage": "あなたのメッセージ",
+    "clearChat": "チャット履歴をクリア",
+    "thinking": "考え中...",
+    "error": "エラーが発生しました",
+    "askMovie": "映画について質問してください"
   },
   "RessourcesPage": {
     "title": "リソース",
