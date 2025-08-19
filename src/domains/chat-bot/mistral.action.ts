@@ -6,95 +6,149 @@ import {
   mistralTools,
   mistralFunctions,
 } from './services/mistral-tools.service';
-import { z } from 'zod';
+import { ChatMessage } from './interfaces/chat.interface';
 import delay from '@/shared/utils/time/delay';
 
 const MILLISECONDS_DELAY = 1000;
 
 const mapMovies = async (): Promise<IMovieDetails[]> => {
-  const { movieInDb } = await getAllMovies();
-  return movieInDb.map((movie) => ({
-    id: movie.id,
-    title: movie.title,
-    synopsis: movie.synopsis,
-    country: movie.country,
-    year: movie.year,
-    duration: movie.duration ?? null,
-    director: movie.director ?? null,
-  }));
+  try {
+    const { movieInDb } = await getAllMovies();
+    return movieInDb.map((movie) => ({
+      id: movie.id,
+      title: movie.title,
+      synopsis: movie.synopsis,
+      country: movie.country,
+      year: movie.year,
+      duration: movie.duration ?? null,
+      director: movie.director ?? null,
+    }));
+  } catch (error) {
+    console.error('Erreur lors de la récupération des films:', error);
+    return [];
+  }
 };
 
-const threadChatBot = async (message: string, locale: string) => {
+const threadChatBot = async (
+  message: string,
+  locale: string,
+  conversationHistory?: ChatMessage[]
+) => {
   try {
-    // Première étape : obtenir la liste des films
-    const response = await mistral.chat.complete({
-      model: 'mistral-large-latest',
-      temperature: 0.2,
-      tools: mistralTools,
-      toolChoice: 'any',
-      parallelToolCalls: false,
-      messages: [
-        {
-          role: 'system',
-          content: `Tu es un assistant qui retourne une liste de films en fonction de la question de l'utilisateur. Tu ne réponds qu'à des questions sur les films. Si la question ne concerne pas les films, réponds "Je ne peux répondre qu'aux questions sur les films."`,
-        },
-        { role: 'user', content: message },
-      ],
-    });
-
-    const toolCall = response?.choices?.[0]?.message;
-    const functionName = toolCall?.toolCalls?.[0]?.function.name;
-    const movies = functionName
-      ? await mistralFunctions[functionName as keyof typeof mistralFunctions]({
-          getAllMovies: mapMovies,
-        })
+    const conversationContext = conversationHistory
+      ? conversationHistory
+          .filter((msg) => msg.role === 'user' || msg.role === 'assistant')
+          .slice(-4)
+          .map((msg) => ({
+            role: msg.role,
+            content: msg.message,
+          }))
       : [];
 
-    if (!movies.length) {
-      return {
-        answer:
-          "Une erreur est survenue la liste des films n'a pas été récupérée",
-        status: 500,
-      };
+    let movies: IMovieDetails[] = [];
+
+    try {
+      const response = await mistral.chat.complete({
+        model: 'mistral-large-latest',
+        temperature: 0.3,
+        tools: mistralTools,
+        toolChoice: 'any',
+        parallelToolCalls: false,
+        messages: [
+          {
+            role: 'system',
+            content: `Tu es un assistant cinéphile amical. Si l'utilisateur demande des recommandations de films, utilise les outils disponibles pour récupérer la liste des films. Sinon, réponds directement de manière conversationnelle.`,
+          },
+          ...conversationContext,
+          { role: 'user', content: message },
+        ],
+      });
+
+      const toolCall = response?.choices?.[0]?.message;
+      const functionName = toolCall?.toolCalls?.[0]?.function.name;
+
+      if (functionName) {
+        movies = await mistralFunctions[
+          functionName as keyof typeof mistralFunctions
+        ]({
+          getAllMovies: mapMovies,
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des films:', error);
     }
 
     await delay(MILLISECONDS_DELAY);
 
-    // Deuxième étape : formater la réponse
-    const thread = await mistral.chat.parse({
-      model: 'mistral-large-latest',
-      temperature: 0.4,
-      messages: [
-        {
-          role: 'system',
-          content: `Tu es un assistant qui répond à des questions sur les films a conseiller sur la liste donnée et ne fait que cela, ne conseille pas des films en dehors de la liste.${locale === 'fr' ? `Tu reponds en français` : locale === 'en' ? `Tu reponds en anglais` : locale === 'jp' && `Tu reponds en japonais`} OBLIGATOIREMENT.`,
-        },
-        {
-          role: 'assistant',
-          content: `Voici la liste des films: ${JSON.stringify(movies)}`,
-        },
-        { role: 'user', content: message },
-      ],
-      responseFormat: z.object({
-        answer: z
-          .string()
-          .describe(
-            `donne des informations sur le ou les films demandés, n'affiche pas l'id dans le texte de description, en donneant le lien vers le film si c'est possible qui se compose comme ceci: ${process.env.NEXTAUTH_URL}/movies/id. Respecet le nombre de films demandés. Si plusieurs films sont donnés, fais une liste à puce.`
-          ),
-      })
-        .describe(`en format html et le ou les liens vers le ou les films sont des liens html de couleur bleue. Si plusieurs films sont donnés, fais une liste à puce. ${locale === 'fr' ? `Tu reponds en français` : locale === 'en' ? `Tu reponds en anglais` : locale === 'jp' && `Tu reponds en japonais`} OBLIGATOIREMENT.
-          Ne propose pas de films qui n'ont pas de rapport avec le message de l'utilisateur. Respecet le nombre de films demandés. Si plusieurs films sont demandés, donne les informations pour chaque film.`),
-    });
+    let finalResponse;
 
-    const answer = thread?.choices?.[0]?.message?.content as string;
-    const parsedAnswer = JSON.parse(answer);
+    if (movies.length > 0) {
+      const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
+      finalResponse = await mistral.chat.complete({
+        model: 'mistral-large-latest',
+        temperature: 0.7,
+        messages: [
+          {
+            role: 'system',
+            content: `Tu es CineSensei, un assistant cinéphile passionné et amical. Réponds de manière naturelle et conversationnelle. ${locale === 'fr' ? 'Tu réponds en français' : locale === 'en' ? 'Tu réponds en anglais' : 'Tu réponds en japonais'} OBLIGATOIREMENT.
+
+IMPORTANT : Quand tu recommandes des films, tu DOIS inclure des liens HTML vers les pages des films. Utilise ce format pour chaque film :
+<a href="${baseUrl}/movies/{ID_DU_FILM}" style="color: #3b82f6; text-decoration: underline;">{TITRE_DU_FILM}</a>
+
+Exemple : <a href="${baseUrl}/movies/123" style="color: #3b82f6; text-decoration: underline;">Le Titre du Film</a>
+
+Voici les films disponibles avec leurs informations : ${JSON.stringify(movies)}
+
+Exemple de réponse avec liens :
+"Voici quelques excellents films que je recommande :
+
+• <a href="${baseUrl}/movies/123" style="color: #3b82f6; text-decoration: underline;">Le Titre du Film</a> (2024) - Un film passionnant réalisé par [Réalisateur]
+
+• <a href="${baseUrl}/movies/456" style="color: #3b82f6; text-decoration: underline;">Autre Film</a> (2023) - Une œuvre remarquable qui..."
+
+N'oublie pas d'inclure TOUJOURS les liens HTML pour chaque film recommandé !`,
+          },
+          ...conversationContext,
+          { role: 'user', content: message },
+        ],
+      });
+    } else {
+      finalResponse = await mistral.chat.complete({
+        model: 'mistral-large-latest',
+        temperature: 0.7,
+        messages: [
+          {
+            role: 'system',
+            content: `Tu es CineSensei, un assistant cinéphile passionné et amical. Réponds de manière naturelle et conversationnelle aux questions sur le cinéma. ${locale === 'fr' ? 'Tu réponds en français' : locale === 'en' ? 'Tu réponds en anglais' : 'Tu réponds en japonais'} OBLIGATOIREMENT.`,
+          },
+          ...conversationContext,
+          { role: 'user', content: message },
+        ],
+      });
+    }
+
+    const answer = finalResponse?.choices?.[0]?.message?.content;
+
+    if (!answer || typeof answer !== 'string') {
+      throw new Error('Aucune réponse générée');
+    }
+
     return {
-      answer: parsedAnswer.answer,
-      status: answer ? 200 : 500,
+      answer: answer,
+      status: 200,
     };
   } catch (error) {
-    console.error(error);
-    return { answer: 'Une erreur est survenue ici', status: 500 };
+    console.error('Erreur dans threadChatBot:', error);
+    return {
+      answer:
+        locale === 'fr'
+          ? 'Désolé, je rencontre des difficultés techniques. Pouvez-vous reformuler votre question sur les films ?'
+          : locale === 'en'
+            ? "Sorry, I'm having technical difficulties. Could you rephrase your question about movies?"
+            : '申し訳ありませんが、技術的な問題が発生しています。映画についての質問を言い換えていただけますか？',
+      status: 500,
+    };
   }
 };
 

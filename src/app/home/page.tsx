@@ -23,6 +23,7 @@ import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
 import { Suspense } from 'react';
 import { IMovie } from '@/models/movie/movie';
+import ChatDebug from '@/domains/chat-bot/components/chat-debug';
 
 export const revalidate = 60;
 
@@ -171,6 +172,10 @@ const Page = async () => {
           </div>
         </>
       )}
+      {/* 
+      <Container>
+        <ChatDebug />
+      </Container> */}
     </div>
   );
 };

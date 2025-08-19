@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { postAuthorizedEmail } from '../../action/action';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
@@ -20,7 +20,6 @@ const FormAddEmailAuthrizedEmail = ({
 }) => {
   const t = useTranslations('Dashboard');
   const queryClient = useQueryClient();
-  const [isHydrated, setIsHydrated] = useState(false);
 
   const { handleSubmit, register, reset } = useForm<z.infer<typeof formSchema>>(
     {
@@ -55,32 +54,6 @@ const FormAddEmailAuthrizedEmail = ({
     addEmailMutation.mutate(data);
   };
 
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
-
-  // Ne pas rendre le formulaire jusqu'à ce que l'hydratation soit terminée
-  if (!isHydrated) {
-    return (
-      <form className="w-full">
-        {hasPermission && (
-          <>
-            <Input
-              placeholder="Email"
-              type="email"
-              className="w-full mb-4  text-background bg-primary"
-              autoComplete="off"
-              disabled
-            />
-            <Button type="submit" className="w-full mb-4" disabled>
-              {t('addButton')}
-            </Button>
-          </>
-        )}
-      </form>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       {hasPermission && (
@@ -89,7 +62,6 @@ const FormAddEmailAuthrizedEmail = ({
             placeholder="Email"
             type="email"
             className="w-full mb-4  text-background bg-primary"
-            autoComplete="off"
             {...register('email', {
               required: true,
             })}
