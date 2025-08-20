@@ -1,33 +1,22 @@
 'use client';
 import { Locale } from '@/config';
-import { Button } from '@/domains/ui/components/button/button';
-import {
-  DownloadLogo,
-  EditMovieLogo,
-  Favorite,
-} from '@/domains/ui/components/icons/icons';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
-import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import { useLocale, useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useState, useTransition } from 'react';
-import { toast } from 'react-toastify';
-import useUserStore from 'store/user/user-store';
+import { useState } from 'react';
 import { heuresEnMinutes } from 'utilities/number/minutesToHours';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
-import { addOrRemoveToFavorite } from '../../action';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
+import MoviePageSubtitlesList from '../movie-page_subtitles-list/movie-page_subtitles-list';
 
 interface MovieHeaderProps {
   movie?: IMovie | null;
   isFavorite: boolean;
 }
 
-const MovieHeader = ({ movie, isFavorite }: MovieHeaderProps) => {
+const MovieHeader = ({ movie }: MovieHeaderProps) => {
   const t = useTranslations('MoviePage');
   const locale = useLocale() as Locale;
   const { data: movieDetails } = useGetDetailsMovie({
@@ -54,44 +43,13 @@ const MovieHeader = ({ movie, isFavorite }: MovieHeaderProps) => {
         return null;
     }
   };
-
-  const { user } = useUserStore((state) => state);
   const findCountry = countriesList?.filter(
     (item) => item?.value === movie?.country
   );
   const language = languagesList?.filter(
     (item) => item?.value === movie?.language
   );
-  const [loading, startTransiton] = useTransition();
 
-  const handleFavorite = async () => {
-    if (user?.id) {
-      startTransiton(async () => {
-        try {
-          const res =
-            user?.id && (await addOrRemoveToFavorite(user?.id, movie?.id));
-          if (res && typeof res !== 'string' && res.status === 200) {
-            if (res?.message === 'Ajouté aux favoris avec succès') {
-              toast.success(t('toastMessageSuccess'), {
-                position: 'top-center',
-              });
-            } else if (res?.message === 'Supprimé des favoris avec succès') {
-              toast.success(t('toastMessageSuccessDelete'), {
-                position: 'top-center',
-              });
-            }
-          }
-        } catch (err) {
-          console.log(err);
-          toast.error(t('toastMessageError'), { position: 'top-center' });
-        }
-      });
-    }
-  };
-  const titleCompute = (title: string | undefined | null) => {
-    return title?.replaceAll(' ', '+')?.toLocaleLowerCase();
-  };
-  const hasPermission = checkPermissions(user, 'can:update', 'movie');
   return (
     <div className="w-full lg:w-1/2 mt-4 md:mt-0">
       <div className="mb-4">
@@ -172,92 +130,7 @@ const MovieHeader = ({ movie, isFavorite }: MovieHeaderProps) => {
           </div>
         )
       )}
-      <div className="mt-10 font-normal flex flex-col gap-3">
-        <form>
-          <Button
-            disabled={loading}
-            className="flex justify-start cursor-pointer items-center gap-2"
-            formAction={handleFavorite}
-          >
-            {isFavorite ? (
-              <>
-                <Favorite fill={true} />
-                {t('removeFromFavorite')}
-              </>
-            ) : (
-              <>
-                <Favorite />
-                {t('addToFavorite')}
-              </>
-            )}
-          </Button>
-        </form>
-        <div>
-          <a
-            href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`}
-            className="inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-green-700"
-            target="_blank"
-            download
-          >
-            {<DownloadLogo />}
-            {t('download')}
-          </a>
-          {hasPermission && movie?.id && (
-            <div className="mt-5">
-              <Link
-                className="inline-flex gap-2 rounded-md  p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary"
-                href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)}
-                prefetch
-              >
-                <EditMovieLogo /> {t('editMovie')}
-              </Link>
-            </div>
-          )}
-          <div className="flex flex-col gap-2 mt-4">
-            <h4 className="font-bold">{t('subtitles')}</h4>
-            <ul>
-              <li>
-                <a
-                  href={`https://www.opensubtitles.org/${locale === 'fr' ? 'fr' : 'en'}/search/sublanguageid-all/moviename-${titleCompute(movie?.title)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  - OpenSubtitles
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`https://subdl.org/search/?srcname=${titleCompute(movie?.titleEnglish)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  - Subdl.org
-                </a>
-              </li>
-              {movie?.imdbId && (
-                <li>
-                  <a
-                    href={`https://yifysubtitles.ch/movie-imdb/${movie?.imdbId}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    - Yifi Subtitles
-                  </a>
-                </li>
-              )}
-              <li>
-                <a
-                  href={`https://www.subtitlecat.com/index.php?search=${movie?.titleEnglish?.replaceAll(' ', '+')?.toLocaleLowerCase()}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  - SubtitleCat
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      {movie && <MoviePageSubtitlesList movie={movie} />}
     </div>
   );
 };
