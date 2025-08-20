@@ -12,6 +12,7 @@ import { notFound } from 'next/navigation';
 import { Suspense, cache } from 'react';
 import Iframe from 'react-iframe';
 import Loading from './loading';
+import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
 
 const lobster = Lobster({
   weight: '400',
@@ -61,9 +62,9 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
   return (
     <div className="h-auto pt-6 flex flex-col justify-start items-start">
       <Suspense fallback={<Loading />}>
-        <div className="justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col ">
+        <div className="justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col">
           {movie && (
-            <div className="lg:grow-0 w-full">
+            <div className="lg:grow-0 w-full mb-4 lg:mb-0">
               {movie?.idGoogleDive && (
                 <Iframe
                   url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`}
@@ -73,6 +74,7 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
                   ariaLabel="video player"
                 />
               )}
+              <MoviePageButtons isFavorite={isFavorite} movie={movie} />
             </div>
           )}
           <MovieHeader movie={movie} isFavorite={isFavorite} />
