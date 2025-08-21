@@ -51,6 +51,7 @@ model User {
   sessions      Session[]
   role          UserRole     @default(USER) 
   favoriteMovies UserFavoriteMovies[]
+  analytics     Analytics[]
 }
 
 model Movie {
@@ -124,6 +125,17 @@ model MovieGenre {
   genre    Genre    @relation(fields: [genreId], references: [id], onDelete: Cascade)
   genreId  String
   @@unique([movieId, genreId])
+}
+
+model Analytics {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  lastLogin DateTime @default(now())
+  lastMovieWatched String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("analytics")
 }
 
 enum UserRole {

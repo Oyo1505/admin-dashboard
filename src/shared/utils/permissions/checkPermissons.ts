@@ -18,6 +18,7 @@ const userPermissions = {
     'can:create:director',
     'can:update:director',
     'can:read:director',
+    'can:viewAnalytics:dashboard',
   ],
   USER: [
     'can:read:user',
