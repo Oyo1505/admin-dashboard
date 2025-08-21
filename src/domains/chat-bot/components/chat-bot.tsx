@@ -156,12 +156,23 @@ const ChatBot = () => {
       minute: '2-digit',
     });
   };
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   if (pathname === '/') return null;
 
   return (
     <div
-      onClick={() => !isChatBotEnabled && setIsChatBotEnabled(true)}
+      onClick={() => {
+        if (!isChatBotEnabled) setIsChatBotEnabled(true);
+        if (isChatBotEnabled) scrollToBottom();
+      }}
       onTransitionEnd={handleTransitionEnd}
       className={clsx(
         'fixed bottom-10 z-20 right-10 w-20 h-20 text-black hidden md:block bg-white shadow-lg transition-all duration-300 ease-in-out border border-gray-300',
@@ -253,10 +264,10 @@ const ChatBot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <ChatSuggestions
+          {/* <ChatSuggestions
             onSuggestionClick={handleSuggestionClick}
             isVisible={messages.length === 1 && !isLoading}
-          />
+          /> */}
 
           <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3">
             <form

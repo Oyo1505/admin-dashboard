@@ -129,3 +129,87 @@ export const deleteEmailAuthorized = async (
     };
   }
 };
+
+export const updateAnalyticsLastLogin = async (userId: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return { status: 400 };
+    }
+
+    const analytics = await prisma.analytics.findFirst({
+      where: { userId },
+    });
+
+    if (!analytics) {
+      await prisma.analytics.create({
+        data: {
+          userId,
+          lastLogin: new Date(),
+        },
+      });
+    } else {
+      await prisma.analytics.update({
+        where: { id: analytics.id },
+        data: {
+          lastLogin: new Date(),
+        },
+      });
+    }
+
+    return { status: 200 };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+    };
+  }
+};
+
+export const updateAnalyticsLastMovieWatched = async (
+  userId: string,
+  lastMovieWatched: string
+) => {
+  try {
+    const analytics = await prisma.analytics.updateMany({
+      where: { userId },
+      data: {
+        lastMovieWatched,
+      },
+    });
+
+    return { status: 200 };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: 500,
+    };
+  }
+};
+
+export const getAllAnalytics = async () => {
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        analytics: {
+          some: {},
+        },
+      },
+      include: {
+        analytics: {
+          orderBy: {
+            lastLogin: 'desc',
+          },
+        },
+      },
+    });
+
+    return { users, status: 200 };
+  } catch (error) {
+    console.log(error);
+    return { status: 500 };
+  }
+};

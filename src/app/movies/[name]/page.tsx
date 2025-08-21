@@ -13,6 +13,7 @@ import { Suspense, cache } from 'react';
 import Iframe from 'react-iframe';
 import Loading from './loading';
 import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
+import { updateAnalyticsLastMovieWatched } from '@/domains/auth/action/action';
 
 const lobster = Lobster({
   weight: '400',
@@ -70,8 +71,19 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
                   url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`}
                   className="w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]"
                   width="auto"
+                  title={movie?.title}
                   height="450px"
+                  loading="lazy"
+                  key={movie?.id}
+                  importance="high"
                   ariaLabel="video player"
+                  // onLoad={() => {
+                  //   if (session?.user?.id)
+                  //     updateAnalyticsLastMovieWatched(
+                  //       session.user.id,
+                  //       movie.id
+                  //     );
+                  // }}
                 />
               )}
               <MoviePageButtons isFavorite={isFavorite} movie={movie} />
