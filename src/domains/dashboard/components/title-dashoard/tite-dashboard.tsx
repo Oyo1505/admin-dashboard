@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import useUserStore from 'store/user/user-store';
 import TableUsersAnalytics from '../table_users-analytics/table_users-analytics';
 import { Suspense } from 'react';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 
 const TitleDashboard = () => {
   const t = useTranslations('Dashboard');

@@ -10,7 +10,6 @@ import { useTranslations } from 'next-intl';
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import { usePathname } from 'next/navigation';
 import { ChatMessage } from '../interfaces/chat.interface';
-import ChatSuggestions from './chat-suggestions';
 import { Cross1Icon } from '@radix-ui/react-icons';
 
 const ChatBot = () => {
@@ -142,9 +141,9 @@ const ChatBot = () => {
     reset();
   };
 
-  const handleSuggestionClick = async (suggestion: string) => {
-    await sendMessage(suggestion);
-  };
+  // const handleSuggestionClick = async (suggestion: string) => {
+  //   await sendMessage(suggestion);
+  // };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

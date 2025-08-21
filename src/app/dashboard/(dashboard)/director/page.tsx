@@ -3,16 +3,18 @@ import { getDirectorFromSection } from '@/domains/dashboard/action';
 import DirectorSectionForm from '@/domains/dashboard/components/director-section-form/director-section-form';
 import Text from '@/domains/ui/components/text/text';
 import { auth } from '@/lib/auth';
+import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
 export default async function Page() {
   const session = await auth();
   const userConnected = await getUserConnected(session?.user?.email ?? '');
+  const user = userConnected?.user as User;
   const hasPermission =
-    userConnected?.user &&
-    checkPermissions(userConnected?.user, 'can:update', 'director') &&
-    checkPermissions(userConnected?.user, 'can:create', 'director') &&
-    checkPermissions(userConnected?.user, 'can:delete', 'director');
+    user &&
+    checkPermissions(user, 'can:update', 'director') &&
+    checkPermissions(user, 'can:create', 'director') &&
+    checkPermissions(user, 'can:delete', 'director');
   if (!hasPermission)
     return (
       <Text

@@ -6,6 +6,7 @@ import UsersTable from '@/domains/dashboard/components/user-table/users-table';
 import { UserTableAuthorized } from '@/domains/dashboard/components/users-table-authrized/user-table-authrized';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
+import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
 const Page = async (props: {
@@ -18,13 +19,9 @@ const Page = async (props: {
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset);
-
-  if (!userConnected?.user) return;
-  const hasPermission = checkPermissions(
-    userConnected?.user,
-    'can:delete',
-    'user'
-  );
+  const user = userConnected?.user as User;
+  if (!user) return;
+  const hasPermission = checkPermissions(user, 'can:delete', 'user');
   if (!hasPermission)
     return (
       <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">

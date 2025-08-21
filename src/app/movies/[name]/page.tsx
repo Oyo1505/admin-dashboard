@@ -10,10 +10,9 @@ import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Suspense, cache } from 'react';
-import Iframe from 'react-iframe';
 import Loading from './loading';
 import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
-import { updateAnalyticsLastMovieWatched } from '@/domains/auth/action/action';
+import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/movie-player-iframe';
 
 const lobster = Lobster({
   weight: '400',
@@ -66,26 +65,7 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
         <div className="justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col">
           {movie && (
             <div className="lg:grow-0 w-full mb-4 lg:mb-0">
-              {movie?.idGoogleDive && (
-                <Iframe
-                  url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`}
-                  className="w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]"
-                  width="auto"
-                  title={movie?.title}
-                  height="450px"
-                  loading="lazy"
-                  key={movie?.id}
-                  importance="high"
-                  ariaLabel="video player"
-                  // onLoad={() => {
-                  //   if (session?.user?.id)
-                  //     updateAnalyticsLastMovieWatched(
-                  //       session.user.id,
-                  //       movie.id
-                  //     );
-                  // }}
-                />
-              )}
+              {movie?.idGoogleDive && <MoviePlayerIframe movie={movie} />}
               <MoviePageButtons isFavorite={isFavorite} movie={movie} />
             </div>
           )}

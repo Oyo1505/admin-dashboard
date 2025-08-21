@@ -33,13 +33,15 @@ const TableUsersAnalytics = () => {
         </TableHeader>
         <TableBody>
           {data?.users?.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>
-                {user.analytics[0].lastLogin.toLocaleString()}
-              </TableCell>
-              <TableCell>{user.analytics[0].lastMovieWatched}</TableCell>
-            </TableRow>
+            <>
+              <TableRow key={user.id}>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>
+                  {user.analytics[0]?.lastLogin.toLocaleString()}
+                </TableCell>
+                <TableCell>{user.analytics[0]?.lastMovieWatched}</TableCell>
+              </TableRow>
+            </>
           ))}
         </TableBody>
       </Table>

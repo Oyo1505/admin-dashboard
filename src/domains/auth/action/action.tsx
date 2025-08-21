@@ -1,6 +1,11 @@
 'use server';
 import prisma from '@/lib/prisma';
+import { IAnalytics } from '@/models/user/user';
 import { User } from 'next-auth';
+
+export interface IUserAnalytics extends User {
+  analytics: IAnalytics[];
+}
 
 export const getUserConnected = async (
   email: string
@@ -172,15 +177,14 @@ export const updateAnalyticsLastLogin = async (userId: string) => {
 export const updateAnalyticsLastMovieWatched = async (
   userId: string,
   lastMovieWatched: string
-) => {
+): Promise<{ status?: number | undefined }> => {
   try {
-    const analytics = await prisma.analytics.updateMany({
+    await prisma.analytics.updateMany({
       where: { userId },
       data: {
         lastMovieWatched,
       },
     });
-
     return { status: 200 };
   } catch (error) {
     console.log(error);
