@@ -9,6 +9,13 @@ export interface User {
   image?: string | null;
   role?: UserRole;
   favoriteMovies?: IFavoriteMovieResponse[];
+  analytics?: IAnalytics[];
+}
+
+export interface IAnalytics {
+  id: string;
+  lastLogin: Date;
+  lastMovieWatched?: string;
 }
 
 export enum UserRole {

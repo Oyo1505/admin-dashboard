@@ -1,6 +1,11 @@
 'use server';
 import prisma from '@/lib/prisma';
+import { IAnalytics } from '@/models/user/user';
 import { User } from 'next-auth';
+
+export interface IUserAnalytics extends User {
+  analytics: IAnalytics[];
+}
 
 export const getUserConnected = async (
   email: string
@@ -189,10 +194,7 @@ export const updateAnalyticsLastMovieWatched = async (
   }
 };
 
-export const getAllAnalytics = async (): Promise<{
-  users?: User[] | undefined;
-  status?: number | undefined;
-}> => {
+export const getAllAnalytics = async () => {
   try {
     const users = await prisma.user.findMany({
       where: {

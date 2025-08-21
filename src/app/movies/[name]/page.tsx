@@ -10,10 +10,8 @@ import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Suspense, cache } from 'react';
-import Iframe from 'react-iframe';
 import Loading from './loading';
 import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
-import { updateAnalyticsLastMovieWatched } from '@/domains/auth/action/action';
 import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/movie-player-iframe';
 
 const lobster = Lobster({
