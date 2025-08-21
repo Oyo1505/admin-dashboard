@@ -172,15 +172,14 @@ export const updateAnalyticsLastLogin = async (userId: string) => {
 export const updateAnalyticsLastMovieWatched = async (
   userId: string,
   lastMovieWatched: string
-) => {
+): Promise<{ status?: number | undefined }> => {
   try {
-    const analytics = await prisma.analytics.updateMany({
+    await prisma.analytics.updateMany({
       where: { userId },
       data: {
         lastMovieWatched,
       },
     });
-
     return { status: 200 };
   } catch (error) {
     console.log(error);
@@ -190,7 +189,10 @@ export const updateAnalyticsLastMovieWatched = async (
   }
 };
 
-export const getAllAnalytics = async () => {
+export const getAllAnalytics = async (): Promise<{
+  users?: User[] | undefined;
+  status?: number | undefined;
+}> => {
   try {
     const users = await prisma.user.findMany({
       where: {
