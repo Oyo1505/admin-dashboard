@@ -170,8 +170,8 @@ const ChatBot = () => {
   return (
     <div
       onClick={() => {
-        !isChatBotEnabled && setIsChatBotEnabled(true);
-        isChatBotEnabled && scrollToBottom();
+        if (!isChatBotEnabled) setIsChatBotEnabled(true);
+        if (isChatBotEnabled) scrollToBottom();
       }}
       onTransitionEnd={handleTransitionEnd}
       className={clsx(
