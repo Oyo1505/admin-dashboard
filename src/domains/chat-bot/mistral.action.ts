@@ -116,7 +116,7 @@ N'oublie pas d'inclure TOUJOURS les liens HTML pour chaque film recommandé !`,
     } else {
       finalResponse = await mistral.chat.complete({
         model: 'mistral-large-latest',
-        temperature: 0.7,
+        temperature: 0.3,
         messages: [
           {
             role: 'system',
