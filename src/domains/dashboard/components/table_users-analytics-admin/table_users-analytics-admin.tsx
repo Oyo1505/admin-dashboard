@@ -9,9 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
+import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 
-const TableUsersAnalytics = () => {
+const TableUsersAnalyticsAdmin = () => {
+  const t = useTranslations('DashboardAnalytics');
   const { data, isLoading } = useQuery({
     queryKey: ['analytics'],
     queryFn: getAllAnalytics,
@@ -23,12 +25,13 @@ const TableUsersAnalytics = () => {
 
   return (
     <>
+      <h1 className="text-2xl font-bold">Analytics Admin</h1>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Last Login</TableHead>
-            <TableHead>Last Movie Watched</TableHead>
+            <TableHead>{t('name')}</TableHead>
+            <TableHead>{t('lastLogin')}</TableHead>
+            <TableHead>{t('lastMovieWatched')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -49,4 +52,4 @@ const TableUsersAnalytics = () => {
   );
 };
 
-export default TableUsersAnalytics;
+export default TableUsersAnalyticsAdmin;

@@ -18,13 +18,14 @@ const userPermissions = {
     'can:create:director',
     'can:update:director',
     'can:read:director',
-    'can:viewAnalytics:dashboard',
+    'can:viewAnalyticsAdmin:dashboard',
   ],
   USER: [
     'can:read:user',
     'can:read:movie',
     'can:delete:hisAccount',
     'can:update:hisAccount',
+    'can:viewAnalyticsUser:dashboard',
   ],
 };
 const checkPermissions = (user: User, action: string, resource: string) => {

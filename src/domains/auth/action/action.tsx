@@ -1,20 +1,44 @@
 'use server';
 import prisma from '@/lib/prisma';
-import { IAnalytics } from '@/models/user/user';
-import { User } from 'next-auth';
+import { IAnalytics, User, UserRole } from '@/models/user/user';
 
 export interface IUserAnalytics extends User {
-  analytics: IAnalytics[];
+  analytics?: IAnalytics[];
 }
 
 export const getUserConnected = async (
   email: string
-): Promise<{ user?: User | undefined; status?: number | undefined }> => {
+): Promise<{
+  user?: IUserAnalytics | undefined;
+  status?: number | undefined;
+}> => {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
     });
-    return { user: user ? user : {}, status: 200 };
+    const analytics = await prisma.analytics.findMany({
+      where: {
+        userId: user?.id as string,
+      },
+    });
+    return {
+      user: user
+        ? {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            image: user.image,
+            role: user.role as UserRole,
+            analytics: analytics.map((a) => ({
+              id: a.id,
+              lastLogin: a.lastLogin,
+              lastMovieWatched: a.lastMovieWatched ?? undefined,
+            })),
+          }
+        : undefined,
+      status: 200,
+    };
   } catch (error) {
     console.log(error);
     return {

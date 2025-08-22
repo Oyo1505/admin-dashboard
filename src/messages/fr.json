@@ -61,6 +61,12 @@
     "userEmailAdded": "Email ajouté",
     "deleting": "Suppression..."
   },
+  "DashboardAnalytics": {
+    "title": "Analytics",
+    "name": "Nom",
+    "lastLogin": "Dernière connexion",
+    "lastMovieWatched": "Dernier film vu"
+  },
   "DashboardNav": {
     "dashboard": "Espace Personnel",
     "users": "Utilisateurs",
