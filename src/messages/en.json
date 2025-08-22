@@ -61,6 +61,12 @@
     "userEmailAdded": "User email added",
     "deleting": "Deleting..."
   },
+  "DashboardAnalytics": {
+    "title": "Analytics",
+    "name": "Name",
+    "lastLogin": "Last Login",
+    "lastMovieWatched": "Last Movie Watched"
+  },
   "DashboardNav": {
     "dashboard": "Dashboard",
     "users": "Users",

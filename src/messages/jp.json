@@ -60,6 +60,12 @@
     "userEmailAdded": "Email 追加済み",
     "deleting": "削除中..."
   },
+  "DashboardAnalytics": {
+    "title": "アナリティクス",
+    "name": "名前",
+    "lastLogin": "最終ログイン",
+    "lastMovieWatched": "最終映画視聴"
+  },
   "DashboardNav": {
     "dashboard": "ダッシュボード",
     "users": "ユーザー",
