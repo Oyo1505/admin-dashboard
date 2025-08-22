@@ -3,6 +3,7 @@ import Iframe from 'react-iframe';
 import { updateAnalyticsLastMovieWatched } from '@/domains/auth/action/action';
 import { useSession } from 'next-auth/react';
 import { IMovie } from '@/models/movie/movie';
+import { useEffect, useRef } from 'react';
 
 const MoviePlayerIframe = ({ movie }: { movie: IMovie }) => {
   const { data: session } = useSession();
@@ -14,7 +15,7 @@ const MoviePlayerIframe = ({ movie }: { movie: IMovie }) => {
       width="auto"
       title={movie?.title}
       height="450px"
-      loading="lazy"
+      loading="eager"
       importance="high"
       ariaLabel="video player"
       onLoad={() => {
