@@ -51,7 +51,7 @@ model User {
   sessions      Session[]
   role          UserRole     @default(USER) 
   favoriteMovies UserFavoriteMovies[]
-  analytics     Analytics[]
+  analytics     AnalyticsUser[]
 }
 
 model Movie {
@@ -127,15 +127,24 @@ model MovieGenre {
   @@unique([movieId, genreId])
 }
 
-model Analytics {
+model AnalyticsUser {
   id        String    @id @default(cuid())
   userId    String
   user      User      @relation(fields: [userId], references: [id])
   lastLogin DateTime @default(now())
   lastMovieWatched String?
+  visits Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  @@map("analytics")
+  @@map("analytics_user")
+}
+
+model AnalyticsApplication {
+  id        String    @id @default(cuid())
+  visits Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("analytics_application")
 }
 
 enum UserRole {

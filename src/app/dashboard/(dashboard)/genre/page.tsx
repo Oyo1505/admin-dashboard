@@ -1,4 +1,4 @@
-import { getUserConnected } from '@/domains/auth/action/action';
+import { getUserConnected } from '@/domains/auth/actions/action.users';
 import GenreForm from '@/domains/dashboard/components/genre-form/genre-form';
 import { GenreList } from '@/domains/dashboard/components/genre-list/genre-list';
 import { getAllGenres } from '@/domains/movies/action';

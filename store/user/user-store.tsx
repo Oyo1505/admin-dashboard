@@ -1,4 +1,4 @@
-import { getUserConnected } from '@/domains/auth/action/action';
+import { getUserConnected } from '@/domains/auth/actions/action.users';
 import { getFavoriteMovies } from '@/domains/dashboard/action';
 import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
@@ -31,7 +31,9 @@ const useUserStore = create<UserStore>()(
       connected: false,
       setUser: (user: IUser, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
+        console.log('fetchUser', email);
         const { user } = await getUserConnected(email);
+        console.log('user', user);
         const { movies } = user?.id
           ? await getFavoriteMovies(user?.id)
           : { movies: [] };

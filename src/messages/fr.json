@@ -65,7 +65,8 @@
     "title": "Analytics",
     "name": "Nom",
     "lastLogin": "Dernière connexion",
-    "lastMovieWatched": "Dernier film vu"
+    "lastMovieWatched": "Dernier film vu",
+    "visits": "Visites"
   },
   "DashboardNav": {
     "dashboard": "Espace Personnel",
