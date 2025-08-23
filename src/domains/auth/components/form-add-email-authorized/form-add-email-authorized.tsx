@@ -2,7 +2,7 @@
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
 import React from 'react';
-import { postAuthorizedEmail } from '../../actions/action.users';
+import { postAuthorizedEmail } from '../../actions/action.email';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
