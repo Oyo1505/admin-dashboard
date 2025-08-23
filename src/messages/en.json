@@ -65,7 +65,8 @@
     "title": "Analytics",
     "name": "Name",
     "lastLogin": "Last Login",
-    "lastMovieWatched": "Last Movie Watched"
+    "lastMovieWatched": "Last Movie Watched",
+    "visits": "Visits"
   },
   "DashboardNav": {
     "dashboard": "Dashboard",

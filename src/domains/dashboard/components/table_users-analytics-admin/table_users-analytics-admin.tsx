@@ -1,5 +1,4 @@
 'use client';
-import { getAllAnalytics } from '@/domains/auth/action/action';
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import {
   Table,
@@ -11,12 +10,13 @@ import {
 } from '@/domains/ui/components/table/table';
 import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
+import { getAllAnalyticsUser } from '@/domains/auth/actions/action.users';
 
 const TableUsersAnalyticsAdmin = () => {
   const t = useTranslations('DashboardAnalytics');
   const { data, isLoading } = useQuery({
     queryKey: ['analytics'],
-    queryFn: getAllAnalytics,
+    queryFn: getAllAnalyticsUser,
   });
 
   if (isLoading) {
@@ -32,6 +32,7 @@ const TableUsersAnalyticsAdmin = () => {
             <TableHead>{t('name')}</TableHead>
             <TableHead>{t('lastLogin')}</TableHead>
             <TableHead>{t('lastMovieWatched')}</TableHead>
+            <TableHead>{t('visits')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -40,9 +41,10 @@ const TableUsersAnalyticsAdmin = () => {
               <TableRow key={user.id}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>
-                  {user.analytics[0]?.lastLogin.toLocaleString()}
+                  {user.analytics?.[0]?.lastLogin?.toLocaleString()}
                 </TableCell>
-                <TableCell>{user.analytics[0]?.lastMovieWatched}</TableCell>
+                <TableCell>{user.analytics?.[0]?.lastMovieWatched}</TableCell>
+                <TableCell>{user.analytics?.[0]?.visits || 0}</TableCell>
               </TableRow>
             </>
           ))}

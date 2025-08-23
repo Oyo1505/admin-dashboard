@@ -1,5 +1,5 @@
 'use client';
-import { deleteEmailAuthorized } from '@/domains/auth/action/action';
+import { deleteEmailAuthorized } from '@/domains/auth/actions/action.email';
 import { Button } from '@/domains/ui/components/button/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';

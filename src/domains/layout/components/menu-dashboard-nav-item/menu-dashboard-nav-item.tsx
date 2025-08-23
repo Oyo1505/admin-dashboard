@@ -12,6 +12,7 @@ export function NavItem({
   children: React.ReactNode;
 }) {
   const segment = useSelectedLayoutSegment();
+
   return (
     <Link
       href={href}

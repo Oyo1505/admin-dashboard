@@ -13,6 +13,7 @@ import useUserStore from 'store/user/user-store';
 const TableUsersAnalyticsUser = () => {
   const { user } = useUserStore((state) => state);
   const t = useTranslations('DashboardAnalytics');
+
   return (
     <>
       <h1 className="text-2xl font-bold">{t('title')}</h1>

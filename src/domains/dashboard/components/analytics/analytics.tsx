@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import useUserStore from 'store/user/user-store';
 import TableUsersAnalyticsAdmin from '../table_users-analytics-admin/table_users-analytics-admin';
 import TableUsersAnalyticsUser from '../table_users-analytics-user/table_users-analytics-user';
+import AnalyticsVisits from '../analytics-visits/analytics-visits';
 
 const Analytics = () => {
   const { user } = useUserStore((state) => state);
@@ -28,6 +29,7 @@ const Analytics = () => {
       {hasAdminPermission && (
         <Suspense fallback={null}>
           <TableUsersAnalyticsAdmin />
+          <AnalyticsVisits />
         </Suspense>
       )}
     </div>

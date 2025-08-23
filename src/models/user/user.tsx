@@ -16,6 +16,7 @@ export interface IAnalytics {
   id: string;
   lastLogin: Date;
   lastMovieWatched?: string;
+  visits?: number;
 }
 
 export enum UserRole {

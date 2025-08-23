@@ -1,4 +1,4 @@
-import { getUserConnected } from '@/domains/auth/action/action';
+import { getUserConnected } from '@/domains/auth/actions/action.users';
 import FormAddEmailAuthrizedEmail from '@/domains/auth/components/form-add-email-authorized/form-add-email-authorized';
 import { getUsersWithPageParam } from '@/domains/dashboard/action';
 import Search from '@/domains/dashboard/components/search-user/search-user';

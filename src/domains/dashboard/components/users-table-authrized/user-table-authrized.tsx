@@ -1,9 +1,9 @@
 'use client';
-import { getAuthorizedEmailsPagination } from '@/domains/auth/action/action';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row';
+import { getAuthorizedEmailsPagination } from '@/domains/auth/actions/action.email';
 
 export const UserTableAuthorized = ({
   hasPermission,

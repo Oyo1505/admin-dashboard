@@ -64,7 +64,8 @@
     "title": "アナリティクス",
     "name": "名前",
     "lastLogin": "最終ログイン",
-    "lastMovieWatched": "最終映画視聴"
+    "lastMovieWatched": "最終映画視聴",
+    "visits": "訪問数"
   },
   "DashboardNav": {
     "dashboard": "ダッシュボード",
