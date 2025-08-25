@@ -36,7 +36,6 @@ Cette application est une plateforme complète de gestion de films avec authenti
 - **[Next.js 15](https://nextjs.org/)** - Framework React avec App Router
 - **[TypeScript](https://www.typescriptlang.org/)** - Typage statique
 - **[Tailwind CSS](https://tailwindcss.com/)** - Framework CSS utilitaire
-- **[Shadcn UI](https://ui.shadcn.com/)** - Composants UI modernes
 - **[React Hook Form](https://react-hook-form.com/)** - Gestion des formulaires
 - **[Zustand](https://zustand-demo.pmnd.rs/)** - Gestion d'état
 
