@@ -1,4 +1,5 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { Locale } from '@/config';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
@@ -9,7 +10,11 @@ import { useState } from 'react';
 import { heuresEnMinutes } from 'utilities/number/minutesToHours';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
-import MoviePageSubtitlesList from '../movie-page_subtitles-list/movie-page_subtitles-list';
+
+const MoviePageSubtitlesList = dynamic(
+  () => import('../movie-page_subtitles-list/movie-page_subtitles-list'),
+  { ssr: false }
+);
 
 interface MovieHeaderProps {
   movie?: IMovie | null;

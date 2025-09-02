@@ -66,6 +66,13 @@ const webSitesRessources: Ressource[] = [
     description: 'Georgian Movies',
     image: youtube,
   },
+  {
+    id: 10,
+    name: 'Youtube',
+    url: 'https://www.youtube.com/@cinemadumonde',
+    description: 'NipponKino',
+    image: youtube,
+  },
 ];
 
 const Page = () => {
