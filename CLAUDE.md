@@ -1,0 +1,101 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Common Development Commands
+
+### Package Management
+- Use `pnpm` as the package manager (configured via packageManager field in package.json)
+- `pnpm install` - Install dependencies
+- `pnpm dev` - Start development server with Prisma generation and Turbopack
+- `pnpm build` - Build for production (includes Prisma generation and DB push)
+- `pnpm start` - Start production server
+
+### Code Quality & Testing
+- `pnpm lint` - Run ESLint
+- `pnpm lint:fix` - Fix ESLint issues automatically
+- `pnpm format` - Format code with Prettier
+- `pnpm format:check` - Check code formatting
+- `pnpm test` - Run Jest tests
+
+### Database Operations
+- `pnpm prisma generate` - Generate Prisma client
+- `pnpm prisma db push` - Push schema changes to database
+- `pnpm prisma studio` - Open Prisma Studio for database management
+
+## Architecture Overview
+
+This is a Next.js 15 movie management platform with a domain-driven architecture:
+
+### Tech Stack
+- **Frontend**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS
+- **UI Components**: Radix UI, Shadcn/ui, Lucide React icons
+- **Backend**: Next.js API routes, Prisma ORM, PostgreSQL
+- **Authentication**: NextAuth.js v5 with Google OAuth
+- **State Management**: Zustand (though no store files are currently present)
+- **AI Integration**: Mistral AI for chatbot functionality
+- **File Storage**: Google Drive API integration
+- **Deployment**: Vercel with analytics
+- **Internationalization**: next-intl (French, English, Japanese support)
+
+### Domain Structure
+The codebase follows domain-driven design with clear separation:
+
+```
+src/domains/
+├── auth/           # Authentication logic, user management
+├── movies/         # Movie CRUD, filtering, favorites
+├── dashboard/      # Admin interface, analytics
+├── chat-bot/       # Mistral AI integration
+├── layout/         # Navigation, menus, layout components
+├── ui/             # Reusable UI components
+├── skeleton/       # Loading states
+├── shared/         # Cross-domain utilities
+└── ressources/     # Resource management
+```
+
+### Key Features
+- **Multi-role system**: USER/ADMIN roles with different permissions
+- **Movie management**: Full CRUD with genres, directors, subtitles
+- **User favorites**: Personal movie collections
+- **Analytics tracking**: User visits and behavior
+- **File uploads**: Integration with Google Drive for media storage
+- **Internationalization**: Support for French, English, and Japanese
+- **Responsive design**: Mobile-first approach with Tailwind CSS
+
+### Database Schema (Prisma)
+Key models include:
+- `User` - Authentication and user management with NextAuth
+- `Movie` - Core movie entity with metadata, genres, and Google Drive integration
+- `Genre` - Multilingual genre system
+- `UserFavoriteMovies` - User-movie relationships
+- `AnalyticsUser/AnalyticsApplication` - Usage tracking
+- `AuthorizedEmail` - Email whitelist system
+
+### Authentication & Security
+- Uses NextAuth.js v5 with Google OAuth provider
+- Middleware-based route protection (all routes except /, privacy, and legal pages require authentication)
+- Role-based access control (USER/ADMIN)
+- Email authorization system for controlling access
+
+### Development Notes
+- Uses App Router with TypeScript
+- Prettier configuration enforces consistent code style
+- ESLint with Next.js and Prettier integration
+- Jest configured for testing with jsdom environment
+- Internationalization handled via next-intl with locale middleware
+- Environment variables required for Google OAuth, database, and Mistral AI
+
+### File Organization
+- Pages follow Next.js App Router conventions in `src/app/`
+- Components organized by domain in `src/domains/`
+- Shared utilities in `src/lib/` and `src/shared/`
+- Prisma schema defines the complete database structure
+- Middleware handles authentication and internationalization
+
+### Important Patterns
+- Domain-based component organization
+- Server actions for data mutations (in action.ts files)
+- Custom hooks for data fetching and state management
+- Consistent use of TypeScript interfaces
+- Shadcn/ui component library for consistent design system

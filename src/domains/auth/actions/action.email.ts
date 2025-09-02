@@ -20,7 +20,10 @@ export const postAuthorizedEmail = async (
     }
     return { message: 'User Already authorized', status: 409 };
   } catch (error) {
-    console.log(error);
+    console.error(
+      'Auth action error:',
+      error instanceof Error ? error.message : 'Unknown error'
+    );
     return {
       status: 500,
     };
@@ -50,7 +53,10 @@ export const getAuthorizedEmails = async (): Promise<{
       status: 200,
     };
   } catch (error) {
-    console.log(error);
+    console.error(
+      'Auth action error:',
+      error instanceof Error ? error.message : 'Unknown error'
+    );
     return {
       status: 500,
     };
@@ -86,7 +92,10 @@ export const getAuthorizedEmailsPagination = async ({
       status: 200,
     };
   } catch (error) {
-    console.log(error);
+    console.error(
+      'Auth action error:',
+      error instanceof Error ? error.message : 'Unknown error'
+    );
     return {
       status: 500,
     };
@@ -107,7 +116,10 @@ export const deleteEmailAuthorized = async (
 
     return { status: 200 };
   } catch (error) {
-    console.log(error);
+    console.error(
+      'Auth action error:',
+      error instanceof Error ? error.message : 'Unknown error'
+    );
     return {
       status: 500,
     };
