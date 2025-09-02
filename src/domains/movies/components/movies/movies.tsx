@@ -1,5 +1,4 @@
 'use client';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import { Button } from '@/domains/ui/components/button/button';
 import { Favorite } from '@/domains/ui/components/icons/icons';
 import { URL_MOVIE_ID } from '@/shared/route';
@@ -16,6 +15,12 @@ import useUserStore from 'store/user/user-store';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import imageDefault from '../../../../assets/image/default-placeholder.png';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
+import dynamic from 'next/dynamic';
+
+const LoadingSpinner = dynamic(
+  () => import('@/domains/shared/loading-spinner/loading-spinner'),
+  { ssr: false }
+);
 
 interface SearchParams {
   subtitles?: string;

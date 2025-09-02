@@ -1,4 +1,3 @@
-import { URL_BASE } from '@/shared/route';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import authConfig from './auth.config';
@@ -17,17 +16,39 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60 * 24 * 30, // 30 days
-    updateAge: 10 * 60, // 10 minutes
+    maxAge: 60 * 60 * 24 * 7, // 7 days (plus sécurisé)
+    updateAge: 60 * 60, // 1 hour (réduit les requêtes)
   },
   callbacks: {
     async signIn({ user }) {
-      const { mails } = await getAuthorizedEmails();
-      const usersEmail = mails?.map((item) => item.email);
-      if (user?.email && !usersEmail?.includes(user?.email)) return URL_BASE;
-      if (user?.id) await updateAnalyticsLastLogin(user?.id);
-      await updateAnalyticsApplicationVisits();
-      return true;
+      try {
+        if (!user?.email) return false;
+
+        const { mails, status } = await getAuthorizedEmails();
+
+        if (status !== 200 || !mails) {
+          console.error('Failed to fetch authorized emails');
+          return false;
+        }
+
+        const usersEmail = mails.map((item) => item.email);
+
+        if (!usersEmail.includes(user.email)) {
+          console.warn(`Unauthorized sign-in attempt: ${user.email}`);
+          return false;
+        }
+
+        // Update analytics in background
+        if (user.id) {
+          updateAnalyticsLastLogin(user.id).catch(console.error);
+        }
+        updateAnalyticsApplicationVisits().catch(console.error);
+
+        return true;
+      } catch (error) {
+        console.error('Sign-in error:', error);
+        return false;
+      }
     },
     async jwt({ token, account, profile }) {
       if (account) {
@@ -67,8 +88,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const response = await fetch('https://oauth2.googleapis.com/token', {
             method: 'POST',
             body: new URLSearchParams({
-              client_id: process.env.NEXT_PUBLIC_GOOGLE_ID! as string,
-              client_secret: process.env.NEXT_PUBLIC_GOOGLE_SECRET! as string,
+              client_id: process.env.GOOGLE_CLIENT_ID!,
+              client_secret: process.env.GOOGLE_CLIENT_SECRET!,
               grant_type: 'refresh_token',
               refresh_token: token.refresh_token! as string,
             }),
@@ -93,7 +114,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             token.refresh_token = newTokens.refresh_token;
           return token;
         } catch (error) {
-          console.error('Error refreshing access_token', error);
+          console.error(
+            'Error refreshing access_token:',
+            error instanceof Error ? error.message : 'Unknown error'
+          );
           // If we fail to refresh the token, return an error so we can handle it on the page
           token.error = 'RefreshTokenError';
           return token;
