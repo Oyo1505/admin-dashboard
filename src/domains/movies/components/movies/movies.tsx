@@ -3,6 +3,7 @@ import { Button } from '@/domains/ui/components/button/button';
 import { Favorite } from '@/domains/ui/components/icons/icons';
 import { URL_MOVIE_ID } from '@/shared/route';
 import { useLocale, useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import qs from 'qs';
@@ -13,9 +14,7 @@ import {
 } from 'store/movie/movie-store';
 import useUserStore from 'store/user/user-store';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
-import imageDefault from '../../../../assets/image/default-placeholder.png';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
-import dynamic from 'next/dynamic';
 
 const LoadingSpinner = dynamic(
   () => import('@/domains/shared/loading-spinner/loading-spinner'),
@@ -132,47 +131,48 @@ const Movies = ({
   };
   return (
     <>
-      <div className="grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-6">
-        {moviesFromStore && moviesFromStore.length > 0 ? (
-          moviesFromStore.map(
+      {moviesFromStore && moviesFromStore.length > 0 ? (
+        <div className="grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4 mt-6">
+          {moviesFromStore.map(
             (movie, index) =>
               movie?.title && (
-                <Link
-                  prefetch
-                  className="w-52 relative group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5"
-                  key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
-                  href={`${URL_MOVIE_ID(movie?.id)}`}
-                >
-                  {isFavorite(movie?.id) && (
-                    <div className="absolute z-1 top-1 right-1">
-                      <Favorite fill />
+                <>
+                  <Link
+                    prefetch
+                    className="w-52 relative group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5"
+                    key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
+                    href={`${URL_MOVIE_ID(movie?.id)}`}
+                  >
+                    {isFavorite(movie?.id) && (
+                      <div className="absolute z-1 top-1 right-1">
+                        <Favorite fill />
+                      </div>
+                    )}
+                    <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
+                      <div className="w-full h-72 rounded-lg relative overflow-hidden">
+                        <Image
+                          priority
+                          className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
+                          src={movie?.image ? movie?.image : 'imageDefault'}
+                          width={300}
+                          height={200}
+                          alt="movie"
+                        />
+                      </div>
                     </div>
-                  )}
-                  <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
-                    <div className="w-full h-72 rounded-lg relative overflow-hidden">
-                      <Image
-                        priority
-                        className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
-                        src={movie?.image ? movie?.image : imageDefault}
-                        width={300}
-                        height={200}
-                        alt="movie"
-                      />
+                    <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
+                      {titleOnlocale(movie, locale)}
                     </div>
-                  </div>
-                  <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
-                    {titleOnlocale(movie, locale)}
-                  </div>
-                </Link>
+                  </Link>
+                </>
               )
-          )
-        ) : (
-          <div className="w-full text-center mt-14 text-2xl">
-            {' '}
-            {t('NoMovie')}{' '}
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <div className=" text-center mt-14 mx-auto text-2xl">
+          {t('NoMovie')}
+        </div>
+      )}
       <div className="flex justify-center mt-10">
         {isFetching || (isFetchingNextPage && status !== 'success') ? (
           <LoadingSpinner />
