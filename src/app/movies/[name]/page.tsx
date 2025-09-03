@@ -1,6 +1,8 @@
 import { getFavoriteMovies } from '@/domains/dashboard/action';
 import { getAllMovies, getMovieDetail } from '@/domains/movies/action';
 import MovieHeader from '@/domains/movies/components/movie-header/movie-header';
+import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
+import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/movie-player-iframe';
 import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
@@ -11,8 +13,6 @@ import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { Suspense, cache } from 'react';
 import Loading from './loading';
-import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
-import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/movie-player-iframe';
 
 const lobster = Lobster({
   weight: '400',
