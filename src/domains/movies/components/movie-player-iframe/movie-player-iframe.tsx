@@ -1,15 +1,25 @@
 'use client';
-import Iframe from 'react-iframe';
-import { useSession } from 'next-auth/react';
-import { IMovie } from '@/models/movie/movie';
 import { updateAnalyticsLastMovieWatched } from '@/domains/auth/actions/action.analytics';
+import { isValidIframeUrl, sanitizeGoogleDriveUrl } from '@/lib/security';
+import { IMovie } from '@/models/movie/movie';
+import { useSession } from 'next-auth/react';
+import Iframe from 'react-iframe';
 
 const MoviePlayerIframe = ({ movie }: { movie: IMovie }) => {
   const { data: session } = useSession();
+  const iframeUrl = sanitizeGoogleDriveUrl(movie?.idGoogleDive || '');
+
+  if (!isValidIframeUrl(iframeUrl)) {
+    return (
+      <div className="w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px] flex items-center justify-center bg-gray-100 rounded-lg">
+        <p className="text-gray-600">Vidéo non disponible</p>
+      </div>
+    );
+  }
 
   return (
     <Iframe
-      url={`https://drive.google.com/file/d/${movie?.idGoogleDive}/preview`}
+      url={iframeUrl}
       className="w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px]"
       width="auto"
       title={movie?.title}

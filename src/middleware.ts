@@ -53,11 +53,39 @@ export default auth(async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/', req.url));
     }
 
-    return NextResponse.next({
+    // Create response with security headers
+    const response = NextResponse.next({
       request: {
         headers: requestHeaders,
       },
     });
+
+    // Add security headers for iframe protection
+    response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+    response.headers.set('X-Content-Type-Options', 'nosniff');
+    response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+    // Specific CSP for pages with iframes
+    if (path.includes('/movies/') || path.includes('/dashboard/')) {
+      response.headers.set(
+        'Content-Security-Policy',
+        [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://apis.google.com https://accounts.google.com",
+          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+          "font-src 'self' https://fonts.gstatic.com",
+          "img-src 'self' data: https: blob:",
+          "media-src 'self' https://drive.google.com https://www.youtube.com blob:",
+          "connect-src 'self' https://api.themoviedb.org https://accounts.google.com https://www.googleapis.com",
+          "frame-src 'self' https://drive.google.com https://www.youtube.com https://accounts.google.com",
+          "object-src 'none'",
+          "base-uri 'self'",
+          "form-action 'self'",
+        ].join('; ')
+      );
+    }
+
+    return response;
   } catch (error) {
     console.error('Middleware error:', error);
     return NextResponse.redirect(new URL('/', req.url));
