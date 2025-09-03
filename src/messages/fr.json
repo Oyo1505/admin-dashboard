@@ -174,5 +174,15 @@
   },
   "ErrorMessage": {
     "notPermitted": "Vous n'avez pas les permissions pour accéder à cette page"
+  },
+  "NotFound": {
+    "pageNotFound": "Page non trouvée",
+    "description": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée.",
+    "backToHome": "Retour à l'accueil",
+    "moviesPage": "Page des films",
+    "popularPage": "Page populaire:",
+    "home": "Home",
+    "movies": "Films",
+    "dashboard": "Dashboard"
   }
 }

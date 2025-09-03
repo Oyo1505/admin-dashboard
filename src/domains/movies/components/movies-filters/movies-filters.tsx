@@ -46,15 +46,18 @@ const SelectSubtitles = ({
     <div className="flex flex-col gap-2 md:w-64">
       <LabelForm
         titleLabel={t('subtitles')}
-        className="text-white"
+        className="hidden"
         htmlFor="subtitles"
       />
       <select
+        aria-placeholder={t('subtitles')}
         onChange={onChangeSubtitles}
         defaultValue={subtitles ?? filters?.subtitles}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
       >
-        <option> </option>
+        <option value="" disabled>
+          {t('subtitles')}
+        </option>
         {Object.entries(subtitlesList).map(([key, value], index) => (
           <option key={`${key}-${index}`} value={key}>
             {value}
@@ -86,7 +89,7 @@ const SelectLanguage = ({
     <div className="flex flex-col gap-2 md:w-64">
       <LabelForm
         titleLabel={t('language')}
-        className="text-white"
+        className="hidden"
         htmlFor="language"
       />
       <select
@@ -94,7 +97,9 @@ const SelectLanguage = ({
         defaultValue={language ?? filters?.language}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
       >
-        <option> </option>
+        <option value="" disabled>
+          {t('language')}
+        </option>
         {listLanguages.map(
           (
             language: {
@@ -146,17 +151,15 @@ const SelectGenre = ({
 
   return (
     <div className="flex flex-col gap-2 md:w-64">
-      <LabelForm
-        titleLabel={t('genre')}
-        className="text-white"
-        htmlFor="genre"
-      />
+      <LabelForm titleLabel={t('genre')} className="hidden" htmlFor="genre" />
       <select
         onChange={onChangeGenre}
         defaultValue={genre ?? filters?.genre}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
       >
-        <option> </option>
+        <option value="" disabled>
+          {t('genre')}
+        </option>
         {genresSorted?.map(
           (
             genre: {
@@ -197,17 +200,15 @@ const SelectDecade = ({
   const t = useTranslations('Filters');
   return (
     <div className="flex flex-col gap-2 md:w-64">
-      <LabelForm
-        titleLabel={t('decade')}
-        className="text-white"
-        htmlFor="decade"
-      />
+      <LabelForm titleLabel={t('decade')} className="hidden" htmlFor="decade" />
       <select
         onChange={onChangeDecade}
         defaultValue={defaultValue ?? filters?.decade}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
       >
-        <option> </option>
+        <option value="" disabled>
+          {t('decade')}
+        </option>
         {decade?.map((dec: number, index: number) => (
           <option key={`${dec}-${index}`} value={dec}>
             {dec}

@@ -1,4 +1,5 @@
 'use server';
+import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { User } from '@/models/user/user';
 
@@ -6,26 +7,34 @@ export const postAuthorizedEmail = async (
   email: string
 ): Promise<{ status?: number | undefined; message?: string | undefined }> => {
   try {
-    const user = await prisma.authorizedEmail.findUnique({
+    if (!email?.trim()) {
+      return { status: 400, message: 'Email is required' };
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { status: 400, message: 'Invalid email format' };
+    }
+
+    const existingUser = await prisma.authorizedEmail.findUnique({
       where: { email },
     });
-    if (!user) {
-      await prisma.authorizedEmail.create({
-        data: {
-          email: email,
-        },
-      });
 
-      return { status: 200 };
+    if (existingUser) {
+      return { message: 'User Already authorized', status: 409 };
     }
-    return { message: 'User Already authorized', status: 409 };
+
+    await prisma.authorizedEmail.create({
+      data: { email },
+    });
+
+    return { status: 200 };
   } catch (error) {
-    console.error(
-      'Auth action error:',
-      error instanceof Error ? error.message : 'Unknown error'
-    );
+    logError(error, 'postAuthorizedEmail');
+    const appError = handlePrismaError(error);
     return {
-      status: 500,
+      status: appError.statusCode,
+      message: appError.message,
     };
   }
 };

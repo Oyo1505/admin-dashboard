@@ -1,8 +1,10 @@
 'use server';
+import { validateId } from '@/lib/api-wrapper';
+import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IGenre, IMovie } from '@/models/movie/movie';
-import type { Prisma } from '@prisma/client';
 import { URL_DASHBOARD_ROUTE, URL_MOVIE_ID } from '@/shared/route';
+import type { Prisma } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { cache } from 'react';
 
@@ -15,10 +17,10 @@ export const getMovieDetail = cache(
     status: number;
   }> => {
     try {
+      validateId(id);
+
       const movieInDb = await prisma.movie.findUnique({
-        where: {
-          id,
-        },
+        where: { id },
         include: {
           genresIds: {
             select: {
@@ -30,38 +32,44 @@ export const getMovieDetail = cache(
         cacheStrategy: { ttl: 120 },
       });
 
-      const randomGenre =
-        movieInDb?.genresIds[
-          Math.floor(Math.random() * movieInDb?.genresIds.length)
-        ];
-
-      const suggestedMovies = await prisma.movie.findMany({
-        where: {
-          genresIds: {
-            some: {
-              genreId: {
-                contains: randomGenre?.genre?.id,
-                mode: 'insensitive',
-              },
-            },
-          },
-          NOT: {
-            id: movieInDb?.id,
-          },
-        },
-        //@ts-ignore
-        cacheStrategy: { ttl: 600 },
-      });
-
-      if (!movieInDb && !suggestedMovies) {
+      if (!movieInDb) {
         return { status: 404 };
       }
-      return { movie: movieInDb as IMovie, suggestedMovies, status: 200 };
-    } catch (error) {
-      console.log(error);
+
+      const randomGenre =
+        movieInDb.genresIds.length > 0
+          ? movieInDb.genresIds[
+              Math.floor(Math.random() * movieInDb.genresIds.length)
+            ]
+          : null;
+
+      const suggestedMovies = randomGenre
+        ? await prisma.movie.findMany({
+            where: {
+              genresIds: {
+                some: {
+                  genreId: {
+                    contains: randomGenre.genre?.id,
+                    mode: 'insensitive',
+                  },
+                },
+              },
+              NOT: { id: movieInDb.id },
+            },
+            //@ts-ignore
+            cacheStrategy: { ttl: 600 },
+          })
+        : [];
+
       return {
-        status: 500,
+        movie: movieInDb,
+        suggestedMovies: suggestedMovies,
+        status: 200,
       };
+    } catch (error) {
+      logError(error, 'getMovieDetail');
+      const appError = handlePrismaError(error);
+      return { status: appError.statusCode };
     }
   }
 );
@@ -70,6 +78,10 @@ export const getMoviesByARandomGenreById = async (
   genreId: string
 ): Promise<{ movies?: IMovie[]; status: number }> => {
   try {
+    if (!genreId?.trim()) {
+      return { status: 400 };
+    }
+
     const moviesInDb = await prisma.movie.findMany({
       where: {
         genresIds: {
@@ -81,10 +93,9 @@ export const getMoviesByARandomGenreById = async (
     });
     return { movies: moviesInDb, status: 200 };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getMoviesByARandomGenreById');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -109,10 +120,9 @@ export const getLastMovies = async (): Promise<{
     }
     return { movies: moviesInDb, status: 200 };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getLastMovies');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -154,10 +164,9 @@ export const getMoviesByARandomCountry = async (): Promise<{
     }
     return { status: 200, movies, country: getARadomCountry.country as string };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getMoviesByARandomCountry');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -197,17 +206,16 @@ export const getMoviesByARandomGenre = async (): Promise<{
     }
     return { status: 200, movies, genre: randomGenre };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getMoviesByARandomGenre');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
 export const addOrRemoveToFavorite = async (
   idUser: string,
   idMovie: string | undefined
-): Promise<{ status: number; message: string }> => {
+): Promise<{ status: number; message?: string }> => {
   if (!idMovie) {
     return { status: 400, message: "Le film n'est pas défini" };
   }
@@ -244,11 +252,9 @@ export const addOrRemoveToFavorite = async (
     revalidatePath(URL_MOVIE_ID(idMovie));
     return { status: 200, message: 'Ajouté aux favoris avec succès' };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-      message: 'Erreur serveur',
-    };
+    logError(error, 'addOrRemoveToFavorite');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -264,10 +270,9 @@ export const getAllMovies = async (): Promise<{
 
     return { movieInDb, status: 200 };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getAllMovies');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -383,11 +388,10 @@ export const fetchMovies = cache(
         status: 200,
         prevOffset: pageParam,
       };
-    } catch (err) {
-      console.error('Erreur lors de la récupération des films:', err);
-      return {
-        status: 500,
-      };
+    } catch (error) {
+      logError(error, 'fetchMovies');
+      const appError = handlePrismaError(error);
+      return { status: appError.statusCode };
     }
   }
 );
@@ -417,10 +421,9 @@ export const getMoviesCountries = async (): Promise<{
 
     return { status: 200, countries };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getMoviesCountries');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -435,10 +438,9 @@ export const getAllGenres = async (): Promise<{
     }
     return { status: 200, genres };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getAllGenres');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -455,10 +457,9 @@ export const addGenre = async (
     revalidatePath(URL_DASHBOARD_ROUTE.genre);
     return { status: 200, genre: createdGenre };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'addGenre');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -478,10 +479,9 @@ export const updateGenre = async (
     revalidatePath(URL_DASHBOARD_ROUTE.genre);
     return { status: 200, genre: updatedGenre };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'updateGenre');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -500,9 +500,8 @@ export const deleteGenre = async (
     revalidatePath(URL_DASHBOARD_ROUTE.genre);
     return { status: 200, genre: deletedGenre };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'deleteGenre');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };

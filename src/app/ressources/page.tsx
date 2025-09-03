@@ -73,6 +73,12 @@ const webSitesRessources: Ressource[] = [
     description: 'NipponKino',
     image: youtube,
   },
+  {
+    id: 11,
+    name: 'Rakuten',
+    url: 'https://www.rakuten.tv/fr/gardens/avod-fast',
+    description: 'Rakuten',
+  },
 ];
 
 const Page = () => {

@@ -4,7 +4,7 @@ import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
 import { signIn, signOut } from 'next-auth/react';
 import { create } from 'zustand';
-import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
+import { PersistOptions, createJSONStorage, persist } from 'zustand/middleware';
 
 interface IUser extends User {
   token?: string;
@@ -31,9 +31,7 @@ const useUserStore = create<UserStore>()(
       connected: false,
       setUser: (user: IUser, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
-        console.log('fetchUser', email);
         const { user } = await getUserConnected(email);
-        console.log('user', user);
         const { movies } = user?.id
           ? await getFavoriteMovies(user?.id)
           : { movies: [] };

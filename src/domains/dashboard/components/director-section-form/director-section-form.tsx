@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
+import { useToastErrorHandler } from '@/hooks/use-error-handler';
 import { IDirector } from '@/models/director/director';
 import {
   DirectorSectionSchema,
@@ -17,6 +18,7 @@ import {
 
 const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
   const t = useTranslations('DirectorSectionForm');
+  const errorHandler = useToastErrorHandler();
 
   const {
     register,
@@ -33,35 +35,49 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
   });
 
   const createDirectorSection = async (data: DirectorSectionSchema) => {
-    try {
-      await createDirectorFromSection(data);
-    } catch (error) {
-      console.log(error);
+    const result = await errorHandler.executeWithErrorHandling(async () => {
+      const response = await createDirectorFromSection(data);
+      return errorHandler.handleApiResponse(response);
+    });
+
+    if (result) {
+      reset();
     }
   };
 
   const uploadDirectorSection = async (data: DirectorSectionSchema) => {
-    try {
-      await updateDirectorFromSection(data);
-    } catch (error) {
-      console.log(error);
+    const result = await errorHandler.executeWithErrorHandling(async () => {
+      const response = await updateDirectorFromSection(data);
+      return errorHandler.handleApiResponse(response);
+    });
+
+    if (result) {
+      reset();
     }
   };
 
   const deleteDirectorSection = async () => {
-    try {
-      if (director?.id) {
-        await deleteDirectorFromSection(director?.id);
-        reset();
-      }
-    } catch (error) {
-      console.log(error);
+    if (!director?.id) return;
+
+    const result = await errorHandler.executeWithErrorHandling(async () => {
+      const response =
+        director?.id && (await deleteDirectorFromSection(director?.id));
+      return response && errorHandler.handleApiResponse(response);
+    });
+
+    if (result) {
+      reset();
     }
   };
 
   return (
     <div>
       <h1>{t('title')}</h1>
+      {errorHandler.isError && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          {errorHandler.error}
+        </div>
+      )}
       <form
         onSubmit={handleSubmit(
           director?.id ? uploadDirectorSection : createDirectorSection

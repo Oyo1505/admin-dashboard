@@ -1,4 +1,5 @@
 'use client';
+import { getAllAnalyticsUser } from '@/domains/auth/actions/action.users';
 import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import {
   Table,
@@ -8,9 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
-import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
-import { getAllAnalyticsUser } from '@/domains/auth/actions/action.users';
+import { useTranslations } from 'next-intl';
 
 const TableUsersAnalyticsAdmin = () => {
   const t = useTranslations('DashboardAnalytics');
@@ -37,16 +37,14 @@ const TableUsersAnalyticsAdmin = () => {
         </TableHeader>
         <TableBody>
           {data?.users?.map((user) => (
-            <>
-              <TableRow key={user.id}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>
-                  {user.analytics?.[0]?.lastLogin?.toLocaleString()}
-                </TableCell>
-                <TableCell>{user.analytics?.[0]?.lastMovieWatched}</TableCell>
-                <TableCell>{user.analytics?.[0]?.visits || 0}</TableCell>
-              </TableRow>
-            </>
+            <TableRow key={user.id}>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>
+                {user.analytics?.[0]?.lastLogin?.toLocaleString()}
+              </TableCell>
+              <TableCell>{user.analytics?.[0]?.lastMovieWatched}</TableCell>
+              <TableCell>{user.analytics?.[0]?.visits || 0}</TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

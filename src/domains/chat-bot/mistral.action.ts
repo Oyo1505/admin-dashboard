@@ -14,6 +14,11 @@ const MILLISECONDS_DELAY = 1000;
 const mapMovies = async (): Promise<IMovieDetails[]> => {
   try {
     const { movieInDb } = await getAllMovies();
+
+    if (!movieInDb || !Array.isArray(movieInDb)) {
+      return [];
+    }
+
     return movieInDb.map((movie) => ({
       id: movie.id,
       title: movie.title,
@@ -35,6 +40,26 @@ const threadChatBot = async (
   conversationHistory?: ChatMessage[]
 ) => {
   try {
+    // Validation des paramètres d'entrée
+    if (!message?.trim()) {
+      return {
+        answer:
+          locale === 'fr'
+            ? 'Veuillez poser une question.'
+            : locale === 'en'
+              ? 'Please ask a question.'
+              : '質問をしてください。',
+        status: 400,
+      };
+    }
+
+    if (!locale || !['fr', 'en', 'jp'].includes(locale)) {
+      return {
+        answer: 'Invalid locale parameter.',
+        status: 400,
+      };
+    }
+
     const conversationContext = conversationHistory
       ? conversationHistory
           .filter((msg) => msg.role === 'user' || msg.role === 'assistant')
