@@ -1,4 +1,5 @@
 'use server';
+import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IAnalytics, User, UserRole } from '@/models/user/user';
 
@@ -13,37 +14,44 @@ export const getUserConnected = async (
   status?: number | undefined;
 }> => {
   try {
+    if (!email?.trim()) {
+      return { status: 400 };
+    }
+
     const user = await prisma.user.findUnique({
       where: { email },
     });
+
+    if (!user) {
+      return { status: 404 };
+    }
+
     const analytics = await prisma.analyticsUser.findMany({
       where: {
-        userId: user?.id as string,
+        userId: user.id,
       },
     });
+
     return {
-      user: user
-        ? {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            emailVerified: user.emailVerified,
-            image: user.image,
-            role: user.role as UserRole,
-            analytics: analytics.map((a) => ({
-              id: a.id,
-              lastLogin: a.lastLogin,
-              lastMovieWatched: a.lastMovieWatched ?? undefined,
-            })),
-          }
-        : undefined,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        image: user.image,
+        role: user.role as UserRole,
+        analytics: analytics.map((a) => ({
+          id: a.id,
+          lastLogin: a.lastLogin,
+          lastMovieWatched: a.lastMovieWatched ?? undefined,
+        })),
+      },
       status: 200,
     };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'getUserConnected');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -84,7 +92,8 @@ export const getAllAnalyticsUser = async (): Promise<{
 
     return { users: transformedUsers, status: 200 };
   } catch (error) {
-    console.log(error);
-    return { status: 500 };
+    logError(error, 'getAllAnalyticsUser');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };

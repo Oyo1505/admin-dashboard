@@ -1,14 +1,18 @@
 'use server';
+import { validateId } from '@/lib/api-wrapper';
+import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 
 export const updateAnalyticsLastLogin = async (userId: string) => {
   try {
+    validateId(userId);
+
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });
 
     if (!user) {
-      return { status: 400 };
+      return { status: 404 };
     }
 
     const analytics = await prisma.analyticsUser.findFirst({
@@ -35,10 +39,9 @@ export const updateAnalyticsLastLogin = async (userId: string) => {
 
     return { status: 200 };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'updateAnalyticsLastLogin');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -55,10 +58,9 @@ export const updateAnalyticsLastMovieWatched = async (
     });
     return { status: 200 };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'updateAnalyticsLastMovieWatched');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -80,8 +82,9 @@ export const updateAnalyticsApplicationVisits = async () => {
     });
     return { visits: analytics?.visits, status: 200 };
   } catch (error) {
-    console.log(error);
-    return { status: 500 };
+    logError(error, 'updateAnalyticsApplicationVisits');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -90,7 +93,8 @@ export const getAnalyticsApplicationVisits = async () => {
     const analytics = await prisma.analyticsApplication.findFirst();
     return { visits: analytics?.visits, status: 200 };
   } catch (error) {
-    console.log(error);
-    return { status: 500 };
+    logError(error, 'getAnalyticsApplicationVisits');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };

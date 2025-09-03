@@ -1,13 +1,12 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
-import React from 'react';
-import { postAuthorizedEmail } from '../../actions/action.email';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import { z } from 'zod';
+import { postAuthorizedEmail } from '../../actions/action.email';
 
 const formSchema = z.object({
   email: z.string().email().min(1, { message: 'Email is required' }),

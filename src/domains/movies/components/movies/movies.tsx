@@ -136,35 +136,33 @@ const Movies = ({
           {moviesFromStore.map(
             (movie, index) =>
               movie?.title && (
-                <>
-                  <Link
-                    prefetch
-                    className="w-52 relative group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5"
-                    key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
-                    href={`${URL_MOVIE_ID(movie?.id)}`}
-                  >
-                    {isFavorite(movie?.id) && (
-                      <div className="absolute z-1 top-1 right-1">
-                        <Favorite fill />
-                      </div>
-                    )}
-                    <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
-                      <div className="w-full h-72 rounded-lg relative overflow-hidden">
-                        <Image
-                          priority
-                          className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
-                          src={movie?.image ? movie?.image : 'imageDefault'}
-                          width={300}
-                          height={200}
-                          alt="movie"
-                        />
-                      </div>
+                <Link
+                  prefetch
+                  className="w-52 relative group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5"
+                  key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
+                  href={`${URL_MOVIE_ID(movie?.id)}`}
+                >
+                  {isFavorite(movie?.id) && (
+                    <div className="absolute z-1 top-1 right-1">
+                      <Favorite fill />
                     </div>
-                    <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
-                      {titleOnlocale(movie, locale)}
+                  )}
+                  <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
+                    <div className="w-full h-72 rounded-lg relative overflow-hidden">
+                      <Image
+                        priority
+                        className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
+                        src={movie?.image ? movie?.image : 'imageDefault'}
+                        width={300}
+                        height={200}
+                        alt="movie"
+                      />
                     </div>
-                  </Link>
-                </>
+                  </div>
+                  <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
+                    {titleOnlocale(movie, locale)}
+                  </div>
+                </Link>
               )
           )}
         </div>

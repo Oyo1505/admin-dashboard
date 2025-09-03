@@ -172,5 +172,15 @@
   },
   "ErrorMessage": {
     "notPermitted": "あなたはこのページにアクセスする権限がありません"
+  },
+  "NotFound": {
+    "pageNotFound": "ページが見つかりません",
+    "description": "申し訳ございませんが、お探しのページは存在しないか移動されました。",
+    "backToHome": "ホームに戻る",
+    "moviesPage": "映画のページ",
+    "popularPage": "人気のページ：",
+    "home": "ホーム",
+    "movies": "映画",
+    "dashboard": "ダッシュボード"
   }
 }

@@ -1,13 +1,13 @@
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
-import authConfig from './auth.config';
-import NextAuth, { User } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
-import { getAuthorizedEmails } from '@/domains/auth/actions/action.email';
 import {
   updateAnalyticsApplicationVisits,
   updateAnalyticsLastLogin,
 } from '@/domains/auth/actions/action.analytics';
+import { getAuthorizedEmails } from '@/domains/auth/actions/action.email';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
+import NextAuth, { User } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+import authConfig from './auth.config';
 
 const prisma = new PrismaClient();
 

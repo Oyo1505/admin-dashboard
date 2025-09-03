@@ -1,4 +1,5 @@
 'use server';
+import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IDirector } from '@/models/director/director';
 import { IFavoriteMovieResponse, IMovie } from '@/models/movie/movie';
@@ -12,11 +13,17 @@ export const getUsersWithPageParam = async (
   pageParam: number
 ): Promise<{ users?: User[]; newOffset?: number | null; status: number }> => {
   try {
+    if (typeof search !== 'string') {
+      return { status: 400 };
+    }
+
+    if (typeof pageParam !== 'number' || pageParam <= 0) {
+      return { status: 400 };
+    }
+
     const users =
       search.trim() === ''
-        ? await prisma.user.findMany({
-            take: pageParam,
-          })
+        ? await prisma.user.findMany({ take: pageParam })
         : await prisma.user.findMany({
             where: {
               name: {
@@ -27,23 +34,16 @@ export const getUsersWithPageParam = async (
             take: pageParam,
           });
 
-    if (users) {
-      const newOffset = users.length >= 20 ? pageParam + 20 : null;
-      return {
-        users: users as User[],
-        status: 200,
-        newOffset: newOffset,
-      };
-    } else {
-      return {
-        status: 400,
-      };
-    }
-  } catch (err) {
-    console.log(err);
+    const newOffset = users.length >= 20 ? pageParam + 20 : null;
     return {
-      status: 500,
+      users: users as User[],
+      status: 200,
+      newOffset: newOffset,
     };
+  } catch (error) {
+    logError(error, 'getUsersWithPageParam');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -56,25 +56,17 @@ export const deleteUserById = async ({
   user: User;
   token: unknown;
 }): Promise<{ status: number; message?: string }> => {
-  if (!id) {
-    return {
-      status: 400,
-      message: 'User ID is required',
-    };
-  }
-
   try {
-    if (!token) {
-      return {
-        status: 401,
-        message: 'Token is required',
-      };
+    if (!id?.trim()) {
+      return { status: 400, message: 'User ID is required' };
     }
-    if (user.role !== 'ADMIN') {
-      return {
-        status: 403,
-        message: 'Unauthorized',
-      };
+
+    if (!token) {
+      return { status: 401, message: 'Token is required' };
+    }
+
+    if (!user || user.role !== 'ADMIN') {
+      return { status: 403, message: 'Unauthorized' };
     }
 
     const userToDelete = await prisma.user.findUnique({
@@ -82,10 +74,7 @@ export const deleteUserById = async ({
     });
 
     if (!userToDelete) {
-      return {
-        status: 404,
-        message: 'User not found',
-      };
+      return { status: 404, message: 'User not found' };
     }
 
     await prisma.user.delete({
@@ -95,10 +84,11 @@ export const deleteUserById = async ({
     revalidatePath(URL_DASHBOARD_ROUTE.users);
     return { status: 200, message: 'User deleted successfully' };
   } catch (error) {
-    console.log(error);
+    logError(error, 'deleteUserById');
+    const appError = handlePrismaError(error);
     return {
-      status: 500,
-      message: 'Internal server error',
+      status: appError.statusCode,
+      message: appError.message,
     };
   }
 };
@@ -132,17 +122,15 @@ export const deleteUserByIdFromUser = async (
     revalidatePath(URL_HOME);
     return { status: 200, message: 'User deleted successfully' };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-      message: 'Internal server error',
-    };
+    logError(error, 'deleteUserByIdFromUser');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
 export const getAllMovies = async (): Promise<{
-  movieInDb: IMovie[];
-  status: number;
+  movieInDb?: IMovie[];
+  status?: number;
 }> => {
   try {
     const movieInDb = await prisma.movie.findMany({
@@ -159,11 +147,9 @@ export const getAllMovies = async (): Promise<{
     });
     return { movieInDb, status: 200 };
   } catch (error) {
-    console.log(error);
-    return {
-      movieInDb: [],
-      status: 500,
-    };
+    logError(error, 'getAllMovies');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -172,16 +158,12 @@ export const addMovieToDb = async (
   user: User
 ): Promise<{ status: number; message: string }> => {
   try {
-    if (user.role !== 'ADMIN')
-      return {
-        status: 403,
-        message: 'Unautorized',
-      };
-    const existingMovie = await prisma.movie.findUnique({
-      where: { idGoogleDive: movie.idGoogleDive || '' },
-    });
-    if (existingMovie) {
-      return { status: 409, message: 'Le film existe déjà' };
+    if (!user || user.role !== 'ADMIN') {
+      return { status: 403, message: 'Unauthorized' };
+    }
+
+    if (!movie?.title?.trim()) {
+      return { status: 400, message: 'Le titre du film est requis' };
     }
 
     if (
@@ -189,49 +171,58 @@ export const addMovieToDb = async (
       !Array.isArray(movie.genresIds) ||
       movie.genresIds.length === 0
     ) {
-      throw new Error('Au moins un genre est requis.');
+      return { status: 400, message: 'Au moins un genre est requis' };
+    }
+
+    const existingMovie = await prisma.movie.findUnique({
+      where: { idGoogleDive: movie.idGoogleDive || '' },
+    });
+
+    if (existingMovie) {
+      return { status: 409, message: 'Le film existe déjà' };
     }
 
     await prisma.movie.create({
       data: {
-        title: movie?.title,
-        titleEnglish: movie?.titleEnglish,
-        titleJapanese: movie?.titleJapanese,
-        link: movie?.link,
-        image: movie?.link,
-        director: movie?.director,
-        imdbId: movie?.imdbId,
-        originalTitle: movie?.originalTitle,
-        duration: Number(movie?.duration),
-        idGoogleDive: movie?.idGoogleDive,
-        language: movie?.language,
-        subtitles: movie?.subtitles || [],
-        year: Number(movie?.year),
+        title: movie.title,
+        titleEnglish: movie.titleEnglish,
+        titleJapanese: movie.titleJapanese,
+        link: movie.link,
+        image: movie.link,
+        director: movie.director,
+        imdbId: movie.imdbId,
+        originalTitle: movie.originalTitle,
+        duration: movie.duration ? Number(movie.duration) : null,
+        idGoogleDive: movie.idGoogleDive,
+        language: movie.language,
+        subtitles: movie.subtitles || [],
+        year: movie.year ? Number(movie.year) : null,
         genresIds: {
-          create: movie?.genresIds?.map((genreId) => ({
+          create: movie.genresIds.map((genreId) => ({
             genre: {
               connect: { id: genreId.toString() },
             },
           })),
         },
-        country: movie?.country,
-        synopsis: movie?.synopsis,
-        trailer: movie?.trailer,
+        country: movie.country,
+        synopsis: movie.synopsis,
+        trailer: movie.trailer,
       },
     });
 
     revalidatePath(URL_DASHBOARD_ROUTE.movie);
     return { status: 200, message: 'Film ajouté avec succès' };
   } catch (error) {
-    console.error('Erreur lors de l’ajout du film:', error);
-    return { status: 500, message: 'Erreur interne' };
+    logError(error, 'addMovieToDb');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode, message: appError.message };
   }
 };
 
 export const editMovieToDb = async (
   movie: IMovie,
   user: User
-): Promise<{ status: number; message: string }> => {
+): Promise<{ status: number; message?: string }> => {
   try {
     if (user.role !== 'ADMIN')
       return {
@@ -291,11 +282,9 @@ export const editMovieToDb = async (
     revalidatePath(URL_DASHBOARD_ROUTE.movie);
     return { status: 200, message: 'Film modifié avec succès' };
   } catch (error) {
-    console.error('Erreur lors de la modification du film:', error);
-    return {
-      status: 500,
-      message: 'Erreur interne du serveur',
-    };
+    logError(error, 'editMovieToDb');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -320,10 +309,9 @@ export const deleteMovieById = async (
       return { status: 200 };
     }
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'deleteMovieById');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
   return {
     status: 400,
@@ -333,7 +321,7 @@ export const deleteMovieById = async (
 
 export const publishedMovieById = async (
   id: string
-): Promise<{ publish: boolean; status: number }> => {
+): Promise<{ publish?: boolean; status: number }> => {
   try {
     if (id) {
       const findedMovie = await prisma.movie.findUnique({
@@ -355,14 +343,15 @@ export const publishedMovieById = async (
     }
     return { publish: false, status: 404 };
   } catch (error) {
-    console.log(error);
-    return { publish: false, status: 500 };
+    logError(error, 'publishedMovieById');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
 export const getFavoriteMovies = async (
   id: string
-): Promise<{ movies: IFavoriteMovieResponse[]; status: number }> => {
+): Promise<{ movies?: IFavoriteMovieResponse[]; status: number }> => {
   try {
     const movies = await prisma.userFavoriteMovies.findMany({
       relationLoadStrategy: 'join',
@@ -381,33 +370,29 @@ export const getFavoriteMovies = async (
       status: 200,
     };
   } catch (error) {
-    console.log(error);
-    return {
-      movies: [],
-      status: 500,
-    };
+    logError(error, 'getFavoriteMovies');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
 export const getDirectorFromSection = async (): Promise<{
-  directorMovies: IDirector | null;
+  directorMovies?: IDirector | null;
   status: number;
 }> => {
   try {
     const directorMovies = await prisma.directorSection.findFirst();
     return { directorMovies, status: 200 };
   } catch (error) {
-    console.log(error);
-    return {
-      directorMovies: null,
-      status: 500,
-    };
+    logError(error, 'deleteMoviegetDirectorFromSectionById');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
 export const createDirectorFromSection = async (
   formDirector: IDirector
-): Promise<{ director?: IDirector; status: number }> => {
+): Promise<{ director?: IDirector; status: number; success: boolean }> => {
   try {
     const director = await prisma.directorSection.create({
       data: {
@@ -416,18 +401,17 @@ export const createDirectorFromSection = async (
       },
     });
     revalidatePath('dashboard/director');
-    return { director, status: 200 };
+    return { director, status: 200, success: true };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'createDirectorFromSection');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode, success: false };
   }
 };
 
 export const updateDirectorFromSection = async (
   formDirector: IDirector
-): Promise<{ director?: IDirector; status: number }> => {
+): Promise<{ director?: IDirector; status: number; success: boolean }> => {
   try {
     if (formDirector.id) {
       const director = await prisma.directorSection.update({
@@ -440,23 +424,23 @@ export const updateDirectorFromSection = async (
         },
       });
       revalidatePath('dashboard/director');
-      return { director, status: 200 };
+      return { director, status: 200, success: true };
     }
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'deleteMovieById');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode, success: false };
   }
   return {
     director: undefined,
     status: 400,
+    success: false,
   };
 };
 
 export const deleteDirectorFromSection = async (
   id: string
-): Promise<{ status: number }> => {
+): Promise<{ status: number; success: boolean }> => {
   try {
     await prisma.directorSection.delete({
       where: {
@@ -464,19 +448,18 @@ export const deleteDirectorFromSection = async (
       },
     });
     revalidatePath('dashboard/director');
-    return { status: 200 };
+    return { status: 200, success: true };
   } catch (error) {
-    console.log(error);
-    return {
-      status: 500,
-    };
+    logError(error, 'updateDirectorFromSection');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode, success: false };
   }
 };
 
 export const getDirectorMovies = async (): Promise<{
-  directorMovies: IMovie[] | null;
-  director: string | null;
-  imageBackdrop: string | null;
+  directorMovies?: IMovie[] | null;
+  director?: string | null;
+  imageBackdrop?: string | null;
   status: number;
 }> => {
   try {
@@ -506,13 +489,9 @@ export const getDirectorMovies = async (): Promise<{
       };
     }
   } catch (error) {
-    console.log(error);
-    return {
-      directorMovies: null,
-      director: null,
-      imageBackdrop: null,
-      status: 500,
-    };
+    logError(error, 'getDirectorMovies');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };
 
@@ -547,7 +526,8 @@ export const sendEmail = async ({
     revalidatePath(URL_DASHBOARD_ROUTE.suggestion);
     return { status: result.accepted.length > 0 ? 200 : 500 };
   } catch (error) {
-    console.log(error);
-    return { status: 500 };
+    logError(error, 'sendEmail');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
   }
 };

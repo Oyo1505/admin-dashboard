@@ -42,8 +42,8 @@ function MovieRow({
   });
 
   useEffect(() => {
-    if (data && status === 'success') {
-      setIsMoviePublished(data.publish);
+    if (data && status === 'success' && data?.publish) {
+      setIsMoviePublished(data?.publish);
     }
   }, [data, status]);
 
