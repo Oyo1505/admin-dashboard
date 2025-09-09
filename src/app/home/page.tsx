@@ -15,6 +15,7 @@ import MoviesHomeSectionSkeleton from '@/domains/skeleton/components/movie-home-
 import MoviesHomeThemeSkeleton from '@/domains/skeleton/components/movies-home-theme/movies-home-theme';
 import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
+import { IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import clsx from 'clsx';
@@ -22,7 +23,6 @@ import { getLocale } from 'next-intl/server';
 import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
 import { Suspense } from 'react';
-import { IMovie } from '@/models/movie/movie';
 // import ChatDebug from '@/domains/chat-bot/components/chat-debug';
 
 export const revalidate = 60;
@@ -93,7 +93,6 @@ const Page = async () => {
       /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
     )
   );
-
   const countryChosen = findCountry?.[0]?.label?.[locale];
   return (
     <div className="flex flex-col mt-6 gap-8">
@@ -172,7 +171,7 @@ const Page = async () => {
           </div>
         </>
       )}
-      {/* 
+      {/*
       <Container>
         <ChatDebug />
       </Container> */}

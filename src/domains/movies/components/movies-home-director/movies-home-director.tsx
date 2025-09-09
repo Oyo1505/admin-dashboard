@@ -5,13 +5,23 @@ import Title from '@/domains/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import paramount from '../.../../../../../../public/images/paramount.webp';
-import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
-import MovieItemTheme from '../movie-item-theme/movie-item-theme';
-
+const MovieItemCarousel = dynamic(
+  () => import('../movie-item-carousel/movie-item-carousel'),
+  {
+    ssr: false,
+  }
+);
+const MovieItemTheme = dynamic(
+  () => import('../movie-item-theme/movie-item-theme'),
+  {
+    ssr: false,
+  }
+);
 const MoviesHomeDirector = ({
   movies,
   director,

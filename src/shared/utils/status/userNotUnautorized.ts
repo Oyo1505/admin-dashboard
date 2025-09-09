@@ -1,6 +1,6 @@
 import { User } from '@/models/user/user';
 
-const MESSAGES_ERRORS_API = {
+export const MESSAGES_ERRORS_API = {
   400: 'Error signing up, please try again',
   401: 'Not authenticated to access this resource.',
   403: 'Not authenticated to access this resource.',
