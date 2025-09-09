@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 
 interface Props {
   className?: string;
@@ -7,7 +7,7 @@ interface Props {
   marginSide?: boolean;
 }
 
-const Container = ({ className, children, marginSide = true }: Props) => {
+const Container = memo(({ className, children, marginSide = true }: Props) => {
   return (
     <div
       className={cn(
@@ -19,6 +19,6 @@ const Container = ({ className, children, marginSide = true }: Props) => {
       {children}
     </div>
   );
-};
-
+});
+Container.displayName = 'Container';
 export default Container;

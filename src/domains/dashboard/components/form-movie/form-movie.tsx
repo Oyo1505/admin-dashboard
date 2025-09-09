@@ -21,7 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from 'next-auth';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -192,38 +192,48 @@ const FormMovie = ({
     setValue('subtitles', newValue);
   };
 
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setValue('country', e.target.value);
-  };
-  const handleLangageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setValue('langage', e.target.value);
-  };
+  const handleCountryChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setValue('country', e.target.value);
+    },
+    []
+  );
+
+  const handleLangageChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setValue('langage', e.target.value);
+    },
+    []
+  );
 
   const setGenresValue = (newGenresMovie: IGenre[]) => {
     const genresIds = newGenresMovie.map((item) => item?.id);
     setValue('genresIds', genresIds);
   };
 
-  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (genresMovie.find((item) => item.id === e.target.value)) return;
+  const handleGenreChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      if (genresMovie.find((item) => item.id === e.target.value)) return;
 
-    const newGenreEntry = genres?.find((item) => item.id === e.target.value);
-    const newGenresMovie = [...genresMovie, newGenreEntry].filter(
-      (item): item is IGenre => item !== undefined
-    );
+      const newGenreEntry = genres?.find((item) => item.id === e.target.value);
+      const newGenresMovie = [...genresMovie, newGenreEntry].filter(
+        (item): item is IGenre => item !== undefined
+      );
 
-    setGenresMovie((prevGenresMovie) => {
-      if (
-        newGenreEntry &&
-        !prevGenresMovie.some((genre) => genre.id === newGenreEntry.id)
-      ) {
-        return [...prevGenresMovie, newGenreEntry];
-      }
-      return prevGenresMovie;
-    });
+      setGenresMovie((prevGenresMovie) => {
+        if (
+          newGenreEntry &&
+          !prevGenresMovie.some((genre) => genre.id === newGenreEntry.id)
+        ) {
+          return [...prevGenresMovie, newGenreEntry];
+        }
+        return prevGenresMovie;
+      });
 
-    setGenresValue(newGenresMovie);
-  };
+      setGenresValue(newGenresMovie);
+    },
+    []
+  );
 
   const handleGenreDelete = (id: string) => {
     const newGenresMovie = genresMovie.filter((item) => item.id !== id);

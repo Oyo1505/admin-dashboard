@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 interface SelectInputProps {
   optionsList: Array<{ value: string; label: Record<string, string> }>;
@@ -11,32 +11,34 @@ interface SelectInputProps {
   className?: string;
 }
 
-const SelectInput: React.FC<SelectInputProps> = ({
-  optionsList,
-  formData,
-  defaultValue,
-  formDataKey,
-  locale,
-  onChange,
-  className = 'text-background',
-}) => {
-  return (
-    <select
-      onChange={onChange}
-      defaultValue={defaultValue || formData?.[formDataKey]}
-      className={className}
-    >
-      <option value=""> </option>
-      {optionsList.map((option, index) => (
-        <option
-          key={`${option?.label?.[locale]}-${index}`}
-          value={option?.value}
-        >
-          {option?.label?.[locale]}
-        </option>
-      ))}
-    </select>
-  );
-};
-
+const SelectInput = memo(
+  ({
+    optionsList,
+    formData,
+    defaultValue,
+    formDataKey,
+    locale,
+    onChange,
+    className = 'text-background',
+  }: SelectInputProps) => {
+    return (
+      <select
+        onChange={onChange}
+        defaultValue={defaultValue || formData?.[formDataKey]}
+        className={className}
+      >
+        <option value=""> </option>
+        {optionsList.map((option, index) => (
+          <option
+            key={`${option?.label?.[locale]}-${index}`}
+            value={option?.value}
+          >
+            {option?.label?.[locale]}
+          </option>
+        ))}
+      </select>
+    );
+  }
+);
+SelectInput.displayName = 'SelectInput';
 export default SelectInput;
