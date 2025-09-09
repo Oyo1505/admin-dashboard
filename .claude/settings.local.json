@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Read(/D:\\projets\\admin-dashboard\\src/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src\\lib/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src\\app/**)",
+      "Bash(pnpm lint:*)",
+      "Read(/D:\\projets\\admin-dashboard\\src\\lib/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src\\domains\\dashboard\\components\\form-movie/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src/**)",
+      "Read(/D:\\projets\\admin-dashboard\\src/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

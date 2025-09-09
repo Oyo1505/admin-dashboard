@@ -1,4 +1,5 @@
 'use server';
+import { logError } from '@/lib/errors';
 import { threadChatBot } from './mistral.action';
 
 export async function testLinksGeneration() {
@@ -22,7 +23,7 @@ export async function testLinksGeneration() {
       error: null,
     };
   } catch (error) {
-    console.error('Erreur test liens:', error);
+    logError(error, 'testMistralAPI');
     return {
       success: false,
       hasLinks: false,

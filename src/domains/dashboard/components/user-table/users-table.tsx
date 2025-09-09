@@ -8,12 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
+import { logError } from '@/lib/errors';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import useUserStore from '@/store/user/user-store';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useOptimistic } from 'react';
-import useUserStore from 'store/user/user-store';
 import { deleteUserById } from '../../action';
 
 const UsersTable = ({
@@ -84,7 +85,7 @@ function UserRow({ user }: { user: User }) {
         });
       }
     } catch (err) {
-      console.log(err);
+      logError(err, 'UserRow');
       throw new Error('User not deleted');
     }
   };

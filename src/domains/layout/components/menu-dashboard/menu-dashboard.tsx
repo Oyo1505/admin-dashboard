@@ -9,8 +9,8 @@ import {
 } from '@/domains/ui/components/icons/icons';
 import { URL_DASHBOARD, URL_DASHBOARD_ROUTE } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
-import useUserStore from 'store/user/user-store';
 
 const MenuDashboard = () => {
   const { user } = useUserStore((state) => state);

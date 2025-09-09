@@ -1,8 +1,8 @@
 'use client';
 import { URL_MOVIES } from '@/shared/route';
+import { useFiltersMovieStore } from '@/store/movie/movie-store';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { useFiltersMovieStore } from 'store/movie/movie-store';
 
 const useClearFiltersData = () => {
   const { filters, setFiltersData } = useFiltersMovieStore((state) => state);

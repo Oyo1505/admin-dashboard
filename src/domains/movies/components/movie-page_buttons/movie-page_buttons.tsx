@@ -5,15 +5,16 @@ import {
   EditMovieLogo,
   Favorite,
 } from '@/domains/ui/components/icons/icons';
-import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
+import { logError } from '@/lib/errors';
 import { IMovie } from '@/models/movie/movie';
+import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import useUserStore from 'store/user/user-store';
 import { useTransition } from 'react';
-import { addOrRemoveToFavorite } from '../../action';
 import { toast } from 'react-toastify';
+import { addOrRemoveToFavorite } from '../../action';
 
 const MoviePageButtons = ({
   isFavorite,
@@ -45,7 +46,7 @@ const MoviePageButtons = ({
             }
           }
         } catch (err) {
-          console.log(err);
+          logError(err, 'handleFavorite');
           toast.error(t('toastMessageError'), { position: 'top-center' });
         }
       });

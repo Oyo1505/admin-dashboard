@@ -9,11 +9,14 @@ import LabelGenre from '@/domains/ui/components/label-genre/label-genre';
 import SelectInput from '@/domains/ui/components/select/select';
 import { Textarea } from '@/domains/ui/components/textarea/textarea';
 import Title from '@/domains/ui/components/title/title';
+import { logError } from '@/lib/errors';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
+import { useGenreStore } from '@/store/movie/movie-store';
+import useUserStore from '@/store/user/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User } from 'next-auth';
 import { useLocale, useTranslations } from 'next-intl';
@@ -21,8 +24,6 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useGenreStore } from 'store/movie/movie-store';
-import useUserStore from 'store/user/user-store';
 
 const FormMovie = ({
   movie,
@@ -136,7 +137,7 @@ const FormMovie = ({
         position: 'top-center',
       });
     } catch (err) {
-      console.log(err);
+      logError(err, 'createMovie');
     }
   };
 
@@ -177,7 +178,7 @@ const FormMovie = ({
         position: 'top-center',
       });
     } catch (err) {
-      console.log(err, 'err');
+      logError(err, 'onClickEditMovie');
     }
   };
 

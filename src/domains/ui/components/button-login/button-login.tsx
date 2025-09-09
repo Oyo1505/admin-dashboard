@@ -1,8 +1,7 @@
 'use client';
-import React from 'react';
-import { Button } from '../button/button';
+import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
-import useUserStore from 'store/user/user-store';
+import { Button } from '../button/button';
 import { GoogleLogo } from '../icons/icons';
 
 const ButtonLogin = () => {

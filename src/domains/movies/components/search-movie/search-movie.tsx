@@ -1,14 +1,14 @@
 'use client';
 import { SearchIcon } from '@/domains/ui/components/icons/icons';
 import { Input } from '@/domains/ui/components/input/input';
+import {
+  useFiltersMovieStore,
+  useMovieFormStore,
+} from '@/store/movie/movie-store';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import qs from 'qs';
 import React, { useEffect, useRef } from 'react';
-import {
-  useFiltersMovieStore,
-  useMovieFormStore,
-} from 'store/movie/movie-store';
 import { fetchMovies } from '../../action';
 
 const SearchMovie = ({

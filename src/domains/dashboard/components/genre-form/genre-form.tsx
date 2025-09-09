@@ -4,6 +4,7 @@ import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
 import LabelForm from '@/domains/ui/components/label-form/label-form';
 import Title from '@/domains/ui/components/title/title';
+import { logError } from '@/lib/errors';
 import { IGenre } from '@/models/movie/movie';
 import { genreSchema, GenreSectionSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,7 +27,7 @@ const GenreForm = () => {
       await addGenre(data as IGenre);
       reset();
     } catch (error) {
-      console.log(error);
+      logError(error, 'GenreForm');
     }
   };
 

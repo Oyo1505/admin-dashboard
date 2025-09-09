@@ -5,10 +5,10 @@ import {
   URL_LEGAL_MENTIONS,
   URL_PRIVACY,
 } from '@/shared/route';
+import useUserStore from '@/store/user/user-store';
 import { useSession } from 'next-auth/react';
 import { redirect, usePathname } from 'next/navigation';
-import { useEffect, useCallback } from 'react';
-import useUserStore from 'store/user/user-store';
+import { useCallback, useEffect } from 'react';
 
 const useAuthStatus = () => {
   const { user, fetchUser, setUser, logout } = useUserStore((state) => state);

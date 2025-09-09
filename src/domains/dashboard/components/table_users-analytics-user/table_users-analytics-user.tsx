@@ -7,8 +7,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
+import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
-import useUserStore from 'store/user/user-store';
 
 const TableUsersAnalyticsUser = () => {
   const { user } = useUserStore((state) => state);

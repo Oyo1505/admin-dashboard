@@ -7,6 +7,10 @@ import countriesList from '@/shared/constants/countries';
 import { decade } from '@/shared/constants/decade';
 import { URL_MOVIES } from '@/shared/route';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
+import {
+  useFiltersMovieStore,
+  useMovieFormStore,
+} from '@/store/movie/movie-store';
 import { useQuery } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
@@ -17,10 +21,6 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import {
-  useFiltersMovieStore,
-  useMovieFormStore,
-} from 'store/movie/movie-store';
 import { fetchMovies } from '../../action';
 
 type SelectSubtitlesProps = {
