@@ -64,5 +64,5 @@ const MovieCarouselSuggestion = memo(
     ) : null;
   }
 );
-
+MovieCarouselSuggestion.displayName = 'MovieCarouselSuggestion';
 export default MovieCarouselSuggestion;
