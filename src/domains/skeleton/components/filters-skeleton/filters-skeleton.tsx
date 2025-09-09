@@ -1,8 +1,8 @@
-import React from 'react';
+import { memo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-const FiltersSkeleton = () => {
+const FiltersSkeleton = memo(() => {
   return (
     <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
@@ -37,6 +37,6 @@ const FiltersSkeleton = () => {
       </div>
     </div>
   );
-};
-
+});
+FiltersSkeleton.displayName = 'FiltersSkeleton';
 export default FiltersSkeleton;

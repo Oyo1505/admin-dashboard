@@ -1,8 +1,8 @@
-import React from 'react';
 import Container from '@/domains/ui/components/container/container';
+import { memo } from 'react';
 import SkeletonBox from '../box/box';
 
-const MoviesHomeThemeSkeleton = () => {
+const MoviesHomeThemeSkeleton = memo(() => {
   return (
     <div className="w-full aspect-[0/0.4] md:aspect-[1/0.4] relative bg-gray-200 animate-pulse">
       <div className="absolute w-full h-full bg-slate-950 opacity-50 top-0 left-0 z-0"></div>
@@ -34,6 +34,7 @@ const MoviesHomeThemeSkeleton = () => {
       </Container>
     </div>
   );
-};
+});
 
+MoviesHomeThemeSkeleton.displayName = 'MoviesHomeThemeSkeleton';
 export default MoviesHomeThemeSkeleton;

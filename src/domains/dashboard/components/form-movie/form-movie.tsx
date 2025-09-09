@@ -184,26 +184,29 @@ const FormMovie = ({
 
   const subtitles = watch('subtitles', []);
 
-  const handleCheckboxChange = (value: string) => {
-    const newValue = subtitles.includes(value)
-      ? subtitles.filter((item) => item !== value)
-      : [...subtitles, value];
+  const handleCheckboxChange = useCallback(
+    (value: string) => {
+      const newValue = subtitles.includes(value)
+        ? subtitles.filter((item) => item !== value)
+        : [...subtitles, value];
 
-    setValue('subtitles', newValue);
-  };
+      setValue('subtitles', newValue);
+    },
+    [subtitles, setValue]
+  );
 
   const handleCountryChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setValue('country', e.target.value);
     },
-    []
+    [setValue]
   );
 
   const handleLangageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setValue('langage', e.target.value);
     },
-    []
+    [setValue]
   );
 
   const setGenresValue = (newGenresMovie: IGenre[]) => {
