@@ -1,7 +1,8 @@
 import { useLocale, useTranslations } from 'next-intl';
+import { memo } from 'react';
 import LocaleSwitcherSelect from '../locale-switcher-select/locale-switcher-select';
 
-export default function LocaleSwitcher() {
+export default memo(function LocaleSwitcher() {
   const t = useTranslations('LocaleSwitcher');
   const locale = useLocale();
 
@@ -25,4 +26,4 @@ export default function LocaleSwitcher() {
       label={t('HomePage')}
     />
   );
-}
+});

@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import qs from 'qs';
 import React, {
   startTransition,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useState,
@@ -375,7 +376,7 @@ const MovieFilters = ({
     }
   }, [data, setMoviesStore, status]);
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     startTransition(() => {
       router.replace(
         `${URL_MOVIES}?${qs.stringify({
@@ -400,7 +401,8 @@ const MovieFilters = ({
       );
     });
     setHasBeenSearched(true);
-  };
+  }, [filters]);
+
   const listCountries = countriesList.filter((country) =>
     countries?.includes(country.value)
   );

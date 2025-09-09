@@ -4,7 +4,7 @@ import * as Select from '@radix-ui/react-select';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 
-import { useTransition } from 'react';
+import { memo, useTransition } from 'react';
 import { setUserLocale } from 'utilities/services/locale';
 import { LanguageLogo } from '../icons/icons';
 
@@ -14,7 +14,7 @@ type Props = {
   label: string;
 };
 
-export default function LocaleSwitcherSelect({
+export default memo(function LocaleSwitcherSelect({
   defaultValue,
   items,
   label,
@@ -73,4 +73,4 @@ export default function LocaleSwitcherSelect({
       </Select.Root>
     </div>
   );
-}
+});
