@@ -1,5 +1,5 @@
 import { getUserConnected } from '@/domains/auth/actions/action.users';
-import { getFavoriteMovies } from '@/domains/dashboard/action';
+import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
 import { signIn, signOut } from 'next-auth/react';

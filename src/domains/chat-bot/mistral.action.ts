@@ -1,13 +1,13 @@
 'use server';
 import { mistral } from '@/lib/mistral';
-import { getAllMovies } from '../dashboard/action';
+import delay from '@/shared/utils/time/delay';
+import { getAllMovies } from '../dashboard/actions/movie';
+import { ChatMessage } from './interfaces/chat.interface';
 import { IMovieDetails } from './interfaces/movie.interface';
 import {
-  mistralTools,
   mistralFunctions,
+  mistralTools,
 } from './services/mistral-tools.service';
-import { ChatMessage } from './interfaces/chat.interface';
-import delay from '@/shared/utils/time/delay';
 
 const MILLISECONDS_DELAY = 1000;
 

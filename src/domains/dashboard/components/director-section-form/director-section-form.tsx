@@ -14,7 +14,7 @@ import {
   createDirectorFromSection,
   deleteDirectorFromSection,
   updateDirectorFromSection,
-} from '../../action';
+} from '../../actions/director';
 
 const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
   const t = useTranslations('DirectorSectionForm');

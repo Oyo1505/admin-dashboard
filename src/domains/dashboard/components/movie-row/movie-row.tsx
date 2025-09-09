@@ -14,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { User } from 'next-auth';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { deleteMovieById, publishedMovieById } from '../../action';
+import { deleteMovieById, publishedMovieById } from '../../actions/movie';
 
 function MovieRow({
   movie,
