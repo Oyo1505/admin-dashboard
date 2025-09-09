@@ -209,10 +209,13 @@ const FormMovie = ({
     [setValue]
   );
 
-  const setGenresValue = useCallback((newGenresMovie: IGenre[]) => {
-    const genresIds = newGenresMovie.map((item) => item?.id);
-    setValue('genresIds', genresIds);
-  }, [setValue]);
+  const setGenresValue = useCallback(
+    (newGenresMovie: IGenre[]) => {
+      const genresIds = newGenresMovie.map((item) => item?.id);
+      setValue('genresIds', genresIds);
+    },
+    [setValue]
+  );
 
   const handleGenreChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
