@@ -15,7 +15,8 @@
       "Read(/D:\\projets\\admin-dashboard\\src/**)",
       "Read(/D:\\projets\\admin-dashboard\\src/**)",
       "mcp__sequential-thinking__sequentialthinking",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
