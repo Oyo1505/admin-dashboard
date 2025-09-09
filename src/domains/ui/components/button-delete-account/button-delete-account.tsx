@@ -1,11 +1,10 @@
 'use client';
-import { Button } from '@/domains/ui/components/button/button';
 import { deleteUserByIdFromUser } from '@/domains/dashboard/action';
-import React from 'react';
+import { Button } from '@/domains/ui/components/button/button';
+import useUserStore from '@/store/user/user-store';
 import * as Dialog from '@radix-ui/react-dialog';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import useUserStore from 'store/user/user-store';
 
 const ButtonDeleteAccount = ({
   translationTheme,

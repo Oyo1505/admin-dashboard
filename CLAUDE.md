@@ -2,9 +2,28 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+### Plan & Review
+
+### Before starting work
+
+- Write a plan to .claude/tasks/TASK_NAME.md.
+
+- The plan should be a detailed implementation plan and the reasoning behind them, as well as tasks broken down.
+
+- Don’t over plan it, always think MVP.
+
+- Once you write the plan, firstly ask me to review it. Do not continue until I approve the plan.
+
+### While implementing
+
+- You should update the plan as you work.
+
+- After you complete tasks in the plan, you should update and append detailed descriptions of the changes you made, so following tasks can be easily hand over to other engineers.
+
 ## Common Development Commands
 
 ### Package Management
+
 - Use `pnpm` as the package manager (configured via packageManager field in package.json)
 - `pnpm install` - Install dependencies
 - `pnpm dev` - Start development server with Prisma generation and Turbopack
@@ -12,6 +31,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm start` - Start production server
 
 ### Code Quality & Testing
+
 - `pnpm lint` - Run ESLint
 - `pnpm lint:fix` - Fix ESLint issues automatically
 - `pnpm format` - Format code with Prettier
@@ -19,6 +39,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm test` - Run Jest tests
 
 ### Database Operations
+
 - `pnpm prisma generate` - Generate Prisma client
 - `pnpm prisma db push` - Push schema changes to database
 - `pnpm prisma studio` - Open Prisma Studio for database management
@@ -28,6 +49,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a Next.js 15 movie management platform with a domain-driven architecture:
 
 ### Tech Stack
+
 - **Frontend**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS
 - **UI Components**: Radix UI, Shadcn/ui, Lucide React icons
 - **Backend**: Next.js API routes, Prisma ORM, PostgreSQL
@@ -39,6 +61,7 @@ This is a Next.js 15 movie management platform with a domain-driven architecture
 - **Internationalization**: next-intl (French, English, Japanese support)
 
 ### Domain Structure
+
 The codebase follows domain-driven design with clear separation:
 
 ```
@@ -55,6 +78,7 @@ src/domains/
 ```
 
 ### Key Features
+
 - **Multi-role system**: USER/ADMIN roles with different permissions
 - **Movie management**: Full CRUD with genres, directors, subtitles
 - **User favorites**: Personal movie collections
@@ -64,7 +88,9 @@ src/domains/
 - **Responsive design**: Mobile-first approach with Tailwind CSS
 
 ### Database Schema (Prisma)
+
 Key models include:
+
 - `User` - Authentication and user management with NextAuth
 - `Movie` - Core movie entity with metadata, genres, and Google Drive integration
 - `Genre` - Multilingual genre system
@@ -73,12 +99,14 @@ Key models include:
 - `AuthorizedEmail` - Email whitelist system
 
 ### Authentication & Security
+
 - Uses NextAuth.js v5 with Google OAuth provider
 - Middleware-based route protection (all routes except /, privacy, and legal pages require authentication)
 - Role-based access control (USER/ADMIN)
 - Email authorization system for controlling access
 
 ### Development Notes
+
 - Uses App Router with TypeScript
 - Prettier configuration enforces consistent code style
 - ESLint with Next.js and Prettier integration
@@ -87,6 +115,7 @@ Key models include:
 - Environment variables required for Google OAuth, database, and Mistral AI
 
 ### File Organization
+
 - Pages follow Next.js App Router conventions in `src/app/`
 - Components organized by domain in `src/domains/`
 - Shared utilities in `src/lib/` and `src/shared/`
@@ -94,6 +123,7 @@ Key models include:
 - Middleware handles authentication and internationalization
 
 ### Important Patterns
+
 - Domain-based component organization
 - Server actions for data mutations (in action.ts files)
 - Custom hooks for data fetching and state management

@@ -3,10 +3,11 @@ import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
 import Container from '@/domains/ui/components/container/container';
 import { auth } from '@/lib/auth';
 import { URL_BASE } from '@/shared/route';
+import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Dashboard',
 };
 

@@ -1,6 +1,6 @@
 'use client';
+import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
-import useUserStore from 'store/user/user-store';
 const TitleDashboard = () => {
   const t = useTranslations('Dashboard');
   const { user } = useUserStore((state) => state);

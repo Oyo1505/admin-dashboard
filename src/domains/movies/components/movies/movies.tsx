@@ -2,17 +2,17 @@
 import { Button } from '@/domains/ui/components/button/button';
 import { Favorite } from '@/domains/ui/components/icons/icons';
 import { URL_MOVIE_ID } from '@/shared/route';
+import {
+  useFiltersMovieStore,
+  useMovieFormStore,
+} from '@/store/movie/movie-store';
+import useUserStore from '@/store/user/user-store';
 import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import qs from 'qs';
 import { useEffect, useMemo } from 'react';
-import {
-  useFiltersMovieStore,
-  useMovieFormStore,
-} from 'store/movie/movie-store';
-import useUserStore from 'store/user/user-store';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 

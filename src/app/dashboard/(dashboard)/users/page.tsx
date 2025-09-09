@@ -2,12 +2,16 @@ import { getUserConnected } from '@/domains/auth/actions/action.users';
 import FormAddEmailAuthrizedEmail from '@/domains/auth/components/form-add-email-authorized/form-add-email-authorized';
 import { getUsersWithPageParam } from '@/domains/dashboard/action';
 import Search from '@/domains/dashboard/components/search-user/search-user';
-import UsersTable from '@/domains/dashboard/components/user-table/users-table';
 import { UserTableAuthorized } from '@/domains/dashboard/components/users-table-authrized/user-table-authrized';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import dynamic from 'next/dynamic';
+
+const UsersTable = dynamic(
+  () => import('@/domains/dashboard/components/user-table/users-table')
+);
 
 const Page = async (props: {
   searchParams: Promise<{ q: string; offset: string }>;

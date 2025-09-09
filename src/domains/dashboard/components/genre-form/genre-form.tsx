@@ -4,13 +4,15 @@ import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
 import LabelForm from '@/domains/ui/components/label-form/label-form';
 import Title from '@/domains/ui/components/title/title';
+import { logError } from '@/lib/errors';
 import { IGenre } from '@/models/movie/movie';
 import { genreSchema, GenreSectionSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { memo } from 'react';
 import { useForm } from 'react-hook-form';
 
-const GenreForm = () => {
+const GenreForm = memo(() => {
   const t = useTranslations('GenrePage');
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -26,7 +28,7 @@ const GenreForm = () => {
       await addGenre(data as IGenre);
       reset();
     } catch (error) {
-      console.log(error);
+      logError(error, 'GenreForm');
     }
   };
 
@@ -72,6 +74,6 @@ const GenreForm = () => {
       </form>
     </div>
   );
-};
-
+});
+GenreForm.displayName = 'GenreForm';
 export default GenreForm;

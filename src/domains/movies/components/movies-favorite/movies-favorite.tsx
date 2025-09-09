@@ -4,9 +4,10 @@ import { URL_MOVIE_ID } from '@/shared/route';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { memo } from 'react';
 import imageDefault from '../../../../assets/image/default-placeholder.png';
 
-const MoviesFavorite = ({ movies }: { movies?: IMovie[] }) => {
+const MoviesFavorite = memo(({ movies }: { movies?: IMovie[] }) => {
   const t = useTranslations('Dashboard');
   return (
     <div className="flex flex-row gap-4 mt-6 items-start flex-wrap justify-start">
@@ -36,6 +37,6 @@ const MoviesFavorite = ({ movies }: { movies?: IMovie[] }) => {
         : t('noMovie')}
     </div>
   );
-};
-
+});
+MoviesFavorite.displayName = 'MoviesFavorite';
 export default MoviesFavorite;

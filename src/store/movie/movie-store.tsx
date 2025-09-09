@@ -1,6 +1,6 @@
 import { addFileToGoogleDriveAction } from '@/googleDrive';
 import { IFilters, IGenre, IMovie } from '@/models/movie/movie';
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 interface FormDataStore {
   title: string;
@@ -14,10 +14,10 @@ interface FormDataStore {
 }
 
 interface MovieFormState {
-  formData: FormDataStore
+  formData: FormDataStore;
   // eslint-disable-next-line no-unused-vars
   setFormData: (data: Partial<MovieFormState>) => void;
-  moviesFromStore : IMovie[]
+  moviesFromStore: IMovie[];
   // eslint-disable-next-line no-unused-vars
   setMoviesStore: (data: IMovie[]) => void;
 }
@@ -33,7 +33,7 @@ const useMovieFormStore = create<MovieFormState>((set) => ({
     country: '',
     idGoogleDive: '',
   },
-  moviesFromStore : [],
+  moviesFromStore: [],
   setFormData: (data) =>
     set((state) => ({
       formData: {
@@ -41,20 +41,20 @@ const useMovieFormStore = create<MovieFormState>((set) => ({
         ...data,
       },
     })),
-    setMoviesStore: (data) => {
-      set(() => ({
-        moviesFromStore: [...data],
-      }));
-    },
-  }));
+  setMoviesStore: (data) => {
+    set(() => ({
+      moviesFromStore: [...data],
+    }));
+  },
+}));
 
 interface FiltersMovieState {
   filters: IFilters;
   hasBeenSearched: boolean;
   // eslint-disable-next-line no-unused-vars
-  setFiltersData: (data: Partial<IFilters>) => void; 
+  setFiltersData: (data: Partial<IFilters>) => void;
   // eslint-disable-next-line no-unused-vars
-  setHasBeenSearched : (val: boolean) => void;
+  setHasBeenSearched: (val: boolean) => void;
 }
 
 interface IGenreStore {
@@ -78,22 +78,16 @@ const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
         ...data,
       },
     })),
-  setHasBeenSearched: (boolean) =>
-    set({ hasBeenSearched: boolean}),
+  setHasBeenSearched: (boolean) => set({ hasBeenSearched: boolean }),
 }));
-
 
 const useGenreStore = create<IGenreStore>((set) => ({
   genres: [],
   setGenres: (data) => {
     set((state) => ({
-      genres: [
-        ...state.genres,
-        ...data,
-      ],
-    }));  
+      genres: [...state.genres, ...data],
+    }));
   },
 }));
-
 
 export { useFiltersMovieStore, useMovieFormStore, useGenreStore };

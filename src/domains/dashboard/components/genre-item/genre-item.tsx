@@ -1,5 +1,6 @@
 'use client';
 import { deleteGenre } from '@/domains/movies/action';
+import { logError } from '@/lib/errors';
 import { IGenre } from '@/models/movie/movie';
 import { useLocale } from 'next-intl';
 
@@ -10,7 +11,7 @@ export const GenreItem = ({ item }: { item: IGenre }) => {
     try {
       await deleteGenre(item.id);
     } catch (error) {
-      console.log(error);
+      logError(error, 'GenreItem');
     }
   };
   return (

@@ -9,11 +9,11 @@ import {
   URL_DASHBOARD_MOVIE_EDIT,
 } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import useUserStore from '@/store/user/user-store';
 import { useQuery } from '@tanstack/react-query';
 import { User } from 'next-auth';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import useUserStore from 'store/user/user-store';
 import { deleteMovieById, publishedMovieById } from '../../action';
 
 function MovieRow({

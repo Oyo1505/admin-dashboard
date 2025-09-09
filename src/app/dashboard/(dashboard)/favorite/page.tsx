@@ -1,8 +1,11 @@
 import { getFavoriteMovies } from '@/domains/dashboard/action';
-import MoviesFavorite from '@/domains/movies/components/movies-favorite/movies-favorite';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
 import { IMovie } from '@/models/movie/movie';
+import dynamic from 'next/dynamic';
+const MoviesFavorite = dynamic(
+  () => import('@/domains/movies/components/movies-favorite/movies-favorite')
+);
 
 async function getData() {
   const session = await auth();

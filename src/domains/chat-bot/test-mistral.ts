@@ -1,4 +1,5 @@
 'use server';
+import { logError } from '@/lib/errors';
 import { mistral } from '@/lib/mistral';
 
 export async function testMistralAPI() {
@@ -22,14 +23,13 @@ export async function testMistralAPI() {
 
     const answer = response?.choices?.[0]?.message?.content;
     console.log('Answer Mistral:', answer);
-
     return {
       success: true,
       answer: answer,
       error: null,
     };
   } catch (error) {
-    console.error('Erreur API Mistral:', error);
+    logError(error, 'testMistralAPI');
     return {
       success: false,
       answer: null,

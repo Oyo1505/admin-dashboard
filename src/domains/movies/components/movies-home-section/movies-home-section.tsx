@@ -1,9 +1,16 @@
 'use client';
 import { IMovie } from '@/models/movie/movie';
 import { useLocale } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import MovieItemCarousel from '../movie-item-carousel/movie-item-carousel';
+
+const MovieItemCarousel = dynamic(
+  () => import('../movie-item-carousel/movie-item-carousel'),
+  {
+    ssr: false,
+  }
+);
 
 const MoviesHomeSection = ({
   movies,
