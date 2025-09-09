@@ -1,5 +1,6 @@
 'use client';
-import { deleteUserByIdFromUser } from '@/domains/dashboard/action';
+
+import { deleteUserByIdFromUser } from '@/domains/dashboard/actions/user';
 import { Button } from '@/domains/ui/components/button/button';
 import useUserStore from '@/store/user/user-store';
 import * as Dialog from '@radix-ui/react-dialog';

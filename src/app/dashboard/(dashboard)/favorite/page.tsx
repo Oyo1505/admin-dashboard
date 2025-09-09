@@ -1,4 +1,4 @@
-import { getFavoriteMovies } from '@/domains/dashboard/action';
+import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
 import { IMovie } from '@/models/movie/movie';

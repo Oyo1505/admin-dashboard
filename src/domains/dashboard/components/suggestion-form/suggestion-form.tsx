@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { sendEmail } from '../../action';
+import { sendEmail } from '../../actions/user';
 
 type Topic = {
   value: string;

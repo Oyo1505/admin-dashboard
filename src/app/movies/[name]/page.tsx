@@ -1,4 +1,4 @@
-import { getFavoriteMovies } from '@/domains/dashboard/action';
+import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 import { getAllMovies, getMovieDetail } from '@/domains/movies/action';
 import MovieHeader from '@/domains/movies/components/movie-header/movie-header';
 import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';

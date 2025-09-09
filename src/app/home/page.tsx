@@ -1,8 +1,6 @@
 import { Locale } from '@/config';
-import {
-  getDirectorMovies,
-  getFavoriteMovies,
-} from '@/domains/dashboard/action';
+import { getDirectorMovies } from '@/domains/dashboard/actions/director';
+import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 import {
   getLastMovies,
   getMoviesByARandomCountry,

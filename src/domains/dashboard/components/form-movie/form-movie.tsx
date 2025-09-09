@@ -1,5 +1,4 @@
 'use client';
-import { addMovieToDb, editMovieToDb } from '@/domains/dashboard/action';
 import SelectGenreMovieForm from '@/domains/movies/components/select-genre-movie-form/select-genre-movie-form';
 import { Button } from '@/domains/ui/components/button/button';
 import { Checkbox } from '@/domains/ui/components/checkbox/checkbox';
@@ -24,6 +23,7 @@ import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { addMovieToDb, editMovieToDb } from '../../actions/movie';
 
 const FormMovie = ({
   movie,
@@ -184,32 +184,35 @@ const FormMovie = ({
 
   const subtitles = watch('subtitles', []);
 
-  const handleCheckboxChange = (value: string) => {
-    const newValue = subtitles.includes(value)
-      ? subtitles.filter((item) => item !== value)
-      : [...subtitles, value];
+  const handleCheckboxChange = useCallback(
+    (value: string) => {
+      const newValue = subtitles.includes(value)
+        ? subtitles.filter((item) => item !== value)
+        : [...subtitles, value];
 
-    setValue('subtitles', newValue);
-  };
+      setValue('subtitles', newValue);
+    },
+    [setValue, subtitles]
+  );
 
   const handleCountryChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setValue('country', e.target.value);
     },
-    []
+    [setValue]
   );
 
   const handleLangageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setValue('langage', e.target.value);
     },
-    []
+    [setValue]
   );
 
-  const setGenresValue = (newGenresMovie: IGenre[]) => {
+  const setGenresValue = useCallback((newGenresMovie: IGenre[]) => {
     const genresIds = newGenresMovie.map((item) => item?.id);
     setValue('genresIds', genresIds);
-  };
+  }, [setValue]);
 
   const handleGenreChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -232,7 +235,7 @@ const FormMovie = ({
 
       setGenresValue(newGenresMovie);
     },
-    []
+    [setGenresValue, genresMovie, genres]
   );
 
   const handleGenreDelete = (id: string) => {

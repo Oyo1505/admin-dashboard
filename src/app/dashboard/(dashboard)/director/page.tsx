@@ -1,5 +1,5 @@
 import { getUserConnected } from '@/domains/auth/actions/action.users';
-import { getDirectorFromSection } from '@/domains/dashboard/action';
+import { getDirectorFromSection } from '@/domains/dashboard/actions/director';
 import DirectorSectionForm from '@/domains/dashboard/components/director-section-form/director-section-form';
 import Text from '@/domains/ui/components/text/text';
 import { auth } from '@/lib/auth';

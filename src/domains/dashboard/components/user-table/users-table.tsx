@@ -15,7 +15,7 @@ import useUserStore from '@/store/user/user-store';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useOptimistic } from 'react';
-import { deleteUserById } from '../../action';
+import { deleteUserById } from '../../actions/user';
 
 const UsersTable = ({
   users,
