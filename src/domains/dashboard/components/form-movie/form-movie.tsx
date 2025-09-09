@@ -206,7 +206,7 @@ const FormMovie = ({
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setValue('langage', e.target.value);
     },
-    [setValue]
+    [setValue][setValue]
   );
 
   const setGenresValue = useCallback(

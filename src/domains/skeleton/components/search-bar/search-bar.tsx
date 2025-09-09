@@ -1,8 +1,8 @@
-import React from 'react';
+import { memo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-const SearchSkeleton = () => {
+const SearchSkeleton = memo(() => {
   return (
     <div className="relative mt-6 w-4/6 m-auto">
       {/* Skeleton for Search Icon */}
@@ -23,6 +23,6 @@ const SearchSkeleton = () => {
       />
     </div>
   );
-};
-
+});
+SearchSkeleton.displayName = 'SearchSkeleton';
 export default SearchSkeleton;
