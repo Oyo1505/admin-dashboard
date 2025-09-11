@@ -129,3 +129,79 @@ Key models include:
 - Custom hooks for data fetching and state management
 - Consistent use of TypeScript interfaces
 - Shadcn/ui component library for consistent design system
+
+## Project-Specific Conventions
+
+### Domain Structure Standards
+
+Each domain follows this pattern:
+
+```
+src/domains/[domain-name]/
+├── components/          # UI components (kebab-case directories)
+├── hooks/              # Custom hooks (useNomDuHook pattern)
+├── actions/            # Complex server actions
+└── action.ts           # Main server actions file
+```
+
+### Component Organization
+
+- **Component naming**: kebab-case directories (e.g., `movie-header/`, `search-bar/`)
+- **Component files**: PascalCase for React components
+- **Domain-specific**: Keep components within their respective domains
+- **Shared components**: Use `src/domains/ui/` for cross-domain components
+
+### Server Actions Patterns
+
+- Always start with `'use server'` directive
+- Main actions in `action.ts` at domain root
+- Complex actions in `actions/` subdirectory
+- Use `revalidatePath()` after mutations for cache invalidation
+- Import validation helpers: `import { validateId } from '@/lib/api-wrapper'`
+- Error handling: `import { handlePrismaError, logError } from '@/lib/errors'`
+
+### Import Conventions
+
+```typescript
+// Prisma client
+import prisma from '@/lib/prisma';
+
+// Models (organized by entity)
+import { IMovie, IGenre } from '@/models/movie/movie';
+import { IUser } from '@/models/user/user';
+
+// Route constants
+import { URL_DASHBOARD_ROUTE, URL_MOVIE_ID } from '@/shared/route';
+
+// Error handling
+import { handlePrismaError, logError } from '@/lib/errors';
+```
+
+## Troubleshooting Guide
+
+### Common Issues & Solutions
+
+**Missing Types**
+
+- Problem: TypeScript errors for missing interfaces
+- Solution: Import from `@/models/[domain]/` directory
+- Example: `import { IMovie } from '@/models/movie/movie'`
+
+**Prisma Errors**
+
+- Problem: Unhandled database exceptions
+- Solution: Use `handlePrismaError()` wrapper
+- Pattern: `catch (error) { return handlePrismaError(error); }`
+
+**Cache Issues**
+
+- Problem: Stale data after mutations
+- Solution: Add `revalidatePath()` after database changes
+- Example: `revalidatePath(URL_DASHBOARD_ROUTE)`
+
+**Development Workflow Issues**
+
+- Problem: Prisma client out of sync
+- Solution: Run `pnpm prisma generate` after schema changes
+- Problem: Database schema changes not reflected
+- Solution: Run `pnpm prisma db push` to sync schema

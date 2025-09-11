@@ -192,7 +192,7 @@ const FormMovie = ({
 
       setValue('subtitles', newValue);
     },
-    [setValue, subtitles]
+    [subtitles]
   );
 
   const handleCountryChange = useCallback(
@@ -206,16 +206,13 @@ const FormMovie = ({
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setValue('langage', e.target.value);
     },
-    [setValue][setValue]
-  );
-
-  const setGenresValue = useCallback(
-    (newGenresMovie: IGenre[]) => {
-      const genresIds = newGenresMovie.map((item) => item?.id);
-      setValue('genresIds', genresIds);
-    },
     [setValue]
   );
+
+  const setGenresValue = useCallback((newGenresMovie: IGenre[]) => {
+    const genresIds = newGenresMovie.map((item) => item?.id);
+    setValue('genresIds', genresIds);
+  }, []);
 
   const handleGenreChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {

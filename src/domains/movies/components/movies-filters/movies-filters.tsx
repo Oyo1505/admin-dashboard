@@ -68,13 +68,20 @@ const SelectSubtitles = ({
     </div>
   );
 };
-
+interface Language {
+  value: string;
+  label: {
+    fr: string;
+    jp: string;
+    en: string;
+  };
+}
 type SelectLanguageProps = {
   language?: string;
   // eslint-disable-next-line no-unused-vars
   onChangeLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   filters?: { language?: string };
-  listLanguages: any;
+  listLanguages: Language[];
 };
 
 const SelectLanguage = ({
@@ -401,7 +408,7 @@ const MovieFilters = ({
       );
     });
     setHasBeenSearched(true);
-  }, [filters]);
+  }, [filters, router]);
 
   const listCountries = countriesList.filter((country) =>
     countries?.includes(country.value)
