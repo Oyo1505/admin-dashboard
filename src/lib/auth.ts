@@ -5,11 +5,28 @@ import {
 import { getAuthorizedEmails } from '@/domains/auth/actions/action.email';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
-import NextAuth, { User } from 'next-auth';
+import NextAuth, { Session, User } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import authConfig from './auth.config';
 
 const prisma = new PrismaClient();
+
+interface ExtendedSession extends Session {
+  accessToken?: string;
+  idToken?: string;
+  refreshToken?: string;
+  error?: string;
+  expiresAt?: number;
+}
+
+interface ExtendedJWT extends JWT {
+  access_token?: string;
+  id_token?: string;
+  refresh_token?: string;
+  expires_at?: number;
+  error?: string;
+  user?: User;
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -129,7 +146,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         ? `${process.env.NEXTAUTH_URL}/home`
         : url;
     },
-    async session({ session, token }: { session: any; token: JWT }) {
+    async session({
+      session,
+      token,
+    }: {
+      session: ExtendedSession;
+      token: ExtendedJWT;
+    }) {
       session.accessToken = token.access_token;
       session.idToken = token.id_token;
       session.refreshToken = token.refresh_token;

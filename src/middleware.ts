@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
-import { URL_LEGAL_MENTIONS, URL_PRIVACY } from './shared/route';
 import NextAuth from 'next-auth';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 import authConfig from './lib/auth.config';
+import { logError } from './lib/errors';
+import { URL_LEGAL_MENTIONS, URL_PRIVACY } from './shared/route';
 
 const { auth } = NextAuth(authConfig);
 export default auth(async function middleware(req: NextRequest) {
@@ -87,7 +88,7 @@ export default auth(async function middleware(req: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Middleware error:', error);
+    logError(error, 'Middleware error');
     return NextResponse.redirect(new URL('/', req.url));
   }
 });

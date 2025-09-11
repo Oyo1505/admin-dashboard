@@ -58,5 +58,11 @@ export const directorSectionSchema = z.object({
 
 export type MovieUploadSchema = z.infer<typeof movieUploadSchema>;
 export const movieUploadSchema = z.object({
-  file: z.any().optional(),
+  file: z
+    .object({
+      name: z.string(),
+      type: z.string(),
+      size: z.number(),
+    })
+    .optional(),
 });

@@ -33,6 +33,7 @@ export interface IMovie {
   kind?: string;
   name?: string;
   mimeType?: string;
+  updatedAt?: string;
 }
 
 export interface IFilters {

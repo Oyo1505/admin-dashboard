@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
-interface SelectInputProps {
+interface SelectInputProps<T = Record<string, unknown>> {
   optionsList: Array<{ value: string; label: Record<string, string> }>;
-  formData?: Record<string, any>;
+  formData?: T;
   defaultValue?: string;
   formDataKey: string;
   locale: string;
@@ -21,10 +21,20 @@ const SelectInput = memo(
     onChange,
     className = 'text-background',
   }: SelectInputProps) => {
+    const getFormValue = (
+      data: typeof formData,
+      key: string
+    ): string | undefined => {
+      const value = data?.[key];
+      return typeof value === 'string' || typeof value === 'number'
+        ? String(value)
+        : undefined;
+    };
+
     return (
       <select
         onChange={onChange}
-        defaultValue={defaultValue || formData?.[formDataKey]}
+        defaultValue={defaultValue || getFormValue(formData, formDataKey)}
         className={className}
       >
         <option value=""> </option>
