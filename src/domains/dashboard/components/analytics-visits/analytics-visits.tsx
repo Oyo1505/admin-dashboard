@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import { getAnalyticsApplicationVisits } from '@/domains/auth/actions/action.analytics';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
+import { useQuery } from '@tanstack/react-query';
 
 const AnalyticsVisits = () => {
   const { data, isLoading } = useQuery({

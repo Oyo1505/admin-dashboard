@@ -86,8 +86,6 @@ export const addFileToGoogleDriveAction = async (
   if (!formData) return null;
   const drive = google.drive({ version: 'v3', auth });
 
-  //const formData = file.get('file') as File;
-
   if (!formData) throw new Error('No file found');
   if (formData.size < 1) throw new Error('File is empty');
 

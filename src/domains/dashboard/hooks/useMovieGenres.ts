@@ -1,0 +1,76 @@
+import { IGenre, IMovie } from '@/models/movie/movie';
+import { useGenreStore } from '@/store/movie/movie-store';
+import { useCallback, useState } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
+import { MovieSchema } from '@/shared/schema/movieSchema';
+
+interface UseMovieGenresProps {
+  movie?: IMovie;
+  setValue: UseFormSetValue<MovieSchema>;
+}
+
+interface UseMovieGenresReturn {
+  genresMovie: IGenre[];
+  handleGenreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleGenreDelete: (id: string) => void;
+  availableGenres: IGenre[] | undefined;
+}
+
+export const useMovieGenres = ({
+  movie,
+  setValue,
+}: UseMovieGenresProps): UseMovieGenresReturn => {
+  const { genres } = useGenreStore();
+
+  const [genresMovie, setGenresMovie] = useState<IGenre[]>(
+    movie && movie?.genresIds && movie?.genresIds?.length > 0
+      ? movie?.genresIds.map((item) => item.genre).flat()
+      : ([] as IGenre[])
+  );
+
+  const setGenresValue = useCallback(
+    (newGenresMovie: IGenre[]) => {
+      const genresIds = newGenresMovie.map((item) => item?.id);
+      setValue('genresIds', genresIds);
+    },
+    [setValue]
+  );
+
+  const handleGenreChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      if (genresMovie.find((item) => item.id === e.target.value)) return;
+
+      const newGenreEntry = genres?.find((item) => item.id === e.target.value);
+
+      if (!newGenreEntry) return;
+
+      setGenresMovie((prevGenresMovie) => {
+        if (!prevGenresMovie.some((genre) => genre.id === newGenreEntry.id)) {
+          const newGenresMovie = [...prevGenresMovie, newGenreEntry];
+          setGenresValue(newGenresMovie);
+          return newGenresMovie;
+        }
+        return prevGenresMovie;
+      });
+    },
+    [genresMovie, genres, setGenresValue]
+  );
+
+  const handleGenreDelete = useCallback(
+    (id: string) => {
+      setGenresMovie((prevGenresMovie) => {
+        const newGenresMovie = prevGenresMovie.filter((item) => item.id !== id);
+        setGenresValue(newGenresMovie);
+        return newGenresMovie;
+      });
+    },
+    [setGenresValue]
+  );
+
+  return {
+    genresMovie,
+    handleGenreChange,
+    handleGenreDelete,
+    availableGenres: genres,
+  };
+};

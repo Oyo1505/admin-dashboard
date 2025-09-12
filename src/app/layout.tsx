@@ -1,6 +1,6 @@
 import LayoutLogic from '@/domains/layout/components/layout-logic';
 import MenuHeader from '@/domains/layout/components/menu-header/menu-header';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { auth } from '@/lib/auth';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';

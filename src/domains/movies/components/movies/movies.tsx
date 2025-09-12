@@ -17,7 +17,7 @@ import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 
 const LoadingSpinner = dynamic(
-  () => import('@/domains/shared/loading-spinner/loading-spinner'),
+  () => import('@/domains/shared/components/loading-spinner/loading-spinner'),
   { ssr: false }
 );
 

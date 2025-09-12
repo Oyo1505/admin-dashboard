@@ -1,6 +1,6 @@
 'use client';
 import { getAllAnalyticsUser } from '@/domains/auth/actions/action.users';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import {
   Table,
   TableBody,
