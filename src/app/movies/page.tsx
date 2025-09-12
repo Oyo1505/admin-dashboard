@@ -1,4 +1,5 @@
-import { getAllGenres, getMoviesCountries } from '@/domains/movies/action';
+import { getAllGenres } from '@/domains/movies/actions/genres';
+import { getMoviesCountries } from '@/domains/movies/actions/movies';
 import MovieFilters from '@/domains/movies/components/movies-filters/movies-filters';
 import Movies from '@/domains/movies/components/movies/movies';
 import SearchMovie from '@/domains/movies/components/search-movie/search-movie';

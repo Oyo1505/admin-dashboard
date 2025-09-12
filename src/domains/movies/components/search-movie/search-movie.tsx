@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import qs from 'qs';
 import React, { useEffect, useRef } from 'react';
-import { fetchMovies } from '../../action';
+import { fetchMovies } from '../../actions/movies';
 
 const SearchMovie = ({
   search,

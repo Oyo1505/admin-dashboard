@@ -14,7 +14,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useTransition } from 'react';
 import { toast } from 'react-toastify';
-import { addOrRemoveToFavorite } from '../../action';
+import { addOrRemoveToFavorite } from '../../actions/movie';
 
 const MoviePageButtons = ({
   isFavorite,

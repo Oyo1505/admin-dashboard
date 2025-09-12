@@ -1,5 +1,6 @@
 'use client';
-import { deleteGenre } from '@/domains/movies/action';
+
+import { deleteGenre } from '@/domains/movies/actions/genres';
 import { logError } from '@/lib/errors';
 import { IGenre } from '@/models/movie/movie';
 import { useLocale } from 'next-intl';

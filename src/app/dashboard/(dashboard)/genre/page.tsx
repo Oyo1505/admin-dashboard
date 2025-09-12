@@ -1,6 +1,6 @@
 import { getUserConnected } from '@/domains/auth/actions/action.users';
 import { GenreList } from '@/domains/dashboard/components/genre-list/genre-list';
-import { getAllGenres } from '@/domains/movies/action';
+import { getAllGenres } from '@/domains/movies/actions/genres';
 import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
