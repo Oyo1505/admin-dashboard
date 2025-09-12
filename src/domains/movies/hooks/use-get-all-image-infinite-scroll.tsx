@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { cache } from 'react';
-import { fetchMovies } from '../action';
+import { fetchMovies } from '../actions/movies';
 
 const fetchMoviesParams = cache(
   async ({ pageParam = 12, search = '' }) =>

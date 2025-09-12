@@ -1,8 +1,16 @@
 'use client';
 import ButtonSearch from '@/domains/ui/components/button-search/button-search';
 import LabelForm from '@/domains/ui/components/label-form/label-form';
-import { Locale } from '@/models/lang/lang';
-import { IGenre } from '@/models/movie/movie';
+import {
+  Locale,
+  SelectLanguageProps,
+  SelectSubtitlesProps,
+} from '@/models/lang/lang';
+import {
+  IGenre,
+  SelectDecadeMovieFilterProps,
+  SelectGenreMovieFiltersProps,
+} from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { decade } from '@/shared/constants/decade';
 import { URL_MOVIES } from '@/shared/route';
@@ -22,14 +30,7 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import { fetchMovies } from '../../action';
-
-type SelectSubtitlesProps = {
-  subtitles?: string;
-  // eslint-disable-next-line no-unused-vars
-  onChangeSubtitles: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  filters?: { subtitles?: string };
-};
+import { fetchMovies } from '../../actions/movies';
 
 const SelectSubtitles = ({
   subtitles,
@@ -67,21 +68,6 @@ const SelectSubtitles = ({
       </select>
     </div>
   );
-};
-interface Language {
-  value: string;
-  label: {
-    fr: string;
-    jp: string;
-    en: string;
-  };
-}
-type SelectLanguageProps = {
-  language?: string;
-  // eslint-disable-next-line no-unused-vars
-  onChangeLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  filters?: { language?: string };
-  listLanguages: Language[];
 };
 
 const SelectLanguage = ({
@@ -129,20 +115,12 @@ const SelectLanguage = ({
   );
 };
 
-type SelectGenreProps = {
-  genre?: string;
-  // eslint-disable-next-line no-unused-vars
-  onChangeGenre: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  filters?: { genre?: string };
-  genres: IGenre[];
-};
-
 const SelectGenre = ({
   genre,
   onChangeGenre,
   filters,
   genres,
-}: SelectGenreProps) => {
+}: SelectGenreMovieFiltersProps) => {
   const t = useTranslations('Filters');
   const locale = useLocale() as Locale;
   const genresSorted = genres.sort(
@@ -191,20 +169,12 @@ const SelectGenre = ({
   );
 };
 
-type SelectDecadeProps = {
-  decade?: number[];
-  // eslint-disable-next-line no-unused-vars
-  onChangeDecade: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  defaultValue?: string;
-  filters?: { decade?: string };
-};
-
 const SelectDecade = ({
   decade,
   onChangeDecade,
   defaultValue,
   filters,
-}: SelectDecadeProps) => {
+}: SelectDecadeMovieFilterProps) => {
   const t = useTranslations('Filters');
   return (
     <div className="flex flex-col gap-2 md:w-64">

@@ -3,6 +3,7 @@ import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IDirector } from '@/models/director/director';
 import { IMovie } from '@/models/movie/movie';
+import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import { revalidatePath } from 'next/cache';
 
 export const getDirectorFromSection = async (): Promise<{
@@ -100,7 +101,7 @@ export const getDirectorMovies = async (): Promise<{
           director: director?.directorMovies.director,
         },
         // @ts-ignore
-        cacheStrategy: { ttl: 60 * 5 },
+        cacheStrategy: { ttl: CACHE_TTL_SHORT },
       });
 
       return {

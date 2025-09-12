@@ -1,5 +1,5 @@
 import FormMovie from '@/domains/dashboard/components/form-movie/form-movie';
-import { getMovieDetail } from '@/domains/movies/action';
+import { getMovieDetail } from '@/domains/movies/actions/movie';
 
 import { notFound } from 'next/navigation';
 

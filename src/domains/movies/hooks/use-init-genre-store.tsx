@@ -1,7 +1,7 @@
 import { useGenreStore } from '@/store/movie/movie-store';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { getAllGenres } from '../action';
+import { getAllGenres } from '../actions/genres';
 
 const useInitGenreStore = () => {
   const pathname = usePathname();

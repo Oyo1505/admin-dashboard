@@ -1,5 +1,5 @@
 'use client';
-import { addGenre } from '@/domains/movies/action';
+import { addGenre } from '@/domains/movies/actions/genres';
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
 import LabelForm from '@/domains/ui/components/label-form/label-form';

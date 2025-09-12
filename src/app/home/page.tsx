@@ -1,11 +1,11 @@
 import { Locale } from '@/config';
 import { getDirectorMovies } from '@/domains/dashboard/actions/director';
 import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
+import { getMoviesByARandomGenre } from '@/domains/movies/actions/genres';
 import {
   getLastMovies,
   getMoviesByARandomCountry,
-  getMoviesByARandomGenre,
-} from '@/domains/movies/action';
+} from '@/domains/movies/actions/movies';
 import MoviesHomeDirector from '@/domains/movies/components/movies-home-director/movies-home-director';
 import MoviesHomeSection from '@/domains/movies/components/movies-home-section/movies-home-section';
 import MoviesHomeTheme from '@/domains/movies/components/movies-home-theme/movies-home-theme';

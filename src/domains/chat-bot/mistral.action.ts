@@ -1,7 +1,7 @@
 'use server';
 import { mistral } from '@/lib/mistral';
 import delay from '@/shared/utils/time/delay';
-import { getAllMovies } from '../dashboard/actions/movie';
+import { getAllMoviesWithGenres } from '../dashboard/actions/movie';
 import { ChatMessage } from './interfaces/chat.interface';
 import { IMovieDetails } from './interfaces/movie.interface';
 import {
@@ -13,7 +13,7 @@ const MILLISECONDS_DELAY = 1000;
 
 const mapMovies = async (): Promise<IMovieDetails[]> => {
   try {
-    const { movieInDb } = await getAllMovies();
+    const { movieInDb } = await getAllMoviesWithGenres();
 
     if (!movieInDb || !Array.isArray(movieInDb)) {
       return [];

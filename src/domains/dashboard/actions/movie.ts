@@ -6,7 +6,7 @@ import { User } from '@/models/user/user';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
-export const getAllMovies = async (): Promise<{
+export const getAllMoviesWithGenres = async (): Promise<{
   movieInDb?: IMovie[];
   status?: number;
 }> => {
