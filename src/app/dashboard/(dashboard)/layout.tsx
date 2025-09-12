@@ -1,5 +1,5 @@
 import MenuDashboard from '@/domains/layout/components/menu-dashboard/menu-dashboard';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import Container from '@/domains/ui/components/container/container';
 import { auth } from '@/lib/auth';
 import { URL_BASE } from '@/shared/route';

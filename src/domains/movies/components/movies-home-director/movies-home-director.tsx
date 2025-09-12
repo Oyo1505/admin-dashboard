@@ -1,5 +1,5 @@
 'use client';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';

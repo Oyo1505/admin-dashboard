@@ -1,5 +1,5 @@
 'use client';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
 import { addFileToGoogleDriveAction } from '@/googleDrive';

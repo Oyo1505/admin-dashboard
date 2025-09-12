@@ -1,16 +1,15 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
-import clsx from 'clsx';
-import { Input } from '@/domains/ui/components/input/input';
-import { useForm } from 'react-hook-form';
-import { useLocale } from 'next-intl';
-import { threadChatBot } from '../mistral.action';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { ChatBotLogo } from '@/domains/ui/components/icons/icons';
-import { useTranslations } from 'next-intl';
-import LoadingSpinner from '@/domains/shared/loading-spinner/loading-spinner';
-import { usePathname } from 'next/navigation';
-import { ChatMessage } from '../interfaces/chat.interface';
+import { Input } from '@/domains/ui/components/input/input';
 import { Cross1Icon } from '@radix-ui/react-icons';
+import clsx from 'clsx';
+import { useLocale, useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { ChatMessage } from '../interfaces/chat.interface';
+import { threadChatBot } from '../mistral.action';
 
 const ChatBot = () => {
   const t = useTranslations('ChatBot');
