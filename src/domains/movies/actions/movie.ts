@@ -3,6 +3,7 @@ import { validateId } from '@/lib/api-wrapper';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IMovie } from '@/models/movie/movie';
+import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import { URL_MOVIE_ID } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 import { cache } from 'react';
@@ -28,7 +29,7 @@ export const getMovieDetail = cache(
           },
         },
         //@ts-ignore
-        cacheStrategy: { ttl: 120 },
+        cacheStrategy: { ttl: CACHE_TTL_SHORT },
       });
 
       if (!movieInDb) {
@@ -56,7 +57,7 @@ export const getMovieDetail = cache(
               NOT: { id: movieInDb.id },
             },
             //@ts-ignore
-            cacheStrategy: { ttl: 600 },
+            cacheStrategy: { ttl: CACHE_TTL_SHORT },
           })
         : [];
 

@@ -2,6 +2,7 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IGenre, IMovie } from '@/models/movie/movie';
+import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
@@ -117,7 +118,7 @@ export const getMoviesByARandomGenre = async (): Promise<{
   try {
     const uniqueGenres = await prisma.genre.findMany({
       //@ts-ignore
-      cacheStrategy: { ttl: 300 },
+      cacheStrategy: { ttl: CACHE_TTL_SHORT },
     });
     if (!uniqueGenres) {
       return { status: 400 };
@@ -138,7 +139,7 @@ export const getMoviesByARandomGenre = async (): Promise<{
       },
       take: 5,
       //@ts-ignore
-      cacheStrategy: { ttl: 300 },
+      cacheStrategy: { ttl: CACHE_TTL_SHORT },
     });
     if (!movies) {
       return { status: 400 };
