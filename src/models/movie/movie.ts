@@ -54,19 +54,13 @@ export interface IGenre {
   nameJP: string;
   nameEN: string;
 }
-
-export type SelectGenreMovieFiltersProps = {
-  genre?: string;
-  // eslint-disable-next-line no-unused-vars
-  onChangeGenre: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  filters?: { genre?: string };
-  genres: IGenre[];
-};
-
-export type SelectDecadeMovieFilterProps = {
-  decade?: number[];
-  // eslint-disable-next-line no-unused-vars
-  onChangeDecade: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+type FilterKey = 'subtitles' | 'language' | 'decade' | 'genre';
+export type SelectFiltersProps = {
+  filterKey?: FilterKey;
+  titleLabel: string;
   defaultValue?: string;
-  filters?: { decade?: string };
+  displayedOptionValues: React.ReactNode;
+  // eslint-disable-next-line no-unused-vars
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  filters?: Partial<IFilters>;
 };

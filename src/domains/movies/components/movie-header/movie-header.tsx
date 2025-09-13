@@ -1,15 +1,15 @@
 'use client';
-import dynamic from 'next/dynamic';
 import { Locale } from '@/config';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import { useLocale, useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { heuresEnMinutes } from 'utilities/number/minutesToHours';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
-import useGetDetailsMovie from '../../hooks/useGetDetailsMovie';
+import useGetDetailsMovie from '../../hooks/use-get-details-movie';
 
 const MoviePageSubtitlesList = dynamic(
   () => import('../movie-page_subtitles-list/movie-page_subtitles-list'),

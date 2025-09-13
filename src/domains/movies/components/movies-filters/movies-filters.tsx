@@ -1,201 +1,18 @@
 'use client';
 import ButtonSearch from '@/domains/ui/components/button-search/button-search';
-import LabelForm from '@/domains/ui/components/label-form/label-form';
-import {
-  Locale,
-  SelectLanguageProps,
-  SelectSubtitlesProps,
-} from '@/models/lang/lang';
-import {
-  IGenre,
-  SelectDecadeMovieFilterProps,
-  SelectGenreMovieFiltersProps,
-} from '@/models/movie/movie';
+import { Locale } from '@/models/lang/lang';
+import { IGenre } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
-import { decade } from '@/shared/constants/decade';
-import { URL_MOVIES } from '@/shared/route';
+import { decades } from '@/shared/constants/decade';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
-import {
-  useFiltersMovieStore,
-  useMovieFormStore,
-} from '@/store/movie/movie-store';
+import { useMovieFormStore } from '@/store/movie/movie-store';
 import { useQuery } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import qs from 'qs';
-import React, {
-  startTransition,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { fetchMovies } from '../../actions/movies';
-
-const SelectSubtitles = ({
-  subtitles,
-  onChangeSubtitles,
-  filters,
-}: SelectSubtitlesProps) => {
-  const t = useTranslations('Filters');
-
-  const subtitlesList = {
-    EN: t('subtitlesEN'),
-    JP: t('subtitlesJP'),
-    FR: t('subtitlesFR'),
-  };
-  return (
-    <div className="flex flex-col gap-2 md:w-64">
-      <LabelForm
-        titleLabel={t('subtitles')}
-        className="hidden"
-        htmlFor="subtitles"
-      />
-      <select
-        aria-placeholder={t('subtitles')}
-        onChange={onChangeSubtitles}
-        defaultValue={subtitles ?? filters?.subtitles}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
-      >
-        <option value="" disabled>
-          {t('subtitles')}
-        </option>
-        {Object.entries(subtitlesList).map(([key, value], index) => (
-          <option key={`${key}-${index}`} value={key}>
-            {value}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
-
-const SelectLanguage = ({
-  language,
-  onChangeLanguage,
-  filters,
-  listLanguages,
-}: SelectLanguageProps) => {
-  const t = useTranslations('Filters');
-  const locale = useLocale() as Locale;
-
-  return (
-    <div className="flex flex-col gap-2 md:w-64">
-      <LabelForm
-        titleLabel={t('language')}
-        className="hidden"
-        htmlFor="language"
-      />
-      <select
-        onChange={onChangeLanguage}
-        defaultValue={language ?? filters?.language}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 "
-      >
-        <option value="" disabled>
-          {t('language')}
-        </option>
-        {listLanguages.map(
-          (
-            language: {
-              label: { fr: string; jp: string; en: string };
-              value: string;
-            },
-            index: number
-          ) => (
-            <option
-              key={`${language?.label?.[locale]}-${index}`}
-              value={language?.value}
-            >
-              {language?.label?.[locale]}
-            </option>
-          )
-        )}
-      </select>
-    </div>
-  );
-};
-
-const SelectGenre = ({
-  genre,
-  onChangeGenre,
-  filters,
-  genres,
-}: SelectGenreMovieFiltersProps) => {
-  const t = useTranslations('Filters');
-  const locale = useLocale() as Locale;
-  const genresSorted = genres.sort(
-    (
-      a: { nameFR: string; nameJP: string; nameEN: string },
-      b: { nameFR: string; nameJP: string; nameEN: string }
-    ) =>
-      locale === 'fr'
-        ? a.nameFR.localeCompare(b.nameFR)
-        : locale === 'jp'
-          ? a.nameJP.localeCompare(b.nameJP)
-          : a.nameEN.localeCompare(b.nameEN)
-  );
-
-  return (
-    <div className="flex flex-col gap-2 md:w-64">
-      <LabelForm titleLabel={t('genre')} className="hidden" htmlFor="genre" />
-      <select
-        onChange={onChangeGenre}
-        defaultValue={genre ?? filters?.genre}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
-      >
-        <option value="" disabled>
-          {t('genre')}
-        </option>
-        {genresSorted?.map(
-          (
-            genre: {
-              id: string;
-              nameFR: string;
-              nameJP: string;
-              nameEN: string;
-            },
-            index: number
-          ) => (
-            <option
-              key={`${genre.id}-${index}`}
-              value={displayGenreTranslated(genre, locale)}
-            >
-              {displayGenreTranslated(genre, locale)}
-            </option>
-          )
-        )}
-      </select>
-    </div>
-  );
-};
-
-const SelectDecade = ({
-  decade,
-  onChangeDecade,
-  defaultValue,
-  filters,
-}: SelectDecadeMovieFilterProps) => {
-  const t = useTranslations('Filters');
-  return (
-    <div className="flex flex-col gap-2 md:w-64">
-      <LabelForm titleLabel={t('decade')} className="hidden" htmlFor="decade" />
-      <select
-        onChange={onChangeDecade}
-        defaultValue={defaultValue ?? filters?.decade}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
-      >
-        <option value="" disabled>
-          {t('decade')}
-        </option>
-        {decade?.map((dec: number, index: number) => (
-          <option key={`${dec}-${index}`} value={dec}>
-            {dec}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-};
+import useMovieFilters from '../../hooks/use-movie-filters';
+import SelectFilters from '../movie-filter_select-filters/movie-filter_select-filters';
 
 const MovieFilters = ({
   subtitles,
@@ -216,12 +33,21 @@ const MovieFilters = ({
   q?: string;
   countries: string[];
 }) => {
-  const router = useRouter();
   const t = useTranslations('Filters');
   const [isMounted, setIsMounted] = useState(false);
   const { setMoviesStore } = useMovieFormStore();
-  const { filters, setFiltersData, setHasBeenSearched, hasBeenSearched } =
-    useFiltersMovieStore();
+  const locale = useLocale() as Locale;
+  const {
+    onChangeSubtitles,
+    onChangeCountry,
+    onChangeDecade,
+    onChangeGenre,
+    filters,
+    setFiltersData,
+    setHasBeenSearched,
+    hasBeenSearched,
+    onClick,
+  } = useMovieFilters();
 
   const { data, status, refetch } = useQuery({
     queryKey: ['moviesFilters', offset],
@@ -290,56 +116,6 @@ const MovieFilters = ({
     q,
   ]);
 
-  function onChangeSubtitles(e: React.ChangeEvent<HTMLSelectElement>) {
-    const params = new URLSearchParams(window.location.search);
-    if (e.target.value === undefined) {
-      return;
-    } else if (e.target.value) {
-      params.set('subtitles', e.target.value);
-    } else {
-      params.delete('subtitles');
-    }
-    setFiltersData({ ...filters, subtitles: e.target.value });
-  }
-
-  function onChangeCountry(e: React.ChangeEvent<HTMLSelectElement>) {
-    const params = new URLSearchParams(window.location.search);
-    if (e.target.value === undefined) {
-      return;
-    } else if (e.target.value) {
-      params.set('language', e.target.value);
-    } else {
-      params.delete('language');
-    }
-    setFiltersData({ ...filters, language: e.target.value });
-  }
-
-  function onChangeDecade(e: React.ChangeEvent<HTMLSelectElement>) {
-    const params = new URLSearchParams(window.location.search);
-    if (e.target.value === undefined) {
-      return;
-    }
-    const decadeValue = e.target.value ? Number(e.target.value) : undefined;
-    if (e.target.value) {
-      params.set('decade', e.target.value);
-    } else {
-      params.delete('decade');
-    }
-    setFiltersData({ ...filters, decade: decadeValue });
-  }
-
-  function onChangeGenre(e: React.ChangeEvent<HTMLSelectElement>) {
-    const params = new URLSearchParams(window.location.search);
-    if (e.target.value === undefined) {
-      return;
-    } else if (e.target.value) {
-      params.set('genre', e.target.value);
-    } else {
-      params.delete('genre');
-    }
-    setFiltersData({ ...filters, genre: e.target.value });
-  }
-
   useEffect(() => {
     if (hasBeenSearched) {
       refetch();
@@ -353,62 +129,137 @@ const MovieFilters = ({
     }
   }, [data, setMoviesStore, status]);
 
-  const onClick = useCallback(() => {
-    startTransition(() => {
-      router.replace(
-        `${URL_MOVIES}?${qs.stringify({
-          q: filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
-          subtitles:
-            filters?.subtitles && filters?.subtitles?.length > 0
-              ? filters?.subtitles
-              : undefined,
-          language:
-            filters?.language && filters?.language?.length > 0
-              ? filters?.language
-              : undefined,
-          decade:
-            filters?.decade && filters?.decade > 0
-              ? filters?.decade
-              : undefined,
-          genre:
-            filters?.genre && filters?.genre?.length > 0
-              ? filters?.genre
-              : undefined,
-        })}`
-      );
-    });
-    setHasBeenSearched(true);
-  }, [filters, router]);
-
-  const listCountries = countriesList.filter((country) =>
-    countries?.includes(country.value)
+  const listCountries = useMemo(
+    () => countriesList.filter((country) => countries?.includes(country.value)),
+    [countriesList]
   );
+
+  const genresSorted = useMemo(
+    () =>
+      genres?.sort(
+        (
+          a: { nameFR: string; nameJP: string; nameEN: string },
+          b: { nameFR: string; nameJP: string; nameEN: string }
+        ) =>
+          locale === 'fr'
+            ? a.nameFR.localeCompare(b.nameFR)
+            : locale === 'jp'
+              ? a.nameJP.localeCompare(b.nameJP)
+              : a.nameEN.localeCompare(b.nameEN)
+      ),
+    [genres, locale]
+  );
+  const subtitlesList = {
+    EN: t('subtitlesEN'),
+    JP: t('subtitlesJP'),
+    FR: t('subtitlesFR'),
+  };
+
   return (
     <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
-        <SelectSubtitles
-          subtitles={subtitles}
-          onChangeSubtitles={onChangeSubtitles}
+        <SelectFilters
+          key="subtitles"
+          titleLabel="subtitles"
+          defaultValue={String(subtitles ?? filters?.subtitles)}
+          onChange={onChangeSubtitles}
           filters={filters}
+          filterKey="subtitles"
+          displayedOptionValues={
+            <>
+              <option value="" disabled>
+                {t('subtitles')}
+              </option>
+              {Object.entries(subtitlesList).map(([key, value], index) => (
+                <option key={`${key}-${index}`} value={key}>
+                  {value}
+                </option>
+              ))}
+            </>
+          }
         />
-        <SelectLanguage
-          language={language}
-          onChangeLanguage={onChangeCountry}
-          listLanguages={listCountries}
+        <SelectFilters
+          key="language"
+          titleLabel="language"
+          defaultValue={String(language ?? filters?.language)}
+          onChange={onChangeCountry}
           filters={filters}
+          filterKey="language"
+          displayedOptionValues={
+            <>
+              <option value="" disabled>
+                {t('language')}
+              </option>
+              {listCountries.map(
+                (
+                  language: {
+                    label: { fr: string; jp: string; en: string };
+                    value: string;
+                  },
+                  index: number
+                ) => (
+                  <option
+                    key={`${language?.label?.[locale]}-${index}`}
+                    value={language?.value}
+                  >
+                    {language?.label?.[locale]}
+                  </option>
+                )
+              )}
+            </>
+          }
         />
-        <SelectDecade
-          decade={decade?.decade}
+        <SelectFilters
+          titleLabel="decade"
           defaultValue={String(decadeParams ?? filters?.decade)}
-          onChangeDecade={onChangeDecade}
-          filters={{ decade: filters?.decade?.toString() }}
+          onChange={onChangeDecade}
+          filters={{ decade: filters?.decade }}
+          filterKey="decade"
+          displayedOptionValues={
+            <>
+              <option selected value="" disabled>
+                {t('decade')}
+              </option>
+              {decades?.map((dec: number, index: number) => (
+                <option key={`${dec}-${index}`} value={dec}>
+                  {dec}
+                </option>
+              ))}
+            </>
+          }
         />
-        <SelectGenre
-          genre={genre}
-          onChangeGenre={onChangeGenre}
+        <SelectFilters
+          key={'genre'}
+          titleLabel="genre"
+          defaultValue={genre ?? filters?.genre}
+          onChange={onChangeGenre}
           filters={filters}
-          genres={
-            genres?.sort((a, b) => a.nameFR.localeCompare(b.nameFR)) as IGenre[]
+          filterKey="genre"
+          displayedOptionValues={
+            <>
+              <option value="" disabled>
+                {t('genre')}
+              </option>
+
+              {genresSorted?.map(
+                (
+                  genre: {
+                    id: string;
+                    nameFR: string;
+                    nameJP: string;
+                    nameEN: string;
+                  },
+                  index: number
+                ) => (
+                  <option
+                    key={`${genre.id}-${index}`}
+                    value={displayGenreTranslated(genre, locale)}
+                  >
+                    {displayGenreTranslated(genre, locale)}
+                  </option>
+                )
+              )}
+            </>
           }
         />
       </div>
