@@ -1,5 +1,6 @@
 'use client';
 
+import { logError } from '@/lib/errors';
 import { useEffect, useState } from 'react';
 
 export default function Error({
@@ -9,7 +10,7 @@ export default function Error({
 }) {
   const [errorMessage, setErrorMessage] = useState('');
   useEffect(() => {
-    console.error(error);
+    logError(error, 'Error');
     setErrorMessage(error.message);
   }, [error]);
 

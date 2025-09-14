@@ -1,4 +1,4 @@
-// eslint-disable no-unused-vars
+/* eslint-disable no-unused-vars */
 export enum ErrorCode {
   // Generic errors
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',

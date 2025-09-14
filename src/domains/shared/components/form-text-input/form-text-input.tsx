@@ -1,9 +1,9 @@
 'use client';
 import { Input } from '@/domains/ui/components/input/input';
 import LabelForm from '@/domains/ui/components/label-form/label-form';
-import { FieldErrors, FieldError } from 'react-hook-form';
+import { FieldError, FieldErrors } from 'react-hook-form';
 
-const FormTextInput = ({
+const FormTextInput = <T extends Record<string, unknown>>({
   textTranslated,
   keyValue,
   htmlFor,
@@ -11,9 +11,9 @@ const FormTextInput = ({
   ...props
 }: {
   textTranslated: string;
-  keyValue: string;
+  keyValue: keyof T;
   htmlFor: string;
-  errors?: FieldErrors<any>;
+  errors?: FieldErrors<T>;
 }) => {
   return (
     <div className="mb-[15px] flex flex-col items-center gap-5">

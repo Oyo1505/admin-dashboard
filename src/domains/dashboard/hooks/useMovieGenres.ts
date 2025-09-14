@@ -1,8 +1,8 @@
 import { IGenre, IMovie } from '@/models/movie/movie';
+import { MovieSchema } from '@/shared/schema/movieSchema';
 import { useGenreStore } from '@/store/movie/movie-store';
 import { useCallback, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
-import { MovieSchema } from '@/shared/schema/movieSchema';
 
 interface UseMovieGenresProps {
   movie?: IMovie;
@@ -11,8 +11,8 @@ interface UseMovieGenresProps {
 
 interface UseMovieGenresReturn {
   genresMovie: IGenre[];
-  handleGenreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  handleGenreDelete: (id: string) => void;
+  handleGenreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  handleGenreDelete: (id: string) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   availableGenres: IGenre[] | undefined;
 }
 

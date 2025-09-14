@@ -46,7 +46,7 @@ export function createErrorResponse<T = unknown>(
 }
 
 export function withErrorHandling<T extends unknown[], R>(
-  fn: (...args: T) => Promise<R>,
+  fn: (...args: T) => Promise<R>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   context?: string
 ) {
   return async (...args: T): Promise<ApiResponse<R>> => {
@@ -67,8 +67,9 @@ export function withErrorHandling<T extends unknown[], R>(
 }
 
 export function withValidation<T extends unknown[], R>(
-  fn: (...args: T) => Promise<R>,
-  validationFn: (...args: T) => void | Promise<void>,
+  //@ts-ignore no-unused-vars
+  fn: (...args: T) => Promise<R>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  validationFn: (...args: T) => void | Promise<void>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   context?: string
 ) {
   return async (...args: T): Promise<ApiResponse<R>> => {

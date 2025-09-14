@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
@@ -12,6 +13,8 @@ const formSchema = z.object({
   email: z.string().email().min(1, { message: 'Email is required' }),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
 const FormAddEmailAuthrizedEmail = ({
   hasPermission,
 }: {
@@ -20,16 +23,15 @@ const FormAddEmailAuthrizedEmail = ({
   const t = useTranslations('Dashboard');
   const queryClient = useQueryClient();
 
-  const { handleSubmit, register, reset } = useForm<z.infer<typeof formSchema>>(
-    {
-      defaultValues: {
-        email: '',
-      },
-    }
-  );
+  const { handleSubmit, register, reset } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
 
   const addEmailMutation = useMutation({
-    mutationFn: async (data: z.infer<typeof formSchema>) => {
+    mutationFn: async (data: FormData) => {
       const { status, message } = await postAuthorizedEmail(data.email);
       if (status === 200) {
         toast.success(t('userEmailAdded'));
@@ -49,7 +51,7 @@ const FormAddEmailAuthrizedEmail = ({
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: FormData) => {
     addEmailMutation.mutate(data);
   };
 

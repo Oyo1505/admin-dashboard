@@ -3,6 +3,7 @@ import { Buffer } from 'buffer';
 import { google, GoogleApis } from 'googleapis';
 import { revalidatePath } from 'next/cache';
 import { Readable } from 'stream';
+import { logError } from './lib/errors';
 import { auth } from './lib/google-api';
 import { URL_DASHBOARD_ROUTE } from './shared/route';
 
@@ -22,7 +23,7 @@ export const findExistingFile = async (
       return null;
     }
   } catch (error) {
-    console.error('Error searching for file:', error);
+    logError(error, 'findExistingFile');
     throw error;
   }
 };
@@ -39,7 +40,7 @@ export const getDataFromGoogleDrive = async () => {
     // const files = res.data
     return { movies: movies.data.files };
   } catch (error) {
-    console.error('Error fetching files:', error);
+    logError(error, 'getDataFromGoogleDrive');
     return null;
   }
 };
@@ -52,7 +53,7 @@ const checkPermissions = async (fileId: string) => {
     });
     return permissions.data.permissions;
   } catch (error) {
-    console.error('Error checking permissions:', error);
+    logError(error, 'checkPermissions');
   }
 };
 
@@ -75,7 +76,7 @@ export const deleteFileFromGoogleDrive = async (
     }
     return { status: 404 };
   } catch (error) {
-    console.error('Error deleting file:', error);
+    logError(error, 'deleteFileFromGoogleDrive');
     throw error;
   }
 };
@@ -118,7 +119,7 @@ export const addFileToGoogleDriveAction = async (
     }
     return { data: null, status: 404 };
   } catch (error) {
-    console.error('Error uploading file:', error);
+    logError(error, 'addFileToGoogleDriveAction');
     throw error;
   }
 };

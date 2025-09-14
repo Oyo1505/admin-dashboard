@@ -1,5 +1,5 @@
 interface ChatSuggestionsProps {
-  onSuggestionClick: (suggestion: string) => void;
+  onSuggestionClick: (suggestion: string) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   isVisible: boolean;
 }
 

@@ -62,10 +62,7 @@ export const getAuthorizedEmails = async (): Promise<{
       status: 200,
     };
   } catch (error) {
-    console.error(
-      'Auth action error:',
-      error instanceof Error ? error.message : 'Unknown error'
-    );
+    logError(error, 'getAuthorizedEmails');
     return {
       status: 500,
     };
@@ -101,10 +98,7 @@ export const getAuthorizedEmailsPagination = async ({
       status: 200,
     };
   } catch (error) {
-    console.error(
-      'Auth action error:',
-      error instanceof Error ? error.message : 'Unknown error'
-    );
+    logError(error, 'getAuthorizedEmailsPagination');
     return {
       status: 500,
     };
@@ -125,10 +119,7 @@ export const deleteEmailAuthorized = async (
 
     return { status: 200 };
   } catch (error) {
-    console.error(
-      'Auth action error:',
-      error instanceof Error ? error.message : 'Unknown error'
-    );
+    logError(error, 'deleteEmailAuthorized');
     return {
       status: 500,
     };

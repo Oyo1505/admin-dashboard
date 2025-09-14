@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 import { ApiResponse } from './api-wrapper';
+import { logError } from './errors';
 
 export interface ClientErrorOptions {
   showToast?: boolean;
@@ -26,8 +27,7 @@ export function handleClientError(
   if (showToast) {
     toast.error(displayMessage, { autoClose: duration });
   }
-
-  console.error('Client Error:', error);
+  logError(error, 'handleClientError');
   return displayMessage;
 }
 
@@ -98,7 +98,7 @@ export function getErrorMessage(code: string, defaultMessage: string): string {
 
 export class ClientErrorHandler {
   private static instance: ClientErrorHandler;
-  private errorCallbacks: Map<string, (error: unknown) => void> = new Map();
+  private errorCallbacks: Map<string, (error: unknown) => void> = new Map(); // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
 
   static getInstance(): ClientErrorHandler {
     if (!ClientErrorHandler.instance) {
@@ -106,8 +106,10 @@ export class ClientErrorHandler {
     }
     return ClientErrorHandler.instance;
   }
-
-  onError(errorCode: string, callback: (error: unknown) => void): void {
+  onError(
+    errorCode: string,
+    callback: (error: unknown) => void // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  ): void {
     this.errorCallbacks.set(errorCode, callback);
   }
 
@@ -131,7 +133,7 @@ export class ClientErrorHandler {
 }
 
 export function withClientErrorHandling<T extends unknown[], R>(
-  fn: (...args: T) => Promise<R>,
+  fn: (...args: T) => Promise<R>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   options: ClientErrorOptions = {}
 ) {
   return async (...args: T): Promise<R | null> => {
