@@ -25,6 +25,7 @@ interface UseMovieFormReturn {
   subtitles: string[];
   handleCheckboxChange: (value: string) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   handleLangageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
 }
 
 export const useMovieForm = ({
