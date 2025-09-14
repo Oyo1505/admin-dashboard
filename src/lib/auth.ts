@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client';
 import NextAuth, { Session, User } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import authConfig from './auth.config';
+import { logError } from './errors';
 
 const prisma = new PrismaClient();
 
@@ -44,7 +45,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const { mails, status } = await getAuthorizedEmails();
 
         if (status !== 200 || !mails) {
-          console.error('Failed to fetch authorized emails');
+          logError({}, 'Failed to fetch authorized emails');
           return false;
         }
 
@@ -63,7 +64,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         return true;
       } catch (error) {
-        console.error('Sign-in error:', error);
+        logError(error, 'NextAuth');
         return false;
       }
     },
@@ -131,10 +132,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             token.refresh_token = newTokens.refresh_token;
           return token;
         } catch (error) {
-          console.error(
-            'Error refreshing access_token:',
-            error instanceof Error ? error.message : 'Unknown error'
-          );
+          logError(error, 'Error refreshing access_token');
           // If we fail to refresh the token, return an error so we can handle it on the page
           token.error = 'RefreshTokenError';
           return token;

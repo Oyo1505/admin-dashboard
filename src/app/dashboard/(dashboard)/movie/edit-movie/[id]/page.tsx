@@ -1,5 +1,6 @@
 import FormMovie from '@/domains/dashboard/components/form-movie/form-movie';
 import { getMovieDetail } from '@/domains/movies/actions/movie';
+import { logError } from '@/lib/errors';
 
 import { notFound } from 'next/navigation';
 
@@ -16,7 +17,7 @@ const getData = async (id: string) => {
     }
     return { movie };
   } catch (err) {
-    console.error('Erreur lors de la récupération du film:', err);
+    logError(err, 'getData');
     notFound();
   }
 };

@@ -131,7 +131,7 @@ const MovieFilters = ({
 
   const listCountries = useMemo(
     () => countriesList.filter((country) => countries?.includes(country.value)),
-    [countriesList]
+    [countries]
   );
 
   const genresSorted = useMemo(

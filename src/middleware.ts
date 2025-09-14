@@ -22,7 +22,7 @@ export default auth(async function middleware(req: NextRequest) {
   const secret = process.env.NEXTAUTH_SECRET;
 
   if (!secret) {
-    console.error('NEXTAUTH_SECRET is not defined');
+    logError({}, 'NEXTAUTH_SECRET Error');
     return NextResponse.redirect(new URL('/', req.url));
   }
 

@@ -3,6 +3,7 @@ import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
 import { addFileToGoogleDriveAction } from '@/googleDrive';
+import { logError } from '@/lib/errors';
 import { movieUploadSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -25,7 +26,7 @@ const ButtonAddMovie = () => {
     try {
       mutate(data);
     } catch (error) {
-      console.error('Erreur lors du téléchargement:', error);
+      logError(error, 'ButtonAddMovie');
     }
   };
 

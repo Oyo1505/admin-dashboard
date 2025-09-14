@@ -7,7 +7,7 @@ import { User } from 'next-auth';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { addMovieToDb, editMovieToDb } from '../actions/movie';
 import { useMovieData } from './useMovieData';
@@ -21,11 +21,11 @@ interface UseMovieFormProps {
 
 interface UseMovieFormReturn {
   form: UseFormReturn<MovieSchema>;
-  handleMovieSubmission: (e?: React.BaseSyntheticEvent) => Promise<void>;
+  handleMovieSubmission: (e?: React.BaseSyntheticEvent) => Promise<void>; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   subtitles: string[];
-  handleCheckboxChange: (value: string) => void;
-  handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  handleLangageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleCheckboxChange: (value: string) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  handleLangageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
 }
 
 export const useMovieForm = ({

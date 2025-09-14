@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { Favorite } from '@/domains/ui/components/icons/icons';
+import { logError } from '@/lib/errors';
 import { URL_MOVIE_ID } from '@/shared/route';
 import {
   useFiltersMovieStore,
@@ -118,7 +119,7 @@ const Movies = ({
             setMoviesStore([]);
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => logError(err, 'fecthNextMovie'));
     }
   };
 

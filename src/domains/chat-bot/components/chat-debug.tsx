@@ -1,9 +1,10 @@
 'use client';
+import { logError } from '@/lib/errors';
+import { useLocale } from 'next-intl';
 import { useState } from 'react';
 import { threadChatBot } from '../mistral.action';
-import { testMistralAPI } from '../test-mistral';
 import { testLinksGeneration } from '../test-links';
-import { useLocale } from 'next-intl';
+import { testMistralAPI } from '../test-mistral';
 
 const ChatDebug = () => {
   const [message, setMessage] = useState('');
@@ -23,7 +24,7 @@ const ChatDebug = () => {
       const result = await threadChatBot(message, locale);
       setResponse(result.answer);
     } catch (error) {
-      console.error('Erreur de test:', error);
+      logError(error, 'handleTest');
       setResponse('Erreur: ' + error);
     } finally {
       setIsLoading(false);
@@ -58,6 +59,7 @@ const ChatDebug = () => {
         setLinksTest(`❌ Erreur: ${result.error}`);
       }
     } catch (error) {
+      logError(error, 'handleTestLinks');
       setLinksTest(`❌ Erreur: ${error}`);
     } finally {
       setIsTestingLinks(false);

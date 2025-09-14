@@ -1,4 +1,5 @@
 'use client';
+import { logError } from '@/lib/errors';
 import {
   URL_DASHBOARD_ROUTE,
   URL_HOME,
@@ -21,7 +22,7 @@ const useAuthStatus = () => {
         await fetchUser(session.user.email);
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération de l'utilisateur:", error);
+      logError(error, 'useAuthStatus');
     }
   }, [session, fetchUser]);
 
@@ -30,7 +31,7 @@ const useAuthStatus = () => {
       await logout();
       setUser({}, false);
     } catch (error) {
-      console.error('Erreur lors de la déconnexion:', error);
+      logError(error, 'logoutSession');
       setUser({}, false);
     }
   }, [logout, setUser]);

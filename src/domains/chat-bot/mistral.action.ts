@@ -1,4 +1,5 @@
 'use server';
+import { logError } from '@/lib/errors';
 import { mistral } from '@/lib/mistral';
 import delay from '@/shared/utils/time/delay';
 import { getAllMoviesWithGenres } from '../dashboard/actions/movie';
@@ -29,7 +30,7 @@ const mapMovies = async (): Promise<IMovieDetails[]> => {
       director: movie.director ?? null,
     }));
   } catch (error) {
-    console.error('Erreur lors de la récupération des films:', error);
+    logError(error, 'mapMovies');
     return [];
   }
 };
@@ -100,7 +101,7 @@ const threadChatBot = async (
         });
       }
     } catch (error) {
-      console.error('Erreur lors de la récupération des films:', error);
+      logError(error, 'threadChatBot');
     }
 
     await delay(MILLISECONDS_DELAY);
@@ -164,7 +165,7 @@ N'oublie pas d'inclure TOUJOURS les liens HTML pour chaque film recommandé !`,
       status: 200,
     };
   } catch (error) {
-    console.error('Erreur dans threadChatBot:', error);
+    logError(error, 'threadChatBot');
     return {
       answer:
         locale === 'fr'

@@ -7,7 +7,8 @@ import {
 import { useCallback, useState } from 'react';
 
 interface UseErrorHandlerOptions extends ClientErrorOptions {
-  onError?: (error: unknown) => void;
+  // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  onError?: (error: unknown) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   resetOnSuccess?: boolean;
 }
 
@@ -15,14 +16,14 @@ interface UseErrorHandlerReturn {
   error: string | null;
   isError: boolean;
   clearError: () => void;
-  handleError: (error: unknown, options?: ClientErrorOptions) => void;
+  handleError: (error: unknown, options?: ClientErrorOptions) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   handleApiResponse: <T>(
-    response: ApiResponse<T>,
-    options?: ClientErrorOptions
+    response: ApiResponse<T>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    options?: ClientErrorOptions // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   ) => T | null;
   executeWithErrorHandling: <T>(
-    operation: () => Promise<T>,
-    options?: ClientErrorOptions
+    operation: () => Promise<T>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    options?: ClientErrorOptions // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   ) => Promise<T | null>;
 }
 
@@ -109,7 +110,7 @@ export function useErrorHandler(
 }
 
 export function useApiCall<TArgs extends unknown[], TReturn>(
-  apiFunction: (...args: TArgs) => Promise<ApiResponse<TReturn>>,
+  apiFunction: (...args: TArgs) => Promise<ApiResponse<TReturn>>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   options: UseErrorHandlerOptions = {}
 ) {
   const [isLoading, setIsLoading] = useState(false);

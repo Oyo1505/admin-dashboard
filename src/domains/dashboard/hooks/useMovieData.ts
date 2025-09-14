@@ -7,11 +7,11 @@ interface UseMovieDataProps {
 
 interface UseMovieDataReturn {
   getDefaultValues: (
-    movie?: IMovie,
-    idFromGoogleDrive?: string
+    movie?: IMovie, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    idFromGoogleDrive?: string // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   ) => Partial<MovieSchema>;
   transformFormData: (
-    data: MovieSchema
+    data: MovieSchema // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   ) => Omit<IMovie, 'genresIds'> & { genresIds: string[] };
 }
 

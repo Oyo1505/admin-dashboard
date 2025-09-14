@@ -2,6 +2,7 @@
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { ChatBotLogo } from '@/domains/ui/components/icons/icons';
 import { Input } from '@/domains/ui/components/input/input';
+import { logError } from '@/lib/errors';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import clsx from 'clsx';
 import { useLocale, useTranslations } from 'next-intl';
@@ -26,8 +27,8 @@ const ChatBot = () => {
             ...msg,
             timestamp: new Date(msg.timestamp),
           }));
-        } catch (e) {
-          console.error("Erreur lors du chargement de l'historique:", e);
+        } catch (error) {
+          logError(error, 'ChatBot -> messages');
         }
       }
     }
@@ -119,7 +120,7 @@ const ChatBot = () => {
 
       setMessages((prev) => [...prev, assistantMsg]);
     } catch (error) {
-      console.error("Erreur lors de l'envoi du message:", error);
+      logError(error, 'sendMessage');
       const errorMsg: ChatMessage = {
         role: 'assistant',
         message: t('error'),
