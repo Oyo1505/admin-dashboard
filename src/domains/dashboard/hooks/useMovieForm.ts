@@ -1,9 +1,8 @@
 import { logError } from '@/lib/errors';
-import { IMovie } from '@/models/movie/movie';
+import { IMovie, IMovieFormData, IUpdateMovieData } from '@/models/movie/movie';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from 'next-auth';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
@@ -16,7 +15,6 @@ interface UseMovieFormProps {
   movie?: IMovie;
   editMovie: boolean;
   idFromGoogleDrive?: string;
-  user: User;
 }
 
 interface UseMovieFormReturn {
@@ -32,7 +30,6 @@ export const useMovieForm = ({
   movie,
   editMovie,
   idFromGoogleDrive,
-  user,
 }: UseMovieFormProps): UseMovieFormReturn => {
   const t = useTranslations('AddMovie');
   const router = useRouter();
@@ -53,8 +50,8 @@ export const useMovieForm = ({
         const transformedData = transformFormData(data);
 
         const { status } = editMovie
-          ? await editMovieToDb(transformedData as unknown as IMovie, user)
-          : await addMovieToDb(transformedData as unknown as IMovie, user);
+          ? await editMovieToDb(transformedData as IUpdateMovieData)
+          : await addMovieToDb(transformedData as IMovieFormData);
 
         if (status === 200) {
           toast.success(t('toastMovieMessageSuccess'), {
@@ -73,7 +70,7 @@ export const useMovieForm = ({
         });
       }
     },
-    [editMovie, transformFormData, user, t, router]
+    [editMovie, transformFormData, t, router]
   );
 
   const handleCheckboxChange = useCallback(

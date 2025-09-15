@@ -107,13 +107,6 @@ const MovieHeader = ({ movie }: MovieHeaderProps) => {
         )}
       </div>
 
-      {movie?.tags && (
-        <div>
-          {movie?.tags?.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
-      )}
       {movie?.subtitles && movie?.subtitles?.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {t('subtitles')}:{' '}

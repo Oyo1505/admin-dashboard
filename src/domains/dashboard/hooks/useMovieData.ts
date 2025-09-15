@@ -1,4 +1,4 @@
-import { IMovie } from '@/models/movie/movie';
+import { IMovie, IMovieFormData, IUpdateMovieData } from '@/models/movie/movie';
 import { MovieSchema } from '@/shared/schema/movieSchema';
 
 interface UseMovieDataProps {
@@ -12,7 +12,7 @@ interface UseMovieDataReturn {
   ) => Partial<MovieSchema>;
   transformFormData: (
     data: MovieSchema // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-  ) => Omit<IMovie, 'genresIds'> & { genresIds: string[] };
+  ) => IMovieFormData | IUpdateMovieData;
 }
 
 export const useMovieData = ({
@@ -32,7 +32,7 @@ export const useMovieData = ({
       imdbId: movie?.imdbId ?? '',
       link: movie?.link ?? '',
       year: movie?.year ?? new Date().getFullYear(),
-      genresIds: movie?.genresIds?.map((item) => item.genre.id) ?? [],
+      genresIds: movie?.genresIds?.map((item) => item.genre.id),
       trailer: movie?.trailer ?? '',
       duration: movie?.duration ?? 0,
       synopsis: movie?.synopsis ?? '',
@@ -47,9 +47,8 @@ export const useMovieData = ({
 
   const transformFormData = (
     data: MovieSchema
-  ): Omit<IMovie, 'genresIds'> & { genresIds: string[] } => {
-    return {
-      ...(editMovie && { id: data.id }),
+  ): IMovieFormData | IUpdateMovieData => {
+    const baseData = {
       title: data.title,
       titleJapanese: data.titleJapanese,
       titleEnglish: data.titleEnglish,
@@ -59,14 +58,23 @@ export const useMovieData = ({
       subtitles: data.subtitles,
       language: data.langage,
       originalTitle: data.originalTitle,
-      genresIds: data?.genresIds || [],
+      genresIds: data?.genresIds,
       year: data.year,
       duration: data.duration,
       country: data.country,
       synopsis: data.synopsis,
       trailer: data.trailer,
       link: data.link,
-    } as Omit<IMovie, 'genresIds'> & { genresIds: string[] };
+    };
+
+    if (editMovie && data.id) {
+      return {
+        ...baseData,
+        id: data.id,
+      } as IUpdateMovieData;
+    }
+
+    return baseData as IMovieFormData;
   };
 
   return {

@@ -1,3 +1,4 @@
+import { UserSession, auth } from '@/lib/auth';
 import { User } from '@/models/user/user';
 
 const userPermissions = {
@@ -35,4 +36,17 @@ const checkPermissions = (user: User, action: string, resource: string) => {
   return permissions?.includes(`${action}:${resource}`);
 };
 
-export default checkPermissions;
+const checkPermissionsRoleFromSession = async () => {
+  const session = await auth();
+
+  if (!session?.user) {
+    return { status: 401, message: 'Session invalide' };
+  }
+  const user = session.user as UserSession;
+
+  if (user.role !== 'ADMIN') {
+    return { status: 403, message: 'Droits administrateur requis' };
+  }
+  return { status: 200, user };
+};
+export { checkPermissions, checkPermissionsRoleFromSession };
