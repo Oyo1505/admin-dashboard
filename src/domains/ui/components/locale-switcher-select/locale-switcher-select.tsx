@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 
 import { memo, useTransition } from 'react';
-import { setUserLocale } from 'utilities/services/locale';
+import { setUserLocale } from '@/shared/utils/locale/locale';
 import { LanguageLogo } from '../icons/icons';
 
 type Props = {

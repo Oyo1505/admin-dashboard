@@ -7,8 +7,8 @@ import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated
 import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { minutesToHours } from 'utilities/number/minutesToHours';
-import { titleOnlocale } from 'utilities/string/titleOnlocale';
+import { minutesToHours } from '@/shared/utils/number/minutesToHours';
+import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import useGetDetailsMovie from '../../hooks/use-get-details-movie';
 
 const MoviePageSubtitlesList = dynamic(

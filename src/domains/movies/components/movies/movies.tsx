@@ -14,7 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import qs from 'qs';
 import { useEffect, useMemo } from 'react';
-import { titleOnlocale } from 'utilities/string/titleOnlocale';
+import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 
 const LoadingSpinner = dynamic(
