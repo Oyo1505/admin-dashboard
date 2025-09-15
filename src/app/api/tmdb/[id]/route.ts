@@ -2,15 +2,15 @@
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { searchParams } = new URL(request.url);
     const language = searchParams.get('language') || 'fr';
+    const { id } = await params;
 
-    // Le token reste sécurisé côté serveur
     const response = await fetch(
-      `https://api.themoviedb.org/3/find/${params.id}?external_source=imdb_id&language=${language}`,
+      `https://api.themoviedb.org/3/find/${id}?external_source=imdb_id&language=${language}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.TOKEN_TMDB}`, // Serveur uniquement
@@ -28,10 +28,7 @@ export async function GET(
 
     const data = await response.json();
     return Response.json(data);
-  } catch (error) {
-    return Response.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+  } catch {
+    return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
