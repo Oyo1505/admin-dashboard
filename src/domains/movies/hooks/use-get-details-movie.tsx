@@ -11,16 +11,13 @@ const useGetDetailsMovie = ({
     queryKey: ['movieDetails', id, language],
     enabled: !!id,
     refetchOnWindowFocus: false,
-    queryFn: () =>
-      fetch(
-        `https://api.themoviedb.org/3/find/${id}?external_source=imdb_id&language=${language}&api_key=${process.env.NEXT_PUBLIC_API_KEY_TMDB}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN_TMDB}`,
-            Accept: 'application/json',
-          },
-        }
-      ).then((response) => response.json()),
+    queryFn: async () => {
+      const response = await fetch(`/api/tmdb/${id}?language=${language}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch movie details');
+      }
+      return response.json();
+    },
   });
 
   return { data };

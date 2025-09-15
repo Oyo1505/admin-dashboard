@@ -15,6 +15,20 @@ export const getLastMovies = async (): Promise<{
       where: {
         publish: true,
       },
+      include: {
+        genresIds: {
+          select: {
+            genre: {
+              select: {
+                id: true,
+                nameFR: true,
+                nameEN: true,
+                nameJP: true,
+              },
+            },
+          },
+        },
+      },
       orderBy: {
         createdAt: 'desc',
       },
@@ -59,11 +73,28 @@ export const getMoviesByARandomCountry = async (): Promise<{
     const movies = await prisma.movie.findMany({
       where: {
         country: getARadomCountry.country,
+        publish: true,
+      },
+      include: {
+        genresIds: {
+          select: {
+            genre: {
+              select: {
+                id: true,
+                nameFR: true,
+                nameEN: true,
+                nameJP: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
       },
       take: 3,
+      //@ts-ignore
+      cacheStrategy: { ttl: CACHE_TTL_SHORT },
     });
 
     if (!movies) {
@@ -90,6 +121,20 @@ export const fetchMovies = cache(
         const movies = await prisma.movie.findMany({
           where: {
             publish: true,
+          },
+          include: {
+            genresIds: {
+              select: {
+                genre: {
+                  select: {
+                    id: true,
+                    nameFR: true,
+                    nameEN: true,
+                    nameJP: true,
+                  },
+                },
+              },
+            },
           },
           orderBy: {
             createdAt: 'desc',
@@ -176,6 +221,20 @@ export const fetchMovies = cache(
 
       const movies = await prisma.movie.findMany({
         where: whereClause,
+        include: {
+          genresIds: {
+            select: {
+              genre: {
+                select: {
+                  id: true,
+                  nameFR: true,
+                  nameEN: true,
+                  nameJP: true,
+                },
+              },
+            },
+          },
+        },
         orderBy: {
           createdAt: 'desc',
         },

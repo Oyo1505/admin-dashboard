@@ -15,7 +15,7 @@ interface FormDataStore {
 interface MovieFormState {
   formData: FormDataStore;
   // eslint-disable-next-line no-unused-vars
-  setFormData: (data: Partial<MovieFormState>) => void;
+  setFormData: (data: Partial<FormDataStore>) => void;
   moviesFromStore: IMovie[];
   // eslint-disable-next-line no-unused-vars
   setMoviesStore: (data: IMovie[]) => void;
