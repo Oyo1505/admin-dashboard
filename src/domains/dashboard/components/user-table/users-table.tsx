@@ -10,7 +10,7 @@ import {
 } from '@/domains/ui/components/table/table';
 import { logError } from '@/lib/errors';
 import { User } from '@/models/user/user';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';

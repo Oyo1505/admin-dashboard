@@ -1,9 +1,14 @@
 'use server';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
-import { IFavoriteMovieResponse, IMovie } from '@/models/movie/movie';
-import { User } from '@/models/user/user';
+import {
+  IFavoriteMovieResponse,
+  IMovie,
+  IMovieFormData,
+  IUpdateMovieData,
+} from '@/models/movie/movie';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
+import { checkPermissionsRoleFromSession } from '@/shared/utils/permissions/checkPermissons';
 import { revalidatePath } from 'next/cache';
 
 export const getAllMoviesWithGenres = async (): Promise<{
@@ -32,12 +37,15 @@ export const getAllMoviesWithGenres = async (): Promise<{
 };
 
 export const addMovieToDb = async (
-  movie: IMovie,
-  user: User
+  movie: IMovieFormData
 ): Promise<{ status: number; message: string }> => {
   try {
-    if (!user || user.role !== 'ADMIN') {
-      return { status: 403, message: 'Unauthorized' };
+    const authCheck = await checkPermissionsRoleFromSession();
+    if (authCheck.status !== 200) {
+      return {
+        status: authCheck.status,
+        message: authCheck.message || "Erreur d'autorisation",
+      };
     }
 
     if (!movie?.title?.trim()) {
@@ -65,8 +73,8 @@ export const addMovieToDb = async (
         title: movie.title,
         titleEnglish: movie.titleEnglish,
         titleJapanese: movie.titleJapanese,
-        link: movie.link,
-        image: movie.link,
+        link: movie.link || '',
+        image: movie.image || movie.link || '',
         director: movie.director,
         imdbId: movie.imdbId,
         originalTitle: movie.originalTitle,
@@ -98,15 +106,17 @@ export const addMovieToDb = async (
 };
 
 export const editMovieToDb = async (
-  movie: IMovie,
-  user: User
+  movie: IUpdateMovieData
 ): Promise<{ status: number; message?: string }> => {
   try {
-    if (user.role !== 'ADMIN')
+    const authCheck = await checkPermissionsRoleFromSession();
+    if (authCheck.status !== 200) {
       return {
-        status: 403,
-        message: 'Unautorized',
+        status: authCheck.status,
+        message: authCheck.message || "Erreur d'autorisation",
       };
+    }
+
     const movieInDb = await prisma.movie.findUnique({
       where: {
         id: movie.id,
@@ -133,8 +143,8 @@ export const editMovieToDb = async (
         title: movie.title,
         titleEnglish: movie.titleEnglish,
         titleJapanese: movie.titleJapanese,
-        link: movie.link,
-        image: movie.link,
+        link: movie.link || '',
+        image: movie.image || movie.link || '',
         director: movie.director,
         imdbId: movie.imdbId,
         originalTitle: movie.originalTitle,
@@ -167,16 +177,17 @@ export const editMovieToDb = async (
 };
 
 export const deleteMovieById = async (
-  id: string,
-  user: User
+  id: string
 ): Promise<{ status: number; message?: string }> => {
   try {
-    if (user.role !== 'ADMIN') {
+    const authCheck = await checkPermissionsRoleFromSession();
+    if (authCheck.status !== 200) {
       return {
-        status: 403,
-        message: "Accès refusé : vous n'êtes pas administrateur",
+        status: authCheck.status,
+        message: authCheck.message || "Erreur d'autorisation",
       };
     }
+
     if (id) {
       await prisma.movie.delete({
         where: {
@@ -205,7 +216,6 @@ export const publishedMovieById = async (
       return { publish: false, status: 400 };
     }
 
-    // Optimisation : Une seule requête avec upsert ou findFirst + update atomique
     const movie = await prisma.movie.findUnique({
       where: { id },
       select: { id: true, publish: true },

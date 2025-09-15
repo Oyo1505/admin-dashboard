@@ -8,10 +8,9 @@ import {
   URL_DASHBOARD_MOVIE_ADD,
   URL_DASHBOARD_MOVIE_EDIT,
 } from '@/shared/route';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { useQuery } from '@tanstack/react-query';
-import { User } from 'next-auth';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { deleteMovieById, publishedMovieById } from '../../actions/movie';
@@ -31,7 +30,7 @@ function MovieRow({
   const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
     if (movie?.id) {
-      await deleteMovieById(movie?.id, user as User);
+      await deleteMovieById(movie?.id);
     }
   };
 

@@ -4,7 +4,7 @@ import DirectorSectionForm from '@/domains/dashboard/components/director-section
 import Text from '@/domains/ui/components/text/text';
 import { auth } from '@/lib/auth';
 import { User } from '@/models/user/user';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
 
 export default async function Page() {
   const session = await auth();

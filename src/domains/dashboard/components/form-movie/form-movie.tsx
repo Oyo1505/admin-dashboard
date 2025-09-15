@@ -12,8 +12,6 @@ import Title from '@/domains/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
-import useUserStore from '@/store/user/user-store';
-import { User } from 'next-auth';
 import { useLocale, useTranslations } from 'next-intl';
 import { useMovieForm } from '../../hooks/useMovieForm';
 import { useMovieGenres } from '../../hooks/useMovieGenres';
@@ -30,7 +28,6 @@ const FormMovie = ({
   idFromGoogleDrive?: string;
 }) => {
   const t = useTranslations('AddMovie');
-  const { user } = useUserStore();
 
   const {
     form,
@@ -43,7 +40,6 @@ const FormMovie = ({
     movie,
     editMovie,
     idFromGoogleDrive,
-    user: user as User,
   });
 
   const {

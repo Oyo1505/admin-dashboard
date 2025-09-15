@@ -19,14 +19,16 @@ interface ExtendedSession extends Session {
   error?: string;
   expiresAt?: number;
 }
-
+export interface UserSession extends User {
+  role: 'USER' | 'ADMIN';
+}
 interface ExtendedJWT extends JWT {
   access_token?: string;
   id_token?: string;
   refresh_token?: string;
   expires_at?: number;
   error?: string;
-  user?: User;
+  user?: UserSession;
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -69,15 +71,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
     },
     async jwt({ token, account, profile }) {
-      if (account) {
+      if (account && profile) {
         // First login, save the `access_token`, `refresh_token`, and other
-        // details into the JWT
 
-        const userProfile: User = {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: profile.email! },
+          select: {
+            id: true,
+            role: true,
+            email: true,
+            name: true,
+            image: true,
+          },
+        });
+
+        const userProfile: UserSession = {
           id: token.sub,
           name: profile?.name,
           email: profile?.email,
           image: token?.picture,
+          role: dbUser?.role || 'USER',
         };
 
         return {
@@ -157,7 +170,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.error = token.error;
       session.expiresAt = token.expires_at;
       session.user = token.user;
-
       return session;
     },
   },

@@ -5,7 +5,7 @@ import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
 import { auth } from '@/lib/auth';
 import { User } from '@/models/user/user';
-import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
 import dynamic from 'next/dynamic';
 
 const GenreForm = dynamic(

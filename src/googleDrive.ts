@@ -97,7 +97,7 @@ export const addFileToGoogleDriveAction = async (
   try {
     const fileMetadata = {
       name: formData.name,
-      parents: ['1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD'],
+      parents: [process.env.GOOGLE_DRIVE_FOLDER_ID!],
     };
 
     const media = {

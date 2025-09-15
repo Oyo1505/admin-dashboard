@@ -17,7 +17,6 @@ export interface IMovie {
   publish: boolean;
   imdbId?: string | null;
   idGoogleDive: string | null;
-  tags: string[];
   duration?: number | null;
   link: string;
   releaseDate: string | null;
@@ -64,3 +63,30 @@ export type SelectFiltersProps = {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   filters?: Partial<IFilters>;
 };
+
+export interface IMovieFormData {
+  id?: string;
+  title: string;
+  titleJapanese?: string;
+  titleEnglish?: string;
+  idGoogleDive: string;
+  director?: string;
+  imdbId?: string;
+  subtitles: string[];
+  language?: string;
+  originalTitle: string;
+  genresIds: string[];
+  year: number;
+  duration: number;
+  country?: string;
+  synopsis?: string;
+  trailer?: string;
+  link?: string;
+  image?: string;
+  publish?: boolean;
+  releaseDate?: Date;
+}
+
+export interface IUpdateMovieData extends IMovieFormData {
+  id: string; // Required for updates
+}
