@@ -3,7 +3,7 @@ import { URL_MOVIE_ID } from '@/shared/route';
 import Image from 'next/image';
 import Link from 'next/link';
 import { memo } from 'react';
-import { titleOnlocale } from 'utilities/string/titleOnlocale';
+import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 
 const MovieItemTheme = memo(
   ({
