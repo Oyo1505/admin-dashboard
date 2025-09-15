@@ -7,7 +7,7 @@ import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated
 import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { heuresEnMinutes } from 'utilities/number/minutesToHours';
+import { minutesToHours } from 'utilities/number/minutesToHours';
 import { titleOnlocale } from 'utilities/string/titleOnlocale';
 import useGetDetailsMovie from '../../hooks/use-get-details-movie';
 
@@ -97,7 +97,7 @@ const MovieHeader = ({ movie }: MovieHeaderProps) => {
         )}
         {movie?.duration && movie?.duration > 0 && (
           <span>
-            {t('duration')}: {heuresEnMinutes(movie?.duration)}
+            {t('duration')}: {minutesToHours(movie?.duration)}
           </span>
         )}
         {movie?.language && (

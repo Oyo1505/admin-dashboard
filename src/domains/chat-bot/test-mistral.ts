@@ -4,8 +4,6 @@ import { mistral } from '@/lib/mistral';
 
 export async function testMistralAPI() {
   try {
-    console.log('API Test Mistral...');
-
     const response = await mistral.chat.complete({
       model: 'mistral-large-latest',
       temperature: 0.7,
@@ -22,7 +20,6 @@ export async function testMistralAPI() {
     });
 
     const answer = response?.choices?.[0]?.message?.content;
-    console.log('Answer Mistral:', answer);
     return {
       success: true,
       answer: answer,

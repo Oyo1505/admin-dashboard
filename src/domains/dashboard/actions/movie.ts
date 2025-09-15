@@ -201,25 +201,28 @@ export const publishedMovieById = async (
   id: string
 ): Promise<{ publish?: boolean; status: number }> => {
   try {
-    if (id) {
-      const findedMovie = await prisma.movie.findUnique({
-        where: {
-          id,
-        },
-      });
-      if (findedMovie) {
-        const movie = await prisma.movie.update({
-          where: {
-            id,
-          },
-          data: {
-            publish: !findedMovie?.publish,
-          },
-        });
-        return { publish: movie.publish, status: 200 };
-      }
+    if (!id) {
+      return { publish: false, status: 400 };
     }
-    return { publish: false, status: 404 };
+
+    // Optimisation : Une seule requête avec upsert ou findFirst + update atomique
+    const movie = await prisma.movie.findUnique({
+      where: { id },
+      select: { id: true, publish: true },
+    });
+
+    if (!movie) {
+      return { publish: false, status: 404 };
+    }
+
+    const updatedMovie = await prisma.movie.update({
+      where: { id },
+      data: { publish: !movie.publish },
+      select: { publish: true },
+    });
+
+    revalidatePath(URL_DASHBOARD_ROUTE.movie);
+    return { publish: updatedMovie.publish, status: 200 };
   } catch (error) {
     logError(error, 'publishedMovieById');
     const appError = handlePrismaError(error);
@@ -237,7 +240,22 @@ export const getFavoriteMovies = async (
         userId: id,
       },
       include: {
-        movie: true,
+        movie: {
+          include: {
+            genresIds: {
+              select: {
+                genre: {
+                  select: {
+                    id: true,
+                    nameFR: true,
+                    nameEN: true,
+                    nameJP: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
     return {

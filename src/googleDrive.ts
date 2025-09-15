@@ -32,7 +32,6 @@ export const getDataFromGoogleDrive = async () => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: 'v3', auth });
   try {
-    // const res = await drive.files.get({fileId: "1r-YRsOe6x5Sx7hc8VKk5WzkcD5TI5YJD"})
     const movies = await drive.files.list({
       q: `mimeType='video/mp4' and '${process.env.GOOGLE_DRIVE_FOLDER_ID}' in parents`,
     });
