@@ -66,6 +66,10 @@ const useMovieFilters = () => {
     setHasBeenSearched(true);
   }, [filters, router, setHasBeenSearched]);
 
+  const onClickClearSearch = () => {
+    router.replace(`${URL_MOVIES}`);
+  };
+
   return {
     onChangeGenre,
     onChangeDecade,
@@ -76,6 +80,7 @@ const useMovieFilters = () => {
     setHasBeenSearched,
     hasBeenSearched,
     onClick,
+    onClickClearSearch,
   };
 };
 

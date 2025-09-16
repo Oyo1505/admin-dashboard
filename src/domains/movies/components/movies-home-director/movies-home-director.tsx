@@ -6,22 +6,25 @@ import { IMovie } from '@/models/movie/movie';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import paramount from '../.../../../../../../public/images/paramount.webp';
+
 const MovieItemCarousel = dynamic(
   () => import('../movie-item-carousel/movie-item-carousel'),
   {
     ssr: false,
   }
 );
+
 const MovieItemTheme = dynamic(
   () => import('../movie-item-theme/movie-item-theme'),
   {
     ssr: false,
   }
 );
+
 const MoviesHomeDirector = ({
   movies,
   director,
@@ -37,23 +40,26 @@ const MoviesHomeDirector = ({
 }) => {
   const locale = useLocale();
 
-  const responsive = {
-    tablet: {
-      breakpoint: { max: 1024, min: 465 },
-      items: 3,
-      slidesToSlide: 1,
-    },
-    tabletHorizontal: {
-      breakpoint: { max: 1400, min: 1025 },
-      items: 3,
-      slidesToSlide: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 3,
-      slidesToSlide: 1,
-    },
-  };
+  const responsive = useMemo(
+    () => ({
+      tablet: {
+        breakpoint: { max: 1024, min: 465 },
+        items: 3,
+        slidesToSlide: 1,
+      },
+      tabletHorizontal: {
+        breakpoint: { max: 1400, min: 1025 },
+        items: 3,
+        slidesToSlide: 1,
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 3,
+        slidesToSlide: 1,
+      },
+    }),
+    []
+  );
   const backgroundStyle = imageBackdrop
     ? {
         backgroundImage: `url(${imageBackdrop})`,
