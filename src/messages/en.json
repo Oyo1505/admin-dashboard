@@ -150,6 +150,7 @@
     "language": "Country",
     "decade": "Decade",
     "btnSearch": "Search",
+    "btnClearSearch": "Clear",
     "placeholderSearch": "Search Movies or director...",
     "subtitlesFR": "French",
     "subtitlesJP": "Japanese",

@@ -5,10 +5,10 @@
 /.pnp
 .pnp.js
 .vscode
-.claude/*
+/.claude
 # testing
 /coverage
-
+/claudedocs
 # next.js
 /.next/
 /out/

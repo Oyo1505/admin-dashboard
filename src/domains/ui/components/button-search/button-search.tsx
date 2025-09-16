@@ -14,10 +14,7 @@ const ButtonSearch = memo(
   }) => {
     return (
       <Button
-        className={clsx(
-          className,
-          'h-full pt-3 pb-3 pr-6 pl-6 bg-white text-background'
-        )}
+        className={clsx(className, 'h-full pt-3 pb-3 pr-6 pl-6 ')}
         onClick={onClick}
       >
         {btnText}

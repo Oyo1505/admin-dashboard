@@ -47,6 +47,7 @@ const MovieFilters = ({
     setHasBeenSearched,
     hasBeenSearched,
     onClick,
+    onClickClearSearch,
   } = useMovieFilters();
 
   const { data, status, refetch } = useQuery({
@@ -211,13 +212,17 @@ const MovieFilters = ({
         />
         <SelectFilters
           titleLabel="decade"
-          defaultValue={String(decadeParams ?? filters?.decade)}
+          defaultValue={
+            !decadeParams && !filters?.decade
+              ? ''
+              : String(decadeParams ?? filters?.decade)
+          }
           onChange={onChangeDecade}
           filters={{ decade: filters?.decade }}
           filterKey="decade"
           displayedOptionValues={
             <>
-              <option selected value="" disabled>
+              <option value="" disabled>
                 {t('decade')}
               </option>
               {decades?.map((dec: number, index: number) => (
@@ -263,11 +268,18 @@ const MovieFilters = ({
           }
         />
       </div>
-      <ButtonSearch
-        className="w-full hover:cursor-pointer md:w-full lg:max-w-56 transition-all duration-300"
-        btnText={t('btnSearch')}
-        onClick={onClick}
-      />
+      <div className="flex w-full gap-1 box-border">
+        <ButtonSearch
+          className="w-full hover:cursor-pointer md:w-full lg:max-w-56 transition-all duration-300 bg-white text-background border-white border-1"
+          btnText={t('btnSearch')}
+          onClick={onClick}
+        />
+        <ButtonSearch
+          className="w-full hover:cursor-pointer md:w-full lg:max-w-56 transition-all duration-300 bg-background text-white border-white border-1"
+          btnText={t('btnClearSearch')}
+          onClick={onClickClearSearch}
+        />
+      </div>
     </div>
   );
 };
