@@ -72,7 +72,7 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
               <MoviePageButtons isFavorite={isFavorite} movie={movie} />
             </div>
           )}
-          <MovieHeader movie={movie} isFavorite={isFavorite} />
+          <MovieHeader movie={movie} />
         </div>
       </Suspense>
       <div className="w-full  mt-14 mb-10 flex gap-7 flex-col lg:flex-row">

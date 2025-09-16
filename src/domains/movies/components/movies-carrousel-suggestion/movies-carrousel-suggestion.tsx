@@ -21,7 +21,7 @@ const MovieCarouselSuggestion = memo(
       () => ({
         desktop: {
           breakpoint: { max: 5000, min: 1025 },
-          items: 5,
+          items: 2,
           slidesToSlide: 1,
         },
         tablet: {

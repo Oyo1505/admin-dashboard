@@ -1,10 +1,10 @@
 'use client';
 import { IMovie } from '@/models/movie/movie';
 import { URL_MOVIE_ID } from '@/shared/route';
+import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { memo } from 'react';
-import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 
 const MovieItemCarousel = memo(
   ({
@@ -21,7 +21,7 @@ const MovieItemCarousel = memo(
     return (
       <Link href={URL_MOVIE_ID(id)}>
         <div
-          className={`group relative flex  w-28 md:w-44 lg:w-64 rounded-lg  flex-col justify-between h-full`}
+          className={`group relative flex w-28 md:w-44 lg:w-60 rounded-lg flex-col justify-between h-full`}
         >
           <div className="w-full rounded-lg h-full relative overflow-hidden">
             <div className="relative w-full h-full">

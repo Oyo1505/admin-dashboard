@@ -79,7 +79,7 @@ export const addOrRemoveToFavorite = async (
   idMovie: string | undefined
 ): Promise<{ status: number; message?: string }> => {
   if (!idMovie) {
-    return { status: 400, message: "Le film n'est pas défini" };
+    return { status: 400, message: 'Missing movie' };
   }
   try {
     const existingFavorite = await prisma.userFavoriteMovies.findUnique({
@@ -102,7 +102,7 @@ export const addOrRemoveToFavorite = async (
       });
 
       revalidatePath(URL_MOVIE_ID(idMovie));
-      return { status: 200, message: 'Supprimé des favoris avec succès' };
+      return { status: 200, message: 'Success: movie deleted' };
     }
     await prisma.userFavoriteMovies.create({
       data: {
@@ -112,7 +112,7 @@ export const addOrRemoveToFavorite = async (
     });
 
     revalidatePath(URL_MOVIE_ID(idMovie));
-    return { status: 200, message: 'Ajouté aux favoris avec succès' };
+    return { status: 200, message: 'Added to favortie' };
   } catch (error) {
     logError(error, 'addOrRemoveToFavorite');
     const appError = handlePrismaError(error);
