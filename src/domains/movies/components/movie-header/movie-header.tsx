@@ -3,12 +3,12 @@ import { Locale } from '@/config';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
+import { minutesToHours } from '@/shared/utils/number/minutesToHours';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
+import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
-import { minutesToHours } from '@/shared/utils/number/minutesToHours';
-import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
+import { useMemo } from 'react';
 import useGetDetailsMovie from '../../hooks/use-get-details-movie';
 
 const MoviePageSubtitlesList = dynamic(
@@ -16,22 +16,19 @@ const MoviePageSubtitlesList = dynamic(
   { ssr: false }
 );
 
-interface MovieHeaderProps {
-  movie?: IMovie | null;
-  isFavorite: boolean;
-}
-
-const MovieHeader = ({ movie }: MovieHeaderProps) => {
+const MovieHeader = ({ movie }: { movie: IMovie }) => {
   const t = useTranslations('MoviePage');
   const locale = useLocale() as Locale;
   const { data: movieDetails } = useGetDetailsMovie({
     id: movie?.imdbId ?? '',
     language: locale,
   });
-  const [genresMovie] = useState<IGenre[]>(
-    movie && movie?.genresIds && movie?.genresIds?.length > 0
-      ? movie?.genresIds.map((item) => item.genre).flat()
-      : ([] as IGenre[])
+  const genresMovie = useMemo(
+    () =>
+      movie && movie?.genresIds && movie?.genresIds?.length > 0
+        ? movie?.genresIds.map((item) => item.genre).flat()
+        : ([] as IGenre[]),
+    [movie]
   );
 
   const synopsis = movieDetails?.movie_results?.[0]?.overview;
