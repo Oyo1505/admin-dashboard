@@ -13,6 +13,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Nūberu Bāgu',
+  description: 'Bienvenue sur Nūberu Bāgu',
 };
 
 export default async function RootLayout({
@@ -30,7 +31,9 @@ export default async function RootLayout({
         <meta name="googlebot" content="noindex, nofollow"></meta>
         <meta name="robots" content="noindex, nofollow"></meta>
       </head>
-      <body className="h-full mb-14 mx-auto relative bg-background  text-primary font-semibold">
+      <body
+        className={`h-full mb-14 mx-auto relative bg-background text-primary font-semibold `}
+      >
         <SessionProvider session={session}>
           <ToastContainer />
           <NextIntlClientProvider messages={messages}>
