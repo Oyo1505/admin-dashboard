@@ -19,13 +19,13 @@ model Account {
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String?  
+  refresh_token      String?
   refresh_token_expires_in Int?
-  access_token       String?  
+  access_token       String?
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?  
+  id_token           String?
   session_state      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -49,14 +49,14 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  role          UserRole     @default(USER) 
+  role          UserRole     @default(USER)
   favoriteMovies UserFavoriteMovies[]
   analytics     AnalyticsUser[]
 }
 
 model Movie {
   id       String    @id @default(cuid())
-  title    String 
+  title    String
   originalTitle String?
   titleJapanese String?
   titleEnglish String?
@@ -78,6 +78,7 @@ model Movie {
   publish   Boolean @default(true)
   favoriteMovies UserFavoriteMovies[]
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -94,7 +95,7 @@ model UserFavoriteMovies {
   movieId   String
 
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  movie     Movie   @relation(fields: [movieId], references: [id], onDelete: Cascade)  
+  movie     Movie   @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
   @@unique([userId, movieId])
 }

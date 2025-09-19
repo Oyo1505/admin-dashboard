@@ -68,7 +68,7 @@ const webSitesRessources: Ressource[] = [
   },
   {
     id: 10,
-    name: 'Youtube',
+    name: 'NipponKino',
     url: 'https://www.youtube.com/@cinemadumonde',
     description: 'NipponKino',
     image: youtube,

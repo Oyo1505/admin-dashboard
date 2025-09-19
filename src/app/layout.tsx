@@ -13,6 +13,25 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Nūberu Bāgu',
+  description: 'Bienvenue sur Nūberu Bāgu',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Nūberu Bāgu',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/images/icon-192.png',
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#000000',
 };
 
 export default async function RootLayout({
@@ -30,7 +49,9 @@ export default async function RootLayout({
         <meta name="googlebot" content="noindex, nofollow"></meta>
         <meta name="robots" content="noindex, nofollow"></meta>
       </head>
-      <body className="h-full mb-14 mx-auto relative bg-background  text-primary font-semibold">
+      <body
+        className={`h-full mb-14 mx-auto relative bg-background text-primary font-semibold `}
+      >
         <SessionProvider session={session}>
           <ToastContainer />
           <NextIntlClientProvider messages={messages}>

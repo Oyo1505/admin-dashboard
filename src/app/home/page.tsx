@@ -29,6 +29,7 @@ const lobster = Lobster({
   weight: '400',
   display: 'swap',
   subsets: ['latin'],
+  preload: true,
 });
 
 async function getData() {
