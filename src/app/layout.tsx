@@ -14,6 +14,24 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Nūberu Bāgu',
   description: 'Bienvenue sur Nūberu Bāgu',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Nūberu Bāgu',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/images/icon-192.png',
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#000000',
 };
 
 export default async function RootLayout({

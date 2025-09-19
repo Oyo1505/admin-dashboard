@@ -32,7 +32,7 @@ export interface IMovie {
   kind?: string;
   name?: string;
   mimeType?: string;
-  updatedAt?: string;
+  updatedAt?: Date;
   isFavorite?: boolean;
 }
 
@@ -89,5 +89,6 @@ export interface IMovieFormData {
 }
 
 export interface IUpdateMovieData extends IMovieFormData {
-  id: string; // Required for updates
+  id: string;
+  upadateAt: Date;
 }
