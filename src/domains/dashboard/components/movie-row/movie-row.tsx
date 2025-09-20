@@ -103,15 +103,6 @@ function MovieRow({
                 Supprimer
               </Button>
             )}
-            {isMoviePublished === undefined && hasPermissionToDelete && (
-              <Button
-                variant={'destructive'}
-                className="font-bold"
-                formAction={onDeleteMovieOnGoogleDrive}
-              >
-                Supprimer sur Google
-              </Button>
-            )}
           </TableCell>
         </TableRow>
       </>
