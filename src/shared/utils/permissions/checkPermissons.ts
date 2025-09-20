@@ -43,7 +43,7 @@ const checkPermissionsRoleFromSession = async () => {
     return { status: 401, message: 'Session invalide' };
   }
   const user = session.user as UserSession;
-
+  console.log(user.role);
   if (user.role !== 'ADMIN') {
     return { status: 403, message: 'Droits administrateur requis' };
   }
