@@ -164,9 +164,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session: ExtendedSession;
       token: ExtendedJWT;
     }) {
-      session.accessToken = token.access_token;
       session.idToken = token.id_token;
-      session.refreshToken = token.refresh_token;
       session.error = token.error;
       session.expiresAt = token.expires_at;
       session.user = token.user;
