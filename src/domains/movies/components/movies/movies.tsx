@@ -133,13 +133,13 @@ const Movies = memo(
     return (
       <>
         {moviesFromStore && moviesFromStore.length > 0 ? (
-          <div className="grid grid-cols-1 mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4 mt-6">
             {moviesFromStore.map(
               (movie, index) =>
                 movie?.title && (
                   <Link
                     prefetch
-                    className="w-52 relative group flex h-full flex-col gap-3 justify-start items-center transition-all duration-300 pb-5"
+                    className="w-full h-28 bg-neutral-700 rounded-lg md:rounded-none md:bg-inherit md:w-52 relative group flex md:h-full flex-col gap-3 md:justify-start md:items-center transition-all duration-300 md:pb-5"
                     key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
                     href={`${URL_MOVIE_ID(movie?.id)}`}
                   >
@@ -149,7 +149,7 @@ const Movies = memo(
                       </div>
                     )}
                     <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
-                      <div className="w-full h-72 rounded-lg relative overflow-hidden">
+                      <div className="w-24 h-full md:w-full md:h-72 rounded-lg relative overflow-hidden">
                         <Image
                           priority
                           className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
@@ -160,7 +160,8 @@ const Movies = memo(
                         />
                       </div>
                     </div>
-                    <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
+
+                    <div className="w-full hidden md:visible text-center text-ellipsis whitespace-nowrap overflow-hidden">
                       {titleOnlocale(movie, locale)}
                     </div>
                   </Link>
