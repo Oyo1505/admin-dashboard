@@ -1,13 +1,18 @@
 import NextAuth from 'next-auth';
 import { getToken } from 'next-auth/jwt';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, userAgent } from 'next/server';
 import authConfig from './lib/auth.config';
 import { logError } from './lib/errors';
 import { URL_LEGAL_MENTIONS, URL_PRIVACY } from './shared/route';
 
 const { auth } = NextAuth(authConfig);
 export default auth(async function middleware(req: NextRequest) {
-  const path = req.nextUrl.pathname;
+  const url = req.nextUrl;
+  const path = url.pathname;
+  const { device } = userAgent(req);
+  const viewport = device.type || 'desktop';
+
+  url.searchParams.set('viewport', viewport);
 
   // Allow public routes
   if (path === '/' || path === URL_PRIVACY || path === URL_LEGAL_MENTIONS) {
@@ -44,7 +49,7 @@ export default auth(async function middleware(req: NextRequest) {
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set('x-url', req.url);
     requestHeaders.set('x-pathname', path);
-
+    requestHeaders.set('x-viewport', viewport);
     if (!session) {
       return NextResponse.redirect(new URL('/', req.url));
     }
@@ -67,26 +72,26 @@ export default auth(async function middleware(req: NextRequest) {
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
     // Specific CSP for pages with iframes
-    if (path.includes('/movies/') || path.includes('/dashboard/')) {
-      response.headers.set(
-        'Content-Security-Policy',
-        [
-          "default-src 'self'",
-          "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://apis.google.com https://accounts.google.com",
-          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-          "font-src 'self' https://fonts.gstatic.com",
-          "img-src 'self' data: https: blob:",
-          "media-src 'self' https://drive.google.com https://www.youtube.com blob:",
-          "connect-src 'self' https://api.themoviedb.org https://accounts.google.com https://www.googleapis.com",
-          "frame-src 'self' https://drive.google.com https://www.youtube.com https://accounts.google.com",
-          "object-src 'none'",
-          "base-uri 'self'",
-          "form-action 'self'",
-        ].join('; ')
-      );
-    }
+    // if (path.includes('/movies/') || path.includes('/dashboard/')) {
+    //   response.headers.set(
+    //     'Content-Security-Policy',
+    //     [
+    //       "default-src 'self'",
+    //       "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://apis.google.com https://accounts.google.com",
+    //       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    //       "font-src 'self' https://fonts.gstatic.com",
+    //       "img-src 'self' data: https: blob:",
+    //       "media-src 'self' https://drive.google.com https://www.youtube.com blob:",
+    //       "connect-src 'self' https://api.themoviedb.org https://accounts.google.com https://www.googleapis.com",
+    //       "frame-src 'self' https://drive.google.com https://www.youtube.com https://accounts.google.com",
+    //       "object-src 'none'",
+    //       "base-uri 'self'",
+    //       "form-action 'self'",
+    //     ].join('; ')
+    //   );
+    // }
 
-    return response;
+    return NextResponse.rewrite(url);
   } catch (error) {
     logError(error, 'Middleware error');
     return NextResponse.redirect(new URL('/', req.url));

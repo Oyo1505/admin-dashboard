@@ -1,21 +1,18 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
-import { Favorite } from '@/domains/ui/components/icons/icons';
 import { logError } from '@/lib/errors';
-import { URL_MOVIE_ID } from '@/shared/route';
-import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import {
   useFiltersMovieStore,
   useMovieFormStore,
 } from '@/store/movie/movie-store';
 import useUserStore from '@/store/user/user-store';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import Link from 'next/link';
 import qs from 'qs';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
+import MovieCardSearchPageMobileView from '../movie-card-mobile-view_search-page/movie-card-mobile-view_search-page';
+import MovieCardSearchPage from '../movie-card_search-page/movie-card_search-page';
 
 const LoadingSpinner = dynamic(
   () => import('@/domains/shared/components/loading-spinner/loading-spinner'),
@@ -34,15 +31,15 @@ const Movies = memo(
   ({
     searchParams,
     offset,
+    viewport,
   }: {
     searchParams?: SearchParams | undefined;
     offset?: number;
+    viewport?: string;
   }) => {
     const { filters } = useFiltersMovieStore();
     const { user } = useUserStore();
     const { moviesFromStore, setMoviesStore } = useMovieFormStore();
-    const locale = useLocale();
-
     const searchQuery = useMemo(() => {
       if (!searchParams || Object.keys(searchParams).length === 0) return '';
 
@@ -124,12 +121,6 @@ const Movies = memo(
     if (status === 'pending' && isFetching)
       return <LoadingSpinner className="flex justify-center h-screen" />;
 
-    const isFavorite = (id: string) => {
-      return user?.favoriteMovies?.some(
-        (favoriteMovie) => favoriteMovie.movieId === id
-      );
-    };
-
     return (
       <>
         {moviesFromStore && moviesFromStore.length > 0 ? (
@@ -137,34 +128,21 @@ const Movies = memo(
             {moviesFromStore.map(
               (movie, index) =>
                 movie?.title && (
-                  <Link
-                    prefetch
-                    className="w-full h-28 bg-neutral-700 rounded-lg md:rounded-none md:bg-inherit md:w-52 relative group flex md:h-full flex-col gap-3 md:justify-start md:items-center transition-all duration-300 md:pb-5"
-                    key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
-                    href={`${URL_MOVIE_ID(movie?.id)}`}
-                  >
-                    {isFavorite(movie?.id) && (
-                      <div className="absolute z-1 top-1 right-1">
-                        <Favorite fill />
-                      </div>
+                  <>
+                    {viewport === 'desktop' || viewport === 'tablet' ? (
+                      <MovieCardSearchPage
+                        user={user}
+                        movie={movie}
+                        key={`${movie?.id}-${index}`}
+                      />
+                    ) : (
+                      <MovieCardSearchPageMobileView
+                        user={user}
+                        movie={movie}
+                        key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}-mobile-view`}
+                      />
                     )}
-                    <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
-                      <div className="w-24 h-full md:w-full md:h-72 rounded-lg relative overflow-hidden">
-                        <Image
-                          priority
-                          className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
-                          src={movie?.image ? movie?.image : 'imageDefault'}
-                          width={300}
-                          height={200}
-                          alt="movie"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="w-full hidden md:visible text-center text-ellipsis whitespace-nowrap overflow-hidden">
-                      {titleOnlocale(movie, locale)}
-                    </div>
-                  </Link>
+                  </>
                 )
             )}
           </div>
