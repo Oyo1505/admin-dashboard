@@ -157,7 +157,7 @@ const MovieFilters = ({
   };
 
   return (
-    <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-4/6 m-auto place-items-start justify-between">
+    <div className="flex flex-col gap-9 md:gap-2 relative mt-6 w-full md:w-4/6 m-auto place-items-start justify-between">
       <div className="flex w-full flex-col md:flex-row flex-nowrap gap-2">
         <SelectFilters
           key="subtitles"

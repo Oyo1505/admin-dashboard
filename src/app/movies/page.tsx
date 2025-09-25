@@ -23,6 +23,7 @@ const Page = async (props: {
     langage: string;
     genre: string;
     decade: string;
+    viewport: string;
   }>;
 }) => {
   const searchParams = await props.searchParams;
@@ -33,6 +34,7 @@ const Page = async (props: {
   const genre = searchParams.genre ?? '';
   const decade = Number(searchParams.decade) ?? 0;
   const offset = 12;
+  const { viewport } = searchParams;
 
   return (
     <>
@@ -48,7 +50,11 @@ const Page = async (props: {
         countries={countries ?? []}
       />
       <Suspense fallback={<MoviesSkeleton />}>
-        <Movies searchParams={searchParams} offset={offset} />
+        <Movies
+          searchParams={searchParams}
+          offset={offset}
+          viewport={viewport}
+        />
       </Suspense>
     </>
   );

@@ -72,7 +72,7 @@ const SearchMovie = ({
     setHasBeenSearched(true);
   };
   return (
-    <div className="relative mt-6 w-4/6 m-auto">
+    <div className="relative mt-6 w-full md:w-4/6 m-auto">
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-background" />
       <Input
         ref={inputRef}
