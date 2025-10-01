@@ -12,7 +12,9 @@
       "Bash(git commit:*)",
       "Bash(npx tsc:*)",
       "Bash(pnpm format:*)",
-      "Bash(gh pr:*)"
+      "Bash(gh pr:*)",
+      "Bash(node:*)",
+      "Bash(pnpm test:*)"
     ],
     "deny": [],
     "ask": []

@@ -6,7 +6,7 @@ const LandingPage = dynamic(
 
 export default function IndexPage() {
   return (
-    <main className="h-full">
+    <main data-testid="main" className="h-full">
       <LandingPage />
     </main>
   );
