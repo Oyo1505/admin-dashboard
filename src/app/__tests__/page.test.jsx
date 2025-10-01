@@ -1,10 +1,9 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-const Page = require('../page').default;
-
+import React from 'react';
+import Page from '../page';
 jest.mock('next/dynamic', () => {
   return function dynamic() {
-    const React = require('react');
     return function DynamicComponent() {
       return React.createElement(
         'div',

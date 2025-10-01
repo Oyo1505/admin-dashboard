@@ -2,7 +2,6 @@
 import { Button } from '@/domains/ui/components/button/button';
 import { TableCell, TableRow } from '@/domains/ui/components/table/table';
 import Toggle from '@/domains/ui/components/toggle/toggle';
-import { deleteFileFromGoogleDrive } from '@/googleDrive';
 import { IMovie } from '@/models/movie/movie';
 import {
   URL_DASHBOARD_MOVIE_ADD,
@@ -45,12 +44,6 @@ function MovieRow({
       setIsMoviePublished(data?.publish);
     }
   }, [data, status]);
-
-  const onDeleteMovieOnGoogleDrive = async (): Promise<void> => {
-    if (movie?.id) {
-      await deleteFileFromGoogleDrive(movie?.id);
-    }
-  };
 
   const hasPermissionToDelete = checkPermissions(user, 'can:delete', 'movie');
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
