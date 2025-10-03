@@ -11,8 +11,8 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
+import React from 'react';
 import LandingPage from '../components/landing-page/landing-page';
-
 // Mock NextAuth - returns a session object with status
 jest.mock('next-auth/react', () => ({
   useSession: jest.fn(),
@@ -25,7 +25,7 @@ jest.mock('next-intl', () => ({
 
 // Mock ButtonLogin component with relative path (avoids alias issues)
 jest.mock('../../ui/components/button-login/button-login', () => {
-  const React = require('react');
+
   return {
     __esModule: true,
     default: function MockButtonLogin() {
