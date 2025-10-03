@@ -25,7 +25,6 @@ jest.mock('next-intl', () => ({
 
 // Mock ButtonLogin component with relative path (avoids alias issues)
 jest.mock('../../ui/components/button-login/button-login', () => {
-
   return {
     __esModule: true,
     default: function MockButtonLogin() {
