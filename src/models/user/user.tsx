@@ -5,7 +5,7 @@ export interface User {
   id?: string;
   name?: string | null;
   email?: string | null;
-  emailVerified?: Date | null;
+  emailVerified?: boolean;
   image?: string | null;
   role?: UserRole;
   favoriteMovies?: IFavoriteMovieResponse[];

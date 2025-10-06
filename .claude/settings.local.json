@@ -14,7 +14,8 @@
       "Bash(pnpm format:*)",
       "Bash(gh pr:*)",
       "Bash(node:*)",
-      "Bash(pnpm test:*)"
+      "Bash(pnpm test:*)",
+      "Read(//c/Users/oyo15/Desktop/**)"
     ],
     "deny": [],
     "ask": []

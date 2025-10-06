@@ -7,7 +7,7 @@ import {
   URL_DASHBOARD_MOVIE_ADD,
   URL_DASHBOARD_MOVIE_EDIT,
 } from '@/shared/route';
-import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';

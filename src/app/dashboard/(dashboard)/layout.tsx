@@ -1,7 +1,7 @@
 import MenuDashboard from '@/domains/layout/components/menu-dashboard/menu-dashboard';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import Container from '@/domains/ui/components/container/container';
-import { auth } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { URL_BASE } from '@/shared/route';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
@@ -16,7 +16,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const session = await getServerSession();
   if (!session?.user) return redirect(URL_BASE);
   return (
     <Container className="pt-18" marginSide={false}>

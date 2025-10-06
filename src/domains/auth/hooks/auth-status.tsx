@@ -1,18 +1,14 @@
 'use client';
+import { useSession } from '@/lib/auth-client';
 import { logError } from '@/lib/errors';
-import {
-  URL_DASHBOARD_ROUTE,
-  URL_HOME,
-  URL_LEGAL_MENTIONS,
-  URL_PRIVACY,
-} from '@/shared/route';
+import { URL_DASHBOARD_ROUTE, URL_HOME } from '@/shared/route';
 import useUserStore from '@/store/user/user-store';
-import { useSession } from 'next-auth/react';
+
 import { redirect, usePathname } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 
 const useAuthStatus = () => {
-  const { user, fetchUser, setUser, logout } = useUserStore((state) => state);
+  const { user, fetchUser, setUser } = useUserStore((state) => state);
   const pathname = usePathname();
   const { data: session } = useSession();
 
@@ -24,20 +20,10 @@ const useAuthStatus = () => {
     } catch (error) {
       logError(error, 'useAuthStatus');
     }
-  }, [session, fetchUser]);
-
-  const logoutSession = useCallback(async () => {
-    try {
-      await logout();
-      setUser({}, false);
-    } catch (error) {
-      logError(error, 'logoutSession');
-      setUser({}, false);
-    }
-  }, [logout, setUser]);
+  }, [session?.user?.email, fetchUser]);
 
   useEffect(() => {
-    if (session && Object.keys(user).length === 0) {
+    if (session?.user && Object.keys(user).length === 0) {
       fetchSession();
     }
   }, [session, user, fetchSession]);
@@ -62,16 +48,10 @@ const useAuthStatus = () => {
   }, [user, pathname]);
 
   useEffect(() => {
-    if (
-      !session &&
-      pathname !== '/' &&
-      pathname !== URL_LEGAL_MENTIONS &&
-      pathname !== URL_PRIVACY
-    ) {
-      logoutSession();
+    if (!session && pathname === '/') {
+      setUser({}, false);
     }
-  }, [session, pathname, logoutSession]);
-
+  }, [session, pathname, setUser]);
   return;
 };
 

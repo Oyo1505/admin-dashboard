@@ -21,7 +21,6 @@ const Title = memo(
     className?: string;
   }) => {
     const t = useTranslations(translationTheme);
-
     const Tag = type.toLowerCase() as keyof JSX.IntrinsicElements;
 
     return (

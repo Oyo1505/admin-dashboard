@@ -1,8 +1,9 @@
 import { getUserConnected } from '@/domains/auth/actions/action.users';
 import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
+import { signIn, signOut } from '@/lib/auth-client';
 import { User } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
-import { signIn, signOut } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 import { create } from 'zustand';
 import { PersistOptions, createJSONStorage, persist } from 'zustand/middleware';
 
@@ -24,6 +25,14 @@ const persistOptions: PersistOptions<UserStore> = {
   storage: createJSONStorage(() => sessionStorage),
 };
 
+export const signInGoole = async () => {
+  const data = await signIn.social({
+    provider: 'google',
+    callbackURL: URL_HOME,
+  });
+  return data;
+};
+
 const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
@@ -38,12 +47,13 @@ const useUserStore = create<UserStore>()(
         set({ user: { ...user, favoriteMovies: movies }, connected: true });
       },
       login: async () => {
-        await signIn('google', { callbackUrl: URL_HOME });
+        await signInGoole();
         set({ connected: true });
       },
       logout: async () => {
-        set({ user: { id: '' }, connected: false });
-        await signOut({ callbackUrl: URL_BASE });
+        await signOut();
+        set({ user: {}, connected: false });
+        redirect(URL_BASE);
       },
     }),
     persistOptions

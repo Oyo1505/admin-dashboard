@@ -2,9 +2,10 @@
 
 import { deleteUserByIdFromUser } from '@/domains/dashboard/actions/user';
 import { Button } from '@/domains/ui/components/button/button';
+import { useSession } from '@/lib/auth-client';
 import useUserStore from '@/store/user/user-store';
 import * as Dialog from '@radix-ui/react-dialog';
-import { useSession } from 'next-auth/react';
+
 import { useTranslations } from 'next-intl';
 
 const ButtonDeleteAccount = ({

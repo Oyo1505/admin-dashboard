@@ -1,25 +1,24 @@
 'use client';
 import ButtonLogin from '@/domains/ui/components/button-login/button-login';
 import Container from '@/domains/ui/components/container/container';
+import { useSession } from '@/lib/auth-client';
 import { URL_LEGAL_MENTIONS, URL_PRIVACY } from '@/shared/route';
 import clsx from 'clsx';
-import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { Lobster } from 'next/font/google';
 import Link from 'next/link';
 
-import React from 'react';
 const lobster = Lobster({
   weight: '400',
   display: 'swap',
   subsets: ['latin'],
 });
 const LandingPage = () => {
-  const session = useSession();
+  const { data: session } = useSession();
   const t = useTranslations('LandingPage');
 
   return (
-    session.status === 'unauthenticated' && (
+    session === null && (
       <Container>
         <div className="h-screen flex flex-col items-center justify-center">
           <div className="flex flex-col gap-5 justify-center items-center">

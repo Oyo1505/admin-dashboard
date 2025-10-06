@@ -2,8 +2,8 @@
 import { User } from '@/domains/layout/components/menu-user-items/menu-user-items';
 import { BurgerIcon, CrossIcon } from '@/domains/ui/components/icons/icons';
 import LocaleSwitcher from '@/domains/ui/components/locale-switcher/locale-switcher';
+import { Session } from '@/lib/auth';
 import clsx from 'clsx';
-import { Session } from 'next-auth';
 import { useState } from 'react';
 import MenuMobileItem from '../menu-mobile-item/menu-mobile-item';
 

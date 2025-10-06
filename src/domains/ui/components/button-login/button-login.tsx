@@ -8,6 +8,7 @@ import { GoogleLogo } from '../icons/icons';
 const ButtonLogin = memo(() => {
   const { login } = useUserStore((state) => state);
   const t = useTranslations('LandingPage');
+
   return (
     <Button
       onClick={login}

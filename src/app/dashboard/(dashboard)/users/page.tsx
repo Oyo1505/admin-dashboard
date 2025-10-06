@@ -4,9 +4,9 @@ import { getUsersWithPageParam } from '@/domains/dashboard/actions/user';
 import Search from '@/domains/dashboard/components/search-user/search-user';
 import { UserTableAuthorized } from '@/domains/dashboard/components/users-table-authrized/user-table-authrized';
 import Title from '@/domains/ui/components/title/title';
-import { auth } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { User } from '@/models/user/user';
-import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import dynamic from 'next/dynamic';
 
 const UsersTable = dynamic(
@@ -17,7 +17,7 @@ const Page = async (props: {
   searchParams: Promise<{ q: string; offset: string }>;
 }) => {
   const searchParams = await props.searchParams;
-  const session = await auth();
+  const session = await getServerSession();
   const userEmail = session?.user?.email ?? '';
   const userConnected = userEmail ? await getUserConnected(userEmail) : null;
   const search = searchParams.q ?? '';

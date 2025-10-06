@@ -4,9 +4,9 @@ import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-
 import { auth } from '@/lib/auth';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
-import { SessionProvider } from 'next-auth/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import { headers } from 'next/headers';
 import { ReactNode, Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import './globals.css';
@@ -39,7 +39,9 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const locale = await getLocale();
   const messages = await getMessages();
 
@@ -52,16 +54,14 @@ export default async function RootLayout({
       <body
         className={`h-full mb-14 mx-auto relative bg-background text-primary font-semibold `}
       >
-        <SessionProvider session={session}>
-          <ToastContainer />
-          <NextIntlClientProvider messages={messages}>
-            <LayoutLogic>
-              <MenuHeader session={session} />
-              <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
-            </LayoutLogic>
-            <Analytics />
-          </NextIntlClientProvider>
-        </SessionProvider>
+        <ToastContainer />
+        <NextIntlClientProvider messages={messages}>
+          <LayoutLogic>
+            <MenuHeader session={session} />
+            <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+          </LayoutLogic>
+          <Analytics />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
