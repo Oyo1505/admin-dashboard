@@ -83,9 +83,7 @@ const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
 const useGenreStore = create<IGenreStore>((set) => ({
   genres: [],
   setGenres: (data) => {
-    set((state) => ({
-      genres: [...state.genres, ...data],
-    }));
+    set({ genres: data });
   },
 }));
 

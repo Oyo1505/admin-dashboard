@@ -1,5 +1,5 @@
 'use client';
-import { useSession } from 'next-auth/react';
+import { useSession } from '@/lib/auth-client';
 import Image from 'next/image';
 import ButtonLogout from '../../../ui/components/button-logout/button-logout';
 

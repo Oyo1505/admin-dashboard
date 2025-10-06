@@ -8,14 +8,10 @@ const ButtonLogout = memo(() => {
   const { logout } = useUserStore((state) => state);
   const t = useTranslations('Menu');
 
-  const onClick = async () => {
-    logout();
-  };
-
   return (
     <Button
       className="transition-all hover:cursor-pointer duration-300"
-      onClick={onClick}
+      onClick={logout}
     >
       {t('logout')}
     </Button>

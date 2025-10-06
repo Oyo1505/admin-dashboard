@@ -8,7 +8,8 @@ import {
   IUpdateMovieData,
 } from '@/models/movie/movie';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
-import { checkPermissionsRoleFromSession } from '@/shared/utils/permissions/checkPermissons';
+import checkPermissionsRoleFromSession from '@/shared/utils/permissions/checkPermissionsRoleFromSession';
+
 import { revalidatePath } from 'next/cache';
 
 export const getAllMoviesWithGenres = async (): Promise<{

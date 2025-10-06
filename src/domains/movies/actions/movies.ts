@@ -2,7 +2,7 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IMovie } from '@/models/movie/movie';
-import { CACHE_TTL_SHORT, CACHE_TTL_LONG } from '@/shared/constants/time';
+import { CACHE_TTL_LONG, CACHE_TTL_SHORT } from '@/shared/constants/time';
 import type { Prisma } from '@prisma/client';
 import { cache } from 'react';
 
@@ -37,7 +37,7 @@ export const getLastMovies = async (): Promise<{
       cacheStrategy: { ttl: CACHE_TTL_SHORT },
     });
     if (!moviesInDb) {
-      return { status: 404 };
+      return { status: 404, movies: [] };
     }
     return { movies: moviesInDb, status: 200 };
   } catch (error) {
@@ -69,7 +69,9 @@ export const getMoviesByARandomCountry = async (): Promise<{
     }
     const getARadomCountry =
       uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
-
+    if (!getARadomCountry?.country) {
+      return { status: 400, movies: [] };
+    }
     const movies = await prisma.movie.findMany({
       where: {
         country: getARadomCountry.country,
@@ -98,7 +100,7 @@ export const getMoviesByARandomCountry = async (): Promise<{
     });
 
     if (!movies) {
-      return { status: 400 };
+      return { status: 400, movies: [] };
     }
     return { status: 200, movies, country: getARadomCountry.country as string };
   } catch (error) {

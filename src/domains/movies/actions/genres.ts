@@ -125,7 +125,9 @@ export const getMoviesByARandomGenre = async (): Promise<{
     }
     const randomGenre =
       uniqueGenres[Math.floor(Math.random() * uniqueGenres.length)];
-
+    if (!randomGenre) {
+      return { status: 400, movies: [] };
+    }
     const movies = await prisma.movie.findMany({
       where: {
         genresIds: {
@@ -142,7 +144,7 @@ export const getMoviesByARandomGenre = async (): Promise<{
       cacheStrategy: { ttl: CACHE_TTL_SHORT },
     });
     if (!movies) {
-      return { status: 400 };
+      return { status: 400, movies: [] };
     }
     return { status: 200, movies, genre: randomGenre };
   } catch (error) {

@@ -3,9 +3,9 @@ import { GenreList } from '@/domains/dashboard/components/genre-list/genre-list'
 import { getAllGenres } from '@/domains/movies/actions/genres';
 import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
-import { auth } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import { User } from '@/models/user/user';
-import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import dynamic from 'next/dynamic';
 
 const GenreForm = dynamic(
@@ -19,7 +19,7 @@ const getData = async () => {
 
 const Page = async () => {
   const { genres } = await getData();
-  const session = await auth();
+  const session = await getServerSession();
   const userConnected = await getUserConnected(session?.user?.email ?? '');
   const user = userConnected?.user as User;
   const hasPermission =

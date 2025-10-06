@@ -1,5 +1,5 @@
+import { Session } from '@/lib/auth';
 import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
-import { Session } from 'next-auth';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React from 'react';

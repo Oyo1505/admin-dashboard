@@ -1,13 +1,13 @@
 import { User } from '@/domains/layout/components/menu-user-items/menu-user-items';
 import Container from '@/domains/ui/components/container/container';
 import LocaleSwitcher from '@/domains/ui/components/locale-switcher/locale-switcher';
+import { Session } from '@/lib/auth';
 import {
   URL_DASHBOARD,
   URL_HOME,
   URL_MOVIES,
   URL_RESSOURCES,
 } from '@/shared/route';
-import { Session } from 'next-auth';
 import { headers } from 'next/headers';
 import MenuHeaderItem from '../menu-header-item/menu-header-item';
 import MenuMobile from '../menu-mobile/menu-mobile';
@@ -19,7 +19,7 @@ const MenuHeader = async ({ session }: { session: Session | null }) => {
   );
 
   return isMobileView ? (
-    <MenuMobile session={session as Session | null} />
+    <MenuMobile session={session} />
   ) : (
     <header className="group fixed w-full top-0 flex h-15  pt-2 pb-2 items-center gap-4 bg-background z-20 justify-between lg:justify-between">
       <Container className="flex flex-row items-center w-full justify-between gap-5">

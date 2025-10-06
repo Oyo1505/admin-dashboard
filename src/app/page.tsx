@@ -4,7 +4,7 @@ const LandingPage = dynamic(
   () => import('@/domains/auth/components/landing-page/landing-page')
 );
 
-export default function IndexPage() {
+export default async function IndexPage() {
   return (
     <main data-testid="main" className="h-full">
       <LandingPage />

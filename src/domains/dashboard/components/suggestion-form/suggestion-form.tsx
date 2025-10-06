@@ -1,9 +1,9 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { Textarea } from '@/domains/ui/components/textarea/textarea';
+import { useSession } from '@/lib/auth-client';
 import { suggestionSchema } from '@/shared/schema/dashboardShema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSession } from 'next-auth/react';
 import { useLocale } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';

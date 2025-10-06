@@ -8,7 +8,7 @@ import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/mov
 import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/movie-player-iframe';
 import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion';
 import Title from '@/domains/ui/components/title/title';
-import { auth } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth';
 import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube';
 import clsx from 'clsx';
 import { Lobster } from 'next/font/google';
@@ -50,7 +50,7 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
   );
 
   const { movie, suggestedMovies } = await getMovie(name);
-  const session = await auth();
+  const session = await getServerSession();
 
   const favoriteMovives = !session?.user?.id
     ? null

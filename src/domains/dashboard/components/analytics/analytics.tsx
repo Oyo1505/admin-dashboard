@@ -1,5 +1,5 @@
 'use client';
-import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { Suspense } from 'react';
 import AnalyticsVisits from '../analytics-visits/analytics-visits';

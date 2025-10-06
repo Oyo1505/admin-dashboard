@@ -119,23 +119,25 @@ const Page = async () => {
           />
         </Suspense>
       </div>
-      <Container>
-        <Title
-          translationTheme="HomePage"
-          className={clsx(lobster.className, 'text-2xl md:text-3xl')}
-          translationText="Akind"
-          type="h3"
-        >
-          {' '}
-          {displayGenreTranslated(genre, locale)}
-        </Title>
-        <Suspense fallback={<MoviesHomeSectionSkeleton />}>
-          <MoviesHomeSection
-            movies={moviesByARandomGenre}
-            isMobileView={isMobileView}
-          />
-        </Suspense>
-      </Container>
+      {moviesByARandomGenre && moviesByARandomGenre.length > 0 && (
+        <Container>
+          <Title
+            translationTheme="HomePage"
+            className={clsx(lobster.className, 'text-2xl md:text-3xl')}
+            translationText="Akind"
+            type="h3"
+          >
+            {' '}
+            {displayGenreTranslated(genre, locale)}
+          </Title>
+          <Suspense fallback={<MoviesHomeSectionSkeleton />}>
+            <MoviesHomeSection
+              movies={moviesByARandomGenre}
+              isMobileView={isMobileView}
+            />
+          </Suspense>
+        </Container>
+      )}
       <Suspense fallback={<MoviesHomeThemeSkeleton />}>
         {directorMovies && directorMovies?.length > 0 && director && (
           <div>

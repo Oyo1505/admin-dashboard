@@ -8,7 +8,7 @@ import {
 import { logError } from '@/lib/errors';
 import { IMovie } from '@/models/movie/movie';
 import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
-import { checkPermissions } from '@/shared/utils/permissions/checkPermissons';
+import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';

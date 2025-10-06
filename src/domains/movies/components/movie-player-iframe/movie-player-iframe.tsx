@@ -1,8 +1,9 @@
 'use client';
 import { updateAnalyticsLastMovieWatched } from '@/domains/auth/actions/action.analytics';
+import { useSession } from '@/lib/auth-client';
 import { isValidIframeUrl, sanitizeGoogleDriveUrl } from '@/lib/security';
 import { IMovie } from '@/models/movie/movie';
-import { useSession } from 'next-auth/react';
+
 import Iframe from 'react-iframe';
 
 const MoviePlayerIframe = ({ movie }: { movie: IMovie }) => {
