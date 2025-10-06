@@ -24,7 +24,7 @@ const auth = betterAuth({
       accessType: 'offline',
     },
   },
-  trustedOrigins: ['http://localhost:3000'],
+  trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL as string],
   plugins: [nextCookies()],
   databaseHooks: {
     user: {
