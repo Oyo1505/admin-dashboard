@@ -32,7 +32,10 @@ const useAuthStatus = () => {
     if (session && pathname === '/') {
       redirect(URL_HOME);
     }
-  }, [session, pathname]);
+    if (!session && Object.keys(user).length > 0) {
+      setUser({}, false);
+    }
+  }, [session, pathname, setUser, user]);
 
   useEffect(() => {
     if (
@@ -47,11 +50,6 @@ const useAuthStatus = () => {
     }
   }, [user, pathname]);
 
-  useEffect(() => {
-    if (!session && pathname === '/') {
-      setUser({}, false);
-    }
-  }, [session, pathname, setUser]);
   return;
 };
 

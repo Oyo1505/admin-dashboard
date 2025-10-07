@@ -9,11 +9,17 @@ const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-  user: {},
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
+  },
   session: {
+    expiresIn: 604800, // 7 days
+    updateAge: 86400, // 1 day
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60 * 60,
+      maxAge: 1800, // 30 minutes
     },
   },
   socialProviders: {
@@ -73,8 +79,10 @@ type Session = typeof auth.$Infer.Session;
  * Helper function for server components to get session
  * Compatible with Better Auth - replaces NextAuth's auth() function
  */
+
 export async function getServerSession() {
   const { headers } = await import('next/headers');
+
   return auth.api.getSession({
     headers: await headers(),
   });
