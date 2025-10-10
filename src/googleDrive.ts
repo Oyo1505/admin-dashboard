@@ -1,32 +1,11 @@
 'use server';
 import { Buffer } from 'buffer';
-import { google, GoogleApis } from 'googleapis';
+import { google } from 'googleapis';
 import { revalidatePath } from 'next/cache';
 import { Readable } from 'stream';
 import { logError } from './lib/errors';
 import { auth } from './lib/google-api';
 import { URL_DASHBOARD_ROUTE } from './shared/route';
-
-export const findExistingFile = async (
-  driveService: GoogleApis,
-  fileName: string
-) => {
-  try {
-    const response = await driveService.files.list({
-      q: `name='${fileName}'`,
-      fields: 'files(id, webViewLink)',
-    });
-    const files = response.data.files;
-    if (files && files.length > 0) {
-      return files[0];
-    } else {
-      return null;
-    }
-  } catch (error) {
-    logError(error, 'findExistingFile');
-    throw error;
-  }
-};
 
 export const getDataFromGoogleDrive = async () => {
   // allows you to use drive API methods e.g. listing files, creating files.

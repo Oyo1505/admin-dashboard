@@ -2,22 +2,15 @@
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
-import { addFileToGoogleDriveAction } from '@/googleDrive';
 import { logError } from '@/lib/errors';
 import { movieUploadSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
-
-interface FormValues {
-  file: File;
-}
+import useGoogleQueries, { FormValues } from '../../hooks/useGoogleQueries';
 
 const ButtonAddMovie = () => {
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: FormValues) => addFileToGoogleDriveAction(data.file),
-  });
-
+  const { addFileToGoogleDrive } = useGoogleQueries();
+  const { mutate, isPending } = addFileToGoogleDrive;
   const { handleSubmit, control } = useForm<FormValues>({
     resolver: zodResolver(movieUploadSchema),
   });

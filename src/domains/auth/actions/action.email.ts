@@ -27,7 +27,6 @@ export const postAuthorizedEmail = async (
     await prisma.authorizedEmail.create({
       data: { email },
     });
-
     return { status: 200 };
   } catch (error) {
     logError(error, 'postAuthorizedEmail');

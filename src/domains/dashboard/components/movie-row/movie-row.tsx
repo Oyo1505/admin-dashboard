@@ -9,10 +9,10 @@ import {
 } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { deleteMovieById, publishedMovieById } from '../../actions/movie';
+import { deleteMovieById } from '../../actions/movie';
+import { useMovieData } from '../../hooks/useMovieData';
 
 function MovieRow({
   movie,
@@ -26,6 +26,7 @@ function MovieRow({
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(
     movie.publish
   );
+
   const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
     if (movie?.id) {
@@ -33,12 +34,8 @@ function MovieRow({
     }
   };
 
-  const { data, isFetching, status, refetch } = useQuery({
-    queryKey: ['moviePublish', movie?.id],
-    enabled: false,
-    queryFn: () => publishedMovieById(movie?.id),
-  });
-
+  const { getMoviePublish } = useMovieData({ editMovie: false, movie });
+  const { data, isFetching, refetch, status } = getMoviePublish;
   useEffect(() => {
     if (data && status === 'success' && data?.publish) {
       setIsMoviePublished(data?.publish);

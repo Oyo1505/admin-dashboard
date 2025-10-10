@@ -91,10 +91,10 @@ export const updateAnalyticsApplicationVisits = async () => {
 export const getAnalyticsApplicationVisits = async () => {
   try {
     const analytics = await prisma.analyticsApplication.findFirst();
-    return { visits: analytics?.visits, status: 200 };
+    return { visits: analytics?.visits ?? 0, status: 200 };
   } catch (error) {
     logError(error, 'getAnalyticsApplicationVisits');
     const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
+    return { visits: 0, status: appError.statusCode };
   }
 };

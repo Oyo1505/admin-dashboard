@@ -5,11 +5,9 @@ import {
   useFiltersMovieStore,
   useMovieFormStore,
 } from '@/store/movie/movie-store';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import qs from 'qs';
 import React, { useEffect, useRef } from 'react';
-import { fetchMovies } from '../../actions/movies';
+import useMovieFilters from '../../hooks/use-movie-filters';
 
 const SearchMovie = ({
   search,
@@ -25,36 +23,8 @@ const SearchMovie = ({
   const { setMoviesStore } = useMovieFormStore();
   const [localSearch, setLocalSearch] = React.useState(search || '');
 
-  const { data, status, refetch } = useQuery({
-    queryKey: ['moviesFilters', offset],
-    enabled: false,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    queryFn: () =>
-      fetchMovies({
-        pageParam: offset,
-        search: qs.stringify({
-          subtitles:
-            filters?.subtitles && filters?.subtitles?.length > 0
-              ? filters?.subtitles
-              : undefined,
-          language:
-            filters?.language && filters?.language?.length > 0
-              ? filters?.language
-              : undefined,
-          decade:
-            filters?.decade && filters?.decade > 0
-              ? filters?.decade
-              : undefined,
-          genre:
-            filters?.genre && filters?.genre?.length > 0
-              ? filters?.genre
-              : undefined,
-          q: filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
-        }),
-      }),
-  });
-
+  const { queryFilterSearch } = useMovieFilters({ offset });
+  const { data, status, refetch } = queryFilterSearch;
   useEffect(() => {
     if (hasBeenSearched) {
       refetch();

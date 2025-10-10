@@ -1,8 +1,11 @@
 import { IMovie, IMovieFormData, IUpdateMovieData } from '@/models/movie/movie';
 import { MovieSchema } from '@/shared/schema/movieSchema';
+import { useQuery } from '@tanstack/react-query';
+import { publishedMovieById } from '../actions/movie';
 
 interface UseMovieDataProps {
   editMovie: boolean;
+  movie?: IMovie;
 }
 
 interface UseMovieDataReturn {
@@ -13,10 +16,12 @@ interface UseMovieDataReturn {
   transformFormData: (
     data: MovieSchema // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
   ) => IMovieFormData | IUpdateMovieData;
+  getMoviePublish: ReturnType<typeof useQuery>;
 }
 
 export const useMovieData = ({
   editMovie,
+  movie,
 }: UseMovieDataProps): UseMovieDataReturn => {
   const getDefaultValues = (
     movie?: IMovie,
@@ -76,9 +81,16 @@ export const useMovieData = ({
 
     return baseData as IMovieFormData;
   };
+  const getMoviePublish = useQuery({
+    queryKey: ['moviePublish', movie?.id],
+    enabled: false,
+    queryFn: () =>
+      movie?.id ? publishedMovieById(movie.id) : Promise.resolve(undefined),
+  });
 
   return {
     getDefaultValues,
     transformFormData,
+    getMoviePublish,
   };
 };

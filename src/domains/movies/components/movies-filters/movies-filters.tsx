@@ -6,11 +6,8 @@ import countriesList from '@/shared/constants/countries';
 import { decades } from '@/shared/constants/decade';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import { useMovieFormStore } from '@/store/movie/movie-store';
-import { useQuery } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
-import qs from 'qs';
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { fetchMovies } from '../../actions/movies';
 import useMovieFilters from '../../hooks/use-movie-filters';
 import SelectFilters from '../movie-filter_select-filters/movie-filter_select-filters';
 
@@ -48,37 +45,10 @@ const MovieFilters = ({
     hasBeenSearched,
     onClick,
     onClickClearSearch,
-  } = useMovieFilters();
+    queryFilterSearch,
+  } = useMovieFilters({ offset });
 
-  const { data, status, refetch } = useQuery({
-    queryKey: ['moviesFilters', offset],
-    enabled: false,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    queryFn: () =>
-      fetchMovies({
-        pageParam: offset,
-        search: qs.stringify({
-          subtitles:
-            filters?.subtitles && filters?.subtitles?.length > 0
-              ? filters?.subtitles
-              : undefined,
-          language:
-            filters?.language && filters?.language?.length > 0
-              ? filters?.language
-              : undefined,
-          decade:
-            filters?.decade && filters?.decade > 0
-              ? filters?.decade
-              : undefined,
-          genre:
-            filters?.genre && filters?.genre?.length > 0
-              ? filters?.genre
-              : undefined,
-          q: filters?.q && filters?.q?.length > 0 ? filters?.q : undefined,
-        }),
-      }),
-  });
+  const { data, status, refetch } = queryFilterSearch;
 
   useLayoutEffect(() => {
     setIsMounted(true);
