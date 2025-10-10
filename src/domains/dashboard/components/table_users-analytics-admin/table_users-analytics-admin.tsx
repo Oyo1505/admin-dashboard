@@ -1,5 +1,4 @@
 'use client';
-import { getAllAnalyticsUser } from '@/domains/auth/actions/action.users';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import {
   Table,
@@ -9,15 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
-import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
+import useAnalyticsUsersVisits from '../../hooks/useAnalyticsUsersVisits';
 
 const TableUsersAnalyticsAdmin = () => {
   const t = useTranslations('DashboardAnalytics');
-  const { data, isLoading } = useQuery({
-    queryKey: ['analytics'],
-    queryFn: getAllAnalyticsUser,
-  });
+
+  const { getAllAnalyticsUserVisits } = useAnalyticsUsersVisits();
+
+  const { data, isLoading } = getAllAnalyticsUserVisits;
 
   if (isLoading) {
     return <LoadingSpinner />;

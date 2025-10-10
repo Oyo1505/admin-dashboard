@@ -43,7 +43,7 @@ async function getData() {
     getLastMovies(),
     getMoviesByARandomCountry(),
     getMoviesByARandomGenre(),
-    getFavoriteMovies('clzl1br370003zt5x1ipm2ojv'),
+    getFavoriteMovies('zkbP2ZiwkJzmgD3t3xF0k4tUlPRTZemQ'),
     getDirectorMovies(),
   ]);
 

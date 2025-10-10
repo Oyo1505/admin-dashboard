@@ -1,9 +1,8 @@
 'use client';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import useEmailsAutorized from '@/domains/auth/hooks/useEmailsAutorized';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { EmailAuthrizedEmailRow } from '../email-user-authorized-row/email-user-authorized-row';
-import { getAuthorizedEmailsPagination } from '@/domains/auth/actions/action.email';
 
 export const UserTableAuthorized = ({
   hasPermission,
@@ -12,14 +11,9 @@ export const UserTableAuthorized = ({
 }) => {
   const [page, setPage] = useState(0);
 
-  const { isPending, isError, error, data, isFetching, isPlaceholderData } =
-    useQuery({
-      queryKey: ['users-mails-authorized', page],
-      queryFn: async () =>
-        await getAuthorizedEmailsPagination({ pageParam: page * 5 }),
-      placeholderData: keepPreviousData,
-      refetchOnWindowFocus: false,
-    });
+  const { getAuthorizedEmails } = useEmailsAutorized({ page: page });
+  const { data, isError, isFetching, isPlaceholderData, error, isPending } =
+    getAuthorizedEmails;
 
   const t = useTranslations('Dashboard');
 

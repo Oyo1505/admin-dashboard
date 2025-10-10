@@ -9,10 +9,10 @@ import {
 } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { deleteMovieById, publishedMovieById } from '../../actions/movie';
+import { deleteMovieById } from '../../actions/movie';
+import { useMovieData } from '../../hooks/useMovieData';
 
 function MovieRow({
   movie,
@@ -26,6 +26,7 @@ function MovieRow({
   const [isMoviePublished, setIsMoviePublished] = useState<boolean>(
     movie.publish
   );
+
   const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
     if (movie?.id) {
@@ -33,15 +34,11 @@ function MovieRow({
     }
   };
 
-  const { data, isFetching, status, refetch } = useQuery({
-    queryKey: ['moviePublish', movie?.id],
-    enabled: false,
-    queryFn: () => publishedMovieById(movie?.id),
-  });
-
+  const { getMoviePublish } = useMovieData({ editMovie: false, movie });
+  const { data, isFetching, refetch, status } = getMoviePublish;
   useEffect(() => {
-    if (data && status === 'success' && data?.publish) {
-      setIsMoviePublished(data?.publish);
+    if (status === 'success' && data?.publish !== undefined) {
+      setIsMoviePublished(data.publish);
     }
   }, [data, status]);
 
@@ -51,54 +48,47 @@ function MovieRow({
   return (
     movie &&
     movie.id && (
-      <>
-        <TableRow className="border-b border-background border-opacity-20">
-          <TableCell className="font-bold">
-            {index}. {movie.title ?? movie.id}
-          </TableCell>
-          {movie.title && (
-            <TableCell>
-              <Toggle
-                toggle={() => refetch()}
-                publish={isMoviePublished}
-                isFetching={isFetching}
-              />
-            </TableCell>
-          )}
+      <TableRow className="border-b border-background border-opacity-20">
+        <TableCell className="font-bold">
+          {index}. {movie.title ?? movie.id}
+        </TableCell>
+        {movie.title && (
           <TableCell>
-            {hasPermissionToUpdate && (
-              <>
-                {isMoviePublished !== undefined ? (
-                  <Link
-                    href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)}
-                    className="font-bold bg-background p-3 rounded-md text-primary"
-                  >
-                    {btnText}
-                  </Link>
-                ) : (
-                  <Link
-                    href={URL_DASHBOARD_MOVIE_ADD(movie?.id)}
-                    className="font-bold bg-background p-3 rounded-md text-primary"
-                  >
-                    {btnText}
-                  </Link>
-                )}
-              </>
-            )}
+            <Toggle
+              toggle={() => refetch()}
+              publish={isMoviePublished}
+              isFetching={isFetching}
+            />
           </TableCell>
-          <TableCell>
-            {hasPermissionToDelete && (
-              <Button
-                variant="destructive"
-                className="font-bold"
-                formAction={onClickDeleteMovie}
+        )}
+        <TableCell>
+          {hasPermissionToUpdate && (
+            <>
+              <Link
+                href={
+                  isMoviePublished !== undefined
+                    ? URL_DASHBOARD_MOVIE_EDIT(movie.id)
+                    : URL_DASHBOARD_MOVIE_ADD(movie.id)
+                }
+                className="font-bold bg-background p-3 rounded-md text-primary"
               >
-                Supprimer
-              </Button>
-            )}
-          </TableCell>
-        </TableRow>
-      </>
+                {btnText}
+              </Link>
+            </>
+          )}
+        </TableCell>
+        <TableCell>
+          {hasPermissionToDelete && (
+            <Button
+              variant="destructive"
+              className="font-bold"
+              formAction={onClickDeleteMovie}
+            >
+              Supprimer
+            </Button>
+          )}
+        </TableCell>
+      </TableRow>
     )
   );
 }
