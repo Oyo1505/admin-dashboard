@@ -31,7 +31,7 @@ const useEmailsAutorized = ({ reset, page = 0 }: UseEmailsAutorizedProps) => {
       const { status, message } = await postAuthorizedEmail(formData.email);
       if (status === 200) {
         toast.success(t('userEmailAdded'));
-        reset && reset();
+        reset?.();
       } else if (status === 409) {
         toast.error(message || 'Email already authorized');
       } else {

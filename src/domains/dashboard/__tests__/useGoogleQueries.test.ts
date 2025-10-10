@@ -31,8 +31,12 @@ const createWrapper = () => {
     },
   });
 
-  return ({ children }: { children: React.ReactNode }) =>
+  const Wrapper = ({ children }: { children: React.ReactNode }) =>
     React.createElement(QueryClientProvider, { client: queryClient }, children);
+
+  Wrapper.displayName = 'TestQueryWrapper';
+
+  return Wrapper;
 };
 
 describe('useGoogleQueries', () => {
@@ -284,8 +288,6 @@ describe('useGoogleQueries', () => {
       await waitFor(() =>
         expect(result.current.addFileToGoogleDrive.isSuccess).toBe(true)
       );
-
-      const firstData = result.current.addFileToGoogleDrive.data;
 
       // Reset mutation state
       result.current.addFileToGoogleDrive.reset();
