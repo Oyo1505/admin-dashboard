@@ -1,17 +1,15 @@
 import { expect, test } from '@playwright/test';
 
-const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-
 test.describe('Landing Page', () => {
   test('has title', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
 
     await expect(page).toHaveTitle('Nūberu Bāgu');
   });
 
   test('should display google login button', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
 
     const loginButton = page.getByRole('button', { name: /connexion/i });
@@ -19,7 +17,7 @@ test.describe('Landing Page', () => {
   });
 
   test('should navigate to privacy policy page', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
 
     const policyLink = page.getByRole('link', {
@@ -36,7 +34,7 @@ test.describe('Landing Page', () => {
   });
 
   test('should navigate to legal mentions page', async ({ page }) => {
-    await page.goto(BASE_URL);
+    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
 
     const legalLink = page.getByRole('link', {
