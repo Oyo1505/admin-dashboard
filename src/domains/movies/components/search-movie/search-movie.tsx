@@ -47,6 +47,7 @@ const SearchMovie = ({
       <Input
         ref={inputRef}
         value={localSearch}
+        data-testid="input-search"
         onInput={(e) => {
           const value = (e.target as HTMLInputElement).value;
           setLocalSearch(value);

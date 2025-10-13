@@ -5,10 +5,6 @@ import { logError } from './lib/errors';
 import { URL_BASE, URL_LEGAL_MENTIONS, URL_PRIVACY } from './shared/route';
 
 export default async function middleware(req: NextRequest) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
   const url = req.nextUrl;
   const path = url.pathname;
   const { device } = userAgent(req);
@@ -25,6 +21,9 @@ export default async function middleware(req: NextRequest) {
   if (path.startsWith('/api/auth')) {
     return NextResponse.next();
   }
+
+  // Bypass authentication in test mode
+  const isTestMode = process.env.PLAYWRIGHT_TEST_MODE === 'true';
 
   try {
     const requestHeaders = new Headers(req.headers);
@@ -44,9 +43,17 @@ export default async function middleware(req: NextRequest) {
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-    if (!session) {
-      return NextResponse.redirect(new URL(URL_BASE, req.url));
+    // Skip session check in test mode
+    if (!isTestMode) {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+
+      if (!session) {
+        return NextResponse.redirect(new URL(URL_BASE, req.url));
+      }
     }
+
     return NextResponse.rewrite(url);
   } catch (error) {
     logError(error, 'Middleware error');
