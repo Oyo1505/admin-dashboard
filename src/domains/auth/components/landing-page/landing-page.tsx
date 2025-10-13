@@ -19,9 +19,9 @@ const LandingPage = () => {
   const { user } = useUserStore();
   const t = useTranslations('LandingPage');
 
+  const userIsNotLogged = session === null && Object.keys(user).length === 0;
   return (
-    session === null ||
-    (!user && (
+    userIsNotLogged && (
       <Container>
         <div className="h-screen flex flex-col items-center justify-center">
           <div className="flex flex-col gap-5 justify-center items-center">
@@ -37,7 +37,7 @@ const LandingPage = () => {
           </div>
         </div>
       </Container>
-    ))
+    )
   );
 };
 
