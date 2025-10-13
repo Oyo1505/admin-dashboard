@@ -20,7 +20,7 @@ jobs:
       - name: Run Playwright tests
         run: pnpm exec playwright test
         env:
-          NEXTAUTH_URL: ${{ github.ref == 'refs/heads/main' && 'https://www.nuberubagu.fr' || 'https://staging.nuberubagu.fr' }}
+          NEXTAUTH_URL: 'https://www.nuberubagu.fr'
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
