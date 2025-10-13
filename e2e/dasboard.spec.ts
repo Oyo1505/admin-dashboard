@@ -6,6 +6,6 @@ test.describe('Dasboard Page', () => {
     await page.goto(URL_DASHBOARD);
     await page.waitForLoadState('domcontentloaded');
 
-    await expect(page).toHaveTitle('Nūberu Bāgu');
+    await expect(page).toHaveTitle('Dashboard');
   });
 });
