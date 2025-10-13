@@ -14,7 +14,7 @@ import MenuMobile from '../menu-mobile/menu-mobile';
 
 const MenuHeader = async ({ session }: { session: Session | null }) => {
   const userAgent = (await headers()).get('user-agent');
-  const isMobileView = userAgent!.match(
+  const isMobileView = userAgent?.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
   );
 

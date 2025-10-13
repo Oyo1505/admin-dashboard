@@ -3,6 +3,7 @@ import ButtonLogin from '@/domains/ui/components/button-login/button-login';
 import Container from '@/domains/ui/components/container/container';
 import { useSession } from '@/lib/auth-client';
 import { URL_LEGAL_MENTIONS, URL_PRIVACY } from '@/shared/route';
+import useUserStore from '@/store/user/user-store';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Lobster } from 'next/font/google';
@@ -15,10 +16,12 @@ const lobster = Lobster({
 });
 const LandingPage = () => {
   const { data: session } = useSession();
+  const { user } = useUserStore();
   const t = useTranslations('LandingPage');
 
+  const userIsNotLogged = session === null && Object.keys(user).length === 0;
   return (
-    session === null && (
+    userIsNotLogged && (
       <Container>
         <div className="h-screen flex flex-col items-center justify-center">
           <div className="flex flex-col gap-5 justify-center items-center">

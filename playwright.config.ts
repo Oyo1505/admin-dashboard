@@ -26,7 +26,9 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: process.env.CI
+      ? 'http://localhost:3000'
+      : process.env.NEXTAUTH_URL || 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -39,16 +41,24 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // Only run chromium in CI for speed, but keep other browsers available locally
+    ...(!process.env.CI
+      ? [
+          {
+            name: 'firefox',
+            use: { ...devices['Desktop Firefox'] },
+          },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
+          {
+            name: 'webkit',
+            use: { ...devices['Desktop Safari'] },
+          },
+          {
+            name: 'Google Chrome',
+            use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+          },
+        ]
+      : []),
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
@@ -64,16 +74,28 @@ export default defineConfig({
     //   name: 'Microsoft Edge',
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
     // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  // In CI: automatically start the server
+  // Locally: reuse existing server if available (run 'pnpm dev' manually)
+  webServer: process.env.CI
+    ? {
+        command: 'pnpm dev',
+        url: 'http://localhost:3000',
+        reuseExistingServer: false,
+        timeout: 120000,
+        env: {
+          PLAYWRIGHT_TEST_MODE: 'true',
+        },
+      }
+    : {
+        command: 'cross-env PLAYWRIGHT_TEST_MODE=true pnpm dev',
+        url: 'http://localhost:3000',
+        reuseExistingServer: true,
+        timeout: 120000,
+        env: {
+          PLAYWRIGHT_TEST_MODE: 'true',
+        },
+      },
 });
