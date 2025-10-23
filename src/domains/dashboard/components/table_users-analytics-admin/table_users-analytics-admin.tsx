@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
+import { IUserAnalytics } from '@/lib/data/users';
 import { useTranslations } from 'next-intl';
 import useAnalyticsUsersVisits from '../../hooks/useAnalyticsUsersVisits';
 
@@ -35,7 +36,7 @@ const TableUsersAnalyticsAdmin = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.users?.map((user) => (
+          {data?.users?.map((user: IUserAnalytics) => (
             <TableRow key={user.id}>
               <TableCell>{user.name}</TableCell>
               <TableCell>

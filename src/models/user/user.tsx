@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { IFavoriteMovieResponse } from '@/models/movie/movie';
+import { UserRole } from '@prisma/client';
 
 export interface User {
   id?: string;
@@ -17,9 +18,4 @@ export interface IAnalytics {
   lastLogin: Date;
   lastMovieWatched?: string;
   visits?: number;
-}
-
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
 }

@@ -1,9 +1,9 @@
-import { getAllGenres } from '@/domains/movies/actions/genres';
-import { getMoviesCountries } from '@/domains/movies/actions/movies';
 import MovieFilters from '@/domains/movies/components/movies-filters/movies-filters';
 import Movies from '@/domains/movies/components/movies/movies';
 import SearchMovie from '@/domains/movies/components/search-movie/search-movie';
 import MoviesSkeleton from '@/domains/skeleton/components/movies-skeleton/movies-skeleton';
+import { getAllGenres } from '@/lib/data/genres';
+import { getMoviesCountries } from '@/lib/data/movies';
 import { Suspense, cache } from 'react';
 
 export const revalidate = 60;
@@ -11,7 +11,6 @@ export const revalidate = 60;
 const getData = cache(async () => {
   const { genres } = await getAllGenres();
   const { countries } = await getMoviesCountries();
-
   return { genres, countries };
 });
 

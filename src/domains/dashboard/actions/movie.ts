@@ -3,39 +3,12 @@ import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import {
   IFavoriteMovieResponse,
-  IMovie,
   IMovieFormData,
   IUpdateMovieData,
 } from '@/models/movie/movie';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import checkPermissionsRoleFromSession from '@/shared/utils/permissions/checkPermissionsRoleFromSession';
-
 import { revalidatePath } from 'next/cache';
-
-export const getAllMoviesWithGenres = async (): Promise<{
-  movieInDb?: IMovie[];
-  status?: number;
-}> => {
-  try {
-    const movieInDb = await prisma.movie.findMany({
-      include: {
-        genresIds: {
-          select: {
-            genre: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-    return { movieInDb, status: 200 };
-  } catch (error) {
-    logError(error, 'getAllMovies');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};
 
 export const addMovieToDb = async (
   movie: IMovieFormData

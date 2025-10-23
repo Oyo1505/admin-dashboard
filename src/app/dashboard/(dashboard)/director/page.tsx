@@ -1,8 +1,8 @@
-import { getUserConnected } from '@/domains/auth/actions/action.users';
-import { getDirectorFromSection } from '@/domains/dashboard/actions/director';
 import DirectorSectionForm from '@/domains/dashboard/components/director-section-form/director-section-form';
 import Text from '@/domains/ui/components/text/text';
 import { getServerSession } from '@/lib/auth';
+import { getDirectorFromSection } from '@/lib/data/director';
+import { getUserConnected } from '@/lib/data/users';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
@@ -23,7 +23,8 @@ export default async function Page() {
         className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6"
       />
     );
-  const { directorMovies } = await getDirectorFromSection();
+  const { directorMovies, director } = await getDirectorFromSection();
+
   return (
     <main className="h-full" role="main" aria-label="Page des réalisateurs">
       <div
@@ -32,7 +33,7 @@ export default async function Page() {
         aria-label="Formulaire du réalisateur"
       >
         <DirectorSectionForm
-          director={directorMovies}
+          director={director}
           aria-label="Formulaire de modification du réalisateur"
         />
       </div>

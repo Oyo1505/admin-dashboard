@@ -1,27 +1,9 @@
 'use server';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
-import { IGenre, IMovie } from '@/models/movie/movie';
-import { CACHE_TTL_SHORT } from '@/shared/constants/time';
+import { IGenre } from '@/models/movie/movie';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
-
-export const getAllGenres = async (): Promise<{
-  status: number;
-  genres?: IGenre[];
-}> => {
-  try {
-    const genres = await prisma.genre.findMany();
-    if (!genres) {
-      return { status: 404, genres };
-    }
-    return { status: 200, genres };
-  } catch (error) {
-    logError(error, 'getAllGenres');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};
 
 export const addGenre = async (
   genre: IGenre
@@ -80,75 +62,6 @@ export const deleteGenre = async (
     return { status: 200, genre: deletedGenre };
   } catch (error) {
     logError(error, 'deleteGenre');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};
-
-export const getMoviesByARandomGenreById = async (
-  genreId: string
-): Promise<{ movies?: IMovie[]; status: number }> => {
-  try {
-    if (!genreId?.trim()) {
-      return { status: 400 };
-    }
-
-    const moviesInDb = await prisma.movie.findMany({
-      where: {
-        genresIds: {
-          some: {
-            genreId: { contains: genreId, mode: 'insensitive' },
-          },
-        },
-      },
-    });
-    return { movies: moviesInDb, status: 200 };
-  } catch (error) {
-    logError(error, 'getMoviesByARandomGenreById');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};
-
-export const getMoviesByARandomGenre = async (): Promise<{
-  movies?: IMovie[];
-  genre?: IGenre;
-  status: number;
-}> => {
-  try {
-    const uniqueGenres = await prisma.genre.findMany({
-      //@ts-ignore
-      cacheStrategy: { ttl: CACHE_TTL_SHORT },
-    });
-    if (!uniqueGenres) {
-      return { status: 400 };
-    }
-    const randomGenre =
-      uniqueGenres[Math.floor(Math.random() * uniqueGenres.length)];
-    if (!randomGenre) {
-      return { status: 400, movies: [] };
-    }
-    const movies = await prisma.movie.findMany({
-      where: {
-        genresIds: {
-          some: {
-            genreId: { contains: randomGenre.id, mode: 'insensitive' },
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 5,
-      //@ts-ignore
-      cacheStrategy: { ttl: CACHE_TTL_SHORT },
-    });
-    if (!movies) {
-      return { status: 400, movies: [] };
-    }
-    return { status: 200, movies, genre: randomGenre };
-  } catch (error) {
-    logError(error, 'getMoviesByARandomGenre');
     const appError = handlePrismaError(error);
     return { status: appError.statusCode };
   }

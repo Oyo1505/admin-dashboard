@@ -2,7 +2,8 @@
 import { logError } from '@/lib/errors';
 import { mistral } from '@/lib/mistral';
 import delay from '@/shared/utils/time/delay';
-import { getAllMoviesWithGenres } from '../dashboard/actions/movie';
+
+import { getAllMoviesWithGenres } from '@/lib/data/movies';
 import { ChatMessage } from './interfaces/chat.interface';
 import { IMovieDetails } from './interfaces/movie.interface';
 import {

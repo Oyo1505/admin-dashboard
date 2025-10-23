@@ -8,7 +8,6 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 import {
   deleteEmailAuthorized,
-  getAuthorizedEmailsPagination,
   postAuthorizedEmail,
 } from '../actions/action.email';
 
@@ -66,8 +65,15 @@ const useEmailsAutorized = ({ reset, page = 0 }: UseEmailsAutorizedProps) => {
 
   const getAuthorizedEmails = useQuery({
     queryKey: ['users-mails-authorized', page],
-    queryFn: async () =>
-      await getAuthorizedEmailsPagination({ pageParam: page * 5 }),
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/analytics/get-authorized-emails-pagination?pageParam=${page * 5}`
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch authorized emails');
+      }
+      return response.json();
+    },
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });

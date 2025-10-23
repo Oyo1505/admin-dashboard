@@ -13,7 +13,7 @@ export async function GET(
       `https://api.themoviedb.org/3/find/${id}?external_source=imdb_id&language=${language}`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.TOKEN_TMDB}`, // Serveur uniquement
+          Authorization: `Bearer ${process.env.TOKEN_TMDB}`,
           Accept: 'application/json',
         },
       }

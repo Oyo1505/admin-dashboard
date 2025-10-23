@@ -8,7 +8,7 @@ const AnalyticsVisits = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  return <div>AnalyticsVisits {data?.visits} visites</div>;
+  return <div>AnalyticsVisits {data} visites</div>;
 };
 
 export default AnalyticsVisits;
