@@ -87,14 +87,3 @@ export const updateAnalyticsApplicationVisits = async () => {
     return { status: appError.statusCode };
   }
 };
-
-export const getAnalyticsApplicationVisits = async () => {
-  try {
-    const analytics = await prisma.analyticsApplication.findFirst();
-    return { visits: analytics?.visits ?? 0, status: 200 };
-  } catch (error) {
-    logError(error, 'getAnalyticsApplicationVisits');
-    const appError = handlePrismaError(error);
-    return { visits: 0, status: appError.statusCode };
-  }
-};

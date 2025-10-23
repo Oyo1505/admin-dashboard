@@ -10,6 +10,7 @@ import { headers } from 'next/headers';
 import { ReactNode, Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import './globals.css';
+import TanstackProvider from '@/providers/tanstack-provider';
 
 export const metadata: Metadata = {
   title: 'Nūberu Bāgu',
@@ -56,11 +57,13 @@ export default async function RootLayout({
       >
         <ToastContainer />
         <NextIntlClientProvider messages={messages}>
-          <LayoutLogic>
-            <MenuHeader session={session} />
-            <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
-          </LayoutLogic>
-          <Analytics />
+          <TanstackProvider>
+            <LayoutLogic>
+              <MenuHeader session={session} />
+              <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+            </LayoutLogic>
+            <Analytics />
+          </TanstackProvider>
         </NextIntlClientProvider>
       </body>
     </html>

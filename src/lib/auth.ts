@@ -1,7 +1,7 @@
-import { getAuthorizedEmails } from '@/domains/auth/actions/action.email';
 import { APIError, betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
+import { getAuthorizedEmails } from './data/email';
 import { logError } from './errors';
 import prisma from './prisma';
 

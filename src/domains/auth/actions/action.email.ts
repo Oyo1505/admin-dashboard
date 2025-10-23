@@ -1,7 +1,6 @@
 'use server';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
-import { User } from '@/models/user/user';
 
 export const postAuthorizedEmail = async (
   email: string
@@ -34,72 +33,6 @@ export const postAuthorizedEmail = async (
     return {
       status: appError.statusCode,
       message: appError.message,
-    };
-  }
-};
-
-export const getAuthorizedEmails = async (): Promise<{
-  status?: number | undefined;
-  mails?: User[] | undefined;
-  prevCursor?: string | undefined;
-  nextCursor?: string | undefined;
-  total?: number | undefined;
-}> => {
-  try {
-    const userauthorizedEmails = await prisma.authorizedEmail.findMany({
-      orderBy: {
-        email: 'asc',
-      },
-    });
-
-    if (!userauthorizedEmails) {
-      return { status: 400 };
-    }
-
-    return {
-      mails: userauthorizedEmails,
-      status: 200,
-    };
-  } catch (error) {
-    logError(error, 'getAuthorizedEmails');
-    return {
-      status: 500,
-    };
-  }
-};
-
-export const getAuthorizedEmailsPagination = async ({
-  pageParam,
-}: {
-  pageParam?: number;
-}): Promise<{
-  status?: number | undefined;
-  mails?: User[] | undefined;
-  prevCursor?: string | undefined;
-  nextCursor?: string | undefined;
-  total?: number | undefined;
-}> => {
-  try {
-    const userauthorizedEmails = await prisma.authorizedEmail.findMany({
-      orderBy: {
-        email: 'asc',
-      },
-      skip: pageParam,
-      take: 5,
-    });
-
-    if (!userauthorizedEmails) {
-      return { status: 400 };
-    }
-
-    return {
-      mails: userauthorizedEmails,
-      status: 200,
-    };
-  } catch (error) {
-    logError(error, 'getAuthorizedEmailsPagination');
-    return {
-      status: 500,
     };
   }
 };

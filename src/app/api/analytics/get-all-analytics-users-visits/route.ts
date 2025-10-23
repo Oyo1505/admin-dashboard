@@ -1,0 +1,40 @@
+import { IUserAnalytics } from '@/lib/data/users';
+import prisma from '@/lib/prisma';
+
+export async function GET(): Promise<Response> {
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        analytics: {
+          some: {},
+        },
+      },
+      include: {
+        analytics: {
+          orderBy: {
+            lastLogin: 'desc',
+          },
+        },
+      },
+    });
+
+    const transformedUsers: IUserAnalytics[] = users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      image: user.image,
+      role: user.role,
+      analytics: user.analytics.map((analytic) => ({
+        id: analytic.id,
+        lastLogin: analytic.lastLogin,
+        lastMovieWatched: analytic.lastMovieWatched ?? undefined,
+        visits: analytic.visits,
+      })),
+    }));
+
+    return Response.json({ transformedUsers }, { status: 200 });
+  } catch (error) {
+    return Response.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

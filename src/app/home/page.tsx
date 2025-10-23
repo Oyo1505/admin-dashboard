@@ -1,11 +1,6 @@
 import { Locale } from '@/config';
-import { getDirectorMovies } from '@/domains/dashboard/actions/director';
 import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
-import { getMoviesByARandomGenre } from '@/domains/movies/actions/genres';
-import {
-  getLastMovies,
-  getMoviesByARandomCountry,
-} from '@/domains/movies/actions/movies';
+
 import MoviesHomeDirector from '@/domains/movies/components/movies-home-director/movies-home-director';
 import MoviesHomeSection from '@/domains/movies/components/movies-home-section/movies-home-section';
 import MoviesHomeTheme from '@/domains/movies/components/movies-home-theme/movies-home-theme';
@@ -13,6 +8,12 @@ import MoviesHomeSectionSkeleton from '@/domains/skeleton/components/movie-home-
 import MoviesHomeThemeSkeleton from '@/domains/skeleton/components/movies-home-theme/movies-home-theme';
 import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
+import { getDirectorMovies } from '@/lib/data/director';
+import {
+  getLastMovies,
+  getMoviesByARandomCountry,
+  getMoviesByARandomGenre,
+} from '@/lib/data/movies';
 import { IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';

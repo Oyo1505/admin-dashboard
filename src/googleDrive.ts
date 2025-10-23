@@ -35,30 +35,6 @@ const checkPermissions = async (fileId: string) => {
   }
 };
 
-export const deleteFileFromGoogleDrive = async (
-  fileId: string
-): Promise<{ status: number }> => {
-  const drive = google.drive({ version: 'v3', auth });
-
-  try {
-    const permissions = await checkPermissions(fileId);
-    const user = permissions?.filter(
-      (d) => d.emailAddress === process.env.CLIENT_EMAIL && d.role === 'owner'
-    );
-    if (user && user[0].id) {
-      const response = await drive.files.delete({ fileId });
-      if (response.statusText === 'No Content') {
-        revalidatePath(URL_DASHBOARD_ROUTE.movie);
-        return { status: 200 };
-      }
-    }
-    return { status: 404 };
-  } catch (error) {
-    logError(error, 'deleteFileFromGoogleDrive');
-    throw error;
-  }
-};
-
 export const addFileToGoogleDriveAction = async (
   formData: File
 ): Promise<{ data: unknown; status: number } | null> => {

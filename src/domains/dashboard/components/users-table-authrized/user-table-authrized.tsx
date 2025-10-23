@@ -28,7 +28,7 @@ export const UserTableAuthorized = ({
       ) : (
         <div>
           <div className="grid gap-4 min-h-[400px]">
-            {data?.mails?.map((mail) => (
+            {data?.mails?.map((mail: { email: string; id: string }) => (
               <EmailAuthrizedEmailRow
                 hasPermission={hasPermission}
                 key={mail.id}

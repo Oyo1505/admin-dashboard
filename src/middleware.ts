@@ -53,7 +53,6 @@ export default async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL(URL_BASE, req.url));
       }
     }
-
     return NextResponse.rewrite(url);
   } catch (error) {
     logError(error, 'Middleware error');

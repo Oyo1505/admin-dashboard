@@ -1,9 +1,9 @@
-import { getUserConnected } from '@/domains/auth/actions/action.users';
-import { getAllMoviesWithGenres } from '@/domains/dashboard/actions/movie';
 import MovieTable from '@/domains/dashboard/components/movie-table/movie-table';
 import Text from '@/domains/ui/components/text/text';
 import { getDataFromGoogleDrive } from '@/googleDrive';
 import { getServerSession } from '@/lib/auth';
+import { getAllMoviesWithGenres } from '@/lib/data/movies';
+import { getUserConnected } from '@/lib/data/users';
 import { IMovie } from '@/models/movie/movie';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import { User } from 'better-auth/types/user';

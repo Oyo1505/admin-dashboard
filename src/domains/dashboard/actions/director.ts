@@ -2,23 +2,7 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IDirector } from '@/models/director/director';
-import { IMovie } from '@/models/movie/movie';
-import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import { revalidatePath } from 'next/cache';
-
-export const getDirectorFromSection = async (): Promise<{
-  directorMovies?: IDirector | null;
-  status: number;
-}> => {
-  try {
-    const directorMovies = await prisma.directorSection.findFirst();
-    return { directorMovies, status: 200 };
-  } catch (error) {
-    logError(error, 'deleteMoviegetDirectorFromSectionById');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};
 
 export const createDirectorFromSection = async (
   formDirector: IDirector
@@ -83,44 +67,5 @@ export const deleteDirectorFromSection = async (
     logError(error, 'updateDirectorFromSection');
     const appError = handlePrismaError(error);
     return { status: appError.statusCode, success: false };
-  }
-};
-
-export const getDirectorMovies = async (): Promise<{
-  directorMovies?: IMovie[] | null;
-  director?: string | null;
-  imageBackdrop?: string | null;
-  status: number;
-}> => {
-  try {
-    const director = await getDirectorFromSection();
-    if (director && director?.directorMovies?.director) {
-      const directorMovies = await prisma.movie.findMany({
-        where: {
-          publish: true,
-          director: director?.directorMovies.director,
-        },
-        // @ts-ignore
-        cacheStrategy: { ttl: CACHE_TTL_SHORT },
-      });
-
-      return {
-        directorMovies,
-        director: director?.directorMovies?.director ?? null,
-        imageBackdrop: director?.directorMovies?.imageBackdrop ?? null,
-        status: 200,
-      };
-    } else {
-      return {
-        directorMovies: null,
-        director: null,
-        imageBackdrop: null,
-        status: 200,
-      };
-    }
-  } catch (error) {
-    logError(error, 'getDirectorMovies');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
   }
 };

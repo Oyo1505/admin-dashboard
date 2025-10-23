@@ -1,7 +1,4 @@
-import {
-  getAllMoviesWithGenres,
-  getFavoriteMovies,
-} from '@/domains/dashboard/actions/movie';
+import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 import { getMovieDetail } from '@/domains/movies/actions/movie';
 import MovieHeader from '@/domains/movies/components/movie-header/movie-header';
 import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
@@ -9,6 +6,7 @@ import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/m
 import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion';
 import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
+import { getAllMoviesWithGenres } from '@/lib/data/movies';
 import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube';
 import clsx from 'clsx';
 import { Lobster } from 'next/font/google';

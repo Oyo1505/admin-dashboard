@@ -2,113 +2,9 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IMovie } from '@/models/movie/movie';
-import { CACHE_TTL_LONG, CACHE_TTL_SHORT } from '@/shared/constants/time';
+import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import type { Prisma } from '@prisma/client';
 import { cache } from 'react';
-
-export const getLastMovies = async (): Promise<{
-  movies?: IMovie[];
-  status: number;
-}> => {
-  try {
-    const moviesInDb = await prisma.movie.findMany({
-      where: {
-        publish: true,
-      },
-      include: {
-        genresIds: {
-          select: {
-            genre: {
-              select: {
-                id: true,
-                nameFR: true,
-                nameEN: true,
-                nameJP: true,
-              },
-            },
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 5,
-      //@ts-ignore
-      cacheStrategy: { ttl: CACHE_TTL_SHORT },
-    });
-    if (!moviesInDb) {
-      return { status: 404, movies: [] };
-    }
-    return { movies: moviesInDb, status: 200 };
-  } catch (error) {
-    logError(error, 'getLastMovies');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};
-
-export const getMoviesByARandomCountry = async (): Promise<{
-  movies?: IMovie[];
-  country?: string;
-  status: number;
-}> => {
-  try {
-    const uniqueCountries = await prisma.movie.findMany({
-      where: {
-        publish: true,
-      },
-      select: {
-        country: true,
-      },
-      distinct: ['country'],
-      //@ts-ignore
-      cacheStrategy: { ttl: CACHE_TTL_SHORT },
-    });
-    if (!uniqueCountries) {
-      return { status: 400 };
-    }
-    const getARadomCountry =
-      uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
-    if (!getARadomCountry?.country) {
-      return { status: 400, movies: [] };
-    }
-    const movies = await prisma.movie.findMany({
-      where: {
-        country: getARadomCountry.country,
-        publish: true,
-      },
-      include: {
-        genresIds: {
-          select: {
-            genre: {
-              select: {
-                id: true,
-                nameFR: true,
-                nameEN: true,
-                nameJP: true,
-              },
-            },
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 3,
-      //@ts-ignore
-      cacheStrategy: { ttl: CACHE_TTL_SHORT },
-    });
-
-    if (!movies) {
-      return { status: 400, movies: [] };
-    }
-    return { status: 200, movies, country: getARadomCountry.country as string };
-  } catch (error) {
-    logError(error, 'getMoviesByARandomCountry');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};
 
 export const fetchMovies = cache(
   async ({
@@ -142,8 +38,6 @@ export const fetchMovies = cache(
             createdAt: 'desc',
           },
           take: pageParam,
-          //@ts-ignore
-          cacheStrategy: { ttl: CACHE_TTL_SHORT },
         });
 
         return {
@@ -257,34 +151,3 @@ export const fetchMovies = cache(
     }
   }
 );
-
-export const getMoviesCountries = async (): Promise<{
-  status: number;
-  countries?: string[];
-}> => {
-  try {
-    const countriesValues = await prisma.movie.findMany({
-      select: {
-        country: true,
-      },
-      //@ts-ignore
-      cacheStrategy: { ttl: CACHE_TTL_LONG },
-      distinct: ['country'],
-    });
-
-    if (!countriesValues) {
-      return { status: 400 };
-    }
-
-    const countries =
-      countriesValues?.flatMap((item) =>
-        item.country ? [item.country] : []
-      ) ?? [];
-
-    return { status: 200, countries };
-  } catch (error) {
-    logError(error, 'getMoviesCountries');
-    const appError = handlePrismaError(error);
-    return { status: appError.statusCode };
-  }
-};

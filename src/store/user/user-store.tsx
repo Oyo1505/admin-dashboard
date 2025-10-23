@@ -1,4 +1,3 @@
-import { getUserConnected } from '@/domains/auth/actions/action.users';
 import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 import { signIn, signOut } from '@/lib/auth-client';
 import { User } from '@/models/user/user';
@@ -40,7 +39,12 @@ const useUserStore = create<UserStore>()(
       connected: false,
       setUser: (user: IUser, connected: boolean) => set({ user, connected }),
       fetchUser: async (email: string) => {
-        const { user } = await getUserConnected(email);
+        const response = await fetch(`/api/users/get-user-connected/${email}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user details');
+        }
+        const data = await response.json();
+        const { user } = data;
         const { movies } = user?.id
           ? await getFavoriteMovies(user?.id)
           : { movies: [] };
