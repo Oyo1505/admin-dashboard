@@ -124,9 +124,7 @@ describe('useAnalyticsUsersVisits', () => {
 
     it('should handle network error', async () => {
       // Arrange: Mock network error
-      (global.fetch as jest.Mock).mockRejectedValue(
-        new Error('Network error')
-      );
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
 
       // Act
       const { result } = renderHook(() => useAnalyticsUsersVisits(), {

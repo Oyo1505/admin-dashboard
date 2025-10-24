@@ -782,9 +782,7 @@ describe('useEmailsAutorized', () => {
     it('should handle query errors gracefully', async () => {
       // Arrange: Mock error
       const errorMessage = 'Failed to fetch emails';
-      (global.fetch as jest.Mock).mockRejectedValue(
-        new Error(errorMessage)
-      );
+      (global.fetch as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
       // Act
       const { result } = renderHook(() => useEmailsAutorized({ page: 0 }), {
