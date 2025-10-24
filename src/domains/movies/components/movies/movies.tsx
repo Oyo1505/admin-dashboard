@@ -125,25 +125,22 @@ const Movies = memo(
       <>
         {moviesFromStore && moviesFromStore.length > 0 ? (
           <div className="grid grid-cols-1 md:mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4 mt-6">
-            {moviesFromStore.map(
-              (movie, index) =>
-                movie?.title && (
-                  <>
-                    {viewport === 'desktop' || viewport === 'tablet' ? (
-                      <MovieCardSearchPage
-                        user={user}
-                        movie={movie}
-                        key={`${movie?.id}-${index}`}
-                      />
-                    ) : (
-                      <MovieCardSearchPageMobileView
-                        user={user}
-                        movie={movie}
-                        key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}-mobile-view`}
-                      />
-                    )}
-                  </>
+            {moviesFromStore.map((movie, index) =>
+              movie?.title ? (
+                viewport === 'desktop' || viewport === 'tablet' ? (
+                  <MovieCardSearchPage
+                    user={user}
+                    movie={movie}
+                    key={`${movie?.id}-${index}`}
+                  />
+                ) : (
+                  <MovieCardSearchPageMobileView
+                    user={user}
+                    movie={movie}
+                    key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}-mobile-view`}
+                  />
                 )
+              ) : null
             )}
           </div>
         ) : (

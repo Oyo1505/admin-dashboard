@@ -36,7 +36,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm lint:fix` - Fix ESLint issues automatically
 - `pnpm format` - Format code with Prettier
 - `pnpm format:check` - Check code formatting
-- `pnpm test` - Run Jest tests
+- `pnpm test` - Run Jest unit tests
+- `pnpm test:watch` - Run Jest in watch mode
+- `pnpm e2e` - Run Playwright E2E tests
+- `pnpm e2e:headed` - Run E2E tests with browser UI
+- `pnpm e2e:debug` - Debug E2E tests
+- `pnpm dev:test` - Start dev server for Playwright testing
 
 ### Database Operations
 
@@ -46,17 +51,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-This is a Next.js 15 movie management platform with a domain-driven architecture:
+This is a Next.js 16 movie management platform with a domain-driven architecture:
 
 ### Tech Stack
 
-- **Frontend**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS
+- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
 - **UI Components**: Radix UI, Shadcn/ui, Lucide React icons
-- **Backend**: Next.js API routes, Prisma ORM, PostgreSQL
-- **Authentication**: NextAuth.js v5 with Google OAuth
-- **State Management**: Zustand (though no store files are currently present)
+- **Backend**: Next.js API routes, Prisma ORM v6.18, PostgreSQL
+- **Authentication**: Better Auth v1.3 with Google OAuth (migrated from NextAuth.js)
+- **State Management**:
+  - Client state: Zustand
+  - Server state: TanStack Query v5 (React Query)
 - **AI Integration**: Mistral AI for chatbot functionality
 - **File Storage**: Google Drive API integration
+- **Testing**:
+  - Unit tests: Jest with Testing Library
+  - E2E tests: Playwright with CI/CD integration
 - **Deployment**: Vercel with analytics
 - **Internationalization**: next-intl (French, English, Japanese support)
 
@@ -91,7 +101,9 @@ src/domains/
 
 Key models include:
 
-- `User` - Authentication and user management with NextAuth
+- `User` - Authentication and user management with Better Auth
+- `Session` - Better Auth session management
+- `Account` - OAuth account linking
 - `Movie` - Core movie entity with metadata, genres, and Google Drive integration
 - `Genre` - Multilingual genre system
 - `UserFavoriteMovies` - User-movie relationships
@@ -100,35 +112,51 @@ Key models include:
 
 ### Authentication & Security
 
-- Uses NextAuth.js v5 with Google OAuth provider
-- Middleware-based route protection (all routes except /, privacy, and legal pages require authentication)
+- Uses Better Auth v1.3 with Google OAuth provider (migrated from NextAuth.js)
+- Middleware-based route protection via `proxy.ts` (all routes except /, privacy, and legal pages require authentication)
 - Role-based access control (USER/ADMIN)
 - Email authorization system for controlling access
+- Session-based authentication with secure cookie handling
 
 ### Development Notes
 
 - Uses App Router with TypeScript
 - Prettier configuration enforces consistent code style
 - ESLint with Next.js and Prettier integration
-- Jest configured for testing with jsdom environment
+- Testing setup:
+  - Jest with jsdom environment for unit tests
+  - Playwright for E2E tests (chromium, firefox, webkit)
+  - GitHub Actions CI/CD integration for automated testing
+- TanStack Query for efficient server state management
 - Internationalization handled via next-intl with locale middleware
-- Environment variables required for Google OAuth, database, and Mistral AI
+- Environment variables required for Google OAuth, database, Better Auth, and Mistral AI
 
 ### File Organization
 
 - Pages follow Next.js App Router conventions in `src/app/`
+- API Routes in `src/app/api/` for GET requests (analytics, genres, users)
 - Components organized by domain in `src/domains/`
+- Data layer abstraction in `src/lib/data/` (analytics, director, email, genres, movies, users)
 - Shared utilities in `src/lib/` and `src/shared/`
+- E2E tests in `e2e/` directory (landing-page, dashboard, home, movies, resources)
 - Prisma schema defines the complete database structure
-- Middleware handles authentication and internationalization
+- Proxy middleware (`src/proxy.ts`) handles authentication and internationalization
 
 ### Important Patterns
 
 - Domain-based component organization
 - Server actions for data mutations (in action.ts files)
-- Custom hooks for data fetching and state management
+- Data layer separation in `src/lib/data/` for database queries
+- API Routes for GET operations, Server Actions for mutations
+- Custom hooks with TanStack Query for server state:
+  - `useEmailsAutorized` - Email authorization management
+  - `useAnalyticsUsersVisits` - Analytics data fetching
+  - `useGoogleQueries` - Google Drive queries
+  - `useMovieFilters` - Movie filtering logic
+  - `useMovieData` - Movie data management
 - Consistent use of TypeScript interfaces
 - Shadcn/ui component library for consistent design system
+- Accessibility-first approach (recent accessibility improvements)
 
 ## Project-Specific Conventions
 
@@ -139,10 +167,27 @@ Each domain follows this pattern:
 ```
 src/domains/[domain-name]/
 ├── components/          # UI components (kebab-case directories)
-├── hooks/              # Custom hooks (useNomDuHook pattern)
+├── hooks/              # Custom hooks with TanStack Query (useNomDuHook pattern)
 ├── actions/            # Complex server actions
-└── action.ts           # Main server actions file
+├── action.ts           # Main server actions file
+└── __tests__/          # Domain-specific tests
 ```
+
+### Data Layer Architecture
+
+The project uses a layered architecture for data access:
+
+```
+src/lib/data/           # Data access layer (database queries)
+├── analytics.ts        # Analytics data queries
+├── director.ts         # Director data operations
+├── email.ts            # Email authorization queries
+├── genres.ts           # Genre data operations
+├── movies.ts           # Movie data queries
+└── users.ts            # User data operations
+```
+
+This layer is used by both API routes and Server Actions to maintain separation of concerns.
 
 ### Component Organization
 
@@ -159,12 +204,56 @@ src/domains/[domain-name]/
 - Use `revalidatePath()` after mutations for cache invalidation
 - Import validation helpers: `import { validateId } from '@/lib/api-wrapper'`
 - Error handling: `import { handlePrismaError, logError } from '@/lib/errors'`
+- Prefer using data layer functions from `src/lib/data/` for database queries
+
+### API Routes Patterns
+
+API routes are used for GET operations and follow this structure:
+
+```typescript
+// src/app/api/[domain]/[operation]/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { dataLayerFunction } from '@/lib/data/[domain]';
+
+export async function GET(request: NextRequest) {
+  try {
+    const data = await dataLayerFunction();
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json({ error: 'Error message' }, { status: 500 });
+  }
+}
+```
+
+### TanStack Query Hooks Pattern
+
+Custom hooks leverage TanStack Query for efficient server state management:
+
+```typescript
+// src/domains/[domain]/hooks/useDataHook.ts
+import { useQuery } from '@tanstack/react-query';
+
+export const useDataHook = () => {
+  return useQuery({
+    queryKey: ['domain-key'],
+    queryFn: async () => {
+      const response = await fetch('/api/domain/operation');
+      return response.json();
+    },
+    // Additional options: staleTime, refetchInterval, etc.
+  });
+};
+```
 
 ### Import Conventions
 
 ```typescript
-// Prisma client
+// Prisma client (prefer data layer over direct prisma access)
 import prisma from '@/lib/prisma';
+
+// Data layer functions (preferred for database access)
+import { getAllMovies } from '@/lib/data/movies';
+import { getUserByEmail } from '@/lib/data/users';
 
 // Models (organized by entity)
 import { IMovie, IGenre } from '@/models/movie/movie';
@@ -175,6 +264,9 @@ import { URL_DASHBOARD_ROUTE, URL_MOVIE_ID } from '@/shared/route';
 
 // Error handling
 import { handlePrismaError, logError } from '@/lib/errors';
+
+// TanStack Query
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 ```
 
 ## Troubleshooting Guide
@@ -205,3 +297,19 @@ import { handlePrismaError, logError } from '@/lib/errors';
 - Solution: Run `pnpm prisma generate` after schema changes
 - Problem: Database schema changes not reflected
 - Solution: Run `pnpm prisma db push` to sync schema
+
+**Testing Issues**
+
+- Problem: E2E tests fail locally
+- Solution: Run `pnpm dev:test` to start dev server with `PLAYWRIGHT_TEST_MODE=true`
+- Problem: Tests pass locally but fail in CI
+- Solution: Check GitHub Actions logs, ensure environment variables are set
+- Problem: TanStack Query cache not invalidating
+- Solution: Use `queryClient.invalidateQueries(['query-key'])` after mutations
+
+**Authentication Issues**
+
+- Problem: Better Auth session errors
+- Solution: Check `src/lib/auth.ts` configuration and environment variables
+- Problem: Middleware not protecting routes
+- Solution: Verify `src/proxy.ts` configuration (migrated from `middleware.ts`)

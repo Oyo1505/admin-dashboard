@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
   pageExtensions: ['mdx', 'md', 'jsx', 'js', 'tsx', 'ts'],
+
+  reactCompiler: true,
   experimental: {
     serverActions: {
       bodySizeLimit: '100mb',

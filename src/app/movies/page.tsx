@@ -6,8 +6,6 @@ import { getAllGenres } from '@/lib/data/genres';
 import { getMoviesCountries } from '@/lib/data/movies';
 import { Suspense, cache } from 'react';
 
-export const revalidate = 60;
-
 const getData = cache(async () => {
   const { genres } = await getAllGenres();
   const { countries } = await getMoviesCountries();

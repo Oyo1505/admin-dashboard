@@ -15,7 +15,7 @@ const useInitGenreStore = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch genres');
       }
-      const genres = await response.json();
+      const { genres } = await response.json();
 
       return genres;
     },
