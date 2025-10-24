@@ -1,17 +1,14 @@
 import LayoutLogic from '@/domains/layout/components/layout-logic';
 import MenuHeader from '@/domains/layout/components/menu-header/menu-header';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
-import { auth } from '@/lib/auth';
+import TanstackProvider from '@/providers/tanstack-provider';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
-import { headers } from 'next/headers';
 import { ReactNode, Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import './globals.css';
-import TanstackProvider from '@/providers/tanstack-provider';
-
 export const metadata: Metadata = {
   title: 'Nūberu Bāgu',
   description: 'Bienvenue sur Nūberu Bāgu',
@@ -40,9 +37,6 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
   const locale = await getLocale();
   const messages = await getMessages();
 
@@ -59,7 +53,9 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <TanstackProvider>
             <LayoutLogic>
-              <MenuHeader session={session} />
+              <Suspense>
+                <MenuHeader />
+              </Suspense>
               <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
             </LayoutLogic>
             <Analytics />

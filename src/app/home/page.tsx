@@ -24,8 +24,6 @@ import { headers } from 'next/headers';
 import { Suspense } from 'react';
 // import ChatDebug from '@/domains/chat-bot/components/chat-debug';
 
-export const revalidate = 60;
-
 const lobster = Lobster({
   weight: '400',
   display: 'swap',
