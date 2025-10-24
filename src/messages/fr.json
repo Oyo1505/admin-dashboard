@@ -185,5 +185,9 @@
     "home": "Home",
     "movies": "Films",
     "dashboard": "Dashboard"
+  },
+  "Search": {
+    "searchLabel": "Rechercher des utilisateurs",
+    "loadingLabel": "Recherche en cours"
   }
 }

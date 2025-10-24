@@ -1,12 +1,10 @@
-import { getAnalyticsApplicationVisits } from '@/domains/auth/actions/action.analytics';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import useAnalyticsUsersVisits from '../hooks/useAnalyticsUsersVisits';
 
-jest.mock('../../auth/actions/action.analytics.ts', () => ({
-  getAnalyticsApplicationVisits: jest.fn(),
-}));
+// Mock global fetch
+global.fetch = jest.fn();
 /**
  * Wrapper component to provide React Query context
  * Required for hooks that use useMutation or useQuery
@@ -34,9 +32,11 @@ describe('useAnalyticsUsersVisits', () => {
 
     // Default mock to prevent "Query data cannot be undefined" warnings
     // Tests that need specific data will override this mock
-    (getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue({
-      status: 200,
-      visits: 0,
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        visits: 0,
+      }),
     });
   });
 
@@ -77,10 +77,13 @@ describe('useAnalyticsUsersVisits', () => {
 
     it('should initialize with idle state for getAnalyticsUsersVisits', async () => {
       // Arrange: Mock successful response
-      const mockVisitsData = { visits: 10, status: 200 };
-      (getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue(
-        mockVisitsData
-      );
+      const mockVisits = 10;
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          visits: mockVisits,
+        }),
+      });
 
       // Act
       const { result } = renderHook(() => useAnalyticsUsersVisits(), {
@@ -94,47 +97,14 @@ describe('useAnalyticsUsersVisits', () => {
 
       expect(result.current.getAnalyticsUsersVisits.isPending).toBe(false);
       expect(result.current.getAnalyticsUsersVisits.isError).toBe(false);
-      expect(result.current.getAnalyticsUsersVisits.data).toEqual(
-        mockVisitsData
-      );
+      expect(result.current.getAnalyticsUsersVisits.data).toEqual(mockVisits);
     });
   });
   describe('Error handling', () => {
-    it('should show specific error toast on status 409 (email already exists)', async () => {
-      // Arrange: Mock conflict response
-      (getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue({
-        status: 409,
-      });
-
-      // Act
-      const { result } = renderHook(() => useAnalyticsUsersVisits(), {
-        wrapper: createWrapper(),
-      });
-
-      await waitFor(() =>
-        expect(result.current.getAnalyticsUsersVisits.isSuccess).toBe(true)
-      );
-    });
-
-    it('should show default message when 409 has no custom message', async () => {
-      // Arrange
-      (getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue({
-        status: 409,
-      });
-
-      // Act
-      const { result } = renderHook(() => useAnalyticsUsersVisits(), {
-        wrapper: createWrapper(),
-      });
-
-      await waitFor(() =>
-        expect(result.current.getAnalyticsUsersVisits.isSuccess).toBe(true)
-      );
-    });
-
-    it('should show generic error toast on status 500', async () => {
-      // Arrange: Mock generic error response
-      (getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue({
+    it('should handle fetch error with ok: false', async () => {
+      // Arrange: Mock error response
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: false,
         status: 500,
       });
 
@@ -143,15 +113,43 @@ describe('useAnalyticsUsersVisits', () => {
         wrapper: createWrapper(),
       });
 
+      // Assert: Wait for error state
       await waitFor(() =>
-        expect(result.current.getAnalyticsUsersVisits.isSuccess).toBe(true)
+        expect(result.current.getAnalyticsUsersVisits.isError).toBe(true)
+      );
+
+      expect(result.current.getAnalyticsUsersVisits.isPending).toBe(false);
+      expect(result.current.getAnalyticsUsersVisits.isSuccess).toBe(false);
+    });
+
+    it('should handle network error', async () => {
+      // Arrange: Mock network error
+      (global.fetch as jest.Mock).mockRejectedValue(
+        new Error('Network error')
+      );
+
+      // Act
+      const { result } = renderHook(() => useAnalyticsUsersVisits(), {
+        wrapper: createWrapper(),
+      });
+
+      // Assert: Wait for error state
+      await waitFor(() =>
+        expect(result.current.getAnalyticsUsersVisits.isError).toBe(true)
+      );
+
+      expect(result.current.getAnalyticsUsersVisits.error).toEqual(
+        new Error('Network error')
       );
     });
 
-    it('should show generic error toast on status 400', async () => {
-      // Arrange
-      (getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue({
-        status: 400,
+    it('should handle malformed JSON response', async () => {
+      // Arrange: Mock invalid JSON
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => {
+          throw new Error('Invalid JSON');
+        },
       });
 
       // Act
@@ -159,24 +157,9 @@ describe('useAnalyticsUsersVisits', () => {
         wrapper: createWrapper(),
       });
 
+      // Assert: Wait for error state
       await waitFor(() =>
-        expect(result.current.getAnalyticsUsersVisits.isSuccess).toBe(true)
-      );
-    });
-
-    it('should NOT call reset on error status', async () => {
-      // Arrange
-      (getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue({
-        status: 409,
-      });
-
-      // Act
-      const { result } = renderHook(() => useAnalyticsUsersVisits(), {
-        wrapper: createWrapper(),
-      });
-
-      await waitFor(() =>
-        expect(result.current.getAnalyticsUsersVisits.isSuccess).toBe(true)
+        expect(result.current.getAnalyticsUsersVisits.isError).toBe(true)
       );
     });
   });

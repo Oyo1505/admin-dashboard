@@ -22,18 +22,6 @@ export const getDataFromGoogleDrive = async () => {
     return null;
   }
 };
-const checkPermissions = async (fileId: string) => {
-  const drive = google.drive({ version: 'v3', auth });
-  try {
-    const permissions = await drive.permissions.list({
-      fileId,
-      fields: 'permissions(id, role, type, emailAddress)',
-    });
-    return permissions.data.permissions;
-  } catch (error) {
-    logError(error, 'checkPermissions');
-  }
-};
 
 export const addFileToGoogleDriveAction = async (
   formData: File

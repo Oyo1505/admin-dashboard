@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { memo } from 'react';
 
 interface SelectInputProps<T = Record<string, unknown>> {
@@ -33,9 +34,15 @@ const SelectInput = memo(
 
     return (
       <select
+        id={`select-${formDataKey}`}
         onChange={onChange}
         defaultValue={defaultValue || getFormValue(formData, formDataKey)}
-        className={className}
+        className={clsx(
+          'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+          'border border-input rounded-md px-3 py-2',
+          className
+        )}
+        aria-label={formDataKey}
       >
         <option value=""> </option>
         {optionsList.map((option, index) => (

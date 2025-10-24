@@ -5,7 +5,6 @@ type FormCheckBox = {
   checked: Array<string>;
   titleLabel: string;
   onChange: () => void;
-  htmlFor: string;
   value: string;
   id: string;
 };
@@ -16,7 +15,6 @@ const FormCheckBox = ({
   id,
   value,
   titleLabel,
-  htmlFor,
   ...props
 }: FormCheckBox) => {
   return (
@@ -31,7 +29,7 @@ const FormCheckBox = ({
       <LabelForm
         className="text-violet11  text-right text-[15px]"
         titleLabel={titleLabel}
-        htmlFor={htmlFor}
+        htmlFor={id}
       />
     </>
   );
