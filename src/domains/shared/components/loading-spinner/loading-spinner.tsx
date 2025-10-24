@@ -1,9 +1,10 @@
-import React from 'react';
 import clsx from 'clsx';
 const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
     <div
       role="status"
+      aria-live="polite"
+      aria-label="Chargement en cours"
       className={clsx(
         className,
         'flex w-full h-full justify-center items-center'

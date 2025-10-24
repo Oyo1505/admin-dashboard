@@ -1,7 +1,8 @@
 'use client';
 import { IMovie } from '@/models/movie/movie';
 import { URL_MOVIE_ID } from '@/shared/route';
-import { useTranslations } from 'next-intl';
+import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { memo } from 'react';
@@ -9,6 +10,7 @@ import imageDefault from '../../../../assets/image/default-placeholder.png';
 
 const MoviesFavorite = memo(({ movies }: { movies?: IMovie[] }) => {
   const t = useTranslations('Dashboard');
+  const locale = useLocale();
   return (
     <div className="flex flex-row gap-4 mt-6 items-start flex-wrap justify-start">
       {movies && movies?.length > 0
@@ -26,7 +28,10 @@ const MoviesFavorite = memo(({ movies }: { movies?: IMovie[] }) => {
                     src={movie?.image ? movie?.image : imageDefault}
                     width={200}
                     height={150}
-                    alt="movie"
+                    alt={
+                      titleOnlocale(movie, locale) ||
+                      `Affiche du film ${movie?.title}`
+                    }
                   />
                   <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
                     {movie?.title}

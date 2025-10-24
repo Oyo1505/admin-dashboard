@@ -192,7 +192,6 @@ const FormMovie = ({
                     checked={subtitles}
                     onChange={() => handleCheckboxChange(item)}
                     titleLabel={item}
-                    htmlFor="subtitles"
                   />
                 ))}
             </div>

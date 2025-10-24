@@ -42,7 +42,9 @@ const MovieCardSearchPage = memo(({ movie, user }: IMovieCardSearchPage) => {
             src={movie?.image ? movie?.image : 'imageDefault'}
             width={300}
             height={200}
-            alt="movie"
+            alt={
+              titleOnlocale(movie, locale) || `Affiche du film ${movie?.title}`
+            }
           />
         </div>
       </div>

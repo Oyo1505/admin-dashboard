@@ -183,5 +183,9 @@
     "home": "ホーム",
     "movies": "映画",
     "dashboard": "ダッシュボード"
+  },
+  "Search": {
+    "searchLabel": "ユーザーを検索",
+    "loadingLabel": "Recherche en cours"
   }
 }

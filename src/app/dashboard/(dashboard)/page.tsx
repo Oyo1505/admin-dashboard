@@ -1,5 +1,10 @@
 import Analytics from '@/domains/dashboard/components/analytics/analytics';
 import TitleDashboard from '@/domains/dashboard/components/title-dashoard/title-dashboard';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 const Page = () => {
   return (

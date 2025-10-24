@@ -17,7 +17,6 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import {
   deleteEmailAuthorized,
-  getAuthorizedEmailsPagination,
   postAuthorizedEmail,
 } from '../actions/action.email';
 import useEmailsAutorized from '../hooks/useEmailsAutorized';
@@ -38,9 +37,11 @@ jest.mock('next-intl', () => ({
 // Mock the server actions
 jest.mock('../actions/action.email', () => ({
   postAuthorizedEmail: jest.fn(),
-  getAuthorizedEmailsPagination: jest.fn(),
   deleteEmailAuthorized: jest.fn(),
 }));
+
+// Mock global fetch
+global.fetch = jest.fn();
 
 /**
  * Wrapper component to provide React Query context
@@ -72,9 +73,12 @@ describe('useEmailsAutorized', () => {
 
     // Default mock to prevent "Query data cannot be undefined" warnings
     // Tests that need specific data will override this mock
-    (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValue({
-      status: 200,
-      mails: [],
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        status: 200,
+        mails: [],
+      }),
     });
   });
 
@@ -165,9 +169,12 @@ describe('useEmailsAutorized', () => {
         { id: '1', email: 'test1@example.com' },
         { id: '2', email: 'test2@example.com' },
       ];
-      (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValue({
-        status: 200,
-        mails: mockEmails,
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          status: 200,
+          mails: mockEmails,
+        }),
       });
 
       // Act
@@ -693,9 +700,12 @@ describe('useEmailsAutorized', () => {
         { id: '2', email: 'user2@example.com' },
         { id: '3', email: 'user3@example.com' },
       ];
-      (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValue({
-        status: 200,
-        mails: mockEmails,
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          status: 200,
+          mails: mockEmails,
+        }),
       });
 
       // Act
@@ -716,12 +726,15 @@ describe('useEmailsAutorized', () => {
       expect(result.current.getAuthorizedEmails.isError).toBe(false);
     });
 
-    it('should call getAuthorizedEmailsPagination with correct page offset', async () => {
+    it('should call fetch with correct page offset', async () => {
       // Arrange
       const mockEmails = [{ id: '1', email: 'test@example.com' }];
-      (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValue({
-        status: 200,
-        mails: mockEmails,
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          status: 200,
+          mails: mockEmails,
+        }),
       });
 
       // Act: Render with page 2
@@ -734,16 +747,19 @@ describe('useEmailsAutorized', () => {
       );
 
       // Assert: Should calculate offset as page * 5
-      expect(getAuthorizedEmailsPagination).toHaveBeenCalledWith({
-        pageParam: 10, // page 2 * 5 = 10
-      });
+      expect(global.fetch).toHaveBeenCalledWith(
+        '/api/analytics/get-authorized-emails-pagination?pageParam=10'
+      );
     });
 
     it('should handle empty results', async () => {
       // Arrange: Mock empty array response
-      (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValue({
-        status: 200,
-        mails: [],
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          status: 200,
+          mails: [],
+        }),
       });
 
       // Act
@@ -766,9 +782,7 @@ describe('useEmailsAutorized', () => {
     it('should handle query errors gracefully', async () => {
       // Arrange: Mock error
       const errorMessage = 'Failed to fetch emails';
-      (getAuthorizedEmailsPagination as jest.Mock).mockRejectedValue(
-        new Error(errorMessage)
-      );
+      (global.fetch as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
       // Act
       const { result } = renderHook(() => useEmailsAutorized({ page: 0 }), {
@@ -798,9 +812,10 @@ describe('useEmailsAutorized', () => {
         mails: [{ id: '2', email: 'page1@example.com' }],
       };
 
-      (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValueOnce(
-        page0Data
-      );
+      (global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        json: async () => page0Data,
+      });
 
       // Act: Initial render with page 0
       const { result, rerender } = renderHook(
@@ -818,9 +833,10 @@ describe('useEmailsAutorized', () => {
       expect(result.current.getAuthorizedEmails.data).toEqual(page0Data);
 
       // Setup mock for page 1
-      (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValueOnce(
-        page1Data
-      );
+      (global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        json: async () => page1Data,
+      });
 
       // Act: Change to page 1
       rerender({ page: 1 });
@@ -837,9 +853,12 @@ describe('useEmailsAutorized', () => {
     it('should not refetch on window focus', async () => {
       // Arrange
       const mockEmails = [{ id: '1', email: 'test@example.com' }];
-      (getAuthorizedEmailsPagination as jest.Mock).mockResolvedValue({
-        status: 200,
-        mails: mockEmails,
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          status: 200,
+          mails: mockEmails,
+        }),
       });
 
       // Act
@@ -861,7 +880,7 @@ describe('useEmailsAutorized', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Assert: Should not have called the API again
-      expect(getAuthorizedEmailsPagination).not.toHaveBeenCalled();
+      expect(global.fetch).not.toHaveBeenCalled();
     });
 
     it('should update query when page changes', async () => {
@@ -875,9 +894,15 @@ describe('useEmailsAutorized', () => {
         mails: [{ id: '2', email: 'page1@example.com' }],
       };
 
-      (getAuthorizedEmailsPagination as jest.Mock)
-        .mockResolvedValueOnce(page0Data)
-        .mockResolvedValueOnce(page1Data);
+      (global.fetch as jest.Mock)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => page0Data,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => page1Data,
+        });
 
       // Act: Initial render
       const { result, rerender } = renderHook(
@@ -902,13 +927,15 @@ describe('useEmailsAutorized', () => {
       });
 
       // Assert: Both pages were called with correct offsets
-      expect(getAuthorizedEmailsPagination).toHaveBeenCalledTimes(2);
-      expect(getAuthorizedEmailsPagination).toHaveBeenNthCalledWith(1, {
-        pageParam: 0,
-      });
-      expect(getAuthorizedEmailsPagination).toHaveBeenNthCalledWith(2, {
-        pageParam: 5,
-      });
+      expect(global.fetch).toHaveBeenCalledTimes(2);
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        1,
+        '/api/analytics/get-authorized-emails-pagination?pageParam=0'
+      );
+      expect(global.fetch).toHaveBeenNthCalledWith(
+        2,
+        '/api/analytics/get-authorized-emails-pagination?pageParam=5'
+      );
     });
 
     it('should refetch after successful email addition', async () => {
@@ -925,9 +952,15 @@ describe('useEmailsAutorized', () => {
         ],
       };
 
-      (getAuthorizedEmailsPagination as jest.Mock)
-        .mockResolvedValueOnce(initialEmails)
-        .mockResolvedValueOnce(updatedEmails);
+      (global.fetch as jest.Mock)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => initialEmails,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => updatedEmails,
+        });
 
       (postAuthorizedEmail as jest.Mock).mockResolvedValue({ status: 200 });
 
@@ -957,19 +990,22 @@ describe('useEmailsAutorized', () => {
         expect(result.current.getAuthorizedEmails.data).toEqual(updatedEmails);
       });
 
-      expect(getAuthorizedEmailsPagination).toHaveBeenCalledTimes(2);
+      expect(global.fetch).toHaveBeenCalledTimes(2);
     });
 
     it('should transition through loading state on initial fetch', async () => {
       // Arrange: Delay the response
-      (getAuthorizedEmailsPagination as jest.Mock).mockImplementation(
+      (global.fetch as jest.Mock).mockImplementation(
         () =>
           new Promise((resolve) =>
             setTimeout(
               () =>
                 resolve({
-                  status: 200,
-                  mails: [{ id: '1', email: 'test@example.com' }],
+                  ok: true,
+                  json: async () => ({
+                    status: 200,
+                    mails: [{ id: '1', email: 'test@example.com' }],
+                  }),
                 }),
               100
             )

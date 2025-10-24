@@ -13,16 +13,38 @@ const MenuMobile = ({ session }: { session: Session | null }) => {
     <div className="flex pl-6 items-centerpl-3 justify-between shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] py-8">
       <nav>
         <section className="flex lg:hidden">
-          <div className="space-y-2" onClick={() => setIsActive(!isActive)}>
+          <button
+            onClick={() => setIsActive(!isActive)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setIsActive(!isActive);
+              }
+            }}
+            aria-expanded={isActive}
+            aria-label={
+              isActive
+                ? 'Fermer le menu de navigation'
+                : 'Ouvrir le menu de navigation'
+            }
+            aria-controls="mobile-menu"
+            className="space-y-2 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+          >
             <BurgerIcon />
-          </div>
-          <div className={clsx(isActive ? 'showMenuNav' : 'hideMenuNav')}>
-            <div
+          </button>
+          <div
+            id="mobile-menu"
+            className={clsx(isActive ? 'showMenuNav' : 'hideMenuNav')}
+            role="dialog"
+            aria-modal="true"
+          >
+            <button
               className="absolute top-0 right-0 px-8 py-8"
-              onClick={() => setIsActive(!isActive)}
+              onClick={() => setIsActive(false)}
+              aria-label="Fermer le menu"
             >
               <CrossIcon />
-            </div>
+            </button>
             <ul className="flex flex-col items-center justify-between min-h-[250px] text-primary">
               <MenuMobileItem
                 session={session}
@@ -35,25 +57,6 @@ const MenuMobile = ({ session }: { session: Session | null }) => {
           </div>
         </section>
       </nav>
-      <style>{`
-      .hideMenuNav {
-        display: none;
-      }
-      .showMenuNav {
-        display: block;
-        position: fixed;
-        width: 100%;
-        height: 100vh;
-        top: 0;
-        left: 0;
-        background: #121212;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-      }
-    `}</style>
     </div>
   );
 };
