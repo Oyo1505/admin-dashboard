@@ -27,7 +27,7 @@ const MovieCardSearchPage = memo(({ movie, user }: IMovieCardSearchPage) => {
       prefetch
       className="hidden w-full h-28 rounded-lg md:rounded-none md:bg-inherit md:w-52 relative group md:flex md:h-full flex-col gap-3 md:justify-start md:items-center transition-all duration-300 md:pb-5"
       href={`${URL_MOVIE_ID(movie?.id)}`}
-      key={movie?.id}
+      key={`${movie?.id}-link`}
     >
       {isFavorite(movie?.id) && (
         <div className="absolute z-1 top-1 right-1">

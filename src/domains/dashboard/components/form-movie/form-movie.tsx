@@ -74,6 +74,7 @@ const FormMovie = ({
           ? a.label.jp.localeCompare(b.label.jp)
           : a.label.en.localeCompare(b.label.en)
   );
+
   return (
     <div className="bg-white">
       <div className=" text-background p-3 ">

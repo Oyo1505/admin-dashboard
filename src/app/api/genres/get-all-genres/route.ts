@@ -7,7 +7,6 @@ export async function GET(): Promise<Response> {
     if (!genres) {
       return Response.json({ genres }, { status: 404 });
     }
-
     return Response.json({ genres }, { status: 200 });
   } catch (error) {
     return Response.json({ error: 'Internal server error' }, { status: 500 });
