@@ -4,7 +4,7 @@ import { auth } from './lib/auth';
 import { logError } from './lib/errors';
 import { URL_BASE, URL_LEGAL_MENTIONS, URL_PRIVACY } from './shared/route';
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   const url = req.nextUrl;
   const path = url.pathname;
   const { device } = userAgent(req);
@@ -71,6 +71,5 @@ export const config = {
      * - public files (images, etc.)
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
-  runtime: 'nodejs',
+  ]
 };

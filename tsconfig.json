@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,17 +16,31 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/styles/*": ["./styles/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/domains/*": ["./src/domains/*"],
-      "@/shared/*": ["./src/shared/*"],
-      "@/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/shared/utils/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/styles/*": [
+        "./styles/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
+      "@/domains/*": [
+        "./src/domains/*"
+      ],
+      "@/shared/*": [
+        "./src/shared/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ],
+      "@/utils/*": [
+        "./src/shared/utils/*"
+      ]
     },
     "plugins": [
       {
@@ -30,6 +48,16 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next\\dev/types/**/*.ts",
+    ".next\\dev/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
