@@ -23,7 +23,7 @@ export default async function Page() {
         className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6"
       />
     );
-  const { directorMovies, director } = await getDirectorFromSection();
+  const { director } = await getDirectorFromSection();
 
   return (
     <main className="h-full" role="main" aria-label="Page des réalisateurs">

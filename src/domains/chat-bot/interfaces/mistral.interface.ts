@@ -1,7 +1,7 @@
 export interface IMistralService {
   chat: {
-    complete: (params: MistralCompleteParams) => Promise<MistralResponse>; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-    parse: (params: MistralParseParams) => Promise<MistralResponse>; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    complete: (params: MistralCompleteParams) => Promise<MistralResponse>; // eslint-disable-line no-unused-vars
+    parse: (params: MistralParseParams) => Promise<MistralResponse>; // eslint-disable-line no-unused-vars
   };
 }
 

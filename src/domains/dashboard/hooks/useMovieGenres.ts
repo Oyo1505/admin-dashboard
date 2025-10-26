@@ -11,8 +11,8 @@ interface UseMovieGenresProps {
 
 interface UseMovieGenresReturn {
   genresMovie: IGenre[];
-  handleGenreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-  handleGenreDelete: (id: string) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  handleGenreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line no-unused-vars
+  handleGenreDelete: (id: string) => void; // eslint-disable-line no-unused-vars
   availableGenres: IGenre[] | undefined;
 }
 

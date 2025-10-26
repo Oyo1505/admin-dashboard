@@ -1,8 +1,7 @@
+import { EmailAuthorizationService } from '@/domains/auth/services';
 import { APIError, betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
-import { EmailAuthorizationService } from '@/domains/auth/services';
-import { logError } from './errors';
 import prisma from './prisma';
 
 const auth = betterAuth({

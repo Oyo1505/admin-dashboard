@@ -7,8 +7,8 @@ import {
 import { useState } from 'react';
 
 interface UseErrorHandlerOptions extends ClientErrorOptions {
-  // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-  onError?: (error: unknown) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+   
+  onError?: (error: unknown) => void; // eslint-disable-line no-unused-vars
   resetOnSuccess?: boolean;
 }
 
@@ -16,14 +16,14 @@ interface UseErrorHandlerReturn {
   error: string | null;
   isError: boolean;
   clearError: () => void;
-  handleError: (error: unknown, options?: ClientErrorOptions) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  handleError: (error: unknown, options?: ClientErrorOptions) => void; // eslint-disable-line no-unused-vars
   handleApiResponse: <T>(
-    response: ApiResponse<T>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-    options?: ClientErrorOptions // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    response: ApiResponse<T>, // eslint-disable-line no-unused-vars
+    options?: ClientErrorOptions // eslint-disable-line no-unused-vars
   ) => T | null;
   executeWithErrorHandling: <T>(
-    operation: () => Promise<T>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-    options?: ClientErrorOptions // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    operation: () => Promise<T>, // eslint-disable-line no-unused-vars
+    options?: ClientErrorOptions // eslint-disable-line no-unused-vars
   ) => Promise<T | null>;
 }
 
@@ -102,7 +102,7 @@ export function useErrorHandler(
 }
 
 export function useApiCall<TArgs extends unknown[], TReturn>(
-  apiFunction: (...args: TArgs) => Promise<ApiResponse<TReturn>>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  apiFunction: (...args: TArgs) => Promise<ApiResponse<TReturn>>, // eslint-disable-line no-unused-vars
   options: UseErrorHandlerOptions = {}
 ) {
   const [isLoading, setIsLoading] = useState(false);

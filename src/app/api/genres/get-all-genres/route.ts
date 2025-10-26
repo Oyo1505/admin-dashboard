@@ -1,3 +1,4 @@
+import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 
 export async function GET(): Promise<Response> {
@@ -9,6 +10,7 @@ export async function GET(): Promise<Response> {
     }
     return Response.json({ genres }, { status: 200 });
   } catch (error) {
+    logError(error, 'get-all-genres');
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
