@@ -4,7 +4,7 @@ import { useFiltersMovieStore } from '@/store/movie/movie-store';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import qs from 'qs';
-import { startTransition, useCallback } from 'react';
+import { startTransition } from 'react';
 import { fetchMovies } from '../actions/movies';
 
 interface Props {
@@ -45,7 +45,7 @@ const useMovieFilters = ({ offset = 0 }: Props = {}) => {
     setFiltersData({ ...filters, genre: e.target.value });
   }
 
-  const onClick = useCallback(() => {
+  const onClick = () => {
     startTransition(() => {
       router.replace(
         `${URL_MOVIES}?${qs.stringify({
@@ -70,7 +70,7 @@ const useMovieFilters = ({ offset = 0 }: Props = {}) => {
       );
     });
     setHasBeenSearched(true);
-  }, [filters, router, setHasBeenSearched]);
+  };
 
   const buildQueryString = () => {
     return qs.stringify({

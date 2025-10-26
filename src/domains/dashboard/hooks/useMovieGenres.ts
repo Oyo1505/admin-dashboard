@@ -1,7 +1,7 @@
 import { IGenre, IMovie } from '@/models/movie/movie';
 import { MovieSchema } from '@/shared/schema/movieSchema';
 import { useGenreStore } from '@/store/movie/movie-store';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
 interface UseMovieGenresProps {
@@ -28,45 +28,35 @@ export const useMovieGenres = ({
       : ([] as IGenre[])
   );
 
-  const setGenresValue = useCallback(
-    (newGenresMovie: IGenre[]) => {
-      const genresIds = newGenresMovie.map((item) => item?.id);
-      setValue('genresIds', genresIds);
-    },
-    [setValue]
-  );
+  const setGenresValue = (newGenresMovie: IGenre[]) => {
+    const genresIds = newGenresMovie.map((item) => item?.id);
+    setValue('genresIds', genresIds);
+  };
 
-  const handleGenreChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      if (genresMovie.find((item) => item.id === e.target.value)) return;
+  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (genresMovie.find((item) => item.id === e.target.value)) return;
 
-      const newGenreEntry = genres?.find((item) => item.id === e.target.value);
+    const newGenreEntry = genres?.find((item) => item.id === e.target.value);
 
-      if (!newGenreEntry) return;
+    if (!newGenreEntry) return;
 
-      setGenresMovie((prevGenresMovie) => {
-        if (!prevGenresMovie.some((genre) => genre.id === newGenreEntry.id)) {
-          const newGenresMovie = [...prevGenresMovie, newGenreEntry];
-          setGenresValue(newGenresMovie);
-          return newGenresMovie;
-        }
-        return prevGenresMovie;
-      });
-    },
-    [genresMovie, genres, setGenresValue]
-  );
-
-  const handleGenreDelete = useCallback(
-    (id: string) => {
-      setGenresMovie((prevGenresMovie) => {
-        const newGenresMovie = prevGenresMovie.filter((item) => item.id !== id);
+    setGenresMovie((prevGenresMovie) => {
+      if (!prevGenresMovie.some((genre) => genre.id === newGenreEntry.id)) {
+        const newGenresMovie = [...prevGenresMovie, newGenreEntry];
         setGenresValue(newGenresMovie);
         return newGenresMovie;
-      });
-    },
-    [setGenresValue]
-  );
+      }
+      return prevGenresMovie;
+    });
+  };
 
+  const handleGenreDelete = (id: string) => {
+    setGenresMovie((prevGenresMovie) => {
+      const newGenresMovie = prevGenresMovie.filter((item) => item.id !== id);
+      setGenresValue(newGenresMovie);
+      return newGenresMovie;
+    });
+  };
   return {
     genresMovie,
     handleGenreChange,

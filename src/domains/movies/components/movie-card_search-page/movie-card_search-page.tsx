@@ -6,7 +6,6 @@ import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo } from 'react';
 
 interface IMovieCardSearchPage {
   movie: IMovie;
@@ -15,7 +14,7 @@ interface IMovieCardSearchPage {
   } | null;
 }
 
-const MovieCardSearchPage = memo(({ movie, user }: IMovieCardSearchPage) => {
+const MovieCardSearchPage = ({ movie, user }: IMovieCardSearchPage) => {
   const locale = useLocale();
   const isFavorite = (id: string) => {
     return user?.favoriteMovies?.some(
@@ -54,6 +53,5 @@ const MovieCardSearchPage = memo(({ movie, user }: IMovieCardSearchPage) => {
       </div>
     </Link>
   );
-});
-MovieCardSearchPage.displayName = 'MovieCardSearchPage';
+};
 export default MovieCardSearchPage;

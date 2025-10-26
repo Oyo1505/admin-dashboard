@@ -1,59 +1,60 @@
 'use server';
-import { handlePrismaError, logError } from '@/lib/errors';
-import prisma from '@/lib/prisma';
+import { EmailAuthorizationService } from '../services';
 
+/**
+ * Email Authorization Actions
+ *
+ * These are Server Actions that serve as Controllers for email authorization.
+ * They delegate business logic to EmailAuthorizationService.
+ *
+ * Architecture:
+ * - Actions (this file): HTTP validation + orchestration
+ * - Service: Business logic
+ * - Adapter (lib/data/email.ts): Database access
+ */
+
+/**
+ * Add email to authorized whitelist
+ *
+ * Controller action that delegates to EmailAuthorizationService
+ *
+ * @param email - Email address to authorize
+ * @returns Operation result with status and message
+ *
+ * @example
+ * ```typescript
+ * const result = await postAuthorizedEmail('user@example.com');
+ * if (result.status === 200) {
+ *   console.log('Email authorized');
+ * }
+ * ```
+ */
 export const postAuthorizedEmail = async (
   email: string
 ): Promise<{ status?: number | undefined; message?: string | undefined }> => {
-  try {
-    if (!email?.trim()) {
-      return { status: 400, message: 'Email is required' };
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return { status: 400, message: 'Invalid email format' };
-    }
-
-    const existingUser = await prisma.authorizedEmail.findUnique({
-      where: { email },
-    });
-
-    if (existingUser) {
-      return { message: 'User Already authorized', status: 409 };
-    }
-
-    await prisma.authorizedEmail.create({
-      data: { email },
-    });
-    return { status: 200 };
-  } catch (error) {
-    logError(error, 'postAuthorizedEmail');
-    const appError = handlePrismaError(error);
-    return {
-      status: appError.statusCode,
-      message: appError.message,
-    };
-  }
+  // Delegate to Service for business logic
+  return await EmailAuthorizationService.authorizeEmail(email);
 };
 
+/**
+ * Remove email from authorized whitelist
+ *
+ * Controller action that delegates to EmailAuthorizationService
+ *
+ * @param email - Email address to revoke authorization
+ * @returns Operation result with status
+ *
+ * @example
+ * ```typescript
+ * const result = await deleteEmailAuthorized('user@example.com');
+ * if (result.status === 200) {
+ *   console.log('Email authorization revoked');
+ * }
+ * ```
+ */
 export const deleteEmailAuthorized = async (
   email: string
-): Promise<{ status?: number | undefined }> => {
-  try {
-    const emailDeleted = await prisma.authorizedEmail.delete({
-      where: { email },
-    });
-
-    if (!emailDeleted) {
-      return { status: 400 };
-    }
-
-    return { status: 200 };
-  } catch (error) {
-    logError(error, 'deleteEmailAuthorized');
-    return {
-      status: 500,
-    };
-  }
+): Promise<{ status?: number | undefined; message?: string | undefined }> => {
+  // Delegate to Service for business logic
+  return await EmailAuthorizationService.revokeEmailAuthorization(email);
 };

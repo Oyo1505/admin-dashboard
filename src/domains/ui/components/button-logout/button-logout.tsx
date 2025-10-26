@@ -1,10 +1,9 @@
 'use client';
 import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
-import { memo } from 'react';
 import { Button } from '../button/button';
 
-const ButtonLogout = memo(() => {
+const ButtonLogout = () => {
   const { logout } = useUserStore((state) => state);
   const t = useTranslations('Menu');
 
@@ -16,6 +15,5 @@ const ButtonLogout = memo(() => {
       {t('logout')}
     </Button>
   );
-});
-ButtonLogout.displayName = 'ButtonLogout';
+};
 export default ButtonLogout;

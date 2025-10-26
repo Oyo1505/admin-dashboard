@@ -7,7 +7,7 @@ import { decades } from '@/shared/constants/decade';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import { useMovieFormStore } from '@/store/movie/movie-store';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import useMovieFilters from '../../hooks/use-movie-filters';
 import SelectFilters from '../movie-filter_select-filters/movie-filter_select-filters';
 
@@ -71,8 +71,10 @@ const MovieFilters = ({
         decade: decadeParams,
         q,
       });
-      setIsMounted(false);
-      refetch();
+      if (isMounted === true) {
+        setIsMounted(false);
+        refetch();
+      }
     }
   }, [
     filters,
@@ -100,25 +102,20 @@ const MovieFilters = ({
     }
   }, [data, setMoviesStore, status]);
 
-  const listCountries = useMemo(
-    () => countriesList.filter((country) => countries?.includes(country.value)),
-    [countries]
+  const listCountries = countriesList.filter((country) =>
+    countries?.includes(country.value)
   );
 
-  const genresSorted = useMemo(
-    () =>
-      genres?.sort(
-        (
-          a: { nameFR: string; nameJP: string; nameEN: string },
-          b: { nameFR: string; nameJP: string; nameEN: string }
-        ) =>
-          locale === 'fr'
-            ? a.nameFR.localeCompare(b.nameFR)
-            : locale === 'jp'
-              ? a.nameJP.localeCompare(b.nameJP)
-              : a.nameEN.localeCompare(b.nameEN)
-      ),
-    [genres, locale]
+  const genresSorted = genres?.sort(
+    (
+      a: { nameFR: string; nameJP: string; nameEN: string },
+      b: { nameFR: string; nameJP: string; nameEN: string }
+    ) =>
+      locale === 'fr'
+        ? a.nameFR.localeCompare(b.nameFR)
+        : locale === 'jp'
+          ? a.nameJP.localeCompare(b.nameJP)
+          : a.nameEN.localeCompare(b.nameEN)
   );
   const subtitlesList = {
     EN: t('subtitlesEN'),

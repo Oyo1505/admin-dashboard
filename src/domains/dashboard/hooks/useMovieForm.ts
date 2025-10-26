@@ -5,7 +5,7 @@ import { FormDataMovieSchema, MovieSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { addMovieToDb, editMovieToDb } from '../actions/movie';
@@ -44,59 +44,46 @@ export const useMovieForm = ({
 
   const subtitles = watch('subtitles', []);
 
-  const handleMovieSubmission = useCallback(
-    async (data: MovieSchema) => {
-      try {
-        const transformedData = transformFormData(data);
+  const handleMovieSubmission = async (data: MovieSchema) => {
+    try {
+      const transformedData = transformFormData(data);
 
-        const { status } = editMovie
-          ? await editMovieToDb(transformedData as IUpdateMovieData)
-          : await addMovieToDb(transformedData as IMovieFormData);
+      const { status } = editMovie
+        ? await editMovieToDb(transformedData as IUpdateMovieData)
+        : await addMovieToDb(transformedData as IMovieFormData);
 
-        if (status === 200) {
-          toast.success(t('toastMovieMessageSuccess'), {
-            position: 'top-center',
-          });
-          router.push(URL_DASHBOARD_ROUTE.movie);
-          return;
-        }
-        return toast.error(t('toastMovieMessageError'), {
+      if (status === 200) {
+        toast.success(t('toastMovieMessageSuccess'), {
           position: 'top-center',
         });
-      } catch (err) {
-        logError(err, editMovie ? 'editMovie' : 'createMovie');
-        toast.error(t('toastMovieMessageError'), {
-          position: 'top-center',
-        });
+        router.push(URL_DASHBOARD_ROUTE.movie);
+        return;
       }
-    },
-    [editMovie, transformFormData, t, router]
-  );
+      return toast.error(t('toastMovieMessageError'), {
+        position: 'top-center',
+      });
+    } catch (err) {
+      logError(err, editMovie ? 'editMovie' : 'createMovie');
+      toast.error(t('toastMovieMessageError'), {
+        position: 'top-center',
+      });
+    }
+  };
 
-  const handleCheckboxChange = useCallback(
-    (value: string) => {
-      const newValue = subtitles.includes(value)
-        ? subtitles.filter((item) => item !== value)
-        : [...subtitles, value];
+  const handleCheckboxChange = (value: string) => {
+    const newValue = subtitles.includes(value)
+      ? subtitles.filter((item) => item !== value)
+      : [...subtitles, value];
 
-      setValue('subtitles', newValue);
-    },
-    [subtitles, setValue]
-  );
+    setValue('subtitles', newValue);
+  };
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue('country', e.target.value);
+  };
 
-  const handleCountryChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setValue('country', e.target.value);
-    },
-    [setValue]
-  );
-
-  const handleLangageChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setValue('langage', e.target.value);
-    },
-    [setValue]
-  );
+  const handleLangageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue('langage', e.target.value);
+  };
 
   return {
     form,

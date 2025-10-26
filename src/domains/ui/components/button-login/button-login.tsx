@@ -1,11 +1,11 @@
 'use client';
 import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
-import { memo } from 'react';
+
 import { Button } from '../button/button';
 import { GoogleLogo } from '../icons/icons';
 
-const ButtonLogin = memo(() => {
+const ButtonLogin = () => {
   const { login } = useUserStore((state) => state);
   const t = useTranslations('LandingPage');
 
@@ -19,6 +19,5 @@ const ButtonLogin = memo(() => {
       {t('login')}
     </Button>
   );
-});
-ButtonLogin.displayName = 'ButtonLogin';
+};
 export default ButtonLogin;

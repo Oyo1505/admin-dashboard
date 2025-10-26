@@ -8,7 +8,6 @@ import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated
 import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
 import useGetDetailsMovie from '../../hooks/use-get-details-movie';
 
 const MoviePageSubtitlesList = dynamic(
@@ -23,13 +22,10 @@ const MovieHeader = ({ movie }: { movie: IMovie }) => {
     id: movie?.imdbId ?? '',
     language: locale,
   });
-  const genresMovie = useMemo(
-    () =>
-      movie && movie?.genresIds && movie?.genresIds?.length > 0
-        ? movie?.genresIds.map((item) => item.genre).flat()
-        : ([] as IGenre[]),
-    [movie]
-  );
+  const genresMovie =
+    movie && movie?.genresIds && movie?.genresIds?.length > 0
+      ? movie?.genresIds.map((item) => item.genre).flat()
+      : ([] as IGenre[]);
 
   const synopsis = movieDetails?.movie_results?.[0]?.overview;
 

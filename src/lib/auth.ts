@@ -1,7 +1,7 @@
 import { APIError, betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
-import { getAuthorizedEmails } from './data/email';
+import { EmailAuthorizationService } from '@/domains/auth/services';
 import { logError } from './errors';
 import prisma from './prisma';
 
@@ -36,39 +36,28 @@ const auth = betterAuth({
     user: {
       create: {
         before: async (user) => {
-          if (!user.email) {
-            throw new APIError('BAD_REQUEST', {
-              message: 'Email is required',
-            });
-          }
+          // Validate email authorization using Service Layer
+          const validation =
+            await EmailAuthorizationService.validateEmailForAuth(user.email);
 
-          try {
-            const { mails, status } = await getAuthorizedEmails();
-            if (status !== 200 || !mails) {
-              logError({}, 'Failed to fetch authorized emails');
-              throw new APIError('INTERNAL_SERVER_ERROR', {
-                message: 'Authorization check failed',
+          if (!validation.isAuthorized) {
+            if (!user.email) {
+              throw new APIError('BAD_REQUEST', {
+                message: 'Email is required',
               });
             }
 
-            const isAuthorized = mails.some(
-              (item) => item.email === user.email
-            );
-            if (!isAuthorized) {
-              console.warn(`Unauthorized sign-in attempt: ${user.email}`);
-              throw new APIError('UNAUTHORIZED', {
-                message:
-                  'Your email is not authorized to access this application. Please contact an administrator.',
-              });
-            }
+            // Log unauthorized attempt
+            console.warn(`Unauthorized sign-in attempt: ${user.email}`);
 
-            return { data: user };
-          } catch (error) {
-            logError(error, 'Better Auth email authorization');
-            throw new APIError('INTERNAL_SERVER_ERROR', {
-              message: 'Authorization check failed',
+            throw new APIError('UNAUTHORIZED', {
+              message:
+                validation.message ||
+                'Your email is not authorized to access this application. Please contact an administrator.',
             });
           }
+
+          return { data: user };
         },
       },
     },

@@ -21,7 +21,6 @@ export function useInfiniteScroll(onIntersect: () => void) {
     );
 
     setObserver(obs);
-
     if (sentinelRef.current) {
       obs.observe(sentinelRef.current);
     }

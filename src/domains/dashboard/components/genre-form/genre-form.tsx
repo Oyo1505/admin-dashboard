@@ -9,10 +9,10 @@ import { IGenre } from '@/models/movie/movie';
 import { genreSchema, GenreSectionSchema } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { memo } from 'react';
+
 import { useForm } from 'react-hook-form';
 
-const GenreForm = memo(() => {
+const GenreForm = () => {
   const t = useTranslations('GenrePage');
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -74,6 +74,6 @@ const GenreForm = memo(() => {
       </form>
     </div>
   );
-});
-GenreForm.displayName = 'GenreForm';
+};
+
 export default GenreForm;
