@@ -17,6 +17,12 @@ import React from 'react';
 // This avoids importing nanostores which causes Jest parsing errors
 jest.mock('@/lib/auth-client');
 
+// Mock Zustand user store - needed for userIsNotLogged check
+jest.mock('@/store/user/user-store', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({ user: {} })),
+}));
+
 // Mock next-intl - returns a function that returns the translation key
 jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => `translated.${key}`,
@@ -66,6 +72,14 @@ import { useSession } from '@/lib/auth-client';
 import LandingPage from '../components/landing-page/landing-page';
 
 describe('LandingPage', () => {
+  beforeEach(() => {
+    // Reset user store mock to empty user for each test
+    const mockUseUserStore = jest.requireMock(
+      '@/store/user/user-store'
+    ).default;
+    mockUseUserStore.mockReturnValue({ user: {} });
+  });
+
   /**
    * Group 1: Conditional rendering based on authentication state
    *
@@ -88,11 +102,18 @@ describe('LandingPage', () => {
     });
 
     it('should display NOTHING for an authenticated user (session exists)', () => {
-      // Arrange: Simulate a logged-in user
+      // Arrange: Simulate a logged-in user with session
       (useSession as jest.Mock).mockReturnValue({
         data: { user: { email: 'test@example.com' } },
         isPending: false,
         error: null,
+      });
+      // Also mock user store with populated user
+      const mockUseUserStore = jest.requireMock(
+        '@/store/user/user-store'
+      ).default;
+      mockUseUserStore.mockReturnValue({
+        user: { email: 'test@example.com', id: '1' },
       });
 
       // Act: Render the component
@@ -330,43 +351,4 @@ describe('LandingPage', () => {
       expect(screen.getByText('translated.welcome')).toBeInTheDocument();
     });
   });
-
-  /**
-   * Learning points:
-   *
-   * 1. **Better Auth Mocking**: Mock @/lib/auth-client instead of better-auth/react
-   *    - Avoids nanostores import issues in Jest
-   *    - Cleaner mock at the app boundary
-   *    - Better encapsulation of auth logic
-   *
-   * 2. **Conditional Rendering**: Test all branches
-   *    - session === null → show content
-   *    - session exists → hide content
-   *    - Test render output, not internal logic
-   *
-   * 3. **Font Mocking**: Mock next/font/google to avoid font loading
-   *    - Return a className for styling tests
-   *    - Prevents network requests in tests
-   *
-   * 4. **Component Mocking**: Mock child components for isolation
-   *    - Use data-testid for identifying mocked components
-   *    - Maintain same prop interface
-   *    - Focus tests on component under test
-   *
-   * 5. **i18n Testing**: Verify translation system usage
-   *    - Check for translation keys in output
-   *    - Ensure no hardcoded strings
-   *    - Test all translatable content
-   *
-   * 6. **Layout Testing**: Test CSS classes for layout
-   *    - Use querySelector for class-based selection
-   *    - Test semantic structure (flexbox, grid)
-   *    - Verify responsive classes
-   *
-   * 7. **Better Auth Integration**: session.data pattern
-   *    - data: null → unauthenticated
-   *    - data: { user } → authenticated
-   *    - isPending: loading state
-   *    - error: error state
-   */
 });

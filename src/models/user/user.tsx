@@ -1,4 +1,3 @@
- 
 import { IFavoriteMovieResponse } from '@/models/movie/movie';
 import { UserRole } from '@prisma/client';
 

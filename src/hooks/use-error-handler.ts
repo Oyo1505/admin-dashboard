@@ -7,7 +7,6 @@ import {
 import { useState } from 'react';
 
 interface UseErrorHandlerOptions extends ClientErrorOptions {
-   
   onError?: (error: unknown) => void; // eslint-disable-line no-unused-vars
   resetOnSuccess?: boolean;
 }

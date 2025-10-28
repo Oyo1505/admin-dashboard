@@ -2,7 +2,6 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IMovie } from '@/models/movie/movie';
-import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import type { Prisma } from '@prisma/client';
 import { cache } from 'react';
 
@@ -135,8 +134,6 @@ export const fetchMovies = cache(
           createdAt: 'desc',
         },
         take: pageParam,
-        //@ts-ignore
-        cacheStrategy: { ttl: CACHE_TTL_SHORT },
       });
 
       return {

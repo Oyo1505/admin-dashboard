@@ -14,7 +14,7 @@ export interface Language {
 }
 export type SelectLanguageProps = {
   language?: string;
-   
+
   onChangeLanguage: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   filters?: { language?: string };
   listLanguages: Language[];
@@ -22,7 +22,7 @@ export type SelectLanguageProps = {
 
 export type SelectSubtitlesProps = {
   subtitles?: string;
-   
+
   onChangeSubtitles: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   filters?: { subtitles?: string };
 };

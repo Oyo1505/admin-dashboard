@@ -1,10 +1,7 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { logError } from '@/lib/errors';
-import {
-  useFiltersMovieStore,
-  useMovieFormStore,
-} from '@/store/movie/movie-store';
+import { useMovieFormStore } from '@/store/movie/movie-store';
 import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -36,37 +33,19 @@ const Movies = ({
   offset?: number;
   viewport?: string;
 }) => {
-  const { filters } = useFiltersMovieStore();
   const { user } = useUserStore();
   const { moviesFromStore, setMoviesStore } = useMovieFormStore();
-  const searchQuery = () => {
-    if (!searchParams || Object.keys(searchParams).length === 0) return '';
 
-    return qs.stringify({
-      subtitles:
-        filters && filters?.subtitles && filters?.subtitles?.length > 0
-          ? filters.subtitles
-          : searchParams.subtitles || undefined,
-      language:
-        filters && filters?.language && filters?.language?.length > 0
-          ? filters.language
-          : searchParams.language || undefined,
-      decade:
-        filters && filters?.decade && filters?.decade > 0
-          ? filters.decade
-          : Number(searchParams.decade) > 0
-            ? Number(searchParams.decade)
-            : undefined,
-      genre:
-        filters && filters?.genre && filters?.genre?.length > 0
-          ? filters.genre
-          : searchParams.genre || undefined,
-      q:
-        filters && filters?.q && filters?.q?.length > 0
-          ? filters.q
-          : searchParams.q || undefined,
-    });
-  };
+  const searchQuery =
+    searchParams && Object.keys(searchParams).length > 0
+      ? qs.stringify({
+          subtitles: searchParams.subtitles || undefined,
+          language: searchParams.language || undefined,
+          decade: searchParams.decade ? Number(searchParams.decade) : undefined,
+          genre: searchParams.genre || undefined,
+          q: searchParams.q || undefined,
+        })
+      : '';
 
   const {
     data,
@@ -77,30 +56,25 @@ const Movies = ({
     isFetchingNextPage,
   } = useGetMoviesInfiniteScroll({
     pageParam: offset,
-    search:
-      searchParams && Object.keys(searchParams).length > 0 ? searchQuery() : '',
+    search: searchQuery,
   });
 
   const t = useTranslations('MoviesPage');
 
-  const filteredMovies = () => {
-    if (status === 'success') {
+  useEffect(() => {
+    if (status === 'success' && data) {
+      let movies = [];
       if (searchParams && Object.keys(searchParams).length > 0) {
-        return data?.pages[data.pages.length - 1]?.movies || [];
-      } else if (searchParams && Object.keys(searchParams)?.length === 0) {
-        return data?.pages[0]?.movies || [];
+        movies = data?.pages[data.pages.length - 1]?.movies || [];
+        setMoviesStore([]);
+      } else {
+        movies = data?.pages[0]?.movies || [];
+      }
+      if (movies?.length > 0) {
+        setMoviesStore(movies);
       }
     }
-
-    return [];
-  };
-
-  useEffect(() => {
-    const movies = filteredMovies();
-    if (movies?.length > 0) {
-      setMoviesStore(movies);
-    }
-  }, [filteredMovies, setMoviesStore]);
+  }, [data, status, searchParams, setMoviesStore]);
 
   const fecthNextMovie = () => {
     if (!isFetchingNextPage && hasNextPage) {
@@ -131,13 +105,13 @@ const Movies = ({
                 <MovieCardSearchPage
                   user={user}
                   movie={movie}
-                  key={`${movie?.id}-${index}`}
+                  key={movie?.id + '-' + index}
                 />
               ) : (
                 <MovieCardSearchPageMobileView
                   user={user}
                   movie={movie}
-                  key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}-mobile-view`}
+                  key={movie?.title + '-' + index + '-mobile-view'}
                 />
               )
             ) : null

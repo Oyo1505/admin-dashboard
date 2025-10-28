@@ -8,7 +8,12 @@ const SelectFilters = ({
   displayedOptionValues,
   titleLabel,
   defaultValue,
+  isClearing = false,
 }: SelectFiltersProps) => {
+  const selectValue = isClearing
+    ? ''
+    : ((filterKey && filters?.[filterKey]?.toString()) ?? '');
+
   return (
     <div className="flex flex-col gap-2 md:w-64">
       <LabelForm
@@ -20,9 +25,7 @@ const SelectFilters = ({
         aria-label={titleLabel}
         aria-describedby={`${titleLabel}-description`}
         onChange={onChange}
-        defaultValue={
-          defaultValue ?? (filterKey && filters?.[filterKey]?.toString()) ?? ''
-        }
+        value={selectValue}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
       >
         {displayedOptionValues}

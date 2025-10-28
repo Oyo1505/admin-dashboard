@@ -35,11 +35,10 @@ const Page = async (props: {
 
   return (
     <>
-      <SearchMovie search={search} offset={offset} />
+      <SearchMovie search={search} />
       <MovieFilters
         subtitles={subtitles}
         q={search}
-        offset={offset}
         decadeParams={decade}
         language={language}
         genres={genres ?? []}

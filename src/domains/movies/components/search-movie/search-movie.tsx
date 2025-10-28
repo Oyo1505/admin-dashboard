@@ -1,46 +1,31 @@
 'use client';
 import { SearchIcon } from '@/domains/ui/components/icons/icons';
 import { Input } from '@/domains/ui/components/input/input';
-import {
-  useFiltersMovieStore,
-  useMovieFormStore,
-} from '@/store/movie/movie-store';
+import { URL_MOVIES } from '@/shared/route';
+import { useFiltersMovieStore } from '@/store/movie/movie-store';
 import { useTranslations } from 'next-intl';
-import React, { useEffect, useRef } from 'react';
-import useMovieFilters from '../../hooks/use-movie-filters';
+import { useRouter } from 'next/navigation';
+import qs from 'qs';
+import React, { useRef } from 'react';
 
-const SearchMovie = ({
-  search,
-  offset,
-}: {
-  search: string;
-  offset: number;
-}) => {
+const SearchMovie = ({ search }: { search: string }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations('Filters');
-  const { filters, setFiltersData, hasBeenSearched, setHasBeenSearched } =
-    useFiltersMovieStore();
-  const { setMoviesStore } = useMovieFormStore();
+  const router = useRouter();
+  const { filters, setFiltersData } = useFiltersMovieStore();
   const [localSearch, setLocalSearch] = React.useState(search || '');
 
-  const { queryFilterSearch } = useMovieFilters({ offset });
-  const { data, status, refetch } = queryFilterSearch;
-  useEffect(() => {
-    if (hasBeenSearched) {
-      refetch();
-      setHasBeenSearched(false);
-    }
-  }, [hasBeenSearched, setHasBeenSearched, refetch]);
-
-  useEffect(() => {
-    if (data && data?.movies && status === 'success') {
-      setMoviesStore(data?.movies);
-    }
-  }, [data, setMoviesStore, status]);
-
   const onPressEnter = () => {
-    setHasBeenSearched(true);
+    const queryString = qs.stringify({
+      subtitles: filters?.subtitles || undefined,
+      language: filters?.language || undefined,
+      decade: filters?.decade || undefined,
+      genre: filters?.genre || undefined,
+      q: localSearch || undefined,
+    });
+    router.replace(`${URL_MOVIES}?${queryString}`);
   };
+
   return (
     <div className="relative mt-6 w-full md:w-4/6 m-auto">
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-background" />
