@@ -7,7 +7,7 @@ Cette application est une plateforme complète de gestion de films avec authenti
 ## ✨ Fonctionnalités
 
 ### 🎯 Fonctionnalités Principales
-- **Authentification sécurisée** avec NextAuth.js
+- **Authentification sécurisée** avec Better Auth
 - **Interface d'administration** pour la gestion des films
 - **Système de favoris** pour les utilisateurs
 - **Support multilingue** (Français, Anglais, Japonais)
@@ -33,7 +33,7 @@ Cette application est une plateforme complète de gestion de films avec authenti
 ## 🛠 Technologies
 
 ### Frontend
-- **[Next.js 15](https://nextjs.org/)** - Framework React avec App Router
+- **[Next.js 16](https://nextjs.org/)** - Framework React avec App Router
 - **[TypeScript](https://www.typescriptlang.org/)** - Typage statique
 - **[Tailwind CSS](https://tailwindcss.com/)** - Framework CSS utilitaire
 - **[React Hook Form](https://react-hook-form.com/)** - Gestion des formulaires
