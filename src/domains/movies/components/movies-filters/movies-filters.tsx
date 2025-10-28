@@ -109,7 +109,6 @@ const MovieFilters = ({
         <SelectFilters
           key="subtitles"
           titleLabel="subtitles"
-          defaultValue={String(subtitles ?? filters?.subtitles)}
           onChange={onChangeSubtitles}
           filters={filters}
           filterKey="subtitles"
@@ -130,7 +129,6 @@ const MovieFilters = ({
         <SelectFilters
           key="language"
           titleLabel="language"
-          defaultValue={String(language ?? filters?.language)}
           onChange={onChangeCountry}
           filters={filters}
           filterKey="language"
@@ -161,11 +159,6 @@ const MovieFilters = ({
         />
         <SelectFilters
           titleLabel="decade"
-          defaultValue={
-            !decadeParams && !filters?.decade
-              ? ''
-              : String(decadeParams ?? filters?.decade)
-          }
           onChange={onChangeDecade}
           filters={{ decade: filters?.decade }}
           filterKey="decade"
@@ -186,7 +179,6 @@ const MovieFilters = ({
         <SelectFilters
           key={'genre'}
           titleLabel="genre"
-          defaultValue={genre ?? filters?.genre}
           onChange={onChangeGenre}
           filters={filters}
           filterKey="genre"
