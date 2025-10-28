@@ -4,11 +4,13 @@ import { Locale } from '@/models/lang/lang';
 import { IGenre } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { decades } from '@/shared/constants/decade';
+import { URL_MOVIES } from '@/shared/route';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
-import { useMovieFormStore } from '@/store/movie/movie-store';
+import { useFiltersMovieStore } from '@/store/movie/movie-store';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import useMovieFilters from '../../hooks/use-movie-filters';
+import { useRouter } from 'next/navigation';
+import qs from 'qs';
+import { useEffect, useState } from 'react';
 import SelectFilters from '../movie-filter_select-filters/movie-filter_select-filters';
 
 const MovieFilters = ({
@@ -17,7 +19,6 @@ const MovieFilters = ({
   language,
   genres,
   genre,
-  offset,
   decadeParams,
   countries,
 }: {
@@ -25,101 +26,77 @@ const MovieFilters = ({
   language?: string;
   genres?: IGenre[];
   genre?: string;
-  offset: number;
   decadeParams?: number;
   q?: string;
   countries: string[];
 }) => {
   const t = useTranslations('Filters');
-  const [isMounted, setIsMounted] = useState(false);
-  const { setMoviesStore } = useMovieFormStore();
+  const [isClearing, setIsClearing] = useState(false);
   const locale = useLocale() as Locale;
-  const {
-    onChangeSubtitles,
-    onChangeCountry,
-    onChangeDecade,
-    onChangeGenre,
-    filters,
-    setFiltersData,
-    setHasBeenSearched,
-    hasBeenSearched,
-    onClick,
-    onClickClearSearch,
-    queryFilterSearch,
-  } = useMovieFilters({ offset });
-
-  const { data, status, refetch } = queryFilterSearch;
-
-  useLayoutEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const router = useRouter();
+  const { filters, setFiltersData, clearFilters } = useFiltersMovieStore();
 
   useEffect(() => {
-    if (
-      isMounted &&
-      (genre !== '' ||
-        language !== '' ||
-        subtitles !== '' ||
-        q !== '' ||
-        (decadeParams && decadeParams > 0))
-    ) {
+    const hasUrlParams = subtitles || language || decadeParams || genre || q;
+    if (hasUrlParams) {
       setFiltersData({
-        ...filters,
-        genre,
-        language,
-        subtitles,
-        decade: decadeParams,
-        q,
+        subtitles: subtitles || undefined,
+        language: language || undefined,
+        decade: decadeParams || undefined,
+        genre: genre || undefined,
+        q: q || undefined,
       });
-      setIsMounted(false);
-      refetch();
     }
-  }, [
-    filters,
-    setFiltersData,
-    isMounted,
-    genre,
-    language,
-    refetch,
-    status,
-    subtitles,
-    decadeParams,
-    q,
-  ]);
+  }, [subtitles, language, decadeParams, genre, q, setFiltersData]);
 
-  useEffect(() => {
-    if (hasBeenSearched) {
-      refetch();
-      setHasBeenSearched(false);
-    }
-  }, [hasBeenSearched, setHasBeenSearched, refetch]);
+  const onChangeSubtitles = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFiltersData({ ...filters, subtitles: e.target.value });
+  };
 
-  useEffect(() => {
-    if (data && data?.movies && status === 'success') {
-      setMoviesStore(data?.movies);
-    }
-  }, [data, setMoviesStore, status]);
+  const onChangeCountry = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFiltersData({ ...filters, language: e.target.value });
+  };
 
-  const listCountries = useMemo(
-    () => countriesList.filter((country) => countries?.includes(country.value)),
-    [countries]
+  const onChangeDecade = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFiltersData({ ...filters, decade: Number(e.target.value) });
+  };
+
+  const onChangeGenre = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFiltersData({ ...filters, genre: e.target.value });
+  };
+
+  const onClick = () => {
+    const queryString = qs.stringify({
+      subtitles: filters?.subtitles || undefined,
+      language: filters?.language || undefined,
+      decade: filters?.decade || undefined,
+      genre: filters?.genre || undefined,
+      q: filters?.q || undefined,
+    });
+    router.replace(`${URL_MOVIES}?${queryString}`);
+  };
+
+  const onClickClearSearch = () => {
+    clearFilters();
+    router.replace(URL_MOVIES);
+  };
+
+  const listCountries = countriesList.filter((country) =>
+    countries?.includes(country.value)
   );
 
-  const genresSorted = useMemo(
-    () =>
-      genres?.sort(
-        (
-          a: { nameFR: string; nameJP: string; nameEN: string },
-          b: { nameFR: string; nameJP: string; nameEN: string }
-        ) =>
-          locale === 'fr'
-            ? a.nameFR.localeCompare(b.nameFR)
-            : locale === 'jp'
-              ? a.nameJP.localeCompare(b.nameJP)
-              : a.nameEN.localeCompare(b.nameEN)
-      ),
-    [genres, locale]
+  const genresSorted = genres?.sort(
+    (
+      a: { nameFR: string; nameJP: string; nameEN: string },
+      b: { nameFR: string; nameJP: string; nameEN: string }
+    ) =>
+      locale === 'fr'
+        ? a.nameFR.localeCompare(b.nameFR)
+        : locale === 'jp'
+          ? a.nameJP.localeCompare(b.nameJP)
+          : a.nameEN.localeCompare(b.nameEN)
   );
+
   const subtitlesList = {
     EN: t('subtitlesEN'),
     JP: t('subtitlesJP'),
@@ -136,6 +113,7 @@ const MovieFilters = ({
           onChange={onChangeSubtitles}
           filters={filters}
           filterKey="subtitles"
+          isClearing={isClearing}
           displayedOptionValues={
             <>
               <option value="" disabled>
@@ -156,6 +134,7 @@ const MovieFilters = ({
           onChange={onChangeCountry}
           filters={filters}
           filterKey="language"
+          isClearing={isClearing}
           displayedOptionValues={
             <>
               <option value="" disabled>
@@ -190,6 +169,7 @@ const MovieFilters = ({
           onChange={onChangeDecade}
           filters={{ decade: filters?.decade }}
           filterKey="decade"
+          isClearing={isClearing}
           displayedOptionValues={
             <>
               <option value="" disabled>
@@ -210,12 +190,12 @@ const MovieFilters = ({
           onChange={onChangeGenre}
           filters={filters}
           filterKey="genre"
+          isClearing={isClearing}
           displayedOptionValues={
             <>
               <option value="" disabled>
                 {t('genre')}
               </option>
-
               {genresSorted?.map(
                 (
                   genre: {
@@ -247,7 +227,11 @@ const MovieFilters = ({
         <ButtonSearch
           className="w-full hover:cursor-pointer md:w-full lg:max-w-56 transition-all duration-300 bg-background text-white border-white border-1"
           btnText={t('btnClearSearch')}
-          onClick={onClickClearSearch}
+          onClick={() => {
+            setIsClearing(true);
+            onClickClearSearch();
+            setTimeout(() => setIsClearing(false), 100);
+          }}
         />
       </div>
     </div>

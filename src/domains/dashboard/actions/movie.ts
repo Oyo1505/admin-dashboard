@@ -71,7 +71,7 @@ export const addMovieToDb = async (
     });
 
     revalidatePath(URL_DASHBOARD_ROUTE.movie);
-    return { status: 200, message: 'Film ajouté avec succès' };
+    return { status: 200, message: 'Success : Movie added' };
   } catch (error) {
     logError(error, 'addMovieToDb');
     const appError = handlePrismaError(error);

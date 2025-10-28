@@ -3,6 +3,7 @@ import { IDirector } from '@/models/director/director';
 import { IMovie } from '@/models/movie/movie';
 import { cache } from 'react';
 import 'server-only';
+import { logError } from '../errors';
 
 export const getDirectorMovies = cache(
   async (): Promise<{
@@ -57,6 +58,7 @@ export const getDirectorFromSection = cache(
         status: 200,
       };
     } catch (error) {
+      logError(error, 'director');
       return Response.json({ error: 'Internal server error' }, { status: 500 });
     }
   }

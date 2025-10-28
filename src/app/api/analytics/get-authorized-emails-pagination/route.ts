@@ -1,3 +1,4 @@
+import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 
 export async function GET(request: Request): Promise<Response> {
@@ -31,6 +32,7 @@ export async function GET(request: Request): Promise<Response> {
       { status: 200 }
     );
   } catch (error) {
+    logError(error, 'get-authorized-emails-pagination');
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

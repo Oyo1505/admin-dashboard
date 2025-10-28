@@ -10,11 +10,11 @@ interface UseMovieDataProps {
 
 interface UseMovieDataReturn {
   getDefaultValues: (
-    movie?: IMovie, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-    idFromGoogleDrive?: string // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    movie?: IMovie, // eslint-disable-line no-unused-vars
+    idFromGoogleDrive?: string // eslint-disable-line no-unused-vars
   ) => Partial<MovieSchema>;
   transformFormData: (
-    data: MovieSchema // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    data: MovieSchema // eslint-disable-line no-unused-vars
   ) => IMovieFormData | IUpdateMovieData;
   getMoviePublish: UseQueryResult<
     { publish?: boolean; status: number } | undefined,

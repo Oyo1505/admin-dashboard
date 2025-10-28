@@ -1,8 +1,7 @@
-import { memo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-const MoviesSkeleton = memo(() => {
+const MoviesSkeleton = () => {
   return (
     <>
       <div className="flex flex-row gap-4 mt-6 items-start flex-wrap justify-center lg:justify-start">
@@ -27,6 +26,5 @@ const MoviesSkeleton = memo(() => {
       </div>
     </>
   );
-});
-MoviesSkeleton.displayName = 'MoviesSkeleton';
+};
 export default MoviesSkeleton;

@@ -13,8 +13,8 @@ interface IUser extends User {
 interface UserStore {
   user: IUser;
   connected: boolean;
-  setUser: (user: IUser, connected: boolean) => void; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
-  fetchUser: (email: string) => Promise<void>; // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  setUser: (user: IUser, connected: boolean) => void; // eslint-disable-line no-unused-vars
+  fetchUser: (email: string) => Promise<void>; // eslint-disable-line no-unused-vars
   logout: () => void;
   login: () => void;
 }

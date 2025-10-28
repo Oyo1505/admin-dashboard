@@ -1,4 +1,5 @@
 import { IUserAnalytics } from '@/lib/data/users';
+import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 
 export async function GET(): Promise<Response> {
@@ -35,6 +36,7 @@ export async function GET(): Promise<Response> {
 
     return Response.json({ transformedUsers }, { status: 200 });
   } catch (error) {
+    logError(error, 'get-all-analytics-users-visits error');
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

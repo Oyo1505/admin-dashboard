@@ -98,7 +98,7 @@ export function getErrorMessage(code: string, defaultMessage: string): string {
 
 export class ClientErrorHandler {
   private static instance: ClientErrorHandler;
-  private errorCallbacks: Map<string, (error: unknown) => void> = new Map(); // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  private errorCallbacks: Map<string, (error: unknown) => void> = new Map(); // eslint-disable-line no-unused-vars
 
   static getInstance(): ClientErrorHandler {
     if (!ClientErrorHandler.instance) {
@@ -108,7 +108,7 @@ export class ClientErrorHandler {
   }
   onError(
     errorCode: string,
-    callback: (error: unknown) => void // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+    callback: (error: unknown) => void // eslint-disable-line no-unused-vars
   ): void {
     this.errorCallbacks.set(errorCode, callback);
   }
@@ -133,7 +133,7 @@ export class ClientErrorHandler {
 }
 
 export function withClientErrorHandling<T extends unknown[], R>(
-  fn: (...args: T) => Promise<R>, // eslint-disable-line @typescript-eslint/no-unused-vars, no-unused-vars
+  fn: (...args: T) => Promise<R>, // eslint-disable-line no-unused-vars
   options: ClientErrorOptions = {}
 ) {
   return async (...args: T): Promise<R | null> => {

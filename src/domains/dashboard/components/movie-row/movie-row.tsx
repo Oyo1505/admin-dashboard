@@ -10,7 +10,7 @@ import {
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { deleteMovieById } from '../../actions/movie';
 import { useMovieData } from '../../hooks/useMovieData';
 
@@ -36,12 +36,10 @@ function MovieRow({
 
   const { getMoviePublish } = useMovieData({ editMovie: false, movie });
   const { data, isFetching, refetch, status } = getMoviePublish;
-  useEffect(() => {
-    if (status === 'success' && data?.publish !== undefined) {
-      setIsMoviePublished(data.publish);
-    }
-  }, [data, status]);
 
+  if (status === 'success' && data?.publish !== undefined) {
+    setIsMoviePublished(data.publish);
+  }
   const hasPermissionToDelete = checkPermissions(user, 'can:delete', 'movie');
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { IFavoriteMovieResponse } from '@/models/movie/movie';
 import { UserRole } from '@prisma/client';
 

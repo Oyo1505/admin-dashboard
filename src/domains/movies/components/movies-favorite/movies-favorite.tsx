@@ -5,10 +5,10 @@ import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo } from 'react';
+
 import imageDefault from '../../../../assets/image/default-placeholder.png';
 
-const MoviesFavorite = memo(({ movies }: { movies?: IMovie[] }) => {
+const MoviesFavorite = ({ movies }: { movies?: IMovie[] }) => {
   const t = useTranslations('Dashboard');
   const locale = useLocale();
   return (
@@ -42,6 +42,6 @@ const MoviesFavorite = memo(({ movies }: { movies?: IMovie[] }) => {
         : t('noMovie')}
     </div>
   );
-});
-MoviesFavorite.displayName = 'MoviesFavorite';
+};
+
 export default MoviesFavorite;

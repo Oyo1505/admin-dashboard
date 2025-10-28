@@ -63,6 +63,7 @@ export type SelectFiltersProps = {
   // eslint-disable-next-line no-unused-vars
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   filters?: Partial<IFilters>;
+  isClearing?: boolean;
 };
 
 export interface IMovieFormData {

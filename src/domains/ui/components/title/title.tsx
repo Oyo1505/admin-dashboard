@@ -1,35 +1,33 @@
 import cn from 'clsx';
 import { useTranslations } from 'next-intl';
-import React, { memo, type JSX } from 'react';
+import React, { JSX } from 'react';
 
-const Title = memo(
-  ({
-    translationTheme,
-    translationText,
-    type = 'h1',
-    text,
-    children,
-    className,
-    textColor = 'text-primary',
-  }: {
-    translationTheme?: string;
-    translationText?: string;
-    type: string;
-    text?: string;
-    textColor?: string;
-    children?: React.ReactNode;
-    className?: string;
-  }) => {
-    const t = useTranslations(translationTheme);
-    const Tag = type.toLowerCase() as keyof JSX.IntrinsicElements;
+const Title = ({
+  translationTheme,
+  translationText,
+  type = 'h1',
+  text,
+  children,
+  className,
+  textColor = 'text-primary',
+}: {
+  translationTheme?: string;
+  translationText?: string;
+  type: string;
+  text?: string;
+  textColor?: string;
+  children?: React.ReactNode;
+  className?: string;
+}) => {
+  const t = useTranslations(translationTheme);
+  const Tag = type.toLowerCase() as keyof JSX.IntrinsicElements;
 
-    return (
-      <Tag className={cn(className, textColor)}>
-        {text || (translationText && t(translationText))}
-        {children}
-      </Tag>
-    );
-  }
-);
-Title.displayName = 'Title';
+  return (
+    <Tag className={cn(className, textColor)}>
+      {text || (translationText && t(translationText))}
+      {children}
+    </Tag>
+  );
+};
+
 export default Title;

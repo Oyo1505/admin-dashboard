@@ -54,6 +54,7 @@ interface FiltersMovieState {
   setFiltersData: (data: Partial<IFilters>) => void;
   // eslint-disable-next-line no-unused-vars
   setHasBeenSearched: (val: boolean) => void;
+  clearFilters: () => void;
 }
 
 interface IGenreStore {
@@ -78,6 +79,16 @@ const useFiltersMovieStore = create<FiltersMovieState>((set) => ({
       },
     })),
   setHasBeenSearched: (boolean) => set({ hasBeenSearched: boolean }),
+  clearFilters: () =>
+    set({
+      filters: {
+        subtitles: undefined,
+        language: undefined,
+        genre: undefined,
+        q: undefined,
+        decade: undefined,
+      },
+    }),
 }));
 
 const useGenreStore = create<IGenreStore>((set) => ({
