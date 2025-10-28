@@ -7,7 +7,6 @@ const SelectFilters = ({
   filterKey,
   displayedOptionValues,
   titleLabel,
-  defaultValue,
   isClearing = false,
 }: SelectFiltersProps) => {
   const selectValue = isClearing
