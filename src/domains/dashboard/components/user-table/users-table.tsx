@@ -81,7 +81,6 @@ function UserRow({ user }: { user: User }) {
         await deleteUserById({
           id: userId,
           user: userConnected,
-          token: session?.data,
         });
       }
     } catch (err) {
