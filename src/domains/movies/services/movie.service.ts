@@ -1,5 +1,5 @@
+import { MovieData } from '@/lib/data/movies';
 import { handlePrismaError, logError } from '@/lib/errors';
-import prisma from '@/lib/prisma';
 import {
   IFavoriteMovieResponse,
   IMovieFormData,
@@ -34,41 +34,13 @@ export class MovieService {
         return { status: 400, message: 'Au moins un genre est requis' };
       }
 
-      const existingMovie = await prisma.movie.findUnique({
-        where: { idGoogleDive: movie.idGoogleDive || '' },
-      });
+      const { existingMovie } = await MovieData.findByGoogleDriveId(movie);
 
       if (existingMovie) {
         return { status: 409, message: 'Le film existe déjà' };
       }
 
-      await prisma.movie.create({
-        data: {
-          title: movie.title,
-          titleEnglish: movie.titleEnglish,
-          titleJapanese: movie.titleJapanese,
-          link: movie.link || '',
-          image: movie.image || movie.link || '',
-          director: movie.director,
-          imdbId: movie.imdbId,
-          originalTitle: movie.originalTitle,
-          duration: movie.duration ? Number(movie.duration) : null,
-          idGoogleDive: movie.idGoogleDive,
-          language: movie.language,
-          subtitles: movie.subtitles || [],
-          year: movie.year ? Number(movie.year) : null,
-          genresIds: {
-            create: movie.genresIds.map((genreId) => ({
-              genre: {
-                connect: { id: genreId.toString() },
-              },
-            })),
-          },
-          country: movie.country,
-          synopsis: movie.synopsis,
-          trailer: movie.trailer,
-        },
-      });
+      await MovieData.create(movie);
 
       revalidatePath(URL_DASHBOARD_ROUTE.movie);
       return { status: 200, message: 'Success : Movie added' };
@@ -90,11 +62,7 @@ export class MovieService {
         };
       }
 
-      const movieInDb = await prisma.movie.findUnique({
-        where: {
-          id: movie.id,
-        },
-      });
+      const { movie: movieInDb } = await MovieData.findUnique(movie.id);
 
       if (!movieInDb) {
         return { status: 404, message: "Le film n'existe pas" };
@@ -108,37 +76,7 @@ export class MovieService {
         return { status: 400, message: 'Au moins un genre est requis' };
       }
 
-      await prisma.movie.update({
-        where: {
-          id: movie.id,
-        },
-        data: {
-          title: movie.title,
-          titleEnglish: movie.titleEnglish,
-          titleJapanese: movie.titleJapanese,
-          link: movie.link || '',
-          image: movie.image || movie.link || '',
-          director: movie.director,
-          imdbId: movie.imdbId,
-          originalTitle: movie.originalTitle,
-          duration: Number(movie.duration),
-          idGoogleDive: movie.idGoogleDive,
-          language: movie.language,
-          subtitles: movie.subtitles || [],
-          year: Number(movie.year),
-          genresIds: {
-            deleteMany: {},
-            create: movie.genresIds.map((genreId) => ({
-              genre: {
-                connect: { id: genreId.toString() },
-              },
-            })),
-          },
-          country: movie.country,
-          synopsis: movie.synopsis,
-          trailer: movie.trailer,
-        },
-      });
+      await MovieData.update(movie);
 
       revalidatePath(URL_DASHBOARD_ROUTE.movie);
       return { status: 200, message: 'Film modifié avec succès' };
@@ -165,12 +103,7 @@ export class MovieService {
           message: 'ID du film est requis',
         };
       }
-
-      await prisma.movie.delete({
-        where: {
-          id,
-        },
-      });
+      await MovieData.delete(id);
       revalidatePath('/dashboard/add-movie');
       return { status: 200 };
     } catch (error) {
@@ -178,11 +111,8 @@ export class MovieService {
       const appError = handlePrismaError(error);
       return { status: appError.statusCode };
     }
-    return {
-      status: 400,
-      message: 'ID du film est requis',
-    };
   }
+
   static async handlePublishMovie(
     id: string
   ): Promise<{ publish?: boolean; status: number }> {
@@ -191,23 +121,18 @@ export class MovieService {
         return { publish: false, status: 400 };
       }
 
-      const movie = await prisma.movie.findUnique({
-        where: { id },
-        select: { id: true, publish: true },
-      });
+      const { movie } = await MovieData.findUniqueMoviePublished(id);
 
       if (!movie) {
         return { publish: false, status: 404 };
       }
 
-      const updatedMovie = await prisma.movie.update({
-        where: { id },
-        data: { publish: !movie.publish },
-        select: { publish: true },
-      });
-
+      const { publish, status } = await MovieData.togglePublish(
+        id,
+        movie?.publish
+      );
       revalidatePath(URL_DASHBOARD_ROUTE.movie);
-      return { publish: updatedMovie.publish, status: 200 };
+      return { publish, status };
     } catch (error) {
       logError(error, 'publishedMovieById');
       const appError = handlePrismaError(error);
@@ -218,39 +143,11 @@ export class MovieService {
     id: string
   ): Promise<{ movies?: IFavoriteMovieResponse[]; status: number }> {
     try {
-      const movies = await prisma.userFavoriteMovies.findMany({
-        relationLoadStrategy: 'join',
-        where: {
-          userId: id,
-        },
-        include: {
-          movie: {
-            include: {
-              genresIds: {
-                select: {
-                  genre: {
-                    select: {
-                      id: true,
-                      nameFR: true,
-                      nameEN: true,
-                      nameJP: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      });
-      return {
-        movies: movies.map((movie) => ({
-          ...movie,
-          id: movie.id.toString(),
-        })),
-        status: 200,
-      };
+      const { movies, status } = await MovieData.findManyFavorite(id);
+
+      return { movies, status };
     } catch (error) {
-      logError(error, 'getFavoriteMovies');
+      logError(error, 'favoriteMovies');
       const appError = handlePrismaError(error);
       return { status: appError.statusCode };
     }

@@ -4,20 +4,20 @@ import { IMovie } from '@/models/movie/movie';
 import { Prisma } from '@prisma/client';
 
 /**
- * Service gérant les opérations liées aux films
+ * Service managing movie-related operations
  */
 export class MoviesService {
   /**
-   * Récupère une liste de films avec pagination et filtres
-   * @param pageParam - Nombre de films à récupérer
-   * @param search - Paramètres de recherche (URLSearchParams string)
-   * Paramètres supportés:
-   * - q: recherche textuelle (titre, réalisateur)
-   * - subtitles: filtre par sous-titres
-   * - language: filtre par pays/langue
-   * - decade: filtre par décennie (ex: 1990)
-   * - genre: filtre par genre (FR/EN/JP)
-   * @returns Liste de films, statut HTTP, et offset précédent
+   * Retrieves a list of movies with pagination and filters
+   * @param pageParam - Number of movies to retrieve
+   * @param search - Search parameters (URLSearchParams string)
+   * Supported parameters:
+   * - q: text search (title, director)
+   * - subtitles: filter by subtitles
+   * - language: filter by country/language
+   * - decade: filter by decade (e.g., 1990)
+   * - genre: filter by genre (FR/EN/JP)
+   * @returns List of movies, HTTP status, and previous offset
    */
   static async fetchMovies({
     pageParam,
@@ -59,7 +59,7 @@ export class MoviesService {
         };
       }
 
-      // Extraction des paramètres de recherche
+      // Extract search parameters
       const params = new URLSearchParams(search);
       const subtitles = params.get('subtitles');
       const language = params.get('language');
@@ -67,10 +67,10 @@ export class MoviesService {
       const genre = params.get('genre');
       const q = params.get('q');
 
-      // Conditions pour la requête
+      // Conditions for the query
       const conditions: Prisma.MovieWhereInput = {};
 
-      // Ajout des conditions OR basées sur la recherche 'q'
+      // Add OR conditions based on 'q' search
       if (q && q.length > 0) {
         conditions.OR = [
           { title: { contains: q, mode: 'insensitive' } },
@@ -81,7 +81,7 @@ export class MoviesService {
         ];
       }
 
-      // Ajout des conditions AND selon les paramètres facultatifs
+      // Add AND conditions based on optional parameters
       conditions.AND = [];
       if (subtitles) {
         conditions.AND.push({ subtitles: { has: subtitles } });
@@ -121,7 +121,7 @@ export class MoviesService {
         });
       }
 
-      // Concaténation des conditions OR et AND si elles existent
+      // Concatenate OR and AND conditions if they exist
       const whereClause: Prisma.MovieWhereInput = {
         ...(conditions.OR?.length ? { OR: conditions.OR } : {}),
         ...(conditions.AND?.length ? { AND: conditions.AND } : {}),

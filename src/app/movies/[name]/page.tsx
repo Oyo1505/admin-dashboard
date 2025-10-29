@@ -6,7 +6,7 @@ import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/m
 import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion';
 import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
-import { getAllMoviesWithGenres } from '@/lib/data/movies';
+import { MovieData } from '@/lib/data/movies';
 import VideoPlayerYoutube from '@/shared/components/video-player-youtube/video-player-youtube';
 import clsx from 'clsx';
 import { Lobster } from 'next/font/google';
@@ -26,7 +26,7 @@ export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const { movieInDb } = await getAllMoviesWithGenres();
+  const { movieInDb } = await MovieData.getAllMoviesWithGenres();
   return (movieInDb ?? []).map((movie) => ({
     name: movie.id,
   }));

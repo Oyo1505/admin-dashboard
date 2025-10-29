@@ -111,10 +111,7 @@ describe('UserService', () => {
     });
 
     it('should return 400 when search is not a string', async () => {
-      const result = await UserService.getUsersWithPageParam(
-        123 as any,
-        10
-      );
+      const result = await UserService.getUsersWithPageParam(123 as any, 10);
 
       expect(result).toEqual({ status: 400 });
       expect(prisma.user.findMany).not.toHaveBeenCalled();
@@ -159,7 +156,9 @@ describe('UserService', () => {
         id: 'target-user',
         name: 'Target User',
       });
-      (prisma.user.delete as jest.Mock).mockResolvedValue({ id: 'target-user' });
+      (prisma.user.delete as jest.Mock).mockResolvedValue({
+        id: 'target-user',
+      });
 
       const result = await UserService.deleteUser({
         id: 'target-user',
