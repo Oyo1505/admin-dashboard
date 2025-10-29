@@ -8,12 +8,9 @@ import MoviesHomeSectionSkeleton from '@/domains/skeleton/components/movie-home-
 import MoviesHomeThemeSkeleton from '@/domains/skeleton/components/movies-home-theme/movies-home-theme';
 import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
-import { getDirectorMovies } from '@/lib/data/director';
-import {
-  getLastMovies,
-  getMoviesByARandomCountry,
-  getMoviesByARandomGenre,
-} from '@/lib/data/movies';
+import { DirectorData } from '@/lib/data/director';
+
+import { MovieData } from '@/lib/data/movies';
 import { IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
@@ -39,11 +36,11 @@ async function getData() {
     favorites,
     directorMoviesData,
   ] = await Promise.all([
-    getLastMovies(),
-    getMoviesByARandomCountry(),
-    getMoviesByARandomGenre(),
+    MovieData.getLastMovies(),
+    MovieData.getMoviesByARandomCountry(),
+    MovieData.getMoviesByARandomGenre(),
     getFavoriteMovies('zkbP2ZiwkJzmgD3t3xF0k4tUlPRTZemQ'),
-    getDirectorMovies(),
+    DirectorData.getDirectorMovies(),
   ]);
 
   const { movies: moviesByARandomCountry, country } =

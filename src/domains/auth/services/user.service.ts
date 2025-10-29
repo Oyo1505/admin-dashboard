@@ -5,14 +5,14 @@ import { URL_DASHBOARD_ROUTE, URL_HOME } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
 /**
- * Service gérant les opérations liées aux utilisateurs
+ * Service managing user-related operations
  */
 export class UserService {
   /**
-   * Récupère une liste d'utilisateurs avec pagination et recherche
-   * @param search - Terme de recherche (nom d'utilisateur)
-   * @param pageParam - Nombre d'utilisateurs à récupérer
-   * @returns Liste d'utilisateurs, offset suivant, et statut HTTP
+   * Retrieves a list of users with pagination and search
+   * @param search - Search term (username)
+   * @param pageParam - Number of users to retrieve
+   * @returns List of users, next offset, and HTTP status
    */
   static async getUsersWithPageParam(
     search: string,

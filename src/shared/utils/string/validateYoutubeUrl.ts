@@ -1,34 +1,34 @@
 /**
- * Valide si une URL est une URL YouTube valide
- * @param url - L'URL à valider
- * @returns true si l'URL est valide, false sinon
+ * Validates if a URL is a valid YouTube URL
+ * @param url - The URL to validate
+ * @returns true if the URL is valid, false otherwise
  */
 export const isValidYoutubeUrl = (url: string): boolean => {
   if (!url || typeof url !== 'string') return false;
 
-  // Vérifier si l'URL commence par data: (non autorisé par CORS)
+  // Check if the URL starts with data: (not allowed by CORS)
   if (url.startsWith('data:')) return false;
 
-  // Vérifier si c'est une URL YouTube valide
+  // Check if it's a valid YouTube URL
   const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
   return youtubeRegex.test(url);
 };
 
 /**
- * Nettoie et valide une URL YouTube
- * @param url - L'URL à nettoyer
- * @returns L'URL nettoyée ou null si invalide
+ * Cleans and validates a YouTube URL
+ * @param url - The URL to clean
+ * @returns The cleaned URL or null if invalid
  */
 export const cleanYoutubeUrl = (url: string): string | null => {
   if (!url || typeof url !== 'string') return null;
 
-  // Si l'URL commence par data:, elle est invalide
+  // If the URL starts with data:, it's invalid
   if (url.startsWith('data:')) return null;
 
-  // Nettoyer l'URL
+  // Clean the URL
   const cleanedUrl = url.trim();
 
-  // Vérifier si c'est une URL YouTube valide
+  // Check if it's a valid YouTube URL
   if (isValidYoutubeUrl(cleanedUrl)) {
     return cleanedUrl;
   }
@@ -37,9 +37,9 @@ export const cleanYoutubeUrl = (url: string): string | null => {
 };
 
 /**
- * Extrait l'ID de la vidéo YouTube d'une URL
- * @param url - L'URL YouTube
- * @returns L'ID de la vidéo ou null si invalide
+ * Extracts the YouTube video ID from a URL
+ * @param url - The YouTube URL
+ * @returns The video ID or null if invalid
  */
 export const extractYoutubeVideoId = (url: string): string | null => {
   if (!isValidYoutubeUrl(url)) return null;

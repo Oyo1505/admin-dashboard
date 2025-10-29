@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { handlePrismaError, logError } from '@/lib/errors';
 import checkPermissionsRoleFromSession from '@/shared/utils/permissions/checkPermissionsRoleFromSession';
 import { IMovieFormData, IUpdateMovieData } from '@/models/movie/movie';
+import { MovieData } from '@/lib/data/movies';
 
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
@@ -17,6 +18,19 @@ jest.mock('@/lib/prisma', () => ({
     userFavoriteMovies: {
       findMany: jest.fn(),
     },
+  },
+}));
+
+jest.mock('@/lib/data/movies', () => ({
+  MovieData: {
+    findByGoogleDriveId: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+    togglePublish: jest.fn(),
+    findManyFavorite: jest.fn(),
+    findUniqueMoviePublished: jest.fn(),
+    findUnique: jest.fn(),
   },
 }));
 
@@ -67,8 +81,14 @@ describe('MovieService', () => {
       (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
         status: 200,
       });
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue(null);
-      (prisma.movie.create as jest.Mock).mockResolvedValue({ id: '1' });
+      (MovieData.findByGoogleDriveId as jest.Mock).mockResolvedValue({
+        existingMovie: undefined,
+        status: 400,
+      });
+      (MovieData.create as jest.Mock).mockResolvedValue({
+        movie: { id: '1' },
+        status: 200,
+      });
 
       const result = await MovieService.addMovie(mockMovieData);
 
@@ -77,10 +97,8 @@ describe('MovieService', () => {
         message: 'Success : Movie added',
       });
       expect(checkPermissionsRoleFromSession).toHaveBeenCalled();
-      expect(prisma.movie.findUnique).toHaveBeenCalledWith({
-        where: { idGoogleDive: mockMovieData.idGoogleDive },
-      });
-      expect(prisma.movie.create).toHaveBeenCalled();
+      expect(MovieData.findByGoogleDriveId).toHaveBeenCalledWith(mockMovieData);
+      expect(MovieData.create).toHaveBeenCalled();
     });
 
     it('should return 403 when user lacks ADMIN permissions', async () => {
@@ -132,8 +150,9 @@ describe('MovieService', () => {
       (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
         status: 200,
       });
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue({
-        id: 'existing-id',
+      (MovieData.findByGoogleDriveId as jest.Mock).mockResolvedValue({
+        existingMovie: { id: 'existing-id' },
+        status: 200,
       });
 
       const result = await MovieService.addMovie(mockMovieData);
@@ -142,17 +161,20 @@ describe('MovieService', () => {
         status: 409,
         message: 'Le film existe déjà',
       });
-      expect(prisma.movie.create).not.toHaveBeenCalled();
+      expect(MovieData.create).not.toHaveBeenCalled();
     });
 
     it('should handle database errors', async () => {
       (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
         status: 200,
       });
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue(null);
+      (MovieData.findByGoogleDriveId as jest.Mock).mockResolvedValue({
+        existingMovie: undefined,
+        status: 400,
+      });
 
       const mockError = new Error('Database error');
-      (prisma.movie.create as jest.Mock).mockRejectedValue(mockError);
+      (MovieData.create as jest.Mock).mockRejectedValue(mockError);
 
       const result = await MovieService.addMovie(mockMovieData);
 
@@ -185,14 +207,21 @@ describe('MovieService', () => {
       idGoogleDive: 'google-drive-id-123',
       imdbId: 'tt1375666',
       originalTitle: 'Inception',
+      upadateAt: new Date(),
     };
 
     it('should update a movie successfully', async () => {
       (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
         status: 200,
       });
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue({ id: '1' });
-      (prisma.movie.update as jest.Mock).mockResolvedValue({ id: '1' });
+      (MovieData.findUnique as jest.Mock).mockResolvedValue({
+        movie: { id: '1' },
+        status: 200,
+      });
+      (MovieData.update as jest.Mock).mockResolvedValue({
+        movie: { id: '1' },
+        status: 200,
+      });
 
       const result = await MovieService.updateMovie(mockUpdateData);
 
@@ -200,7 +229,7 @@ describe('MovieService', () => {
         status: 200,
         message: 'Film modifié avec succès',
       });
-      expect(prisma.movie.update).toHaveBeenCalled();
+      expect(MovieData.update).toHaveBeenCalled();
     });
 
     it('should return 403 when user lacks ADMIN permissions', async () => {
@@ -222,7 +251,10 @@ describe('MovieService', () => {
       (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
         status: 200,
       });
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue(null);
+      (MovieData.findUnique as jest.Mock).mockResolvedValue({
+        movie: undefined,
+        status: 404,
+      });
 
       const result = await MovieService.updateMovie(mockUpdateData);
 
@@ -230,14 +262,17 @@ describe('MovieService', () => {
         status: 404,
         message: "Le film n'existe pas",
       });
-      expect(prisma.movie.update).not.toHaveBeenCalled();
+      expect(MovieData.update).not.toHaveBeenCalled();
     });
 
     it('should return 400 when genres are missing', async () => {
       (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
         status: 200,
       });
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue({ id: '1' });
+      (MovieData.findUnique as jest.Mock).mockResolvedValue({
+        movie: { id: '1' },
+        status: 200,
+      });
 
       const invalidUpdate = { ...mockUpdateData, genresIds: [] };
       const result = await MovieService.updateMovie(invalidUpdate);
@@ -246,7 +281,7 @@ describe('MovieService', () => {
         status: 400,
         message: 'Au moins un genre est requis',
       });
-      expect(prisma.movie.update).not.toHaveBeenCalled();
+      expect(MovieData.update).not.toHaveBeenCalled();
     });
   });
 
@@ -255,14 +290,12 @@ describe('MovieService', () => {
       (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
         status: 200,
       });
-      (prisma.movie.delete as jest.Mock).mockResolvedValue({ id: '1' });
+      (MovieData.delete as jest.Mock).mockResolvedValue({ status: 200 });
 
       const result = await MovieService.deleteMovie('1');
 
       expect(result).toEqual({ status: 200 });
-      expect(prisma.movie.delete).toHaveBeenCalledWith({
-        where: { id: '1' },
-      });
+      expect(MovieData.delete).toHaveBeenCalledWith('1');
     });
 
     it('should return 400 when id is missing', async () => {
@@ -297,12 +330,16 @@ describe('MovieService', () => {
 
   describe('handlePublishMovie', () => {
     it('should toggle movie publish status to true', async () => {
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue({
-        id: '1',
-        publish: false,
+      (MovieData.findUniqueMoviePublished as jest.Mock).mockResolvedValue({
+        movie: {
+          id: '1',
+          publish: false,
+        },
+        status: 200,
       });
-      (prisma.movie.update as jest.Mock).mockResolvedValue({
+      (MovieData.togglePublish as jest.Mock).mockResolvedValue({
         publish: true,
+        status: 200,
       });
 
       const result = await MovieService.handlePublishMovie('1');
@@ -311,20 +348,20 @@ describe('MovieService', () => {
         publish: true,
         status: 200,
       });
-      expect(prisma.movie.update).toHaveBeenCalledWith({
-        where: { id: '1' },
-        data: { publish: true },
-        select: { publish: true },
-      });
+      expect(MovieData.togglePublish).toHaveBeenCalledWith('1', false);
     });
 
     it('should toggle movie publish status to false', async () => {
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue({
-        id: '1',
-        publish: true,
+      (MovieData.findUniqueMoviePublished as jest.Mock).mockResolvedValue({
+        movie: {
+          id: '1',
+          publish: true,
+        },
+        status: 200,
       });
-      (prisma.movie.update as jest.Mock).mockResolvedValue({
+      (MovieData.togglePublish as jest.Mock).mockResolvedValue({
         publish: false,
+        status: 200,
       });
 
       const result = await MovieService.handlePublishMovie('1');
@@ -342,11 +379,14 @@ describe('MovieService', () => {
         publish: false,
         status: 400,
       });
-      expect(prisma.movie.findUnique).not.toHaveBeenCalled();
+      expect(MovieData.findUniqueMoviePublished).not.toHaveBeenCalled();
     });
 
     it('should return 404 when movie does not exist', async () => {
-      (prisma.movie.findUnique as jest.Mock).mockResolvedValue(null);
+      (MovieData.findUniqueMoviePublished as jest.Mock).mockResolvedValue({
+        movie: undefined,
+        status: 404,
+      });
 
       const result = await MovieService.handlePublishMovie('1');
 
@@ -381,9 +421,10 @@ describe('MovieService', () => {
         },
       ];
 
-      (prisma.userFavoriteMovies.findMany as jest.Mock).mockResolvedValue(
-        mockFavorites
-      );
+      (MovieData.findManyFavorite as jest.Mock).mockResolvedValue({
+        movies: mockFavorites.map((m) => ({ ...m, id: m.id.toString() })),
+        status: 200,
+      });
 
       const result = await MovieService.favoriteMovies('user-1');
 
@@ -391,25 +432,19 @@ describe('MovieService', () => {
         movies: mockFavorites.map((m) => ({ ...m, id: m.id.toString() })),
         status: 200,
       });
-      expect(prisma.userFavoriteMovies.findMany).toHaveBeenCalledWith({
-        relationLoadStrategy: 'join',
-        where: { userId: 'user-1' },
-        include: expect.any(Object),
-      });
+      expect(MovieData.findManyFavorite).toHaveBeenCalledWith('user-1');
     });
 
     it('should handle errors when retrieving favorites', async () => {
       const mockError = new Error('Database error');
-      (prisma.userFavoriteMovies.findMany as jest.Mock).mockRejectedValue(
-        mockError
-      );
+      (MovieData.findManyFavorite as jest.Mock).mockRejectedValue(mockError);
 
       const result = await MovieService.favoriteMovies('user-1');
 
       expect(result).toEqual({
         status: 500,
       });
-      expect(logError).toHaveBeenCalledWith(mockError, 'getFavoriteMovies');
+      expect(logError).toHaveBeenCalledWith(mockError, 'favoriteMovies');
     });
   });
 });

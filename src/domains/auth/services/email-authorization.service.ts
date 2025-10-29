@@ -1,4 +1,4 @@
-import { getAuthorizedEmails } from '@/lib/data/email';
+import { EmailData } from '@/lib/data/email';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 
@@ -95,7 +95,7 @@ export class EmailAuthorizationService {
    */
   static async isEmailAuthorized(email: string): Promise<boolean> {
     try {
-      const { mails, status } = await getAuthorizedEmails();
+      const { mails, status } = await EmailData.getAuthorizedEmails();
 
       if (status !== 200 || !mails) {
         logError({}, 'Failed to fetch authorized emails in isEmailAuthorized');

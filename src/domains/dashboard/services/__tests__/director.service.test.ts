@@ -80,7 +80,10 @@ describe('DirectorService', () => {
         status: 500,
         success: false,
       });
-      expect(logError).toHaveBeenCalledWith(mockError, 'createDirectorFromSection');
+      expect(logError).toHaveBeenCalledWith(
+        mockError,
+        'createDirectorFromSection'
+      );
       expect(handlePrismaError).toHaveBeenCalledWith(mockError);
     });
   });

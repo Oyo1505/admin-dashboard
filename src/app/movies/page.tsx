@@ -2,13 +2,15 @@ import MovieFilters from '@/domains/movies/components/movies-filters/movies-filt
 import Movies from '@/domains/movies/components/movies/movies';
 import SearchMovie from '@/domains/movies/components/search-movie/search-movie';
 import MoviesSkeleton from '@/domains/skeleton/components/movies-skeleton/movies-skeleton';
-import { getAllGenres } from '@/lib/data/genres';
-import { getMoviesCountries } from '@/lib/data/movies';
+import { GenreData } from '@/lib/data/genres';
+
+import { MovieData } from '@/lib/data/movies';
+
 import { Suspense, cache } from 'react';
 
 const getData = cache(async () => {
-  const { genres } = await getAllGenres();
-  const { countries } = await getMoviesCountries();
+  const { genres } = await GenreData.getAllGenres();
+  const { countries } = await MovieData.getMoviesCountries();
   return { genres, countries };
 });
 

@@ -2,7 +2,7 @@ import MovieTable from '@/domains/dashboard/components/movie-table/movie-table';
 import Text from '@/domains/ui/components/text/text';
 import { getDataFromGoogleDrive } from '@/googleDrive';
 import { getServerSession } from '@/lib/auth';
-import { getAllMoviesWithGenres } from '@/lib/data/movies';
+import { MovieData } from '@/lib/data/movies';
 import { getUserConnected } from '@/lib/data/users';
 import { IMovie } from '@/models/movie/movie';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
@@ -13,7 +13,7 @@ export const revalidate = 60;
 
 const Page = async () => {
   const { movies } = (await getDataFromGoogleDrive()) as { movies: IMovie[] };
-  const { movieInDb } = await getAllMoviesWithGenres();
+  const { movieInDb } = await MovieData.getAllMoviesWithGenres();
   const session = await getServerSession();
   const userConnected = await getUserConnected(session?.user?.email ?? '');
   const user = userConnected?.user as User;

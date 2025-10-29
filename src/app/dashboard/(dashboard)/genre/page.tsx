@@ -2,7 +2,8 @@ import { GenreList } from '@/domains/dashboard/components/genre-list/genre-list'
 import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
-import { getAllGenres } from '@/lib/data/genres';
+import { GenreData } from '@/lib/data/genres';
+
 import { getUserConnected } from '@/lib/data/users';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
@@ -13,7 +14,7 @@ const GenreForm = dynamic(
 );
 
 const getData = async () => {
-  const { genres } = await getAllGenres();
+  const { genres } = await GenreData.getAllGenres();
   return { genres };
 };
 
