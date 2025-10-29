@@ -3,7 +3,8 @@ import Text from '@/domains/ui/components/text/text';
 import { getDataFromGoogleDrive } from '@/googleDrive';
 import { getServerSession } from '@/lib/auth';
 import { MovieData } from '@/lib/data/movies';
-import { getUserConnected } from '@/lib/data/users';
+import { UserData } from '@/lib/data/users';
+
 import { IMovie } from '@/models/movie/movie';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import { User } from 'better-auth/types/user';
@@ -15,7 +16,9 @@ const Page = async () => {
   const { movies } = (await getDataFromGoogleDrive()) as { movies: IMovie[] };
   const { movieInDb } = await MovieData.getAllMoviesWithGenres();
   const session = await getServerSession();
-  const userConnected = await getUserConnected(session?.user?.email ?? '');
+  const userConnected = await UserData.getUserConnected(
+    session?.user?.email ?? ''
+  );
   const user = userConnected?.user as User;
   const hasPermission =
     user &&

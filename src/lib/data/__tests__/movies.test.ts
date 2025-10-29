@@ -17,6 +17,9 @@ jest.mock('@/lib/prisma', () => ({
     },
     userFavoriteMovies: {
       findMany: jest.fn(),
+      findUnique: jest.fn(),
+      create: jest.fn(),
+      delete: jest.fn(),
     },
   },
 }));
@@ -247,6 +250,168 @@ describe('MovieData', () => {
         'MovieData.togglePublish'
       );
       expect(handlePrismaError).toHaveBeenCalledWith(mockError);
+    });
+  });
+
+  describe('Favorite Movies Operations', () => {
+    const userId = 'user-123';
+    const movieId = 'movie-456';
+
+    describe('findUniqueFavorite', () => {
+      it('should find an existing favorite and return it with status 200', async () => {
+        const mockFavorite = {
+          id: 1,
+          userId,
+          movieId,
+        };
+
+        (prisma.userFavoriteMovies.findUnique as jest.Mock).mockResolvedValue(
+          mockFavorite
+        );
+
+        const result = await MovieData.findUniqueFavorite(userId, movieId);
+
+        expect(result).toEqual({
+          favorite: {
+            id: '1',
+            userId,
+            movieId,
+          },
+          status: 200,
+        });
+
+        expect(prisma.userFavoriteMovies.findUnique).toHaveBeenCalledWith({
+          where: {
+            userId_movieId: {
+              userId,
+              movieId,
+            },
+          },
+        });
+      });
+
+      it('should return 404 when favorite does not exist', async () => {
+        (prisma.userFavoriteMovies.findUnique as jest.Mock).mockResolvedValue(
+          null
+        );
+
+        const result = await MovieData.findUniqueFavorite(userId, movieId);
+
+        expect(result).toEqual({
+          favorite: undefined,
+          status: 404,
+        });
+      });
+
+      it('should handle database errors when finding favorite', async () => {
+        const mockError = new Error('Database connection failed');
+        (prisma.userFavoriteMovies.findUnique as jest.Mock).mockRejectedValue(
+          mockError
+        );
+
+        const result = await MovieData.findUniqueFavorite(userId, movieId);
+
+        expect(result).toEqual({
+          status: 500,
+        });
+
+        expect(logError).toHaveBeenCalledWith(
+          mockError,
+          'findUniqueFavorite'
+        );
+        expect(handlePrismaError).toHaveBeenCalledWith(mockError);
+      });
+    });
+
+    describe('createFavorite', () => {
+      it('should create a favorite successfully and return it with status 200', async () => {
+        const mockCreatedFavorite = {
+          id: 1,
+          userId,
+          movieId,
+        };
+
+        (prisma.userFavoriteMovies.create as jest.Mock).mockResolvedValue(
+          mockCreatedFavorite
+        );
+
+        const result = await MovieData.createFavorite(userId, movieId);
+
+        expect(result).toEqual({
+          favorite: {
+            id: '1',
+            userId,
+            movieId,
+          },
+          status: 200,
+          message: 'Added to favorite',
+        });
+
+        expect(prisma.userFavoriteMovies.create).toHaveBeenCalledWith({
+          data: {
+            userId,
+            movieId,
+          },
+        });
+      });
+
+      it('should handle database errors when creating favorite', async () => {
+        const mockError = new Error('Unique constraint violation');
+        (prisma.userFavoriteMovies.create as jest.Mock).mockRejectedValue(
+          mockError
+        );
+
+        const result = await MovieData.createFavorite(userId, movieId);
+
+        expect(result).toEqual({
+          status: 500,
+        });
+
+        expect(logError).toHaveBeenCalledWith(mockError, 'createFavorite');
+        expect(handlePrismaError).toHaveBeenCalledWith(mockError);
+      });
+    });
+
+    describe('deleteFavorite', () => {
+      it('should delete a favorite successfully and return status 200', async () => {
+        (prisma.userFavoriteMovies.delete as jest.Mock).mockResolvedValue({
+          id: 1,
+          userId,
+          movieId,
+        });
+
+        const result = await MovieData.deleteFavorite(userId, movieId);
+
+        expect(result).toEqual({
+          status: 200,
+          message: 'Success: movie deleted',
+        });
+
+        expect(prisma.userFavoriteMovies.delete).toHaveBeenCalledWith({
+          where: {
+            userId_movieId: {
+              userId,
+              movieId,
+            },
+          },
+        });
+      });
+
+      it('should handle database errors when deleting favorite', async () => {
+        const mockError = new Error('Record not found');
+        (prisma.userFavoriteMovies.delete as jest.Mock).mockRejectedValue(
+          mockError
+        );
+
+        const result = await MovieData.deleteFavorite(userId, movieId);
+
+        expect(result).toEqual({
+          status: 500,
+        });
+
+        expect(logError).toHaveBeenCalledWith(mockError, 'deleteFavorite');
+        expect(handlePrismaError).toHaveBeenCalledWith(mockError);
+      });
     });
   });
 });

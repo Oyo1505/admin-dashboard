@@ -1,3 +1,4 @@
+import { MovieData } from '@/lib/data/movies';
 import prisma from '@/lib/prisma';
 import { MetadataRoute } from 'next';
 
@@ -28,25 +29,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     // Dynamic movie routes - only include public/accessible movies
-    const movies = await prisma.movie.findMany({
-      select: {
-        id: true,
-        updatedAt: true,
-      },
-      where: {
-        publish: true,
-      },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-    });
+    const { movies } = await MovieData.findManyOrderByDesc();
 
-    const movieRoutes: MetadataRoute.Sitemap = movies.map((movie) => ({
-      url: `${baseUrl}/movies/${movie.id}`,
-      lastModified: movie.updatedAt,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }));
+    const movieRoutes: MetadataRoute.Sitemap =
+      movies?.map((movie) => ({
+        url: `${baseUrl}/movies/${movie.id}`,
+        lastModified: movie.updatedAt,
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      })) || [];
 
     // Main movies listing page
     const movieListingRoutes: MetadataRoute.Sitemap = [
