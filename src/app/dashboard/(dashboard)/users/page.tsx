@@ -49,14 +49,14 @@ const Page = async (props: {
           type="h3"
           translationText="addEmailAuthorized"
           translationTheme="Dashboard"
-          className="text-3xlfont-semibold mb-6"
+          className="text-3x lfont-semibold mb-6"
         />
         <FormAddEmailAuthrizedEmail hasPermission={hasPermission ?? false} />
         <Title
           type="h3"
           translationText="emailAuthorized"
           translationTheme="Dashboard"
-          className="text-3xlfont-semibold mb-6"
+          className="text-xl font-semibold mb-6"
         />
         <UserTableAuthorized hasPermission={hasPermission} />
       </div>

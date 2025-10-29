@@ -1,4 +1,5 @@
 import { MovieData } from '@/lib/data/movies';
+import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { MetadataRoute } from 'next';
 
@@ -71,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...genreRoutes,
     ];
   } catch (error) {
-    console.error('Error generating sitemap:', error);
+    logError(error, 'Error generating sitemap:');
     // Return static routes only if database connection fails
     return staticRoutes;
   }

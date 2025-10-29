@@ -22,9 +22,9 @@ const Page = async () => {
   const user = userConnected?.user as User;
   const hasPermission =
     user &&
-    checkPermissions(user, 'can:update', 'director') &&
-    checkPermissions(user, 'can:create', 'director') &&
-    checkPermissions(user, 'can:delete', 'director');
+    checkPermissions(user, 'can:update', 'movie') &&
+    checkPermissions(user, 'can:create', 'movie') &&
+    checkPermissions(user, 'can:delete', 'movie');
   if (!hasPermission)
     return (
       <Text
