@@ -1,5 +1,5 @@
+import { MovieData } from '@/lib/data/movies';
 import { handlePrismaError, logError } from '@/lib/errors';
-import prisma from '@/lib/prisma';
 import { URL_MOVIE_ID } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
@@ -12,37 +12,26 @@ export class MovieFavoriteService {
       return { status: 400, message: 'Missing movie' };
     }
     try {
-      const existingFavorite = await prisma.userFavoriteMovies.findUnique({
-        where: {
-          userId_movieId: {
-            userId: idUser,
-            movieId: idMovie,
-          },
-        },
-      });
+      // Check if favorite already exists using data layer
+      const { favorite: existingFavorite } = await MovieData.findUniqueFavorite(
+        idUser,
+        idMovie
+      );
 
       if (existingFavorite) {
-        await prisma.userFavoriteMovies.delete({
-          where: {
-            userId_movieId: {
-              userId: idUser,
-              movieId: idMovie,
-            },
-          },
-        });
-
+        // Delete favorite using data layer
+        const result = await MovieData.deleteFavorite(idUser, idMovie);
         revalidatePath(URL_MOVIE_ID(idMovie));
-        return { status: 200, message: 'Success: movie deleted' };
+        return result;
       }
-      await prisma.userFavoriteMovies.create({
-        data: {
-          userId: idUser,
-          movieId: idMovie,
-        },
-      });
 
+      // Create favorite using data layer
+      const result = await MovieData.createFavorite(idUser, idMovie);
       revalidatePath(URL_MOVIE_ID(idMovie));
-      return { status: 200, message: 'Added to favorite"' };
+      return {
+        status: result.status,
+        message: result.message,
+      };
     } catch (error) {
       logError(error, 'handleFavorite');
       const appError = handlePrismaError(error);

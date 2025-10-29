@@ -183,11 +183,47 @@ src/lib/data/           # Data access layer (database queries)
 ├── director.ts         # Director data operations
 ├── email.ts            # Email authorization queries
 ├── genres.ts           # Genre data operations
-├── movies.ts           # Movie data queries
+├── movies.ts           # Movie data queries (includes favorites operations)
 └── users.ts            # User data operations
 ```
 
 This layer is used by both API routes and Server Actions to maintain separation of concerns.
+
+**Data Layer Benefits**:
+- **Separation of Concerns**: Database logic isolated from business logic
+- **Reusability**: Methods can be used across services and API routes
+- **Testability**: Easy to mock for unit testing
+- **Type Safety**: Consistent return types with status codes
+- **Error Handling**: Centralized error handling with `handlePrismaError()`
+
+**Example - Movie Favorites Operations**:
+```typescript
+// Data Layer (src/lib/data/movies.ts)
+export class MovieData {
+  static async findUniqueFavorite(userId: string, movieId: string) {
+    // Returns: { favorite?: {...}, status: number }
+  }
+
+  static async createFavorite(userId: string, movieId: string) {
+    // Returns: { favorite?: {...}, status: number, message?: string }
+  }
+
+  static async deleteFavorite(userId: string, movieId: string) {
+    // Returns: { status: number, message?: string }
+  }
+}
+
+// Service Layer (src/domains/movies/services/movie-favorites.service.ts)
+export class MovieFavoriteService {
+  static async handleFavorite(userId: string, movieId: string) {
+    const { favorite } = await MovieData.findUniqueFavorite(userId, movieId);
+    if (favorite) {
+      return await MovieData.deleteFavorite(userId, movieId);
+    }
+    return await MovieData.createFavorite(userId, movieId);
+  }
+}
+```
 
 ### Component Organization
 
@@ -306,6 +342,82 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 - Solution: Check GitHub Actions logs, ensure environment variables are set
 - Problem: TanStack Query cache not invalidating
 - Solution: Use `queryClient.invalidateQueries(['query-key'])` after mutations
+
+### Testing Patterns
+
+**Unit Tests Structure**:
+```typescript
+// Data Layer Tests (src/lib/data/__tests__/movies.test.ts)
+import { MovieData } from '../movies';
+import prisma from '@/lib/prisma';
+
+jest.mock('@/lib/prisma', () => ({
+  __esModule: true,
+  default: {
+    movie: { create: jest.fn(), update: jest.fn(), ... },
+    userFavoriteMovies: { findUnique: jest.fn(), create: jest.fn(), delete: jest.fn() }
+  }
+}));
+
+describe('MovieData', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('findUniqueFavorite', () => {
+    it('should find an existing favorite and return it with status 200', async () => {
+      const mockFavorite = { id: 1, userId: 'user-123', movieId: 'movie-456' };
+      (prisma.userFavoriteMovies.findUnique as jest.Mock).mockResolvedValue(mockFavorite);
+
+      const result = await MovieData.findUniqueFavorite('user-123', 'movie-456');
+
+      expect(result).toEqual({
+        favorite: { id: '1', userId: 'user-123', movieId: 'movie-456' },
+        status: 200
+      });
+    });
+  });
+});
+```
+
+**Service Layer Tests**:
+```typescript
+// Service Tests (src/domains/movies/services/__tests__/movie-favorites.service.test.ts)
+import { MovieFavoriteService } from '../movie-favorites.service';
+import { MovieData } from '@/lib/data/movies';
+
+jest.mock('@/lib/data/movies');
+jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }));
+
+describe('MovieFavoriteService', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should delete favorite when it already exists', async () => {
+    (MovieData.findUniqueFavorite as jest.Mock).mockResolvedValue({
+      favorite: { id: '1', userId: 'user-123', movieId: 'movie-456' },
+      status: 200
+    });
+
+    (MovieData.deleteFavorite as jest.Mock).mockResolvedValue({
+      status: 200,
+      message: 'Success: movie deleted'
+    });
+
+    const result = await MovieFavoriteService.handleFavorite('user-123', 'movie-456');
+
+    expect(result).toEqual({ status: 200, message: 'Success: movie deleted' });
+    expect(MovieData.deleteFavorite).toHaveBeenCalledWith('user-123', 'movie-456');
+  });
+});
+```
+
+**Test Coverage Goals**:
+- Data Layer: Test all CRUD operations, error handling, edge cases
+- Service Layer: Test business logic, integration with data layer, cache revalidation
+- Components: Test user interactions, rendering, accessibility
+- E2E: Test critical user flows end-to-end
 
 **Authentication Issues**
 

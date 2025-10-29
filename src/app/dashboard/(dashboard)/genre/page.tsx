@@ -3,8 +3,7 @@ import Container from '@/domains/ui/components/container/container';
 import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
 import { GenreData } from '@/lib/data/genres';
-
-import { getUserConnected } from '@/lib/data/users';
+import { UserData } from '@/lib/data/users';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import dynamic from 'next/dynamic';
@@ -21,7 +20,9 @@ const getData = async () => {
 const Page = async () => {
   const { genres } = await getData();
   const session = await getServerSession();
-  const userConnected = await getUserConnected(session?.user?.email ?? '');
+  const userConnected = await UserData.getUserConnected(
+    session?.user?.email ?? ''
+  );
   const user = userConnected?.user as User;
   const hasPermission =
     user &&

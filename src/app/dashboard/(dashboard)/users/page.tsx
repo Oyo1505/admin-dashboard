@@ -4,7 +4,7 @@ import Search from '@/domains/dashboard/components/search-user/search-user';
 import { UserTableAuthorized } from '@/domains/dashboard/components/users-table-authrized/user-table-authrized';
 import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
-import { getUserConnected } from '@/lib/data/users';
+import { UserData } from '@/lib/data/users';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import dynamic from 'next/dynamic';
@@ -19,7 +19,9 @@ const Page = async (props: {
   const searchParams = await props.searchParams;
   const session = await getServerSession();
   const userEmail = session?.user?.email ?? '';
-  const userConnected = userEmail ? await getUserConnected(userEmail) : null;
+  const userConnected = userEmail
+    ? await UserData.getUserConnected(userEmail)
+    : null;
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset);
@@ -47,14 +49,14 @@ const Page = async (props: {
           type="h3"
           translationText="addEmailAuthorized"
           translationTheme="Dashboard"
-          className="text-3xlfont-semibold mb-6"
+          className="text-3x lfont-semibold mb-6"
         />
         <FormAddEmailAuthrizedEmail hasPermission={hasPermission ?? false} />
         <Title
           type="h3"
           translationText="emailAuthorized"
           translationTheme="Dashboard"
-          className="text-3xlfont-semibold mb-6"
+          className="text-xl font-semibold mb-6"
         />
         <UserTableAuthorized hasPermission={hasPermission} />
       </div>

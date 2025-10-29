@@ -2,14 +2,15 @@ import DirectorSectionForm from '@/domains/dashboard/components/director-section
 import Text from '@/domains/ui/components/text/text';
 import { getServerSession } from '@/lib/auth';
 import { DirectorData } from '@/lib/data/director';
-
-import { getUserConnected } from '@/lib/data/users';
+import { UserData } from '@/lib/data/users';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
 export default async function Page() {
   const session = await getServerSession();
-  const userConnected = await getUserConnected(session?.user?.email ?? '');
+  const userConnected = await UserData.getUserConnected(
+    session?.user?.email ?? ''
+  );
   const user = userConnected?.user as User;
   const hasPermission =
     user &&
