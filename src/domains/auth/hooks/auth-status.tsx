@@ -5,28 +5,28 @@ import { URL_DASHBOARD_ROUTE, URL_HOME } from '@/shared/route';
 import useUserStore from '@/store/user/user-store';
 
 import { redirect, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useEffectEvent } from 'react';
 
 const useAuthStatus = () => {
   const { user, fetchUser, setUser } = useUserStore((state) => state);
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const fetchSession = async () => {
-    try {
-      if (session?.user?.email) {
-        await fetchUser(session.user.email);
+  const fetchSession = useEffectEvent(() => {
+    if (session?.user && Object.keys(user).length === 0) {
+      try {
+        if (session?.user?.email) {
+          fetchUser(session.user.email);
+        }
+      } catch (error) {
+        logError(error, 'useAuthStatus');
       }
-    } catch (error) {
-      logError(error, 'useAuthStatus');
     }
-  };
+  });
 
   useEffect(() => {
-    if (session?.user && Object.keys(user).length === 0) {
-      fetchSession();
-    }
-  }, [session, user, fetchSession]);
+    fetchSession();
+  }, [session, user]);
 
   useEffect(() => {
     if (session && pathname === '/') {

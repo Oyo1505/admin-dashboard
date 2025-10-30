@@ -17,7 +17,7 @@ const useInitGenreStore = () => {
       }
       const { genres } = await response.json();
 
-      return genres;
+      return genres.genres;
     },
   });
   useEffect(() => {

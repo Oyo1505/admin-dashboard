@@ -315,10 +315,7 @@ describe('MovieData', () => {
           status: 500,
         });
 
-        expect(logError).toHaveBeenCalledWith(
-          mockError,
-          'findUniqueFavorite'
-        );
+        expect(logError).toHaveBeenCalledWith(mockError, 'findUniqueFavorite');
         expect(handlePrismaError).toHaveBeenCalledWith(mockError);
       });
     });
