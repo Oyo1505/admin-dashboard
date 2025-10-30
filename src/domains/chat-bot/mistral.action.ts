@@ -41,7 +41,6 @@ const threadChatBot = async (
   conversationHistory?: ChatMessage[]
 ) => {
   try {
-    // Validation des paramètres d'entrée
     if (!message?.trim()) {
       return {
         answer:

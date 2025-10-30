@@ -10,6 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import {
   createDirectorFromSection,
   deleteDirectorFromSection,
@@ -33,40 +34,28 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
     },
     resolver: zodResolver(directorSectionSchema),
   });
-
+  const handleError = (success: boolean) => {
+    if (success) toast.success('Success');
+    if (!success) toast.error('Error');
+  };
   const createDirectorSection = async (data: DirectorSectionSchema) => {
-    const result = await errorHandler.executeWithErrorHandling(async () => {
-      const response = await createDirectorFromSection(data);
-      return errorHandler.handleApiResponse(response);
-    });
-
-    if (result) {
-      reset();
-    }
+    const { success } = await createDirectorFromSection(data);
+    handleError(success);
   };
 
   const uploadDirectorSection = async (data: DirectorSectionSchema) => {
-    const result = await errorHandler.executeWithErrorHandling(async () => {
-      const response = await updateDirectorFromSection(data);
-      return errorHandler.handleApiResponse(response);
-    });
-
-    if (result) {
-      reset();
-    }
+    const { success } = await updateDirectorFromSection(data);
+    handleError(success);
   };
 
   const deleteDirectorSection = async () => {
     if (!director?.id) return;
 
-    const result = await errorHandler.executeWithErrorHandling(async () => {
-      const response =
-        director?.id && (await deleteDirectorFromSection(director?.id));
-      return response && errorHandler.handleApiResponse(response);
-    });
+    const result = await deleteDirectorFromSection(director.id);
 
-    if (result) {
+    if (result.success) {
       reset();
+      handleError(result.success);
     }
   };
 
@@ -132,7 +121,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
             type="submit"
             className="inline-flex h-[35px] hover:cursor-pointer items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-hidden"
           >
-            {t('save')}
+            {director?.id ? 'Modifier' : t('save')}
           </Button>
         </div>
       </form>

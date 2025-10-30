@@ -6,11 +6,17 @@ import { UserData } from '@/lib/data/users';
 import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 
+async function getData() {
+  const { director } = await DirectorData.getDirectorFromSection();
+  return { director };
+}
+
 export default async function Page() {
   const session = await getServerSession();
   const userConnected = await UserData.getUserConnected(
     session?.user?.email ?? ''
   );
+  const { director } = await getData();
   const user = userConnected?.user as User;
   const hasPermission =
     user &&
@@ -25,7 +31,6 @@ export default async function Page() {
         className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6"
       />
     );
-  const { director } = await DirectorData.getDirectorFromSection();
 
   return (
     <main className="h-full" role="main" aria-label="Page des réalisateurs">

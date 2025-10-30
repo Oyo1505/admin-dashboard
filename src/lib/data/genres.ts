@@ -57,6 +57,7 @@ export class GenreData {
     }> => {
       try {
         const genres = await prisma.genre.findMany();
+
         if (!genres) {
           return { status: 404 };
         }

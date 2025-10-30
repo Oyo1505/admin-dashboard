@@ -1,3 +1,4 @@
+import { AnalyticsData } from '@/lib/data/analytics';
 import prisma from '@/lib/prisma';
 
 export async function GET(
@@ -22,11 +23,7 @@ export async function GET(
       return Response.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const analytics = await prisma.analyticsUser.findMany({
-      where: {
-        userId: user.id,
-      },
-    });
+    const { analytics } = await AnalyticsData.getAnalyticsUser(user);
 
     return Response.json(
       {
@@ -37,7 +34,7 @@ export async function GET(
           emailVerified: user.emailVerified,
           image: user.image,
           role: user.role,
-          analytics: analytics.map((a) => ({
+          analytics: analytics?.map((a) => ({
             id: a.id,
             lastLogin: a.lastLogin,
             lastMovieWatched: a.lastMovieWatched ?? undefined,

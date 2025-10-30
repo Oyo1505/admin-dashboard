@@ -22,9 +22,9 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Bypass authentication in test mode
+  // Bypass authentication in test mode or development mode
   const isTestMode = process.env.PLAYWRIGHT_TEST_MODE === 'true';
-
+  const isDevMode = process.env.NODE_ENV === 'development';
   try {
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set('x-url', req.url);
@@ -43,8 +43,8 @@ export default async function proxy(req: NextRequest) {
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-    // Skip session check in test mode
-    if (!isTestMode) {
+    // Skip session check in test mode or development mode
+    if (!isTestMode && !isDevMode) {
       const session = await auth.api.getSession({
         headers: await headers(),
       });

@@ -1,9 +1,9 @@
 import { Locale } from '@/config';
-import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 
 import MoviesHomeDirector from '@/domains/movies/components/movies-home-director/movies-home-director';
 import MoviesHomeSection from '@/domains/movies/components/movies-home-section/movies-home-section';
 import MoviesHomeTheme from '@/domains/movies/components/movies-home-theme/movies-home-theme';
+import { MovieService } from '@/domains/movies/services';
 import MoviesHomeSectionSkeleton from '@/domains/skeleton/components/movie-home-section/movie-home-section';
 import MoviesHomeThemeSkeleton from '@/domains/skeleton/components/movies-home-theme/movies-home-theme';
 import Container from '@/domains/ui/components/container/container';
@@ -39,7 +39,7 @@ async function getData() {
     MovieData.getLastMovies(),
     MovieData.getMoviesByARandomCountry(),
     MovieData.getMoviesByARandomGenre(),
-    getFavoriteMovies('zkbP2ZiwkJzmgD3t3xF0k4tUlPRTZemQ'),
+    MovieService.favoriteMovies('zkbP2ZiwkJzmgD3t3xF0k4tUlPRTZemQ'),
     DirectorData.getDirectorMovies(),
   ]);
 
