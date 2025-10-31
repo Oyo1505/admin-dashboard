@@ -17,7 +17,7 @@ const MovieItemCarousel = ({
   id: string;
 }) => {
   return (
-    <Link href={URL_MOVIE_ID(id)}>
+    <Link href={URL_MOVIE_ID(id)} tabIndex={-1}>
       <div
         className={`group relative flex w-28 md:w-44 lg:w-60 rounded-lg flex-col justify-between h-full`}
       >
@@ -28,7 +28,6 @@ const MovieItemCarousel = ({
               src={image}
               alt={`poster-${movie?.title}`}
               className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 16.66vw"
               width={300}
               height={200}
             />
