@@ -105,12 +105,14 @@ const Movies = ({
                 <MovieCardSearchPage
                   user={user}
                   movie={movie}
+                  priority={index < 6}
                   key={movie?.id + '-' + index}
                 />
               ) : (
                 <MovieCardSearchPageMobileView
                   user={user}
                   movie={movie}
+                  priority={index < 6}
                   key={movie?.title + '-' + index + '-mobile-view'}
                 />
               )

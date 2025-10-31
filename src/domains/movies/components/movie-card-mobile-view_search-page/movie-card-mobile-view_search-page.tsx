@@ -13,10 +13,12 @@ import Link from 'next/link';
 interface IMovieCardSearchPage {
   movie: IMovie;
   user?: User;
+  priority?: boolean;
 }
 const MovieCardSearchPageMobileView = ({
   movie,
   user,
+  priority = false,
 }: IMovieCardSearchPage) => {
   const locale = useLocale();
   return (
@@ -34,11 +36,13 @@ const MovieCardSearchPageMobileView = ({
 
       <div className="min-w-24 h-full rounded-lg relative overflow-hidden">
         <Image
-          priority
+          priority={priority}
+          loading={priority ? undefined : 'lazy'}
           className="w-full h-full rounded-lg transform transition-transform object-cover duration-300 group-hover:scale-110"
           src={movie?.image ? movie?.image : 'imageDefault'}
           width={300}
           height={200}
+          sizes="(max-width: 640px) 96px, (max-width: 768px) 96px, 96px"
           alt={movie?.title || 'Movie Image'}
         />
       </div>
