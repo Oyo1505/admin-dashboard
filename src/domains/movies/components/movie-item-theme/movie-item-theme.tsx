@@ -16,7 +16,7 @@ const MovieItemTheme = ({
   id: string;
 }) => {
   return (
-    <Link href={URL_MOVIE_ID(id)}>
+    <Link href={URL_MOVIE_ID(id)} tabIndex={-1}>
       <div className="group flex h-56 relative w-28 md:w-44 lg:w-80 rounded-lg  flex-col justify-between ">
         <div className="w-full rounded-lg h-full relative overflow-hidden">
           <div className="relative w-full h-full">
