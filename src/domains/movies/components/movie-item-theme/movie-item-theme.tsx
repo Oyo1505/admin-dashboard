@@ -23,7 +23,10 @@ const MovieItemTheme = ({
             <Image
               priority
               src={image}
-              alt={movie?.title}
+              alt={
+                `Affiche du film ${titleOnlocale(movie, locale)}` ||
+                `Affiche du film ${movie?.title}`
+              }
               className="w-full h-full rounded-lg object-cover transform transition-transform duration-300 group-hover:scale-110"
               width={300}
               height={200}
