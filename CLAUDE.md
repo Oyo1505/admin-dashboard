@@ -117,6 +117,7 @@ Key models include:
 - Role-based access control (USER/ADMIN)
 - Email authorization system for controlling access
 - Session-based authentication with secure cookie handling
+- **Data Access Layer (DAL)** for security following [Next.js best practices](https://nextjs.org/docs/app/guides/authentication#creating-a-data-access-layer-dal)
 
 ### Development Notes
 
@@ -173,12 +174,67 @@ src/domains/[domain-name]/
 └── __tests__/          # Domain-specific tests
 ```
 
-### Data Layer Architecture
+### Data Access Architecture
 
-The project uses a layered architecture for data access:
+The project implements a **4-layer security architecture**:
 
 ```
-src/lib/data/           # Data access layer (database queries)
+Server Actions/API Routes
+    ↓
+🔒 DAL Security Layer (src/lib/data/dal/)
+    ↓
+Service Layer (src/domains/*/services/)
+    ↓
+Data Layer (src/lib/data/)
+    ↓
+Database (Prisma)
+```
+
+#### DAL Security Layer (Data Access Layer)
+
+**Purpose**: Centralized authentication and authorization BEFORE data access, following [Next.js best practices](https://nextjs.org/docs/app/guides/authentication#creating-a-data-access-layer-dal).
+
+**Structure**:
+```
+src/lib/data/dal/
+├── core/
+│   ├── auth.ts          # verifySession, getCurrentUser, verifyAdmin, verifyOwnership
+│   ├── errors.ts        # DALError class with HTTP status conversion
+│   └── __tests__/       # 99.13% test coverage
+├── helpers.ts           # withAuth, withDALAuth wrapper functions
+└── index.ts            # Public exports
+```
+
+**Key Functions**:
+- `verifySession()` - Ensures active session exists
+- `getCurrentUser()` - Retrieves user with role (cached with React cache)
+- `verifyAdmin()` - Enforces ADMIN role requirement
+- `verifyOwnership(userId)` - Ensures user owns resource or is ADMIN
+
+**Usage Pattern**:
+```typescript
+// Server Action (src/domains/dashboard/actions/movie.ts)
+import { withAuth, verifyAdmin } from '@/lib/data/dal';
+
+export const addMovie = withAuth(
+  verifyAdmin,
+  async (movie: IMovieFormData) => {
+    return await MovieService.addMovie(movie);
+  }
+);
+```
+
+**Benefits**:
+- ✅ **Impossible to bypass**: All Actions must go through DAL
+- ✅ **Security audit**: Logs unauthorized access attempts
+- ✅ **Error handling**: Automatic DALError → HTTP status conversion
+- ✅ **Performance**: React cache prevents duplicate DB queries
+- ✅ **Type-safe**: Strongly typed with comprehensive tests
+
+#### Data Layer (Database Access)
+
+```
+src/lib/data/
 ├── analytics.ts        # Analytics data queries
 ├── director.ts         # Director data operations
 ├── email.ts            # Email authorization queries
@@ -187,8 +243,6 @@ src/lib/data/           # Data access layer (database queries)
 └── users.ts            # User data operations
 ```
 
-This layer is used by both API routes and Server Actions to maintain separation of concerns.
-
 **Data Layer Benefits**:
 - **Separation of Concerns**: Database logic isolated from business logic
 - **Reusability**: Methods can be used across services and API routes
@@ -196,31 +250,61 @@ This layer is used by both API routes and Server Actions to maintain separation 
 - **Type Safety**: Consistent return types with status codes
 - **Error Handling**: Centralized error handling with `handlePrismaError()`
 
-**Example - Movie Favorites Operations**:
+**Example - Complete Flow**:
 ```typescript
-// Data Layer (src/lib/data/movies.ts)
-export class MovieData {
-  static async findUniqueFavorite(userId: string, movieId: string) {
-    // Returns: { favorite?: {...}, status: number }
-  }
+// 1. DAL Security Layer (src/lib/data/dal/core/auth.ts)
+export const getCurrentUser = cache(async (): Promise<SelectUser> => {
+  const session = await verifySession();
+  const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+  if (!user) throw new DALError('NOT_FOUND', 'User not found');
+  return user;
+});
 
-  static async createFavorite(userId: string, movieId: string) {
-    // Returns: { favorite?: {...}, status: number, message?: string }
+export async function verifyAdmin() {
+  const user = await getCurrentUser();
+  if (user.role !== 'ADMIN') {
+    console.warn(`Unauthorized admin access attempt by user ${user.id}`);
+    throw new DALError('FORBIDDEN', 'Admin privileges required');
   }
+  return user;
+}
 
-  static async deleteFavorite(userId: string, movieId: string) {
-    // Returns: { status: number, message?: string }
+// 2. Server Action (src/domains/dashboard/actions/movie.ts)
+import { withAuth, verifyAdmin } from '@/lib/data/dal';
+
+export const addMovie = withAuth(
+  verifyAdmin,  // Security check
+  async (movie: IMovieFormData) => {
+    return await MovieService.addMovie(movie);  // Business logic
+  }
+);
+
+// 3. Service Layer (src/domains/movies/services/movie.service.ts)
+export class MovieService {
+  static async addMovie(movie: IMovieFormData) {
+    // Validation
+    if (!movie?.title?.trim()) {
+      return { status: 400, message: 'Title required' };
+    }
+
+    // Data layer call
+    await MovieData.create(movie);
+    revalidatePath(URL_DASHBOARD_ROUTE.movie);
+
+    return { status: 200, message: 'Success' };
   }
 }
 
-// Service Layer (src/domains/movies/services/movie-favorites.service.ts)
-export class MovieFavoriteService {
-  static async handleFavorite(userId: string, movieId: string) {
-    const { favorite } = await MovieData.findUniqueFavorite(userId, movieId);
-    if (favorite) {
-      return await MovieData.deleteFavorite(userId, movieId);
+// 4. Data Layer (src/lib/data/movies.ts)
+export class MovieData {
+  static async create(movie: IMovieFormData) {
+    try {
+      const createdMovie = await prisma.movie.create({ data: movie });
+      return { movie: createdMovie, status: 200 };
+    } catch (error) {
+      logError(error, 'MovieData.create');
+      return { status: handlePrismaError(error).statusCode };
     }
-    return await MovieData.createFavorite(userId, movieId);
   }
 }
 ```

@@ -6,7 +6,6 @@ import {
   IUpdateMovieData,
 } from '@/models/movie/movie';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
-import checkPermissionsRoleFromSession from '@/shared/utils/permissions/checkPermissionsRoleFromSession';
 import { revalidatePath } from 'next/cache';
 
 export class MovieService {
@@ -14,14 +13,6 @@ export class MovieService {
     movie: IMovieFormData
   ): Promise<{ status: number; message: string }> {
     try {
-      const authCheck = await checkPermissionsRoleFromSession();
-      if (authCheck.status !== 200) {
-        return {
-          status: authCheck.status,
-          message: authCheck.message || "Erreur d'autorisation",
-        };
-      }
-
       if (!movie?.title?.trim()) {
         return { status: 400, message: 'Le titre du film est requis' };
       }
@@ -54,14 +45,6 @@ export class MovieService {
     movie: IUpdateMovieData
   ): Promise<{ status: number; message?: string }> {
     try {
-      const authCheck = await checkPermissionsRoleFromSession();
-      if (authCheck.status !== 200) {
-        return {
-          status: authCheck.status,
-          message: authCheck.message || "Erreur d'autorisation",
-        };
-      }
-
       const { movie: movieInDb } = await MovieData.findUnique(movie.id);
 
       if (!movieInDb) {
@@ -90,13 +73,6 @@ export class MovieService {
     id: string
   ): Promise<{ status: number; message?: string }> {
     try {
-      const authCheck = await checkPermissionsRoleFromSession();
-      if (authCheck.status !== 200) {
-        return {
-          status: authCheck.status,
-          message: authCheck.message || "Erreur d'autorisation",
-        };
-      }
       if (!id) {
         return {
           status: 400,

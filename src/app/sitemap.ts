@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com';
+  const baseUrl = process.env.NEXTAUTH_URL || 'https://www.nuberubagu.fr';
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
