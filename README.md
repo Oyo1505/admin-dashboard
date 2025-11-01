@@ -42,7 +42,7 @@ Cette application est une plateforme complète de gestion de films avec authenti
 ### Backend & Base de Données
 - **[Prisma](https://www.prisma.io/)** - ORM moderne
 - **[PostgreSQL](https://www.postgresql.org/)** - Base de données relationnelle
-- **[NextAuth.js](https://next-auth.js.org/)** - Authentification
+- **[Better-auth](https://www.better-auth.com/)** - Authentification
 - **[Vercel Analytics](https://vercel.com/analytics)** - Analytics
 
 ### Intégrations
