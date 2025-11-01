@@ -1,4 +1,7 @@
 'use server';
+
+import { verifyAdmin } from '@/lib/data/dal/core/auth';
+import { withAuth } from '@/lib/data/dal/helpers';
 import { EmailAuthorizationService } from '../services';
 
 /**
@@ -52,9 +55,11 @@ export const postAuthorizedEmail = async (
  * }
  * ```
  */
-export const deleteEmailAuthorized = async (
-  email: string
-): Promise<{ status?: number | undefined; message?: string | undefined }> => {
-  // Delegate to Service for business logic
-  return await EmailAuthorizationService.revokeEmailAuthorization(email);
-};
+export const deleteEmailAuthorized = withAuth(
+  verifyAdmin,
+  async (
+    email: string
+  ): Promise<{ status?: number | undefined; message?: string | undefined }> => {
+    return await EmailAuthorizationService.revokeEmailAuthorization(email);
+  }
+);

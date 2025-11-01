@@ -40,12 +40,12 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
   };
   const createDirectorSection = async (data: DirectorSectionSchema) => {
     const { success } = await createDirectorFromSection(data);
-    handleError(success);
+    success && handleError(success);
   };
 
   const uploadDirectorSection = async (data: DirectorSectionSchema) => {
     const { success } = await updateDirectorFromSection(data);
-    handleError(success);
+    success && handleError(success);
   };
 
   const deleteDirectorSection = async () => {

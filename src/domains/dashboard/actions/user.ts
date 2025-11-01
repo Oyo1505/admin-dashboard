@@ -1,5 +1,7 @@
 'use server';
 import { UserService } from '@/domains/auth/services/user.service';
+import { verifyAdmin, verifyOwnership } from '@/lib/data/dal/core/auth';
+import { withAuth, withDALAuth } from '@/lib/data/dal/helpers';
 import { User } from '@/models/user/user';
 import { EmailService } from '../services';
 
@@ -10,24 +12,25 @@ export const getUsersWithPageParam = async (
   return await UserService.getUsersWithPageParam(search, pageParam);
 };
 
-export const deleteUserByIdFromUser = async (
-  id: string
-): Promise<{ status: number; message?: string }> => {
-  return await UserService.deleteAccountFromUser(id);
-};
+export const deleteUserByIdFromUser = withDALAuth(
+  async (id: string) => await verifyOwnership(id),
+  async (id: string): Promise<{ status: number; message?: string }> => {
+    return await UserService.deleteAccountFromUser(id);
+  }
+);
 
-export const deleteUserById = async ({
-  id,
-  user,
-}: {
-  id: string;
-  user: User;
-}): Promise<{ status: number; message?: string }> => {
-  return await UserService.deleteUser({
+export const deleteUserById = withAuth(
+  verifyAdmin,
+  async ({
     id,
     user,
-  });
-};
+  }: {
+    id: string;
+    user: User;
+  }): Promise<{ status: number; message?: string }> => {
+    return await UserService.deleteUser({ id, user });
+  }
+);
 
 export const sendEmail = async ({
   message,
