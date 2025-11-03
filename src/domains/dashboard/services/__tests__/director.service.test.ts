@@ -1,17 +1,14 @@
 import { DirectorService } from '../director.service';
-import prisma from '@/lib/prisma';
+import { DirectorData } from '@/lib/data/director';
 import { handlePrismaError, logError } from '@/lib/errors';
 import { IDirector } from '@/models/director/director';
 
 // Mock dependencies
-jest.mock('@/lib/prisma', () => ({
-  __esModule: true,
-  default: {
-    directorSection: {
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-    },
+jest.mock('@/lib/data/director', () => ({
+  DirectorData: {
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
   },
 }));
 
@@ -46,9 +43,11 @@ describe('DirectorService', () => {
         updatedAt: new Date(),
       };
 
-      (prisma.directorSection.create as jest.Mock).mockResolvedValue(
-        mockCreatedDirector
-      );
+      (DirectorData.create as jest.Mock).mockResolvedValue({
+        director: mockCreatedDirector,
+        status: 200,
+        success: true,
+      });
 
       const result = await DirectorService.createDirector(mockDirector);
 
@@ -57,12 +56,7 @@ describe('DirectorService', () => {
         status: 200,
         success: true,
       });
-      expect(prisma.directorSection.create).toHaveBeenCalledWith({
-        data: {
-          director: mockDirector.director,
-          imageBackdrop: mockDirector.imageBackdrop,
-        },
-      });
+      expect(DirectorData.create).toHaveBeenCalledWith(mockDirector);
     });
 
     it('should handle errors when creating a director', async () => {
@@ -72,7 +66,7 @@ describe('DirectorService', () => {
       };
 
       const mockError = new Error('Database error');
-      (prisma.directorSection.create as jest.Mock).mockRejectedValue(mockError);
+      (DirectorData.create as jest.Mock).mockRejectedValue(mockError);
 
       const result = await DirectorService.createDirector(mockDirector);
 
@@ -102,9 +96,11 @@ describe('DirectorService', () => {
         updatedAt: new Date(),
       };
 
-      (prisma.directorSection.update as jest.Mock).mockResolvedValue(
-        mockUpdatedDirector
-      );
+      (DirectorData.update as jest.Mock).mockResolvedValue({
+        director: mockUpdatedDirector,
+        status: 200,
+        success: true,
+      });
 
       const result = await DirectorService.updateDirector(mockDirector);
 
@@ -113,13 +109,7 @@ describe('DirectorService', () => {
         status: 200,
         success: true,
       });
-      expect(prisma.directorSection.update).toHaveBeenCalledWith({
-        where: { id: '1' },
-        data: {
-          director: mockDirector.director,
-          imageBackdrop: mockDirector.imageBackdrop,
-        },
-      });
+      expect(DirectorData.update).toHaveBeenCalledWith(mockDirector);
     });
 
     it('should return 400 when director id is missing', async () => {
@@ -128,6 +118,12 @@ describe('DirectorService', () => {
         imageBackdrop: 'https://example.com/nolan.jpg',
       };
 
+      (DirectorData.update as jest.Mock).mockResolvedValue({
+        director: undefined,
+        status: 400,
+        success: false,
+      });
+
       const result = await DirectorService.updateDirector(mockDirector);
 
       expect(result).toEqual({
@@ -135,7 +131,7 @@ describe('DirectorService', () => {
         status: 400,
         success: false,
       });
-      expect(prisma.directorSection.update).not.toHaveBeenCalled();
+      expect(DirectorData.update).toHaveBeenCalledWith(mockDirector);
     });
 
     it('should handle errors when updating a director', async () => {
@@ -146,7 +142,7 @@ describe('DirectorService', () => {
       };
 
       const mockError = new Error('Database error');
-      (prisma.directorSection.update as jest.Mock).mockRejectedValue(mockError);
+      (DirectorData.update as jest.Mock).mockRejectedValue(mockError);
 
       const result = await DirectorService.updateDirector(mockDirector);
 
@@ -163,8 +159,9 @@ describe('DirectorService', () => {
     it('should delete a director successfully', async () => {
       const directorId = '1';
 
-      (prisma.directorSection.delete as jest.Mock).mockResolvedValue({
-        id: directorId,
+      (DirectorData.delete as jest.Mock).mockResolvedValue({
+        status: 200,
+        success: true,
       });
 
       const result = await DirectorService.deleteDirector(directorId);
@@ -173,16 +170,14 @@ describe('DirectorService', () => {
         status: 200,
         success: true,
       });
-      expect(prisma.directorSection.delete).toHaveBeenCalledWith({
-        where: { id: directorId },
-      });
+      expect(DirectorData.delete).toHaveBeenCalledWith(directorId);
     });
 
     it('should handle errors when deleting a director', async () => {
       const directorId = '1';
       const mockError = new Error('Database error');
 
-      (prisma.directorSection.delete as jest.Mock).mockRejectedValue(mockError);
+      (DirectorData.delete as jest.Mock).mockRejectedValue(mockError);
 
       const result = await DirectorService.deleteDirector(directorId);
 
