@@ -29,6 +29,7 @@ const lobster = Lobster({
 });
 
 async function getData() {
+  const idUser = process.env.ID_USER_FAVORITES_MOVIE ?? '';
   const [
     moviesLastFive,
     moviesByARandomCountryData,
@@ -39,7 +40,7 @@ async function getData() {
     MovieData.getLastMovies(),
     MovieData.getMoviesByARandomCountry(),
     MovieData.getMoviesByARandomGenre(),
-    MovieService.favoriteMovies('zkbP2ZiwkJzmgD3t3xF0k4tUlPRTZemQ'),
+    MovieService.favoriteMovies(idUser),
     DirectorData.getDirectorMovies(),
   ]);
 

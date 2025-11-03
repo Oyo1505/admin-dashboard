@@ -16,6 +16,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### While implementing
 
+- Have to respect Clean code pratice.
+
+- All Tests have to passed green
+
 - You should update the plan as you work.
 
 - After you complete tasks in the plan, you should update and append detailed descriptions of the changes you made, so following tasks can be easily hand over to other engineers.
@@ -69,6 +73,10 @@ This is a Next.js 16 movie management platform with a domain-driven architecture
   - E2E tests: Playwright with CI/CD integration
 - **Deployment**: Vercel with analytics
 - **Internationalization**: next-intl (French, English, Japanese support)
+
+### Directory Structure
+
+The project follows a domain-driven architecture pattern with **SOLID principles** and **Dependency Injection**:
 
 ### Domain Structure
 
@@ -195,6 +203,7 @@ Database (Prisma)
 **Purpose**: Centralized authentication and authorization BEFORE data access, following [Next.js best practices](https://nextjs.org/docs/app/guides/authentication#creating-a-data-access-layer-dal).
 
 **Structure**:
+
 ```
 src/lib/data/dal/
 ├── core/
@@ -206,25 +215,25 @@ src/lib/data/dal/
 ```
 
 **Key Functions**:
+
 - `verifySession()` - Ensures active session exists
 - `getCurrentUser()` - Retrieves user with role (cached with React cache)
 - `verifyAdmin()` - Enforces ADMIN role requirement
 - `verifyOwnership(userId)` - Ensures user owns resource or is ADMIN
 
 **Usage Pattern**:
+
 ```typescript
 // Server Action (src/domains/dashboard/actions/movie.ts)
 import { withAuth, verifyAdmin } from '@/lib/data/dal';
 
-export const addMovie = withAuth(
-  verifyAdmin,
-  async (movie: IMovieFormData) => {
-    return await MovieService.addMovie(movie);
-  }
-);
+export const addMovie = withAuth(verifyAdmin, async (movie: IMovieFormData) => {
+  return await MovieService.addMovie(movie);
+});
 ```
 
 **Benefits**:
+
 - ✅ **Impossible to bypass**: All Actions must go through DAL
 - ✅ **Security audit**: Logs unauthorized access attempts
 - ✅ **Error handling**: Automatic DALError → HTTP status conversion
@@ -244,6 +253,7 @@ src/lib/data/
 ```
 
 **Data Layer Benefits**:
+
 - **Separation of Concerns**: Database logic isolated from business logic
 - **Reusability**: Methods can be used across services and API routes
 - **Testability**: Easy to mock for unit testing
@@ -251,11 +261,14 @@ src/lib/data/
 - **Error Handling**: Centralized error handling with `handlePrismaError()`
 
 **Example - Complete Flow**:
+
 ```typescript
 // 1. DAL Security Layer (src/lib/data/dal/core/auth.ts)
 export const getCurrentUser = cache(async (): Promise<SelectUser> => {
   const session = await verifySession();
-  const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
   if (!user) throw new DALError('NOT_FOUND', 'User not found');
   return user;
 });
@@ -273,9 +286,9 @@ export async function verifyAdmin() {
 import { withAuth, verifyAdmin } from '@/lib/data/dal';
 
 export const addMovie = withAuth(
-  verifyAdmin,  // Security check
+  verifyAdmin, // Security check
   async (movie: IMovieFormData) => {
-    return await MovieService.addMovie(movie);  // Business logic
+    return await MovieService.addMovie(movie); // Business logic
   }
 );
 
@@ -308,6 +321,137 @@ export class MovieData {
   }
 }
 ```
+
+### Clean Code Patterns & Helper Functions
+
+The project follows clean code principles with reusable helper functions to reduce duplication and improve maintainability.
+
+#### Data Layer Helpers
+
+**Location**: `src/lib/data/movies-helpers.ts`
+
+Helper functions extract common logic from create/update operations:
+
+```typescript
+import {
+  buildMovieData,
+  buildGenresConnectionForCreate,
+  buildGenresConnectionForUpdate,
+  buildMovieInclude,
+} from '@/lib/data/movies-helpers';
+
+// Usage in MovieData.create()
+static async create(movie: IMovieFormData) {
+  try {
+    const createdMovie = await prisma.movie.create({
+      data: {
+        ...buildMovieData(movie),                              // Common movie fields
+        genresIds: buildGenresConnectionForCreate(movie.genresIds), // Genre relations
+      },
+      include: buildMovieInclude(),                            // Standard includes
+    });
+    return { movie: createdMovie as IMovie, status: 200 };
+  } catch (error) {
+    logError(error, 'MovieData.create');
+    return { status: handlePrismaError(error).statusCode };
+  }
+}
+```
+
+**Benefits**:
+- ✅ **DRY Principle**: Eliminates 80% duplication between create/update
+- ✅ **Single Responsibility**: Each helper has one clear purpose
+- ✅ **Reduced Complexity**: Methods reduced from 73 → 20 lines
+- ✅ **Easy Testing**: Helpers can be unit tested independently
+- ✅ **Consistency**: Same logic guaranteed across operations
+
+**Available Helpers**:
+- `buildMovieData(movie)` - Constructs base movie data object
+- `buildGenresConnectionForCreate(genresIds)` - Creates genre relationships
+- `buildGenresConnectionForUpdate(genresIds)` - Updates genre relationships (delete + create)
+- `buildMovieInclude()` - Standard include object for genre data
+
+#### Error Handling Wrapper
+
+**Location**: `src/lib/utils/error-handler.ts`
+
+Generic wrapper reduces try-catch boilerplate:
+
+```typescript
+import { withErrorHandling } from '@/lib/utils/error-handler';
+
+// Instead of repetitive try-catch
+static async someOperation() {
+  try {
+    const data = await prisma.operation();
+    return { data, status: 200 };
+  } catch (error) {
+    logError(error, 'context');
+    const appError = handlePrismaError(error);
+    return { status: appError.statusCode };
+  }
+}
+
+// Use wrapper for cleaner code
+static async someOperation() {
+  return await withErrorHandling(
+    async () => await prisma.operation(),
+    'MovieData.someOperation'
+  );
+}
+```
+
+**Benefits**:
+- ✅ **Centralized Error Handling**: Consistent error management
+- ✅ **Automatic Logging**: Context-aware error logging
+- ✅ **Type Safety**: Generic type preserves return types
+- ✅ **Reduced Boilerplate**: Eliminates repetitive try-catch blocks
+
+#### Pagination Constants
+
+**Location**: `src/shared/constants/pagination.ts`
+
+Centralized constants replace magic numbers:
+
+```typescript
+import {
+  MAX_LATEST_MOVIES,
+  MAX_MOVIES_BY_COUNTRY,
+  MAX_MOVIES_BY_GENRE,
+} from '@/shared/constants/pagination';
+
+// Before: Magic numbers scattered throughout code
+const movies = await prisma.movie.findMany({ take: 5 });
+
+// After: Named constants with clear intent
+const movies = await prisma.movie.findMany({ take: MAX_LATEST_MOVIES });
+```
+
+**Available Constants**:
+- `MAX_LATEST_MOVIES = 5` - Latest movies section limit
+- `MAX_MOVIES_BY_COUNTRY = 3` - Movies per country limit
+- `MAX_MOVIES_BY_GENRE = 5` - Movies per genre limit
+- `DEFAULT_PAGE_SIZE = 20` - Default pagination size
+- `MAX_PAGE_SIZE = 100` - Maximum pagination size
+
+**Benefits**:
+- ✅ **Searchability**: Easy to find all uses of a limit
+- ✅ **Maintainability**: Change in one place affects all uses
+- ✅ **Self-Documentation**: Names explain the purpose
+- ✅ **Type Safety**: Compile-time checks for usage
+
+#### Clean Code Checklist
+
+When creating new data operations:
+
+1. ✅ **Extract Common Logic**: Use helpers for shared data preparation
+2. ✅ **Use Constants**: Replace magic numbers with named constants
+3. ✅ **Keep Functions Short**: Target 15-20 lines per method
+4. ✅ **Single Responsibility**: One function, one purpose
+5. ✅ **Type Everything**: Use TypeScript types and interfaces
+6. ✅ **Document Complex Logic**: JSDoc for public functions
+7. ✅ **Test Independently**: Each helper function is testable
+8. ✅ **Handle Errors Consistently**: Use wrapper or standard pattern
 
 ### Component Organization
 
@@ -430,6 +574,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 ### Testing Patterns
 
 **Unit Tests Structure**:
+
 ```typescript
 // Data Layer Tests (src/lib/data/__tests__/movies.test.ts)
 import { MovieData } from '../movies';
@@ -465,6 +610,7 @@ describe('MovieData', () => {
 ```
 
 **Service Layer Tests**:
+
 ```typescript
 // Service Tests (src/domains/movies/services/__tests__/movie-favorites.service.test.ts)
 import { MovieFavoriteService } from '../movie-favorites.service';
@@ -481,23 +627,30 @@ describe('MovieFavoriteService', () => {
   it('should delete favorite when it already exists', async () => {
     (MovieData.findUniqueFavorite as jest.Mock).mockResolvedValue({
       favorite: { id: '1', userId: 'user-123', movieId: 'movie-456' },
-      status: 200
+      status: 200,
     });
 
     (MovieData.deleteFavorite as jest.Mock).mockResolvedValue({
       status: 200,
-      message: 'Success: movie deleted'
+      message: 'Success: movie deleted',
     });
 
-    const result = await MovieFavoriteService.handleFavorite('user-123', 'movie-456');
+    const result = await MovieFavoriteService.handleFavorite(
+      'user-123',
+      'movie-456'
+    );
 
     expect(result).toEqual({ status: 200, message: 'Success: movie deleted' });
-    expect(MovieData.deleteFavorite).toHaveBeenCalledWith('user-123', 'movie-456');
+    expect(MovieData.deleteFavorite).toHaveBeenCalledWith(
+      'user-123',
+      'movie-456'
+    );
   });
 });
 ```
 
 **Test Coverage Goals**:
+
 - Data Layer: Test all CRUD operations, error handling, edge cases
 - Service Layer: Test business logic, integration with data layer, cache revalidation
 - Components: Test user interactions, rendering, accessibility

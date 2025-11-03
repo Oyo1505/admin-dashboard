@@ -1,25 +1,7 @@
 import { MovieService } from '../movie.service';
-import prisma from '@/lib/prisma';
 import { handlePrismaError, logError } from '@/lib/errors';
-import checkPermissionsRoleFromSession from '@/shared/utils/permissions/checkPermissionsRoleFromSession';
 import { IMovieFormData, IUpdateMovieData } from '@/models/movie/movie';
 import { MovieData } from '@/lib/data/movies';
-
-// Mock dependencies
-jest.mock('@/lib/prisma', () => ({
-  __esModule: true,
-  default: {
-    movie: {
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      findUnique: jest.fn(),
-    },
-    userFavoriteMovies: {
-      findMany: jest.fn(),
-    },
-  },
-}));
 
 jest.mock('@/lib/data/movies', () => ({
   MovieData: {
@@ -40,11 +22,6 @@ jest.mock('@/lib/errors', () => ({
     message: 'Database error',
   })),
   logError: jest.fn(),
-}));
-
-jest.mock('@/shared/utils/permissions/checkPermissionsRoleFromSession', () => ({
-  __esModule: true,
-  default: jest.fn(),
 }));
 
 jest.mock('next/cache', () => ({
@@ -77,10 +54,7 @@ describe('MovieService', () => {
       originalTitle: 'Inception',
     };
 
-    it('should add a movie successfully with ADMIN permissions', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
+    it('should add a movie successfully', async () => {
       (MovieData.findByGoogleDriveId as jest.Mock).mockResolvedValue({
         existingMovie: undefined,
         status: 400,
@@ -96,31 +70,11 @@ describe('MovieService', () => {
         status: 200,
         message: 'Success : Movie added',
       });
-      expect(checkPermissionsRoleFromSession).toHaveBeenCalled();
       expect(MovieData.findByGoogleDriveId).toHaveBeenCalledWith(mockMovieData);
       expect(MovieData.create).toHaveBeenCalled();
     });
 
-    it('should return 403 when user lacks ADMIN permissions', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 403,
-        message: 'Unauthorized',
-      });
-
-      const result = await MovieService.addMovie(mockMovieData);
-
-      expect(result).toEqual({
-        status: 403,
-        message: 'Unauthorized',
-      });
-      expect(prisma.movie.create).not.toHaveBeenCalled();
-    });
-
     it('should return 400 when title is missing', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
-
       const invalidMovie = { ...mockMovieData, title: '' };
       const result = await MovieService.addMovie(invalidMovie);
 
@@ -128,14 +82,10 @@ describe('MovieService', () => {
         status: 400,
         message: 'Le titre du film est requis',
       });
-      expect(prisma.movie.create).not.toHaveBeenCalled();
+      expect(MovieData.create).not.toHaveBeenCalled();
     });
 
     it('should return 400 when genres are missing', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
-
       const invalidMovie = { ...mockMovieData, genresIds: [] };
       const result = await MovieService.addMovie(invalidMovie);
 
@@ -143,13 +93,10 @@ describe('MovieService', () => {
         status: 400,
         message: 'Au moins un genre est requis',
       });
-      expect(prisma.movie.create).not.toHaveBeenCalled();
+      expect(MovieData.create).not.toHaveBeenCalled();
     });
 
     it('should return 409 when movie already exists', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
       (MovieData.findByGoogleDriveId as jest.Mock).mockResolvedValue({
         existingMovie: { id: 'existing-id' },
         status: 200,
@@ -165,9 +112,6 @@ describe('MovieService', () => {
     });
 
     it('should handle database errors', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
       (MovieData.findByGoogleDriveId as jest.Mock).mockResolvedValue({
         existingMovie: undefined,
         status: 400,
@@ -211,9 +155,6 @@ describe('MovieService', () => {
     };
 
     it('should update a movie successfully', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
       (MovieData.findUnique as jest.Mock).mockResolvedValue({
         movie: { id: '1' },
         status: 200,
@@ -232,25 +173,7 @@ describe('MovieService', () => {
       expect(MovieData.update).toHaveBeenCalled();
     });
 
-    it('should return 403 when user lacks ADMIN permissions', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 403,
-        message: 'Unauthorized',
-      });
-
-      const result = await MovieService.updateMovie(mockUpdateData);
-
-      expect(result).toEqual({
-        status: 403,
-        message: 'Unauthorized',
-      });
-      expect(prisma.movie.update).not.toHaveBeenCalled();
-    });
-
     it('should return 404 when movie does not exist', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
       (MovieData.findUnique as jest.Mock).mockResolvedValue({
         movie: undefined,
         status: 404,
@@ -266,9 +189,6 @@ describe('MovieService', () => {
     });
 
     it('should return 400 when genres are missing', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
       (MovieData.findUnique as jest.Mock).mockResolvedValue({
         movie: { id: '1' },
         status: 200,
@@ -287,9 +207,6 @@ describe('MovieService', () => {
 
   describe('deleteMovie', () => {
     it('should delete a movie successfully', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
       (MovieData.delete as jest.Mock).mockResolvedValue({ status: 200 });
 
       const result = await MovieService.deleteMovie('1');
@@ -299,32 +216,13 @@ describe('MovieService', () => {
     });
 
     it('should return 400 when id is missing', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 200,
-      });
-
       const result = await MovieService.deleteMovie('');
 
       expect(result).toEqual({
         status: 400,
         message: 'ID du film est requis',
       });
-      expect(prisma.movie.delete).not.toHaveBeenCalled();
-    });
-
-    it('should return 403 when user lacks ADMIN permissions', async () => {
-      (checkPermissionsRoleFromSession as jest.Mock).mockResolvedValue({
-        status: 403,
-        message: 'Unauthorized',
-      });
-
-      const result = await MovieService.deleteMovie('1');
-
-      expect(result).toEqual({
-        status: 403,
-        message: 'Unauthorized',
-      });
-      expect(prisma.movie.delete).not.toHaveBeenCalled();
+      expect(MovieData.delete).not.toHaveBeenCalled();
     });
   });
 
