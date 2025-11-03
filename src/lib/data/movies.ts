@@ -7,9 +7,20 @@ import {
   IMovieFormData,
 } from '@/models/movie/movie';
 import { CACHE_TTL_SHORT } from '@/shared/constants/time';
+import {
+  MAX_LATEST_MOVIES,
+  MAX_MOVIES_BY_COUNTRY,
+  MAX_MOVIES_BY_GENRE,
+} from '@/shared/constants/pagination';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
+import {
+  buildMovieData,
+  buildGenresConnectionForCreate,
+  buildGenresConnectionForUpdate,
+  buildMovieInclude,
+} from './movies-helpers';
 
 export class MovieData {
   /**
@@ -24,44 +35,10 @@ export class MovieData {
     try {
       const createdMovie = await prisma.movie.create({
         data: {
-          title: movie.title,
-          titleEnglish: movie.titleEnglish,
-          titleJapanese: movie.titleJapanese,
-          link: movie.link || '',
-          image: movie.image || movie.link || '',
-          director: movie.director,
-          imdbId: movie.imdbId,
-          originalTitle: movie.originalTitle,
-          duration: movie.duration ? Number(movie.duration) : null,
-          idGoogleDive: movie.idGoogleDive,
-          language: movie.language,
-          subtitles: movie.subtitles || [],
-          year: movie.year ? Number(movie.year) : null,
-          genresIds: {
-            create: movie.genresIds.map((genreId) => ({
-              genre: {
-                connect: { id: genreId.toString() },
-              },
-            })),
-          },
-          country: movie.country,
-          synopsis: movie.synopsis,
-          trailer: movie.trailer,
+          ...buildMovieData(movie),
+          genresIds: buildGenresConnectionForCreate(movie.genresIds),
         },
-        include: {
-          genresIds: {
-            select: {
-              genre: {
-                select: {
-                  id: true,
-                  nameFR: true,
-                  nameEN: true,
-                  nameJP: true,
-                },
-              },
-            },
-          },
-        },
+        include: buildMovieInclude(),
       });
 
       return { movie: createdMovie as IMovie, status: 200 };
@@ -81,30 +58,8 @@ export class MovieData {
           id: movie.id,
         },
         data: {
-          title: movie.title,
-          titleEnglish: movie.titleEnglish,
-          titleJapanese: movie.titleJapanese,
-          link: movie.link || '',
-          image: movie.image || movie.link || '',
-          director: movie.director,
-          imdbId: movie.imdbId,
-          originalTitle: movie.originalTitle,
-          duration: Number(movie.duration),
-          idGoogleDive: movie.idGoogleDive,
-          language: movie.language,
-          subtitles: movie.subtitles || [],
-          year: Number(movie.year),
-          genresIds: {
-            deleteMany: {},
-            create: movie.genresIds.map((genreId) => ({
-              genre: {
-                connect: { id: genreId.toString() },
-              },
-            })),
-          },
-          country: movie.country,
-          synopsis: movie.synopsis,
-          trailer: movie.trailer,
+          ...buildMovieData(movie),
+          genresIds: buildGenresConnectionForUpdate(movie.genresIds),
         },
       });
       return { movie: updatedMovie as IMovie, status: 200 };
@@ -183,7 +138,7 @@ export class MovieData {
           orderBy: {
             createdAt: 'desc',
           },
-          take: 5,
+          take: MAX_LATEST_MOVIES,
         });
         if (!moviesInDb) {
           return { status: 404, movies: [] };
@@ -403,7 +358,7 @@ export class MovieData {
           orderBy: {
             createdAt: 'desc',
           },
-          take: 3,
+          take: MAX_MOVIES_BY_COUNTRY,
         });
 
         if (!movies) {
@@ -449,7 +404,7 @@ export class MovieData {
           orderBy: {
             createdAt: 'desc',
           },
-          take: 5,
+          take: MAX_MOVIES_BY_GENRE,
         });
         if (!movies) {
           return { status: 400, movies: [] };
