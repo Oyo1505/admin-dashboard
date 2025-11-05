@@ -35,7 +35,6 @@ const auth = betterAuth({
     user: {
       create: {
         before: async (user) => {
-          // Validate email authorization using Service Layer
           const validation =
             await EmailAuthorizationService.validateEmailForAuth(user.email);
 
@@ -77,4 +76,5 @@ export async function getServerSession() {
 }
 
 export { auth };
+
 export type { Session };
