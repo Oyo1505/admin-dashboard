@@ -76,5 +76,5 @@ export async function getServerSession() {
 }
 
 export { auth };
-export { auth };
+
 export type { Session };
