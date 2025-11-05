@@ -20,6 +20,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - All Tests have to passed green
 
+- Have to respect RGAA, WCAG 2.2 web accessibility level minimun AA.
+
 - You should update the plan as you work.
 
 - After you complete tasks in the plan, you should update and append detailed descriptions of the changes you made, so following tasks can be easily hand over to other engineers.
