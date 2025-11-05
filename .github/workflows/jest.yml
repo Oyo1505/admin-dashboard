@@ -71,7 +71,7 @@ jobs:
         run: pnpm prisma db push --skip-generate
 
       - name: Run Jest unit tests
-        run: pnpm test -- --coverage --maxWorkers=2
+        run: pnpm exec jest --coverage --maxWorkers=2
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
           POSTGRES_URL_NON_POOLING: postgresql://postgres:postgres@localhost:5432/test_db

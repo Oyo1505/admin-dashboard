@@ -715,7 +715,7 @@ describe('MovieFavoriteService', () => {
 
 **Test Coverage Statistics**:
 
-The project has comprehensive test coverage with **26+ test files**:
+The project has comprehensive test coverage with **28 test suites** containing **458 tests**:
 
 - **DAL Security Layer**: 3 test files, 99.13% coverage
   - [src/lib/data/dal/core/__tests__/auth.test.ts](src/lib/data/dal/core/__tests__/auth.test.ts)
@@ -868,7 +868,7 @@ BETTER_AUTH_SECRET: test-secret-key-for-ci-only-minimum-32-characters-long-safe
 **Sur chaque Pull Request, vous obtiendrez** :
 
 1. **Statut des workflows** :
-   - ✅ Jest Unit Tests - 26+ tests
+   - ✅ Jest Unit Tests - 28 suites, 458 tests
    - ✅ Playwright E2E Tests
 
 2. **Commentaire automatique avec** :
@@ -885,10 +885,11 @@ BETTER_AUTH_SECRET: test-secret-key-for-ci-only-minimum-32-characters-long-safe
 Pour reproduire les tests CI/CD localement :
 
 ```bash
-# Tests unitaires Jest
-pnpm test                    # Tous les tests
-pnpm test -- --coverage      # Avec couverture
-pnpm test:watch              # Mode watch
+# Tests unitaires Jest (28 suites, 458 tests)
+pnpm test                                      # Tous les tests
+pnpm exec jest --coverage                      # Avec couverture
+pnpm exec jest --coverage --maxWorkers=2       # Comme en CI/CD
+pnpm test:watch                                # Mode watch
 
 # Tests E2E Playwright
 pnpm dev:test                # Lance le serveur en mode test
