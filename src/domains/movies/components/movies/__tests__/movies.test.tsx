@@ -370,13 +370,13 @@ describe('Movies Component', () => {
       });
     });
 
-    it('should not set movies when filtered results are empty', async () => {
+    it('should clear store when filtered results are empty', async () => {
       // Arrange
       const mockSearchParamsWithFilters = {
         get: jest.fn((key: string) =>
           key === 'genre' ? 'NonExistent' : null
         ),
-        size: 1,
+        size: 1, // Has filters
         toString: jest.fn(() => 'genre=NonExistent'),
       };
 
@@ -396,9 +396,12 @@ describe('Movies Component', () => {
       // Act
       render(<Movies offset={12} />, { wrapper: createWrapper() });
 
-      // Assert: Should NOT call setMoviesStore when empty
+      // Assert: When hasFilters=true and movies are empty, setMoviesStore clears with []
+      // Code always calls setMoviesStore([]) when hasFilters=true (line 68)
+      // Then only calls again if movies.length > 0 (lines 73-74)
       await waitFor(() => {
-        expect(mockSetMoviesStore).not.toHaveBeenCalled();
+        expect(mockSetMoviesStore).toHaveBeenCalledTimes(1);
+        expect(mockSetMoviesStore).toHaveBeenCalledWith([]);
       });
     });
   });
