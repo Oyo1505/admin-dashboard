@@ -8,26 +8,15 @@ import { URL_MOVIES } from '@/shared/route';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import { useFiltersMovieStore } from '@/store/movie/movie-store';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'qs';
 import { useEffect, useState } from 'react';
 import SelectFilters from '../movie-filter_select-filters/movie-filter_select-filters';
-
 const MovieFilters = ({
-  subtitles,
-  q,
-  language,
   genres,
-  genre,
-  decadeParams,
   countries,
 }: {
-  subtitles?: string;
-  language?: string;
   genres?: IGenre[];
-  genre?: string;
-  decadeParams?: number;
-  q?: string;
   countries: string[];
 }) => {
   const t = useTranslations('Filters');
@@ -35,19 +24,19 @@ const MovieFilters = ({
   const locale = useLocale() as Locale;
   const router = useRouter();
   const { filters, setFiltersData, clearFilters } = useFiltersMovieStore();
-
+  const searchParams = useSearchParams();
   useEffect(() => {
-    const hasUrlParams = subtitles || language || decadeParams || genre || q;
-    if (hasUrlParams) {
+    if (searchParams.size > 0) {
       setFiltersData({
-        subtitles: subtitles || undefined,
-        language: language || undefined,
-        decade: decadeParams || undefined,
-        genre: genre || undefined,
-        q: q || undefined,
+        subtitles: searchParams.get('subtitles') || undefined,
+        language: searchParams.get('language') || undefined,
+        decade: Number(searchParams.get('decade')) || undefined,
+        genre: searchParams.get('genre') || undefined,
+        q: searchParams.get('q') || undefined,
       });
     }
-  }, [subtitles, language, decadeParams, genre, q, setFiltersData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams.toString(), setFiltersData]);
 
   const onChangeSubtitles = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFiltersData({ ...filters, subtitles: e.target.value });

@@ -28,31 +28,15 @@ const Page = async (props: {
   const searchParams = await props.searchParams;
   const { genres, countries } = await getData();
   const search = searchParams.q ?? '';
-  const subtitles = searchParams.subtitles ?? '';
-  const language = searchParams.language ?? '';
-  const genre = searchParams.genre ?? '';
-  const decade = Number(searchParams.decade) ?? 0;
   const offset = 12;
   const { viewport } = searchParams;
 
   return (
     <>
       <SearchMovie search={search} />
-      <MovieFilters
-        subtitles={subtitles}
-        q={search}
-        decadeParams={decade}
-        language={language}
-        genres={genres ?? []}
-        genre={genre}
-        countries={countries ?? []}
-      />
+      <MovieFilters genres={genres} countries={countries ?? []} />
       <Suspense fallback={<MoviesSkeleton />}>
-        <Movies
-          searchParams={searchParams}
-          offset={offset}
-          viewport={viewport}
-        />
+        <Movies offset={offset} viewport={viewport} />
       </Suspense>
     </>
   );

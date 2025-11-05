@@ -1,5 +1,6 @@
 'use client';
 import { Locale } from '@/config';
+import { DownloadLogo } from '@/domains/ui/components/icons/icons';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
@@ -121,7 +122,21 @@ const MovieHeader = ({ movie }: { movie: IMovie }) => {
           </div>
         )
       )}
-      {movie && <MoviePageSubtitlesList movie={movie} />}
+      {movie && (
+        <>
+          {' '}
+          <a
+            href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`}
+            className="inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-green-700"
+            target="_blank"
+            download
+          >
+            {<DownloadLogo />}
+            {t('download')}
+          </a>
+          <MoviePageSubtitlesList movie={movie} />
+        </>
+      )}
     </div>
   );
 };

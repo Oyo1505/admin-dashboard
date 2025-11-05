@@ -5,6 +5,7 @@ import { useMovieFormStore } from '@/store/movie/movie-store';
 import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
+import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import qs from 'qs';
 import { useEffect } from 'react';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
@@ -25,7 +26,6 @@ interface SearchParams {
 }
 
 const Movies = ({
-  searchParams,
   offset,
   viewport,
 }: {
@@ -35,18 +35,17 @@ const Movies = ({
 }) => {
   const { user } = useUserStore();
   const { moviesFromStore, setMoviesStore } = useMovieFormStore();
-
-  const searchQuery =
-    searchParams && Object.keys(searchParams).length > 0
-      ? qs.stringify({
-          subtitles: searchParams.subtitles || undefined,
-          language: searchParams.language || undefined,
-          decade: searchParams.decade ? Number(searchParams.decade) : undefined,
-          genre: searchParams.genre || undefined,
-          q: searchParams.q || undefined,
-        })
-      : '';
-
+  const searchParams: ReadonlyURLSearchParams = useSearchParams();
+  const searchQuery = qs.stringify({
+    subtitles: searchParams.get('subtitles') || undefined,
+    language: searchParams.get('language') || undefined,
+    decade: searchParams.get('decade')
+      ? Number(searchParams.get('decade'))
+      : undefined,
+    genre: searchParams.get('genre') || undefined,
+    q: searchParams.get('q') || undefined,
+  });
+  const hasFilters = searchParams.size > 0;
   const {
     data,
     isFetching,
@@ -64,17 +63,18 @@ const Movies = ({
   useEffect(() => {
     if (status === 'success' && data) {
       let movies = [];
-      if (searchParams && Object.keys(searchParams).length > 0) {
+      if (hasFilters) {
         movies = data?.pages[data.pages.length - 1]?.movies || [];
         setMoviesStore([]);
       } else {
         movies = data?.pages[0]?.movies || [];
+        setMoviesStore(movies);
       }
       if (movies?.length > 0) {
         setMoviesStore(movies);
       }
     }
-  }, [data, status, searchParams, setMoviesStore]);
+  }, [data, status, hasFilters, setMoviesStore]);
 
   const fecthNextMovie = () => {
     if (!isFetchingNextPage && hasNextPage) {
