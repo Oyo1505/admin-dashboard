@@ -70,7 +70,7 @@ const Movies = ({
         }
       }
     } catch (error) {
-      logError(error, 'fecthNextMovie');
+      logError(error, 'fetchNextMovie');
     }
   };
 
