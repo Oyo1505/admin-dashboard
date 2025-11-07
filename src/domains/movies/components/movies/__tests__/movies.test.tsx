@@ -298,14 +298,16 @@ describe('Movies Component', () => {
 
   /**
    * Group 3: Movie store synchronization
+   *
+   * Note: Store synchronization from hook data is tested in use-get-all-image-infinite-scroll.test.tsx
+   * Component tests focus on user interactions and rendering based on store state
    */
   describe('Movie store synchronization', () => {
-    it('should sync movies from first page when no filters', async () => {
+    it('should render movies from store state', () => {
       // Arrange
-      (useSearchParams as jest.Mock).mockReturnValue({
-        get: jest.fn(() => null),
-        size: 0, // No filters
-        toString: jest.fn(() => ''),
+      (useMovieFormStore as unknown as jest.Mock).mockReturnValue({
+        moviesFromStore: mockMovies,
+        setMoviesStore: mockSetMoviesStore,
       });
 
       (useGetMoviesInfiniteScroll as jest.Mock).mockReturnValue({
@@ -320,83 +322,10 @@ describe('Movies Component', () => {
       // Act
       render(<Movies offset={12} />, { wrapper: createWrapper() });
 
-      // Assert
-      await waitFor(() => {
-        expect(mockSetMoviesStore).toHaveBeenCalledWith(mockMovies);
-      });
-    });
-
-    it('should sync movies from last page when filters are applied', async () => {
-      // Arrange
-      const mockSearchParamsWithFilters = {
-        get: jest.fn((key: string) => (key === 'genre' ? 'Action' : null)),
-        size: 1, // Has filters
-        toString: jest.fn(() => 'genre=Action'),
-      };
-
-      (useSearchParams as jest.Mock).mockReturnValue(
-        mockSearchParamsWithFilters
-      );
-
-      const lastPageMovies = [
-        { id: '4', title: 'Filtered Movie 1' },
-        { id: '5', title: 'Filtered Movie 2' },
-      ];
-
-      (useGetMoviesInfiniteScroll as jest.Mock).mockReturnValue({
-        data: {
-          pages: [
-            { movies: mockMovies },
-            { movies: lastPageMovies }, // Last page
-          ],
-        },
-        isFetching: false,
-        status: 'success',
-        hasNextPage: false,
-        fetchNextPage: mockFetchNextPage,
-        isFetchingNextPage: false,
-      });
-
-      // Act
-      render(<Movies offset={12} />, { wrapper: createWrapper() });
-
-      // Assert: Should use last page when filters are present
-      await waitFor(() => {
-        expect(mockSetMoviesStore).toHaveBeenCalledWith(lastPageMovies);
-      });
-    });
-
-    it('should clear store when filtered results are empty', async () => {
-      // Arrange
-      const mockSearchParamsWithFilters = {
-        get: jest.fn((key: string) => (key === 'genre' ? 'NonExistent' : null)),
-        size: 1, // Has filters
-        toString: jest.fn(() => 'genre=NonExistent'),
-      };
-
-      (useSearchParams as jest.Mock).mockReturnValue(
-        mockSearchParamsWithFilters
-      );
-
-      (useGetMoviesInfiniteScroll as jest.Mock).mockReturnValue({
-        data: { pages: [{ movies: [] }] },
-        isFetching: false,
-        status: 'success',
-        hasNextPage: false,
-        fetchNextPage: mockFetchNextPage,
-        isFetchingNextPage: false,
-      });
-
-      // Act
-      render(<Movies offset={12} />, { wrapper: createWrapper() });
-
-      // Assert: When hasFilters=true and movies are empty, setMoviesStore clears with []
-      // Code always calls setMoviesStore([]) when hasFilters=true (line 68)
-      // Then only calls again if movies.length > 0 (lines 73-74)
-      await waitFor(() => {
-        expect(mockSetMoviesStore).toHaveBeenCalledTimes(1);
-        expect(mockSetMoviesStore).toHaveBeenCalledWith([]);
-      });
+      // Assert: Component renders based on store state
+      expect(screen.getByText('Movie 1')).toBeInTheDocument();
+      expect(screen.getByText('Movie 2')).toBeInTheDocument();
+      expect(screen.getByText('Movie 3')).toBeInTheDocument();
     });
   });
 
@@ -692,9 +621,10 @@ describe('Movies Component', () => {
       const loadMoreButton = screen.getByText('translated.btnLoadMore');
       fireEvent.click(loadMoreButton);
 
-      // Assert: Should set empty array when data is undefined
+      // Assert: Should not call setMoviesStore when data is undefined
+      // The condition if (res?.data?.pages) prevents execution
       await waitFor(() => {
-        expect(mockSetMoviesStore).toHaveBeenCalledWith([]);
+        expect(mockSetMoviesStore).not.toHaveBeenCalled();
       });
     });
 
