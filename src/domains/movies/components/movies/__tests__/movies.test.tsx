@@ -263,9 +263,7 @@ describe('Movies Component', () => {
     it('should correctly identify hasFilters from search params size', () => {
       // Arrange: With filters
       const mockSearchParamsWithFilters = {
-        get: jest.fn((key: string) =>
-          key === 'subtitles' ? 'EN' : null
-        ),
+        get: jest.fn((key: string) => (key === 'subtitles' ? 'EN' : null)),
         size: 1, // Has filters
         toString: jest.fn(() => 'subtitles=EN'),
       };
@@ -331,9 +329,7 @@ describe('Movies Component', () => {
     it('should sync movies from last page when filters are applied', async () => {
       // Arrange
       const mockSearchParamsWithFilters = {
-        get: jest.fn((key: string) =>
-          key === 'genre' ? 'Action' : null
-        ),
+        get: jest.fn((key: string) => (key === 'genre' ? 'Action' : null)),
         size: 1, // Has filters
         toString: jest.fn(() => 'genre=Action'),
       };
@@ -373,9 +369,7 @@ describe('Movies Component', () => {
     it('should clear store when filtered results are empty', async () => {
       // Arrange
       const mockSearchParamsWithFilters = {
-        get: jest.fn((key: string) =>
-          key === 'genre' ? 'NonExistent' : null
-        ),
+        get: jest.fn((key: string) => (key === 'genre' ? 'NonExistent' : null)),
         size: 1, // Has filters
         toString: jest.fn(() => 'genre=NonExistent'),
       };
@@ -549,9 +543,7 @@ describe('Movies Component', () => {
       // Assert
       const desktopCards = screen.getAllByTestId('movie-card-desktop');
       expect(desktopCards).toHaveLength(3);
-      expect(
-        screen.queryByTestId('movie-card-mobile')
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId('movie-card-mobile')).not.toBeInTheDocument();
     });
 
     it('should render tablet cards when viewport is tablet', () => {

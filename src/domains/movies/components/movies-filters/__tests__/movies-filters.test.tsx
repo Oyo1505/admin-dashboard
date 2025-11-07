@@ -87,9 +87,7 @@ describe('MovieFilters', () => {
       render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
 
       expect(screen.getByText('translated.btnSearch')).toBeInTheDocument();
-      expect(
-        screen.getByText('translated.btnClearSearch')
-      ).toBeInTheDocument();
+      expect(screen.getByText('translated.btnClearSearch')).toBeInTheDocument();
     });
 
     it('should render with empty genres array', () => {
@@ -437,9 +435,7 @@ describe('MovieFilters', () => {
         size: 1,
         toString: jest.fn(() => 'decade=0'),
       };
-      (useSearchParams as jest.Mock).mockReturnValue(
-        mockSearchParamsWithZero
-      );
+      (useSearchParams as jest.Mock).mockReturnValue(mockSearchParamsWithZero);
 
       // Act
       render(<MovieFilters genres={mockGenres} countries={mockCountries} />);

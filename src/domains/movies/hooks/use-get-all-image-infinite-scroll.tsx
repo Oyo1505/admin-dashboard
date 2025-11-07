@@ -1,5 +1,6 @@
+import { useMovieFormStore } from '@/store/movie/movie-store';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { cache } from 'react';
+import { cache, useEffect } from 'react';
 import { fetchMovies } from '../actions/movies';
 
 const fetchMoviesParams = cache(async ({ pageParam = 12, search = '' }) => {
@@ -13,6 +14,7 @@ const useGetMoviesInfiniteScroll = ({
   pageParam?: number;
   search?: string;
 }) => {
+  const { setMoviesStore } = useMovieFormStore();
   const {
     data,
     error,
@@ -22,6 +24,7 @@ const useGetMoviesInfiniteScroll = ({
     isFetchingNextPage,
     status,
     refetch,
+    isRefetching,
   } = useInfiniteQuery({
     queryKey: ['movies', search, pageParam],
     queryFn: ({ pageParam }) => fetchMoviesParams({ pageParam, search }),
@@ -38,6 +41,12 @@ const useGetMoviesInfiniteScroll = ({
       return lastPage.prevOffset && lastPage.prevOffset + 12;
     },
   });
+
+  useEffect(() => {
+    if (data?.pages?.[0]?.movies && !isRefetching) {
+      setMoviesStore(data.pages[0].movies);
+    }
+  }, [data?.pages?.[0]?.movies, setMoviesStore]);
 
   return {
     data,

@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import qs from 'qs';
-import { useEffect } from 'react';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 import MovieCardSearchPageMobileView from '../movie-card-mobile-view_search-page/movie-card-mobile-view_search-page';
 import MovieCardSearchPage from '../movie-card_search-page/movie-card_search-page';
@@ -45,7 +44,7 @@ const Movies = ({
     genre: searchParams.get('genre') || undefined,
     q: searchParams.get('q') || undefined,
   });
-  const hasFilters = searchParams.size > 0;
+
   const {
     data,
     isFetching,
@@ -60,35 +59,18 @@ const Movies = ({
 
   const t = useTranslations('MoviesPage');
 
-  useEffect(() => {
-    if (status === 'success' && data) {
-      let movies = [];
-      if (hasFilters) {
-        movies = data?.pages[data.pages.length - 1]?.movies || [];
-        setMoviesStore([]);
-      } else {
-        movies = data?.pages[0]?.movies || [];
-        setMoviesStore(movies);
+  const fetchNextMovie = async () => {
+    try {
+      if (!isFetchingNextPage && hasNextPage) {
+        const res = await fetchNextPage();
+        if (res?.data?.pages) {
+          const newMovies =
+            res.data.pages[res.data.pages.length - 1]?.movies ?? [];
+          setMoviesStore([...moviesFromStore, ...newMovies]);
+        }
       }
-      if (movies?.length > 0) {
-        setMoviesStore(movies);
-      }
-    }
-  }, [data, status, hasFilters, setMoviesStore]);
-
-  const fecthNextMovie = () => {
-    if (!isFetchingNextPage && hasNextPage) {
-      fetchNextPage()
-        .then((res) => {
-          if (res?.data?.pages) {
-            setMoviesStore(
-              res?.data.pages[res?.data?.pages?.length - 1]?.movies ?? []
-            );
-          } else {
-            setMoviesStore([]);
-          }
-        })
-        .catch((err) => logError(err, 'fecthNextMovie'));
+    } catch (error) {
+      logError(error, 'fecthNextMovie');
     }
   };
 
@@ -131,7 +113,7 @@ const Movies = ({
           (moviesFromStore && moviesFromStore.length < 12) ? null : (
           <Button
             variant={'outline'}
-            onClick={() => fecthNextMovie()}
+            onClick={async () => await fetchNextMovie()}
             className="min-w-80 flex align"
           >
             {t('btnLoadMore')}
