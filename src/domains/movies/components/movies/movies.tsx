@@ -66,7 +66,7 @@ const Movies = ({
         if (res?.data?.pages) {
           const newMovies =
             res.data.pages[res.data.pages.length - 1]?.movies ?? [];
-          setMoviesStore([...moviesFromStore, ...newMovies]);
+          setMoviesStore(newMovies);
         }
       }
     } catch (error) {
