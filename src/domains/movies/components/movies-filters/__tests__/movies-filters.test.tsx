@@ -8,11 +8,14 @@
  * - URL navigation on filter changes
  * - Clear filters functionality
  * - Integration with Zustand store
+ * - QueryClient invalidation on clear
  */
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
 import MovieFilters from '../movies-filters';
 import { useFiltersMovieStore } from '@/store/movie/movie-store';
 
@@ -32,6 +35,25 @@ jest.mock('next-intl', () => ({
 jest.mock('@/store/movie/movie-store', () => ({
   useFiltersMovieStore: jest.fn(),
 }));
+
+/**
+ * Wrapper component to provide React Query context
+ */
+const createWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
+
+  const Wrapper = ({ children }: { children: React.ReactNode }) =>
+    React.createElement(QueryClientProvider, { client: queryClient }, children);
+
+  Wrapper.displayName = 'TestQueryWrapper';
+
+  return { Wrapper, queryClient };
+};
 
 describe('MovieFilters', () => {
   const mockReplace = jest.fn();
@@ -75,7 +97,10 @@ describe('MovieFilters', () => {
    */
   describe('Component rendering', () => {
     it('should render all filter selects', () => {
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       expect(screen.getByText('translated.subtitles')).toBeInTheDocument();
       expect(screen.getByText('translated.language')).toBeInTheDocument();
@@ -84,22 +109,29 @@ describe('MovieFilters', () => {
     });
 
     it('should render search and clear buttons', () => {
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       expect(screen.getByText('translated.btnSearch')).toBeInTheDocument();
-      expect(
-        screen.getByText('translated.btnClearSearch')
-      ).toBeInTheDocument();
+      expect(screen.getByText('translated.btnClearSearch')).toBeInTheDocument();
     });
 
     it('should render with empty genres array', () => {
-      render(<MovieFilters genres={[]} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={[]} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       expect(screen.getByText('translated.genre')).toBeInTheDocument();
     });
 
     it('should render with empty countries array', () => {
-      render(<MovieFilters genres={mockGenres} countries={[]} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={[]} />, {
+        wrapper: Wrapper,
+      });
 
       expect(screen.getByText('translated.language')).toBeInTheDocument();
     });
@@ -130,7 +162,10 @@ describe('MovieFilters', () => {
       );
 
       // Act
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       // Assert: setFiltersData should be called with URL params
       await waitFor(() => {
@@ -154,7 +189,10 @@ describe('MovieFilters', () => {
       (useSearchParams as jest.Mock).mockReturnValue(mockEmptySearchParams);
 
       // Act
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       // Assert: setFiltersData should not be called
       expect(mockSetFiltersData).not.toHaveBeenCalled();
@@ -172,7 +210,10 @@ describe('MovieFilters', () => {
       (useSearchParams as jest.Mock).mockReturnValue(mockPartialSearchParams);
 
       // Act
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       // Assert
       await waitFor(() => {
@@ -199,7 +240,13 @@ describe('MovieFilters', () => {
         clearFilters: mockClearFilters,
       });
 
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+
+        wrapper: Wrapper,
+
+      });
 
       const subtitlesSelect = screen.getAllByRole('combobox')[0];
 
@@ -220,7 +267,13 @@ describe('MovieFilters', () => {
         clearFilters: mockClearFilters,
       });
 
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+
+        wrapper: Wrapper,
+
+      });
 
       const languageSelect = screen.getAllByRole('combobox')[1];
 
@@ -242,7 +295,13 @@ describe('MovieFilters', () => {
         clearFilters: mockClearFilters,
       });
 
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+
+        wrapper: Wrapper,
+
+      });
 
       const decadeSelect = screen.getAllByRole('combobox')[2];
 
@@ -263,7 +322,13 @@ describe('MovieFilters', () => {
         clearFilters: mockClearFilters,
       });
 
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+
+        wrapper: Wrapper,
+
+      });
 
       const genreSelect = screen.getAllByRole('combobox')[3];
 
@@ -294,7 +359,13 @@ describe('MovieFilters', () => {
         clearFilters: mockClearFilters,
       });
 
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+
+        wrapper: Wrapper,
+
+      });
 
       const searchButton = screen.getByText('translated.btnSearch');
 
@@ -324,7 +395,13 @@ describe('MovieFilters', () => {
         clearFilters: mockClearFilters,
       });
 
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+
+        wrapper: Wrapper,
+
+      });
 
       const searchButton = screen.getByText('translated.btnSearch');
 
@@ -347,7 +424,13 @@ describe('MovieFilters', () => {
         clearFilters: mockClearFilters,
       });
 
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+
+        wrapper: Wrapper,
+
+      });
 
       const searchButton = screen.getByText('translated.btnSearch');
 
@@ -364,7 +447,10 @@ describe('MovieFilters', () => {
    */
   describe('Clear filters', () => {
     it('should call clearFilters and navigate to /movies on clear button click', () => {
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       const clearButton = screen.getByText('translated.btnClearSearch');
 
@@ -377,7 +463,10 @@ describe('MovieFilters', () => {
     });
 
     it('should trigger clearing state temporarily', async () => {
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       const clearButton = screen.getByText('translated.btnClearSearch');
 
@@ -403,8 +492,12 @@ describe('MovieFilters', () => {
       ];
 
       // Act
+      const { Wrapper } = createWrapper();
       render(
-        <MovieFilters genres={unsortedGenres} countries={mockCountries} />
+        <MovieFilters genres={unsortedGenres} countries={mockCountries} />,
+        {
+          wrapper: Wrapper,
+        }
       );
 
       // Assert: Genres should be rendered in alphabetical order (Action, Comedy, Drama)
@@ -425,7 +518,10 @@ describe('MovieFilters', () => {
    */
   describe('Edge cases', () => {
     it('should handle undefined genres prop', () => {
-      render(<MovieFilters genres={undefined} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={undefined} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       expect(screen.getByText('translated.genre')).toBeInTheDocument();
     });
@@ -437,12 +533,13 @@ describe('MovieFilters', () => {
         size: 1,
         toString: jest.fn(() => 'decade=0'),
       };
-      (useSearchParams as jest.Mock).mockReturnValue(
-        mockSearchParamsWithZero
-      );
+      (useSearchParams as jest.Mock).mockReturnValue(mockSearchParamsWithZero);
 
       // Act
-      render(<MovieFilters genres={mockGenres} countries={mockCountries} />);
+      const { Wrapper } = createWrapper();
+      render(<MovieFilters genres={mockGenres} countries={mockCountries} />, {
+        wrapper: Wrapper,
+      });
 
       // Assert: Number('0') returns 0 which is falsy, so it becomes undefined
       await waitFor(() => {
@@ -463,8 +560,12 @@ describe('MovieFilters', () => {
       };
       (useSearchParams as jest.Mock).mockReturnValue(mockInitialParams);
 
+      const { Wrapper } = createWrapper();
       const { rerender } = render(
-        <MovieFilters genres={mockGenres} countries={mockCountries} />
+        <MovieFilters genres={mockGenres} countries={mockCountries} />,
+        {
+          wrapper: Wrapper,
+        }
       );
 
       await waitFor(() => {

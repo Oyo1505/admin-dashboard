@@ -7,6 +7,7 @@ import { decades } from '@/shared/constants/decade';
 import { URL_MOVIES } from '@/shared/route';
 import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated';
 import { useFiltersMovieStore } from '@/store/movie/movie-store';
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'qs';
@@ -24,7 +25,9 @@ const MovieFilters = ({
   const locale = useLocale() as Locale;
   const router = useRouter();
   const { filters, setFiltersData, clearFilters } = useFiltersMovieStore();
+
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
   useEffect(() => {
     if (searchParams.size > 0) {
       setFiltersData({
@@ -68,6 +71,7 @@ const MovieFilters = ({
   const onClickClearSearch = () => {
     clearFilters();
     router.replace(URL_MOVIES);
+    queryClient.invalidateQueries({ queryKey: ['movies'] });
   };
 
   const listCountries = countriesList.filter((country) =>
