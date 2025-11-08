@@ -102,13 +102,13 @@ describe('MovieHeaderSubtitleLink Component', () => {
       expect(link).toHaveAttribute('target', '_blank');
     });
 
-    it('should have rel="noreferrer" for security', () => {
+    it('should have rel="noreferrer noopener" for security', () => {
       // Act
       render(<MovieHeaderSubtitlesButton {...defaultProps} />);
 
       // Assert
       const link = screen.getByRole('link');
-      expect(link).toHaveAttribute('rel', 'noreferrer');
+      expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     });
 
     it('should handle different URL formats', () => {
@@ -194,13 +194,13 @@ describe('MovieHeaderSubtitleLink Component', () => {
    * Group 4: Security attributes
    */
   describe('Security', () => {
-    it('should prevent referrer leakage with rel="noreferrer"', () => {
+    it('should prevent referrer leakage with rel="noreferrer noopener"', () => {
       // Act
       render(<MovieHeaderSubtitlesButton {...defaultProps} />);
 
       // Assert
       const link = screen.getByRole('link');
-      expect(link).toHaveAttribute('rel', 'noreferrer');
+      expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     });
 
     it('should handle external links securely', () => {
@@ -220,7 +220,7 @@ describe('MovieHeaderSubtitleLink Component', () => {
 
         // Assert
         const linkElement = screen.getByRole('link');
-        expect(linkElement).toHaveAttribute('rel', 'noreferrer');
+        expect(linkElement).toHaveAttribute('rel', 'noreferrer noopener');
         expect(linkElement).toHaveAttribute('target', '_blank');
 
         // Cleanup
