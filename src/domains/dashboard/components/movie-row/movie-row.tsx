@@ -10,7 +10,6 @@ import {
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import Link from 'next/link';
-import { useState } from 'react';
 import { deleteMovieById } from '../../actions/movie';
 import { useMovieData } from '../../hooks/useMovieData';
 
@@ -23,10 +22,6 @@ function MovieRow({
   btnText: string;
   index?: number;
 }) {
-  const [isMoviePublished, setIsMoviePublished] = useState<boolean>(
-    movie.publish
-  );
-
   const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
     if (movie?.id) {
@@ -37,12 +32,9 @@ function MovieRow({
   const { getMoviePublish } = useMovieData({ editMovie: false, movie });
   const { data, isFetching, refetch, status } = getMoviePublish;
 
-  if (status === 'success' && data?.publish !== undefined) {
-    setIsMoviePublished(data.publish);
-  }
   const hasPermissionToDelete = checkPermissions(user, 'can:delete', 'movie');
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
-
+  const isMoviePublished = data?.publish ?? movie.publish;
   return (
     movie &&
     movie.id && (

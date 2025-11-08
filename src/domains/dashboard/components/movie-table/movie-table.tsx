@@ -1,4 +1,5 @@
 'use client';
+import useGetMoviesPagination from '@/domains/movies/hooks/use-get-movies-pagination';
 import {
   Table,
   TableBody,
@@ -8,23 +9,25 @@ import {
 } from '@/domains/ui/components/table/table';
 import { IMovie } from '@/models/movie/movie';
 import { useTranslations } from 'next-intl';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import MovieRow from '../movie-row/movie-row';
 
 const MovieTable = ({
-  movies,
-  movieInDb,
+  moviesFromGoogleDrive,
 }: {
-  movies: IMovie[] | undefined;
-  movieInDb: IMovie[];
+  moviesFromGoogleDrive: IMovie[] | undefined;
 }) => {
+  const [page, setPage] = useState(0);
   const t = useTranslations('Dashboard');
-  const filteredMoviesNotAdded = movies?.filter(
+  const { data, isPlaceholderData } = useGetMoviesPagination({
+    page,
+  });
+
+  const filteredMoviesNotAdded = moviesFromGoogleDrive?.filter(
     (testMovie) =>
-      !movieInDb?.some((dataMovie) => dataMovie.idGoogleDive === testMovie.id)
-  );
-  const filteredMoviesAdded = movieInDb?.filter((testMovie) =>
-    movies?.some((dataMovie) => dataMovie.id === testMovie.idGoogleDive)
+      !data?.movies?.some(
+        (dataMovie: IMovie) => dataMovie.idGoogleDive === testMovie.id
+      )
   );
 
   return (
@@ -48,7 +51,7 @@ const MovieTable = ({
             </Table>
           </form>
         ) : null}
-        {filteredMoviesAdded && filteredMoviesAdded?.length > 0 && (
+        {data?.movies && data.movies?.length > 0 && (
           <>
             <form className="border  bg-primary text-background shadow-xs rounded-lg mt-4">
               <Table>
@@ -63,8 +66,8 @@ const MovieTable = ({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredMoviesAdded
-                    ? filteredMoviesAdded?.map((movie, index) => (
+                  {data.movies
+                    ? data.movies?.map((movie: IMovie, index: number) => (
                         <MovieRow
                           key={movie?.id}
                           movie={movie}
@@ -76,6 +79,26 @@ const MovieTable = ({
                 </TableBody>
               </Table>
             </form>
+            <div className="flex gap-4 mt-4 justify-center">
+              <button
+                onClick={() => setPage((old) => Math.max(old - 1, 0))}
+                disabled={page === 0}
+                className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
+              >
+                {t('previousPage')}
+              </button>
+              <button
+                onClick={() => {
+                  if (!isPlaceholderData && data.movies?.length === 5) {
+                    setPage((old) => old + 1);
+                  }
+                }}
+                disabled={isPlaceholderData || (data.movies?.length ?? 0) < 5}
+                className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
+              >
+                {t('nextPage')}
+              </button>
+            </div>
           </>
         )}
       </div>

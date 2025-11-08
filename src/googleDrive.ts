@@ -15,7 +15,6 @@ export const getDataFromGoogleDrive = async () => {
       q: `mimeType='video/mp4' and '${process.env.GOOGLE_DRIVE_FOLDER_ID}' in parents`,
     });
 
-    // const files = res.data
     return { movies: movies.data.files };
   } catch (error) {
     logError(error, 'getDataFromGoogleDrive');
