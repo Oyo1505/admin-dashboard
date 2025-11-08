@@ -3,9 +3,11 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { cache, useEffect } from 'react';
 import { fetchMovies } from '../actions/movies';
 
-const fetchMoviesParams = cache(async ({ pageParam = 12, search = '' }) => {
-  return await fetchMovies({ pageParam, search });
-});
+export const fetchMoviesParams = cache(
+  async ({ pageParam = 12, search = '' }) => {
+    return await fetchMovies({ pageParam, search });
+  }
+);
 
 const useGetMoviesInfiniteScroll = ({
   pageParam,
