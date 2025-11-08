@@ -13,15 +13,7 @@ import Link from 'next/link';
 import { deleteMovieById } from '../../actions/movie';
 import { useMovieData } from '../../hooks/useMovieData';
 
-function MovieRow({
-  movie,
-  btnText,
-  index,
-}: {
-  movie: IMovie;
-  btnText: string;
-  index?: number;
-}) {
+function MovieRow({ movie, btnText }: { movie: IMovie; btnText: string }) {
   const { user } = useUserStore();
   const onClickDeleteMovie = async (): Promise<void> => {
     if (movie?.id) {
@@ -39,9 +31,7 @@ function MovieRow({
     movie &&
     movie.id && (
       <TableRow className="border-b border-background border-opacity-20">
-        <TableCell className="font-bold">
-          {index}. {movie.title ?? movie.id}
-        </TableCell>
+        <TableCell className="font-bold">{movie.title ?? movie.id}</TableCell>
         {movie.title && (
           <TableCell>
             <Toggle

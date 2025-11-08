@@ -2,7 +2,8 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 const useGetMoviesPagination = ({ page }: { page: number }) => {
   const { data, isPlaceholderData } = useQuery({
-    queryKey: ['get-all-movies-pagination', page],
+    queryKey: ['all-movies-pagination', page],
+    staleTime: 60 * 1000,
     queryFn: async () => {
       const response = await fetch(
         `/api/movies/get-movies-paginated?pageParam=${page * 5}`
