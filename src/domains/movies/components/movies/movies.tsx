@@ -12,8 +12,7 @@ import MovieCardSearchPageMobileView from '../movie-card-mobile-view_search-page
 import MovieCardSearchPage from '../movie-card_search-page/movie-card_search-page';
 
 const LoadingSpinner = dynamic(
-  () => import('@/domains/shared/components/loading-spinner/loading-spinner'),
-  { ssr: false }
+  () => import('@/domains/shared/components/loading-spinner/loading-spinner')
 );
 
 interface SearchParams {

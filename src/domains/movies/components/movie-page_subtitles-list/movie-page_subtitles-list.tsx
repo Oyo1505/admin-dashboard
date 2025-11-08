@@ -1,5 +1,6 @@
 import { IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
+import MovieHeaderSubtitleLink from '../movie-header_subtitle-link/movie-header_subtitle-link';
 
 const MoviePageSubtitlesList = ({ movie }: { movie: IMovie }) => {
   const locale = useLocale();
@@ -11,45 +12,25 @@ const MoviePageSubtitlesList = ({ movie }: { movie: IMovie }) => {
     <div className="font-normal flex flex-col gap-3">
       <div className="flex flex-col gap-2 mt-4">
         <h4 className="font-bold">{t('subtitles')}</h4>
-        <ul>
-          <li>
-            <a
-              href={`https://www.opensubtitles.org/${locale === 'fr' ? 'fr' : 'en'}/search/sublanguageid-all/moviename-${titleCompute(movie?.title)}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              - OpenSubtitles
-            </a>
-          </li>
-          <li>
-            <a
-              href={`https://subdl.org/search/?srcname=${titleCompute(movie?.titleEnglish)}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              - Subdl.org
-            </a>
-          </li>
+        <ul className="list-none flex gap-4 flex-wrap flex-col md:flex-row md:gap-2">
+          <MovieHeaderSubtitleLink
+            link={`https://www.opensubtitles.org/${locale === 'fr' ? 'fr' : 'en'}/search/sublanguageid-all/moviename-${titleCompute(movie?.title)}`}
+            subtitleWebSite={'OpenSubtitles'}
+          />
+          <MovieHeaderSubtitleLink
+            link={`https://subdl.org/search/?srcname=${titleCompute(movie?.titleEnglish)}`}
+            subtitleWebSite={'Subdl.org'}
+          />
           {movie?.imdbId && (
-            <li>
-              <a
-                href={`https://yifysubtitles.ch/movie-imdb/${movie?.imdbId}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                - Yifi Subtitles
-              </a>
-            </li>
+            <MovieHeaderSubtitleLink
+              link={`https://yifysubtitles.ch/movie-imdb/${movie?.imdbId}`}
+              subtitleWebSite={'Yifi Subtitles'}
+            />
           )}
-          <li>
-            <a
-              href={`https://www.subtitlecat.com/index.php?search=${movie?.titleEnglish?.replaceAll(' ', '+')?.toLocaleLowerCase()}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              - SubtitleCat
-            </a>
-          </li>
+          <MovieHeaderSubtitleLink
+            link={`https://www.subtitlecat.com/index.php?search=${movie?.titleEnglish?.replaceAll(' ', '+')?.toLocaleLowerCase()}`}
+            subtitleWebSite={'SubtitleCat'}
+          />
         </ul>
       </div>
     </div>

@@ -88,7 +88,7 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
               </div>
             </>
           )}
-          <Suspense fallback={null}>
+          <Suspense fallback={<Loading />}>
             {suggestedMovies && suggestedMovies?.length > 0 ? (
               <div className="h-full w-full mt-10 lg:mt-0 lg:w-1/2">
                 <Title
