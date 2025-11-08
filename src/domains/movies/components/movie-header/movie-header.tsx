@@ -124,10 +124,10 @@ const MovieHeader = ({ movie }: { movie: IMovie }) => {
       )}
       {movie && (
         <>
-          {' '}
+          <hr className="my-5" />
           <a
             href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`}
-            className="inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary hover:text-green-700"
+            className="inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background font-bold hover:bg-primary hover:text-green-700"
             target="_blank"
             download
           >
