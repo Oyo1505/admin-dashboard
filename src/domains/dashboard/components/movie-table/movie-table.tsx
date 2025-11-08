@@ -46,7 +46,7 @@ const MovieTable = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {moviesFromGoogle?.map((movie) => (
+                {moviesFromGoogle?.map((movie: IMovie) => (
                   <MovieRow key={movie?.id} movie={movie} btnText={'Ajouter'} />
                 ))}
               </TableBody>
