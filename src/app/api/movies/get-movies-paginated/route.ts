@@ -14,12 +14,13 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const movies = await prisma.movie.findMany({
+      orderBy: { createdAt: 'desc' },
       skip: pageParam,
       take: 5,
     });
 
     if (!movies) {
-      return Response.json({ mails: [] }, { status: 404 });
+      return Response.json({ movies: [] }, { status: 404 });
     }
 
     return Response.json(

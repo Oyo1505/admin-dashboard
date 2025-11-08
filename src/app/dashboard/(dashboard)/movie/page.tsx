@@ -1,20 +1,12 @@
 import MovieTable from '@/domains/dashboard/components/movie-table/movie-table';
 import Text from '@/domains/ui/components/text/text';
-import { getDataFromGoogleDrive } from '@/googleDrive';
 import { getServerSession } from '@/lib/auth';
 import { UserData } from '@/lib/data/users';
-
-import { IMovie } from '@/models/movie/movie';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import { User } from 'better-auth/types/user';
 import { Suspense } from 'react';
 
-export const revalidate = 60;
-
 const Page = async () => {
-  const { movies: moviesFromGoogleDrive } =
-    (await getDataFromGoogleDrive()) as { movies: IMovie[] };
-
   const session = await getServerSession();
   const userConnected = await UserData.getUserConnected(
     session?.user?.email ?? ''
@@ -35,7 +27,7 @@ const Page = async () => {
     );
   return (
     <Suspense fallback={null}>
-      <MovieTable moviesFromGoogleDrive={moviesFromGoogleDrive} />
+      <MovieTable />
     </Suspense>
   );
 };

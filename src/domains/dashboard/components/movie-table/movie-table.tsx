@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/app/loading';
 import useGetMoviesPagination from '@/domains/movies/hooks/use-get-movies-pagination';
 import {
   Table,
@@ -10,30 +11,31 @@ import {
 import { IMovie } from '@/models/movie/movie';
 import { useTranslations } from 'next-intl';
 import { Suspense, useState } from 'react';
+import useGetMoviesFromGoogleDrive from '../../hooks/useGetMoviesFromGoogleDrive';
 import MovieRow from '../movie-row/movie-row';
 
-const MovieTable = ({
-  moviesFromGoogleDrive,
-}: {
-  moviesFromGoogleDrive: IMovie[] | undefined;
-}) => {
+const MovieTable = () => {
   const [page, setPage] = useState(0);
   const t = useTranslations('Dashboard');
+  const {
+    data: moviesFromGoogle,
+    isLoading,
+    error,
+  } = useGetMoviesFromGoogleDrive();
   const { data, isPlaceholderData } = useGetMoviesPagination({
     page,
   });
-
-  const filteredMoviesNotAdded = moviesFromGoogleDrive?.filter(
-    (testMovie) =>
-      !data?.movies?.some(
-        (dataMovie: IMovie) => dataMovie.idGoogleDive === testMovie.id
-      )
-  );
-
+  if (isLoading) return <Loading />;
+  if (error)
+    return (
+      <div className="p-4 text-red-500">
+        Failed to load movies from Google Drive
+      </div>
+    );
   return (
-    <Suspense fallback={<p>Chargement...</p>}>
+    <Suspense fallback={<Loading />}>
       <div className="flex flex-1 flex-col gap-4  md:gap-8 md:p-6">
-        {filteredMoviesNotAdded && filteredMoviesNotAdded?.length > 0 ? (
+        {moviesFromGoogle && moviesFromGoogle?.length > 0 && !isLoading ? (
           <form className="border  bg-primary text-background shadow-xs rounded-lg">
             <Table>
               <TableHeader>
@@ -44,7 +46,7 @@ const MovieTable = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredMoviesNotAdded?.map((movie) => (
+                {moviesFromGoogle?.map((movie) => (
                   <MovieRow key={movie?.id} movie={movie} btnText={'Ajouter'} />
                 ))}
               </TableBody>
@@ -71,7 +73,6 @@ const MovieTable = ({
                         <MovieRow
                           key={movie?.id}
                           movie={movie}
-                          index={index + 1}
                           btnText={'Editer'}
                         />
                       ))

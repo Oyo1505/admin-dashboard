@@ -6,19 +6,19 @@ import {
   IMovie,
   IMovieFormData,
 } from '@/models/movie/movie';
-import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import {
   MAX_LATEST_MOVIES,
   MAX_MOVIES_BY_COUNTRY,
   MAX_MOVIES_BY_GENRE,
 } from '@/shared/constants/pagination';
+import { CACHE_TTL_SHORT } from '@/shared/constants/time';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
 import {
-  buildMovieData,
   buildGenresConnectionForCreate,
   buildGenresConnectionForUpdate,
+  buildMovieData,
   buildMovieInclude,
 } from './movies-helpers';
 
@@ -417,7 +417,17 @@ export class MovieData {
       }
     }
   );
-
+  static getAll = cache(async () => {
+    try {
+      const movies = await prisma.movie.findMany();
+      if (!movies) return { movies: [], status: 404 };
+      return { movies, status: 200 };
+    } catch (error) {
+      logError(error, 'getAll');
+      const appError = handlePrismaError(error);
+      return { status: appError.statusCode };
+    }
+  });
   static getAllMoviesWithGenres = cache(
     async (): Promise<{
       movieInDb?: IMovie[];
