@@ -66,7 +66,7 @@ export type SelectFiltersProps = {
   isClearing?: boolean;
 };
 
-export interface IMovieFormData {
+export interface IMovieFormData extends Record<string, unknown> {
   id?: string;
   title: string;
   titleJapanese?: string;
