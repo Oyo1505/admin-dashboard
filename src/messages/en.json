@@ -99,7 +99,9 @@
     "titleEnglish": "English Title",
     "imdbId": "IMDB ID",
     "toastMovieMessageSuccess": "Movie added to favorites",
-    "toastMovieMessageSuccessDelete": "An error occurred"
+    "toastMovieMessageSuccessDelete": "An error occurred",
+    "titleSection": "Title Information",
+    "languageAndCountry": "Language and Country"
   },
   "DirectorSectionForm": {
     "title": "Add Director Section",

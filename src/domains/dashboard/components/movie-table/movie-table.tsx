@@ -22,7 +22,7 @@ const MovieTable = () => {
     isLoading,
     error,
   } = useGetMoviesFromGoogleDrive();
-  const { data, isPlaceholderData } = useGetMoviesPagination({
+  const { data: moviesFromPrisma, isPlaceholderData } = useGetMoviesPagination({
     page,
   });
   if (isLoading) return <Loading />;
@@ -53,7 +53,7 @@ const MovieTable = () => {
             </Table>
           </form>
         ) : null}
-        {data?.movies && data.movies?.length > 0 && (
+        {moviesFromPrisma?.movies && moviesFromPrisma.movies?.length > 0 && (
           <>
             <form className="border  bg-primary text-background shadow-xs rounded-lg mt-4">
               <Table>
@@ -68,14 +68,16 @@ const MovieTable = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.movies
-                    ? data.movies?.map((movie: IMovie, index: number) => (
-                        <MovieRow
-                          key={movie?.id}
-                          movie={movie}
-                          btnText={'Editer'}
-                        />
-                      ))
+                  {moviesFromPrisma.movies
+                    ? moviesFromPrisma.movies?.map(
+                        (movie: IMovie, index: number) => (
+                          <MovieRow
+                            key={movie?.id}
+                            movie={movie}
+                            btnText={'Editer'}
+                          />
+                        )
+                      )
                     : t('noMovie')}
                 </TableBody>
               </Table>
@@ -90,11 +92,17 @@ const MovieTable = () => {
               </button>
               <button
                 onClick={() => {
-                  if (!isPlaceholderData && data.movies?.length === 5) {
+                  if (
+                    !isPlaceholderData &&
+                    moviesFromPrisma.movies?.length === 5
+                  ) {
                     setPage((old) => old + 1);
                   }
                 }}
-                disabled={isPlaceholderData || (data.movies?.length ?? 0) < 5}
+                disabled={
+                  isPlaceholderData ||
+                  (moviesFromPrisma.movies?.length ?? 0) < 5
+                }
                 className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
               >
                 {t('nextPage')}

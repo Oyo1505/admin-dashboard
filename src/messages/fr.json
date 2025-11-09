@@ -99,7 +99,9 @@
     "titleEnglish": "Titre anglais",
     "imdbId": "IMDB ID",
     "toastMovieMessageSuccess": "Edition du film réussie",
-    "toastMovieMessageSuccessDelete": "Une erreur est survenue"
+    "toastMovieMessageSuccessDelete": "Une erreur est survenue",
+    "titleSection": "Informations sur les titres",
+    "languageAndCountry": "Langue et pays"
   },
   "DirectorSectionForm": {
     "title": "Ajouter une section réalisateur",
