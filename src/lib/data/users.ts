@@ -1,6 +1,7 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IAnalytics, User } from '@/models/user/user';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { AnalyticsData } from './analytics';
@@ -21,8 +22,8 @@ export class UserData {
         const user = await prisma.user.findUnique({
           where: { email },
         });
-        if (user) return { user, status: 200 };
-        return { user: undefined, status: 200 };
+        if (user) return { user, status: HttpStatus.OK };
+        return { user: undefined, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'findUnique');
         const appError = handlePrismaError(error);
@@ -39,13 +40,13 @@ export class UserData {
     }> => {
       try {
         if (!email?.trim()) {
-          return { status: 400 };
+          return { status: HttpStatus.BAD_REQUEST };
         }
 
         const { user } = await UserData.findUnique(email);
 
         if (!user) {
-          return { status: 404 };
+          return { status: HttpStatus.NOT_FOUND };
         }
 
         const { analytics } = await AnalyticsData.getAnalyticsUser(user);
@@ -64,7 +65,7 @@ export class UserData {
               lastMovieWatched: a.lastMovieWatched ?? undefined,
             })),
           },
-          status: 200,
+          status: HttpStatus.OK,
         };
       } catch (error) {
         logError(error, 'getUserConnected');
@@ -110,7 +111,7 @@ export class UserData {
           })),
         }));
 
-        return { users: transformedUsers, status: 200 };
+        return { users: transformedUsers, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getAllAnalyticsUser');
         const appError = handlePrismaError(error);

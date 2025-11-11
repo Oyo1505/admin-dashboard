@@ -1,5 +1,6 @@
 import { AnalyticsData } from '@/lib/data/analytics';
 import prisma from '@/lib/prisma';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 export async function GET(
   request: Request,
@@ -12,7 +13,7 @@ export async function GET(
   try {
     const { email } = await params;
     if (!email?.trim()) {
-      return Response.json({ error: 'Email is required' }, { status: 400 });
+      return Response.json({ error: 'Email is required' }, { status: HttpStatus.BAD_REQUEST });
     }
 
     const user = await prisma.user.findUnique({
@@ -20,7 +21,7 @@ export async function GET(
     });
 
     if (!user) {
-      return Response.json({ error: 'User not found' }, { status: 404 });
+      return Response.json({ error: 'User not found' }, { status: HttpStatus.NOT_FOUND });
     }
 
     const { analytics } = await AnalyticsData.getAnalyticsUser(user);
@@ -41,9 +42,9 @@ export async function GET(
           })),
         },
       },
-      { status: 200 }
+      { status: HttpStatus.OK }
     );
   } catch {
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
+    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
   }
 }

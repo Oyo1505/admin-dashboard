@@ -1,4 +1,5 @@
 import { User } from '@/models/user/user';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 export const MESSAGES_ERRORS_API = {
   400: 'Error signing up, please try again',
@@ -32,7 +33,7 @@ export const MESSAGES_ERRORS_API = {
 export const userNotUnautorized = (user: User) => {
   if (user.role !== 'ADMIN')
     return {
-      status: 403,
+      status: HttpStatus.FORBIDDEN,
       message: 'Unautorized',
     };
 };

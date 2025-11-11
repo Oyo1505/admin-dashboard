@@ -1,6 +1,7 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IMovie } from '@/models/movie/movie';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { Prisma } from '@prisma/client';
 
 /**
@@ -42,7 +43,7 @@ export class SearchData {
 
       return {
         movies,
-        status: 200,
+        status: HttpStatus.OK,
         prevOffset: limit,
       };
     } catch (error) {
@@ -162,7 +163,7 @@ export class SearchData {
 
       return {
         movies,
-        status: 200,
+        status: HttpStatus.OK,
         prevOffset: limit,
       };
     } catch (error) {

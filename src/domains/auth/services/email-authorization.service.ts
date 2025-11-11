@@ -1,6 +1,7 @@
 import { EmailData } from '@/lib/data/email';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 /**
  * Email Authorization Service
@@ -97,7 +98,7 @@ export class EmailAuthorizationService {
     try {
       const { mails, status } = await EmailData.getAuthorizedEmails();
 
-      if (status !== 200 || !mails) {
+      if (status !== HttpStatus.OK || !mails) {
         logError({}, 'Failed to fetch authorized emails in isEmailAuthorized');
         return false;
       }
@@ -138,7 +139,7 @@ export class EmailAuthorizationService {
     try {
       // 1. Validate email is not empty
       if (!email?.trim()) {
-        return { status: 400, message: 'Email is required' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'Email is required' };
       }
 
       // 2. Normalize email
@@ -146,13 +147,13 @@ export class EmailAuthorizationService {
 
       // 3. Validate email format
       if (!this.isValidEmailFormat(normalizedEmail)) {
-        return { status: 400, message: 'Invalid email format' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'Invalid email format' };
       }
 
       // 4. Check for duplicates
       const isDuplicate = await this.isEmailAlreadyAuthorized(normalizedEmail);
       if (isDuplicate) {
-        return { message: 'User Already authorized', status: 409 };
+        return { message: 'User Already authorized', status: HttpStatus.CONFLICT };
       }
 
       // 5. Create authorized email record (via Adapter)
@@ -160,7 +161,7 @@ export class EmailAuthorizationService {
         data: { email: normalizedEmail },
       });
 
-      return { status: 200, message: 'Email authorized successfully' };
+      return { status: HttpStatus.OK, message: 'Email authorized successfully' };
     } catch (error) {
       logError(error, 'EmailAuthorizationService.authorizeEmail');
       const appError = handlePrismaError(error);
@@ -196,7 +197,7 @@ export class EmailAuthorizationService {
     try {
       // 1. Validate email
       if (!email?.trim()) {
-        return { status: 400, message: 'Email is required' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'Email is required' };
       }
 
       // 2. Normalize email
@@ -208,10 +209,10 @@ export class EmailAuthorizationService {
       });
 
       if (!emailDeleted) {
-        return { status: 404, message: 'Email not found' };
+        return { status: HttpStatus.NOT_FOUND, message: 'Email not found' };
       }
 
-      return { status: 200, message: 'Email authorization revoked' };
+      return { status: HttpStatus.OK, message: 'Email authorization revoked' };
     } catch (error) {
       logError(error, 'EmailAuthorizationService.revokeEmailAuthorization');
       const appError = handlePrismaError(error);

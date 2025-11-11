@@ -1,6 +1,7 @@
 import { validateId } from '@/lib/api-wrapper';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 /**
  * User Analytics Service
@@ -64,7 +65,7 @@ export class UserAnalyticsService {
       });
 
       if (!user) {
-        return { status: 404, message: 'User not found' };
+        return { status: HttpStatus.NOT_FOUND, message: 'User not found' };
       }
 
       // 3. Check if analytics record exists
@@ -94,7 +95,7 @@ export class UserAnalyticsService {
         });
       }
 
-      return { status: 200, message: 'Login recorded successfully' };
+      return { status: HttpStatus.OK, message: 'Login recorded successfully' };
     } catch (error) {
       logError(error, 'UserAnalyticsService.recordUserLogin');
       const appError = handlePrismaError(error);
@@ -135,11 +136,11 @@ export class UserAnalyticsService {
     try {
       // 1. Validate inputs
       if (!userId?.trim()) {
-        return { status: 400, message: 'User ID is required' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'User ID is required' };
       }
 
       if (!movieId?.trim()) {
-        return { status: 400, message: 'Movie ID is required' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'Movie ID is required' };
       }
 
       // 2. Update analytics with last movie watched
@@ -153,12 +154,12 @@ export class UserAnalyticsService {
       // 3. Check if any record was updated
       if (updateResult.count === 0) {
         return {
-          status: 404,
+          status: HttpStatus.NOT_FOUND,
           message: 'No analytics record found for this user',
         };
       }
 
-      return { status: 200, message: 'Movie viewing recorded' };
+      return { status: HttpStatus.OK, message: 'Movie viewing recorded' };
     } catch (error) {
       logError(error, 'UserAnalyticsService.recordMovieViewed');
       const appError = handlePrismaError(error);
@@ -205,7 +206,7 @@ export class UserAnalyticsService {
         });
 
         return {
-          status: 200,
+          status: HttpStatus.OK,
           visits: newAnalytics.visits,
           message: 'Application analytics initialized',
         };
@@ -220,7 +221,7 @@ export class UserAnalyticsService {
       });
 
       return {
-        status: 200,
+        status: HttpStatus.OK,
         visits: updatedAnalytics.visits,
         message: 'Application visits incremented',
       };
@@ -272,7 +273,7 @@ export class UserAnalyticsService {
 
       if (!analytics || analytics.length === 0) {
         return {
-          status: 404,
+          status: HttpStatus.NOT_FOUND,
           message: 'No analytics found for this user',
         };
       }
@@ -286,7 +287,7 @@ export class UserAnalyticsService {
       const lastMovieWatched = analytics[0]?.lastMovieWatched || null;
 
       return {
-        status: 200,
+        status: HttpStatus.OK,
         summary: {
           totalVisits,
           lastLogin,
@@ -337,7 +338,7 @@ export class UserAnalyticsService {
       });
 
       return {
-        status: 200,
+        status: HttpStatus.OK,
         message: 'User analytics reset successfully',
       };
     } catch (error) {

@@ -1,6 +1,7 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { User } from '@/models/user/user';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_DASHBOARD_ROUTE, URL_HOME } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
@@ -20,11 +21,11 @@ export class UserService {
   ): Promise<{ users?: User[]; newOffset?: number | null; status: number }> {
     try {
       if (typeof search !== 'string') {
-        return { status: 400 };
+        return { status: HttpStatus.BAD_REQUEST };
       }
 
       if (typeof pageParam !== 'number' || pageParam <= 0) {
-        return { status: 400 };
+        return { status: HttpStatus.BAD_REQUEST };
       }
 
       const users =
@@ -43,7 +44,7 @@ export class UserService {
       const newOffset = users.length >= 20 ? pageParam + 20 : null;
       return {
         users: users as User[],
-        status: 200,
+        status: HttpStatus.OK,
         newOffset: newOffset,
       };
     } catch (error) {
@@ -61,11 +62,11 @@ export class UserService {
   }): Promise<{ status: number; message?: string }> {
     try {
       if (!id?.trim()) {
-        return { status: 400, message: 'User ID is required' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'User ID is required' };
       }
 
       if (!user || user.role !== 'ADMIN') {
-        return { status: 403, message: 'Unauthorized' };
+        return { status: HttpStatus.FORBIDDEN, message: 'Unauthorized' };
       }
 
       const userToDelete = await prisma.user.findUnique({
@@ -73,7 +74,7 @@ export class UserService {
       });
 
       if (!userToDelete) {
-        return { status: 404, message: 'User not found' };
+        return { status: HttpStatus.NOT_FOUND, message: 'User not found' };
       }
 
       await prisma.user.delete({
@@ -81,7 +82,7 @@ export class UserService {
       });
 
       revalidatePath(URL_DASHBOARD_ROUTE.users);
-      return { status: 200, message: 'User deleted successfully' };
+      return { status: HttpStatus.OK, message: 'User deleted successfully' };
     } catch (error) {
       logError(error, 'deleteUserById');
       const appError = handlePrismaError(error);
@@ -96,7 +97,7 @@ export class UserService {
   ): Promise<{ status: number; message?: string }> {
     if (!id) {
       return {
-        status: 400,
+        status: HttpStatus.BAD_REQUEST,
         message: 'User ID is required',
       };
     }
@@ -108,7 +109,7 @@ export class UserService {
 
       if (!userToDelete) {
         return {
-          status: 404,
+          status: HttpStatus.NOT_FOUND,
           message: 'User not found',
         };
       }
@@ -118,7 +119,7 @@ export class UserService {
       });
 
       revalidatePath(URL_HOME);
-      return { status: 200, message: 'User deleted successfully' };
+      return { status: HttpStatus.OK, message: 'User deleted successfully' };
     } catch (error) {
       logError(error, 'deleteUserByIdFromUser');
       const appError = handlePrismaError(error);

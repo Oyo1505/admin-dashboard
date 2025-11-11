@@ -1,5 +1,6 @@
 import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 export async function GET(request: Request): Promise<Response> {
   try {
@@ -9,7 +10,7 @@ export async function GET(request: Request): Promise<Response> {
     if (isNaN(pageParam) || pageParam < 0) {
       return Response.json(
         { error: 'Invalid pageParam parameter' },
-        { status: 400 }
+        { status: HttpStatus.BAD_REQUEST }
       );
     }
 
@@ -22,17 +23,17 @@ export async function GET(request: Request): Promise<Response> {
     });
 
     if (!userauthorizedEmails) {
-      return Response.json({ mails: [] }, { status: 404 });
+      return Response.json({ mails: [] }, { status: HttpStatus.NOT_FOUND });
     }
 
     return Response.json(
       {
         mails: userauthorizedEmails,
       },
-      { status: 200 }
+      { status: HttpStatus.OK }
     );
   } catch (error) {
     logError(error, 'get-authorized-emails-pagination');
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
+    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
   }
 }

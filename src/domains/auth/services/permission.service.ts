@@ -3,6 +3,7 @@ import { SelectUser } from '@/lib/db';
 import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { User } from '@/models/user/user';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 /**
  * Permission Type Definition
@@ -265,7 +266,7 @@ export class PermissionService {
       if (!session?.user) {
         return {
           isValid: false,
-          status: 401,
+          status: HttpStatus.UNAUTHORIZED,
           message: 'Invalid session - not authenticated',
         };
       }
@@ -285,7 +286,7 @@ export class PermissionService {
       if (!dbUser) {
         return {
           isValid: false,
-          status: 404,
+          status: HttpStatus.NOT_FOUND,
           message: 'User not found in database',
         };
       }
@@ -301,7 +302,7 @@ export class PermissionService {
 
       return {
         isValid: true,
-        status: 200,
+        status: HttpStatus.OK,
         user,
         message: 'Session valid',
       };
@@ -309,7 +310,7 @@ export class PermissionService {
       logError(error, 'PermissionService.validateSession');
       return {
         isValid: false,
-        status: 500,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Session validation failed',
       };
     }
@@ -352,7 +353,7 @@ export class PermissionService {
       if (!this.isAdmin(validation.user)) {
         return {
           isValid: false,
-          status: 403,
+          status: HttpStatus.FORBIDDEN,
           user: validation.user,
           message: 'Admin rights required',
         };
@@ -360,7 +361,7 @@ export class PermissionService {
 
       return {
         isValid: true,
-        status: 200,
+        status: HttpStatus.OK,
         user: validation.user,
         message: 'Admin session valid',
       };
@@ -368,7 +369,7 @@ export class PermissionService {
       logError(error, 'PermissionService.validateAdminSession');
       return {
         isValid: false,
-        status: 500,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Admin session validation failed',
       };
     }

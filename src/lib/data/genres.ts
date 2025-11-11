@@ -1,4 +1,5 @@
 import { IGenre, IMovie } from '@/models/movie/movie';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
@@ -10,7 +11,7 @@ export class GenreData {
       const createdGenre = await prisma.genre.create({
         data: genre,
       });
-      return { status: 200, createdGenre: createdGenre };
+      return { status: HttpStatus.OK, createdGenre: createdGenre };
     } catch (error) {
       logError(error, 'addGenre');
       const appError = handlePrismaError(error);
@@ -24,7 +25,7 @@ export class GenreData {
           id: id,
         },
       });
-      return { deletedGenre, status: 200 };
+      return { deletedGenre, status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'delete Genre data');
       const appError = handlePrismaError(error);
@@ -40,10 +41,10 @@ export class GenreData {
         data: genre,
       });
       if (!updatedGenre) {
-        return { status: 404 };
+        return { status: HttpStatus.NOT_FOUND };
       }
 
-      return { status: 200, updatedGenre };
+      return { status: HttpStatus.OK, updatedGenre };
     } catch (error) {
       logError(error, 'updateGenre');
       const appError = handlePrismaError(error);
@@ -59,9 +60,9 @@ export class GenreData {
         const genres = await prisma.genre.findMany();
 
         if (!genres) {
-          return { status: 404 };
+          return { status: HttpStatus.NOT_FOUND };
         }
-        return { genres, status: 200 };
+        return { genres, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getAllGenres');
         const appError = handlePrismaError(error);
@@ -74,7 +75,7 @@ export class GenreData {
     async (genreId: string): Promise<{ movies?: IMovie[]; status: number }> => {
       try {
         if (!genreId?.trim()) {
-          return { status: 400 };
+          return { status: HttpStatus.BAD_REQUEST };
         }
 
         const moviesInDb = await prisma.movie.findMany({
@@ -86,7 +87,7 @@ export class GenreData {
             },
           },
         });
-        return { movies: moviesInDb, status: 200 };
+        return { movies: moviesInDb, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getMoviesByARandomGenreById');
         const appError = handlePrismaError(error);

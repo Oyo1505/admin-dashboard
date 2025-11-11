@@ -1,3 +1,4 @@
+import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
@@ -8,7 +9,7 @@ export class AnalyticsData {
   static getAnalyticsApplicationVisits = cache(async () => {
     try {
       const analytics = await prisma.analyticsApplication.findFirst();
-      return { visits: analytics?.visits ?? 0, status: 200 };
+      return { visits: analytics?.visits ?? 0, status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'getAnalyticsApplicationVisits');
       const appError = handlePrismaError(error);
@@ -34,8 +35,8 @@ export class AnalyticsData {
             userId: user.id,
           },
         });
-        if (analytics) return { analytics, status: 200 };
-        return { analytics: undefined, status: 200 };
+        if (analytics) return { analytics, status: HttpStatus.OK };
+        return { analytics: undefined, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getAnalyticsUser');
         const appError = handlePrismaError(error);

@@ -66,58 +66,6 @@ export function withErrorHandling<T extends unknown[], R>(
   };
 }
 
-export function withValidation<T extends unknown[], R>(
-  //@ts-ignore no-unused-vars
-  fn: (...args: T) => Promise<R>, // eslint-disable-line no-unused-vars
-  validationFn: (...args: T) => void | Promise<void>, // eslint-disable-line no-unused-vars
-  context?: string
-) {
-  return async (...args: T): Promise<ApiResponse<R>> => {
-    try {
-      await validationFn(...args);
-      const result = await fn(...args);
-      return createSuccessResponse(result);
-    } catch (error) {
-      logError(error, context);
-
-      if (isAppError(error)) {
-        return createErrorResponse<R>(error);
-      }
-
-      const appError = handlePrismaError(error, context);
-      return createErrorResponse<R>(appError);
-    }
-  };
-}
-
-export async function safeExecute<T>(
-  operation: () => Promise<T>,
-  context?: string
-): Promise<ApiResponse<T>> {
-  try {
-    const result = await operation();
-    return createSuccessResponse(result);
-  } catch (error) {
-    logError(error, context);
-
-    if (isAppError(error)) {
-      return createErrorResponse<T>(error);
-    }
-
-    const appError = handlePrismaError(error, context);
-    return createErrorResponse<T>(appError);
-  }
-}
-
-export function validateRequired<T>(
-  value: T | null | undefined,
-  fieldName: string
-): asserts value is T {
-  if (value === null || value === undefined) {
-    throw createError.validation(`Le champ ${fieldName} est requis`);
-  }
-}
-
 export function validateString(
   value: unknown,
   fieldName: string,
@@ -140,13 +88,6 @@ export function validateString(
   }
 }
 
-export function validateEmail(email: unknown): asserts email is string {
-  validateString(email, 'email');
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    throw createError.validation("Format d'email invalide");
-  }
-}
 
 export function validateId(id: unknown): asserts id is string {
   validateString(id, 'id');

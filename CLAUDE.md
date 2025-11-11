@@ -18,6 +18,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Have to respect Clean code pratice.
 
+- Have to implant performance optimization
+
 - All Tests have to passed green
 
 - Have to respect RGAA, WCAG 2.2 web accessibility level minimun AA.
@@ -60,6 +62,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a Next.js 16 movie management platform with a domain-driven architecture.
 
 **Recent Architectural Improvements** (PR #194, #195):
+
 - ✅ Implemented **Data Access Layer (DAL)** for centralized security following Next.js best practices
 - ✅ Established **4-layer architecture**: DAL → Service → Data → Database
 - ✅ Added comprehensive test coverage (26+ test files, 99.13% DAL coverage)
@@ -423,6 +426,7 @@ static async create(movie: IMovieFormData) {
 ```
 
 **Benefits**:
+
 - ✅ **DRY Principle**: Eliminates 80% duplication between create/update
 - ✅ **Single Responsibility**: Each helper has one clear purpose
 - ✅ **Reduced Complexity**: Methods reduced from 73 → 20 lines
@@ -430,6 +434,7 @@ static async create(movie: IMovieFormData) {
 - ✅ **Consistency**: Same logic guaranteed across operations
 
 **Available Helpers**:
+
 - `buildMovieData(movie)` - Constructs base movie data object
 - `buildGenresConnectionForCreate(genresIds)` - Creates genre relationships
 - `buildGenresConnectionForUpdate(genresIds)` - Updates genre relationships (delete + create)
@@ -466,6 +471,7 @@ static async someOperation() {
 ```
 
 **Benefits**:
+
 - ✅ **Centralized Error Handling**: Consistent error management
 - ✅ **Automatic Logging**: Context-aware error logging
 - ✅ **Type Safety**: Generic type preserves return types
@@ -492,6 +498,7 @@ const movies = await prisma.movie.findMany({ take: MAX_LATEST_MOVIES });
 ```
 
 **Available Constants**:
+
 - `MAX_LATEST_MOVIES = 5` - Latest movies section limit
 - `MAX_MOVIES_BY_COUNTRY = 3` - Movies per country limit
 - `MAX_MOVIES_BY_GENRE = 5` - Movies per genre limit
@@ -499,6 +506,7 @@ const movies = await prisma.movie.findMany({ take: MAX_LATEST_MOVIES });
 - `MAX_PAGE_SIZE = 100` - Maximum pagination size
 
 **Benefits**:
+
 - ✅ **Searchability**: Easy to find all uses of a limit
 - ✅ **Maintainability**: Change in one place affects all uses
 - ✅ **Self-Documentation**: Names explain the purpose
@@ -718,19 +726,19 @@ describe('MovieFavoriteService', () => {
 The project has comprehensive test coverage with **28 test suites** containing **458 tests**:
 
 - **DAL Security Layer**: 3 test files, 99.13% coverage
-  - [src/lib/data/dal/core/__tests__/auth.test.ts](src/lib/data/dal/core/__tests__/auth.test.ts)
-  - [src/lib/data/dal/core/__tests__/errors.test.ts](src/lib/data/dal/core/__tests__/errors.test.ts)
-  - [src/lib/data/dal/__tests__/helpers.test.ts](src/lib/data/dal/__tests__/helpers.test.ts)
+  - [src/lib/data/dal/core/**tests**/auth.test.ts](src/lib/data/dal/core/__tests__/auth.test.ts)
+  - [src/lib/data/dal/core/**tests**/errors.test.ts](src/lib/data/dal/core/__tests__/errors.test.ts)
+  - [src/lib/data/dal/**tests**/helpers.test.ts](src/lib/data/dal/__tests__/helpers.test.ts)
 
 - **Data Layer**: 7 test files covering all data operations
-  - [src/lib/data/__tests__/movies.test.ts](src/lib/data/__tests__/movies.test.ts)
-  - [src/lib/data/__tests__/movies-helpers.test.ts](src/lib/data/__tests__/movies-helpers.test.ts)
-  - [src/lib/data/__tests__/users.test.ts](src/lib/data/__tests__/users.test.ts)
-  - [src/lib/data/__tests__/genres.test.ts](src/lib/data/__tests__/genres.test.ts)
-  - [src/lib/data/__tests__/director.test.ts](src/lib/data/__tests__/director.test.ts)
-  - [src/lib/data/__tests__/analytics.test.ts](src/lib/data/__tests__/analytics.test.ts)
-  - [src/lib/data/__tests__/email.test.ts](src/lib/data/__tests__/email.test.ts)
-  - [src/lib/data/__tests__/search.test.ts](src/lib/data/__tests__/search.test.ts)
+  - [src/lib/data/**tests**/movies.test.ts](src/lib/data/__tests__/movies.test.ts)
+  - [src/lib/data/**tests**/movies-helpers.test.ts](src/lib/data/__tests__/movies-helpers.test.ts)
+  - [src/lib/data/**tests**/users.test.ts](src/lib/data/__tests__/users.test.ts)
+  - [src/lib/data/**tests**/genres.test.ts](src/lib/data/__tests__/genres.test.ts)
+  - [src/lib/data/**tests**/director.test.ts](src/lib/data/__tests__/director.test.ts)
+  - [src/lib/data/**tests**/analytics.test.ts](src/lib/data/__tests__/analytics.test.ts)
+  - [src/lib/data/**tests**/email.test.ts](src/lib/data/__tests__/email.test.ts)
+  - [src/lib/data/**tests**/search.test.ts](src/lib/data/__tests__/search.test.ts)
 
 - **Service Layer**: 11 test files covering business logic
   - Auth services: 4 test files
@@ -739,9 +747,9 @@ The project has comprehensive test coverage with **28 test suites** containing *
   - Chat-Bot services: 1 test file
 
 - **Hooks**: 3 test files for TanStack Query hooks
-  - [src/domains/auth/__tests__/useEmailsAutorized.test.ts](src/domains/auth/__tests__/useEmailsAutorized.test.ts)
-  - [src/domains/dashboard/__tests__/useAnalyticsUsersVisits.test.ts](src/domains/dashboard/__tests__/useAnalyticsUsersVisits.test.ts)
-  - [src/domains/dashboard/__tests__/useGoogleQueries.test.ts](src/domains/dashboard/__tests__/useGoogleQueries.test.ts)
+  - [src/domains/auth/**tests**/useEmailsAutorized.test.ts](src/domains/auth/__tests__/useEmailsAutorized.test.ts)
+  - [src/domains/dashboard/**tests**/useAnalyticsUsersVisits.test.ts](src/domains/dashboard/__tests__/useAnalyticsUsersVisits.test.ts)
+  - [src/domains/dashboard/**tests**/useGoogleQueries.test.ts](src/domains/dashboard/__tests__/useGoogleQueries.test.ts)
 
 **Test Coverage Goals**:
 
@@ -765,10 +773,12 @@ Le projet utilise deux workflows GitHub Actions pour l'intégration continue et 
 ### 🧪 Jest Unit Tests Workflow ([.github/workflows/jest.yml](.github/workflows/jest.yml))
 
 **Déclenchement** :
+
 - Push sur `main` ou `master`
 - Pull requests vers `main` ou `master`
 
 **Environnement** :
+
 - Runner: Ubuntu Latest
 - Timeout: 15 minutes
 - PostgreSQL 15 en service Docker
@@ -783,15 +793,18 @@ Le projet utilise deux workflows GitHub Actions pour l'intégration continue et 
    - Installation pnpm et dépendances (`--frozen-lockfile`)
 
 2. **Configuration de la base de données**
+
    ```bash
    pnpm prisma generate        # Génère le client Prisma
    pnpm prisma db push         # Applique le schéma
    ```
 
 3. **Exécution des tests unitaires**
+
    ```bash
    pnpm test -- --coverage --maxWorkers=2
    ```
+
    - Exécute tous les tests Jest (26+ fichiers)
    - Génère le rapport de couverture
    - Parallélisation avec 2 workers
@@ -804,6 +817,7 @@ Le projet utilise deux workflows GitHub Actions pour l'intégration continue et 
      - Détails par couche (DAL, Data, Service)
 
 **Variables d'environnement** :
+
 ```yaml
 DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
 BETTER_AUTH_SECRET: test-secret-key-for-ci-only-minimum-32-characters-long-safe
@@ -814,10 +828,12 @@ NODE_ENV: test
 ### 🎭 Playwright E2E Tests Workflow ([.github/workflows/playwright.yml](.github/workflows/playwright.yml))
 
 **Déclenchement** :
+
 - Push sur `main` ou `master`
 - Pull requests vers `main` ou `master`
 
 **Environnement** :
+
 - Runner: Ubuntu Latest
 - Timeout: 60 minutes
 - PostgreSQL 15 en service Docker
@@ -831,22 +847,27 @@ NODE_ENV: test
    - Installation pnpm et dépendances
 
 2. **Configuration de la base de données**
+
    ```bash
    pnpm prisma generate
    pnpm prisma db push --skip-generate
    ```
 
 3. **Installation Playwright**
+
    ```bash
    pnpm exec playwright install --with-deps chromium
    ```
+
    - Installe uniquement Chromium pour optimiser le temps CI/CD
    - Inclut les dépendances système nécessaires
 
 4. **Exécution des tests E2E**
+
    ```bash
    pnpm exec playwright test --project=chromium
    ```
+
    - Tests end-to-end dans un navigateur réel
    - Valide les flux utilisateur complets
    - Mode test activé : `PLAYWRIGHT_TEST_MODE=true`
@@ -857,6 +878,7 @@ NODE_ENV: test
    - Disponible même si les tests échouent (`!cancelled()`)
 
 **Variables d'environnement** :
+
 ```yaml
 DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
 PLAYWRIGHT_TEST_MODE: true
@@ -901,6 +923,7 @@ pnpm e2e:debug               # Mode debug
 ### 🔧 Optimisations CI/CD
 
 **Performances** :
+
 - ✅ Cache pnpm store (builds 2-3x plus rapides)
 - ✅ Cache npm pour Node.js setup
 - ✅ Chromium uniquement pour Playwright (vs tous les navigateurs)
@@ -908,6 +931,7 @@ pnpm e2e:debug               # Mode debug
 - ✅ `--frozen-lockfile` pour installation reproductible
 
 **Fiabilité** :
+
 - ✅ PostgreSQL avec health checks
 - ✅ Variables d'environnement dédiées au test
 - ✅ Isolation complète de l'environnement de test
