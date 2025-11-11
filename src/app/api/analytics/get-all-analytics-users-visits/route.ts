@@ -1,6 +1,7 @@
 import { IUserAnalytics } from '@/lib/data/users';
 import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 export async function GET(): Promise<Response> {
   try {
@@ -34,9 +35,9 @@ export async function GET(): Promise<Response> {
       })),
     }));
 
-    return Response.json({ transformedUsers }, { status: 200 });
+    return Response.json({ transformedUsers }, { status: HttpStatus.OK });
   } catch (error) {
     logError(error, 'get-all-analytics-users-visits error');
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
+    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
   }
 }

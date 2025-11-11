@@ -1,3 +1,4 @@
+import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { logError } from '../errors';
@@ -20,17 +21,17 @@ export class EmailData {
         });
 
         if (!userauthorizedEmails) {
-          return { status: 400 };
+          return { status: HttpStatus.BAD_REQUEST };
         }
 
         return {
           mails: userauthorizedEmails,
-          status: 200,
+          status: HttpStatus.OK,
         };
       } catch (error) {
         logError(error, 'getAuthorizedEmails');
         return {
-          status: 500,
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
         };
       }
     }
@@ -57,17 +58,17 @@ export class EmailData {
       });
 
       if (!userauthorizedEmails) {
-        return { status: 400 };
+        return { status: HttpStatus.BAD_REQUEST };
       }
 
       return {
         mails: userauthorizedEmails,
-        status: 200,
+        status: HttpStatus.OK,
       };
     } catch (error) {
       logError(error, 'getAuthorizedEmailsPagination');
       return {
-        status: 500,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }
   }

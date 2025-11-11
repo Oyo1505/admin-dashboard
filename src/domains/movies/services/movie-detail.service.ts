@@ -2,6 +2,7 @@ import { validateId } from '@/lib/api-wrapper';
 import { MovieData } from '@/lib/data/movies';
 import { handlePrismaError, logError } from '@/lib/errors';
 import { IMovie } from '@/models/movie/movie';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 export class MovieDetailService {
   static async movieDetail(id: string): Promise<{
@@ -15,7 +16,7 @@ export class MovieDetailService {
       const { movieInDb } = await MovieData.findUniqueIncludesGenres(id);
 
       if (!movieInDb) {
-        return { status: 404 };
+        return { status: HttpStatus.NOT_FOUND };
       }
 
       const randomGenre =
@@ -32,7 +33,7 @@ export class MovieDetailService {
       return {
         movie: movieInDb,
         suggestedMovies,
-        status: 200,
+        status: HttpStatus.OK,
       };
     } catch (error) {
       logError(error, 'movieDetail services');

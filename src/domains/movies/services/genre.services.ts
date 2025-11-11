@@ -1,6 +1,7 @@
 import { GenreData } from '@/lib/data/genres';
 import { handlePrismaError, logError } from '@/lib/errors';
 import { IGenre } from '@/models/movie/movie';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
@@ -11,10 +12,10 @@ export class GenreService {
     try {
       const { deletedGenre } = await GenreData.delete(id);
       if (!deletedGenre) {
-        return { status: 404 };
+        return { status: HttpStatus.NOT_FOUND };
       }
       revalidatePath(URL_DASHBOARD_ROUTE.genre);
-      return { status: 200, genre: deletedGenre };
+      return { status: HttpStatus.OK, genre: deletedGenre };
     } catch (error) {
       logError(error, 'deleteGenre');
       const appError = handlePrismaError(error);
@@ -28,10 +29,10 @@ export class GenreService {
     try {
       const { updatedGenre } = await GenreData.update(genre);
       if (!updatedGenre) {
-        return { status: 404 };
+        return { status: HttpStatus.NOT_FOUND };
       }
       revalidatePath(URL_DASHBOARD_ROUTE.genre);
-      return { status: 200, genre: updatedGenre };
+      return { status: HttpStatus.OK, genre: updatedGenre };
     } catch (error) {
       logError(error, 'updateGenre');
       const appError = handlePrismaError(error);
@@ -45,10 +46,10 @@ export class GenreService {
     try {
       const { createdGenre } = await GenreData.create(genre);
       if (!genre) {
-        return { status: 404 };
+        return { status: HttpStatus.NOT_FOUND };
       }
       revalidatePath(URL_DASHBOARD_ROUTE.genre);
-      return { status: 200, genre: createdGenre };
+      return { status: HttpStatus.OK, genre: createdGenre };
     } catch (error) {
       logError(error, 'addGenre');
       const appError = handlePrismaError(error);

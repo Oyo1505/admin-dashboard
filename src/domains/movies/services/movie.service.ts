@@ -5,6 +5,7 @@ import {
   IMovieFormData,
   IUpdateMovieData,
 } from '@/models/movie/movie';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
@@ -14,7 +15,7 @@ export class MovieService {
   ): Promise<{ status: number; message: string }> {
     try {
       if (!movie?.title?.trim()) {
-        return { status: 400, message: 'Le titre du film est requis' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'Le titre du film est requis' };
       }
 
       if (
@@ -22,19 +23,19 @@ export class MovieService {
         !Array.isArray(movie.genresIds) ||
         movie.genresIds.length === 0
       ) {
-        return { status: 400, message: 'Au moins un genre est requis' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'Au moins un genre est requis' };
       }
 
       const { existingMovie } = await MovieData.findByGoogleDriveId(movie);
 
       if (existingMovie) {
-        return { status: 409, message: 'Le film existe déjà' };
+        return { status: HttpStatus.CONFLICT, message: 'Le film existe déjà' };
       }
 
       await MovieData.create(movie);
 
       revalidatePath(URL_DASHBOARD_ROUTE.movie);
-      return { status: 200, message: 'Success : Movie added' };
+      return { status: HttpStatus.OK, message: 'Success : Movie added' };
     } catch (error) {
       logError(error, 'addMovieToDb');
       const appError = handlePrismaError(error);
@@ -48,7 +49,7 @@ export class MovieService {
       const { movie: movieInDb } = await MovieData.findUnique(movie.id);
 
       if (!movieInDb) {
-        return { status: 404, message: "Le film n'existe pas" };
+        return { status: HttpStatus.NOT_FOUND, message: "Le film n'existe pas" };
       }
 
       if (
@@ -56,13 +57,13 @@ export class MovieService {
         !Array.isArray(movie.genresIds) ||
         movie.genresIds.length === 0
       ) {
-        return { status: 400, message: 'Au moins un genre est requis' };
+        return { status: HttpStatus.BAD_REQUEST, message: 'Au moins un genre est requis' };
       }
 
       await MovieData.update(movie);
 
       revalidatePath(URL_DASHBOARD_ROUTE.movie);
-      return { status: 200, message: 'Film modifié avec succès' };
+      return { status: HttpStatus.OK, message: 'Film modifié avec succès' };
     } catch (error) {
       logError(error, 'editMovieToDb');
       const appError = handlePrismaError(error);
@@ -75,13 +76,13 @@ export class MovieService {
     try {
       if (!id) {
         return {
-          status: 400,
+          status: HttpStatus.BAD_REQUEST,
           message: 'ID du film est requis',
         };
       }
       await MovieData.delete(id);
       revalidatePath('/dashboard/add-movie');
-      return { status: 200 };
+      return { status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'deleteMovieById');
       const appError = handlePrismaError(error);
@@ -94,13 +95,13 @@ export class MovieService {
   ): Promise<{ publish?: boolean; status: number }> {
     try {
       if (!id) {
-        return { publish: false, status: 400 };
+        return { publish: false, status: HttpStatus.BAD_REQUEST };
       }
 
       const { movie } = await MovieData.findUniqueMoviePublished(id);
 
       if (!movie) {
-        return { publish: false, status: 404 };
+        return { publish: false, status: HttpStatus.NOT_FOUND };
       }
 
       const { publish, status } = await MovieData.togglePublish(

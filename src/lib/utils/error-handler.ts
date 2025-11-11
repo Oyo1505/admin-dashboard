@@ -1,4 +1,5 @@
 import { handlePrismaError, logError } from '@/lib/errors';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 /**
  * Generic error handling wrapper for async operations
@@ -23,7 +24,7 @@ export async function withErrorHandling<T>(
 ): Promise<{ data?: T; status: number; message?: string }> {
   try {
     const data = await operation();
-    return { data, status: 200 };
+    return { data, status: HttpStatus.OK };
   } catch (error) {
     logError(error, context);
     const appError = handlePrismaError(error);

@@ -6,6 +6,7 @@ import { Readable } from 'stream';
 import { logError } from './lib/errors';
 import { auth } from './lib/google-api';
 import { URL_DASHBOARD_ROUTE } from './shared/route';
+import HttpStatus from './shared/constants/httpStatus';
 
 export const getDataFromGoogleDrive = async () => {
   // allows you to use drive API methods e.g. listing files, creating files.
@@ -56,9 +57,9 @@ export const addFileToGoogleDriveAction = async (
 
     if (response) {
       revalidatePath(URL_DASHBOARD_ROUTE.movie);
-      return { data: response, status: 200 };
+      return { data: response, status: HttpStatus.OK };
     }
-    return { data: null, status: 404 };
+    return { data: null, status: HttpStatus.NOT_FOUND };
   } catch (error) {
     logError(error, 'addFileToGoogleDriveAction');
     throw error;

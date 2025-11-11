@@ -12,6 +12,7 @@ import {
   MAX_MOVIES_BY_GENRE,
 } from '@/shared/constants/pagination';
 import { CACHE_TTL_SHORT } from '@/shared/constants/time';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
@@ -41,7 +42,7 @@ export class MovieData {
         include: buildMovieInclude(),
       });
 
-      return { movie: createdMovie as IMovie, status: 200 };
+      return { movie: createdMovie as IMovie, status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'MovieData.create');
       const appError = handlePrismaError(error);
@@ -62,7 +63,7 @@ export class MovieData {
           genresIds: buildGenresConnectionForUpdate(movie.genresIds),
         },
       });
-      return { movie: updatedMovie as IMovie, status: 200 };
+      return { movie: updatedMovie as IMovie, status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'MovieData.update');
       const appError = handlePrismaError(error);
@@ -78,7 +79,7 @@ export class MovieData {
           id,
         },
       });
-      return { status: 200 };
+      return { status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'MovieData.delete');
       const appError = handlePrismaError(error);
@@ -104,7 +105,7 @@ export class MovieData {
         data: { publish: !currentPublishStatus },
         select: { publish: true },
       });
-      return { publish: updatedMovie.publish, status: 200 };
+      return { publish: updatedMovie.publish, status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'MovieData.togglePublish');
       const appError = handlePrismaError(error);
@@ -141,9 +142,9 @@ export class MovieData {
           take: MAX_LATEST_MOVIES,
         });
         if (!moviesInDb) {
-          return { status: 404, movies: [] };
+          return { status: HttpStatus.NOT_FOUND, movies: [] };
         }
-        return { movies: moviesInDb, status: 200 };
+        return { movies: moviesInDb, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getLastMovies');
         const appError = handlePrismaError(error);
@@ -196,8 +197,8 @@ export class MovieData {
           movie: favorite.movie as IMovie,
         }));
 
-        if (movies.length > 0) return { movies, status: 200 };
-        return { movies: [], status: 200 };
+        if (movies.length > 0) return { movies, status: HttpStatus.OK };
+        return { movies: [], status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'findManyFavorite');
         const appError = handlePrismaError(error);
@@ -236,10 +237,10 @@ export class MovieData {
             userId: favorite.userId,
             movieId: favorite.movieId,
           },
-          status: 200,
+          status: HttpStatus.OK,
         };
       }
-      return { favorite: undefined, status: 404 };
+      return { favorite: undefined, status: HttpStatus.NOT_FOUND };
     } catch (error) {
       logError(error, 'findUniqueFavorite');
       const appError = handlePrismaError(error);
@@ -275,7 +276,7 @@ export class MovieData {
           userId: favorite.userId,
           movieId: favorite.movieId,
         },
-        status: 200,
+        status: HttpStatus.OK,
         message: 'Added to favorite',
       };
     } catch (error) {
@@ -305,7 +306,7 @@ export class MovieData {
         },
       });
 
-      return { status: 200, message: 'Success: movie deleted' };
+      return { status: HttpStatus.OK, message: 'Success: movie deleted' };
     } catch (error) {
       logError(error, 'deleteFavorite');
       const appError = handlePrismaError(error);
@@ -329,12 +330,12 @@ export class MovieData {
           distinct: ['country'],
         });
         if (!uniqueCountries) {
-          return { status: 400 };
+          return { status: HttpStatus.BAD_REQUEST };
         }
         const getARandomCountry =
           uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
         if (!getARandomCountry?.country) {
-          return { status: 400, movies: [] };
+          return { status: HttpStatus.BAD_REQUEST, movies: [] };
         }
         const movies = await prisma.movie.findMany({
           where: {
@@ -362,10 +363,10 @@ export class MovieData {
         });
 
         if (!movies) {
-          return { status: 400, movies: [] };
+          return { status: HttpStatus.BAD_REQUEST, movies: [] };
         }
         return {
-          status: 200,
+          status: HttpStatus.OK,
           movies,
           country: getARandomCountry.country as string,
         };
@@ -386,12 +387,12 @@ export class MovieData {
       try {
         const uniqueGenres = await prisma.genre.findMany();
         if (!uniqueGenres) {
-          return { status: 400 };
+          return { status: HttpStatus.BAD_REQUEST };
         }
         const randomGenre =
           uniqueGenres[Math.floor(Math.random() * uniqueGenres.length)];
         if (!randomGenre) {
-          return { status: 400, movies: [] };
+          return { status: HttpStatus.BAD_REQUEST, movies: [] };
         }
         const movies = await prisma.movie.findMany({
           where: {
@@ -407,9 +408,9 @@ export class MovieData {
           take: MAX_MOVIES_BY_GENRE,
         });
         if (!movies) {
-          return { status: 400, movies: [] };
+          return { status: HttpStatus.BAD_REQUEST, movies: [] };
         }
-        return { status: 200, movies, genre: randomGenre };
+        return { status: HttpStatus.OK, movies, genre: randomGenre };
       } catch (error) {
         logError(error, 'getMoviesByARandomGenre');
         const appError = handlePrismaError(error);
@@ -420,8 +421,8 @@ export class MovieData {
   static getAll = cache(async () => {
     try {
       const movies = await prisma.movie.findMany();
-      if (!movies) return { movies: [], status: 404 };
-      return { movies, status: 200 };
+      if (!movies) return { movies: [], status: HttpStatus.NOT_FOUND };
+      return { movies, status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'getAll');
       const appError = handlePrismaError(error);
@@ -446,7 +447,7 @@ export class MovieData {
             createdAt: 'desc',
           },
         });
-        return { movieInDb, status: 200 };
+        return { movieInDb, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getAllMovies');
         const appError = handlePrismaError(error);
@@ -468,7 +469,7 @@ export class MovieData {
         });
 
         if (!countriesValues) {
-          return { status: 400 };
+          return { status: HttpStatus.BAD_REQUEST };
         }
 
         const countries =
@@ -476,7 +477,7 @@ export class MovieData {
             item.country ? [item.country] : []
           ) ?? [];
 
-        return { status: 200, countries };
+        return { status: HttpStatus.OK, countries };
       } catch (error) {
         logError(error, 'getMoviesCountries');
         const appError = handlePrismaError(error);
@@ -502,8 +503,8 @@ export class MovieData {
             id,
           },
         });
-        if (movie) return { movie, status: 200 };
-        return { movie: undefined, status: 404 };
+        if (movie) return { movie, status: HttpStatus.OK };
+        return { movie: undefined, status: HttpStatus.NOT_FOUND };
       } catch (error) {
         logError(error, 'findUniqueMoviePublished');
         const appError = handlePrismaError(error);
@@ -528,8 +529,8 @@ export class MovieData {
           where: { id },
           select: { id: true, publish: true },
         });
-        if (movie) return { movie, status: 200 };
-        return { movie: undefined, status: 404 };
+        if (movie) return { movie, status: HttpStatus.OK };
+        return { movie: undefined, status: HttpStatus.NOT_FOUND };
       } catch (error) {
         logError(error, 'findUniqueMoviePublished');
         const appError = handlePrismaError(error);
@@ -545,8 +546,8 @@ export class MovieData {
         const existingMovie = await prisma.movie.findUnique({
           where: { idGoogleDive: movie.idGoogleDive || '' },
         });
-        if (existingMovie) return { existingMovie, status: 200 };
-        return { existingMovie: undefined, status: 400 };
+        if (existingMovie) return { existingMovie, status: HttpStatus.OK };
+        return { existingMovie: undefined, status: HttpStatus.BAD_REQUEST };
       } catch (error) {
         logError(error, 'findByGoogleDriveId');
         const appError = handlePrismaError(error);
@@ -570,8 +571,8 @@ export class MovieData {
             updatedAt: 'desc',
           },
         });
-        if (movies) return { movies: movies as IMovie[], status: 200 };
-        return { movies: [], status: 404 };
+        if (movies) return { movies: movies as IMovie[], status: HttpStatus.OK };
+        return { movies: [], status: HttpStatus.NOT_FOUND };
       } catch (error) {
         logError(error, 'findManyOrderByDesc data');
         const appError = handlePrismaError(error);
@@ -600,8 +601,8 @@ export class MovieData {
           //@ts-ignore
           cacheStrategy: { ttl: CACHE_TTL_SHORT },
         });
-        if (movies) return { movieInDb: movies as IMovie, status: 200 };
-        return { movieInDb: undefined, status: 404 };
+        if (movies) return { movieInDb: movies as IMovie, status: HttpStatus.OK };
+        return { movieInDb: undefined, status: HttpStatus.NOT_FOUND };
       } catch (error) {
         logError(error, 'findUniqueIncludesGenres');
         const appError = handlePrismaError(error);
@@ -631,8 +632,8 @@ export class MovieData {
             NOT: { id: movieInDb.id },
           },
         });
-        if (movies) return { movies: movies, status: 200 };
-        return { movies: undefined, status: 404 };
+        if (movies) return { movies: movies, status: HttpStatus.OK };
+        return { movies: undefined, status: HttpStatus.NOT_FOUND };
       } catch (error) {
         logError(error, 'findManyMovieGenres');
         const appError = handlePrismaError(error);

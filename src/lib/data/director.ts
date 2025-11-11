@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { IDirector } from '@/models/director/director';
 import { IMovie } from '@/models/movie/movie';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
@@ -17,9 +18,9 @@ export class DirectorData {
             imageBackdrop: formData.imageBackdrop,
           },
         });
-        return { director, status: 200, success: true };
+        return { director, status: HttpStatus.OK, success: true };
       }
-      return { director: undefined, status: 404, success: false };
+      return { director: undefined, status: HttpStatus.NOT_FOUND, success: false };
     } catch (error) {
       logError(error, 'update DirectorData');
       const appError = handlePrismaError(error);
@@ -39,7 +40,7 @@ export class DirectorData {
           id,
         },
       });
-      return { status: 200, success: true };
+      return { status: HttpStatus.OK, success: true };
     } catch (error) {
       logError(error, 'delete DirectorData');
       const appError = handlePrismaError(error);
@@ -60,9 +61,9 @@ export class DirectorData {
             imageBackdrop: formData.imageBackdrop,
           },
         });
-        return { director, status: 200, success: true };
+        return { director, status: HttpStatus.OK, success: true };
       }
-      return { director: undefined, status: 404, success: false };
+      return { director: undefined, status: HttpStatus.NOT_FOUND, success: false };
     } catch (error) {
       logError(error, 'update DirectorData');
       const appError = handlePrismaError(error);
@@ -88,13 +89,13 @@ export class DirectorData {
           directorMovies,
           director: directorSection ?? null,
           imageBackdrop: directorSection?.imageBackdrop ?? null,
-          status: 200,
+          status: HttpStatus.OK,
         };
       } catch (error) {
         logError(error, 'director');
         return Response.json(
           { error: 'Internal server error' },
-          { status: 500 }
+          { status: HttpStatus.INTERNAL_SERVER_ERROR }
         );
       }
     }
@@ -120,20 +121,20 @@ export class DirectorData {
             directorMovies,
             imageBackdrop: director.imageBackdrop,
             director: director.director,
-            status: 200,
+            status: HttpStatus.OK,
           };
         } else {
           return {
             directorMovies: null,
             director: null,
             imageBackdrop: null,
-            status: 200,
+            status: HttpStatus.OK,
           };
         }
       } catch {
         return Response.json(
           { error: 'Internal server error' },
-          { status: 500 }
+          { status: HttpStatus.INTERNAL_SERVER_ERROR }
         );
       }
     }

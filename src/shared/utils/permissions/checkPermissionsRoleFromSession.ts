@@ -1,11 +1,12 @@
 import { getServerSession } from '@/lib/auth';
 import { SelectUser } from '@/lib/db';
+import HttpStatus from '@/shared/constants/httpStatus';
 
 const checkPermissionsRoleFromSession = async () => {
   const session = await getServerSession();
 
   if (!session?.user) {
-    return { status: 401, message: 'Session invalide' };
+    return { status: HttpStatus.UNAUTHORIZED, message: 'Session invalide' };
   }
 
   // Better Auth session doesn't include role by default, need to fetch from DB
@@ -16,7 +17,7 @@ const checkPermissionsRoleFromSession = async () => {
   });
 
   if (!dbUser) {
-    return { status: 404, message: 'Utilisateur non trouvé' };
+    return { status: HttpStatus.NOT_FOUND, message: 'Utilisateur non trouvé' };
   }
 
   const user: SelectUser = {
@@ -28,8 +29,8 @@ const checkPermissionsRoleFromSession = async () => {
   };
 
   if (user.role !== 'ADMIN') {
-    return { status: 403, message: 'Droits administrateur requis' };
+    return { status: HttpStatus.FORBIDDEN, message: 'Droits administrateur requis' };
   }
-  return { status: 200, user };
+  return { status: HttpStatus.OK, user };
 };
 export default checkPermissionsRoleFromSession;

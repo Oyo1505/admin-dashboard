@@ -1,5 +1,7 @@
 'use server';
 
+import HttpStatus from '@/shared/constants/httpStatus';
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -29,6 +31,6 @@ export async function GET(
     const data = await response.json();
     return Response.json(data);
   } catch {
-    return Response.json({ error: 'Internal server error' }, { status: 500 });
+    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
   }
 }

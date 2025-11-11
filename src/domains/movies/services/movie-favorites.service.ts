@@ -1,5 +1,6 @@
 import { MovieData } from '@/lib/data/movies';
 import { handlePrismaError, logError } from '@/lib/errors';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_MOVIE_ID } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
 
@@ -9,7 +10,7 @@ export class MovieFavoriteService {
     idMovie: string | undefined
   ): Promise<{ status: number; message?: string }> {
     if (!idMovie) {
-      return { status: 400, message: 'Missing movie' };
+      return { status: HttpStatus.BAD_REQUEST, message: 'Missing movie' };
     }
     try {
       // Check if favorite already exists using data layer

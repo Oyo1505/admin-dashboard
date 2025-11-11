@@ -2,6 +2,7 @@
 import { MovieData } from '@/lib/data/movies';
 import { logError } from '@/lib/errors';
 import { mistral } from '@/lib/mistral';
+import HttpStatus from '@/shared/constants/httpStatus';
 import delay from '@/shared/utils/time/delay';
 import { ChatMessage } from './interfaces/chat.interface';
 import { IMovieDetails } from './interfaces/movie.interface';
@@ -49,14 +50,14 @@ const threadChatBot = async (
             : locale === 'en'
               ? 'Please ask a question.'
               : '質問をしてください。',
-        status: 400,
+        status: HttpStatus.BAD_REQUEST,
       };
     }
 
     if (!locale || !['fr', 'en', 'jp'].includes(locale)) {
       return {
         answer: 'Invalid locale parameter.',
-        status: 400,
+        status: HttpStatus.BAD_REQUEST,
       };
     }
 
@@ -161,7 +162,7 @@ N'oublie pas d'inclure TOUJOURS les liens HTML pour chaque film recommandé !`,
 
     return {
       answer: answer,
-      status: 200,
+      status: HttpStatus.OK,
     };
   } catch (error) {
     logError(error, 'threadChatBot');
@@ -172,7 +173,7 @@ N'oublie pas d'inclure TOUJOURS les liens HTML pour chaque film recommandé !`,
           : locale === 'en'
             ? "Sorry, I'm having technical difficulties. Could you rephrase your question about movies?"
             : '申し訳ありませんが、技術的な問題が発生しています。映画についての質問を言い換えていただけますか？',
-      status: 500,
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
     };
   }
 };
