@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### While implementing
 
-- Have to respect Clean code pratice.
+- Have to respect Clean code pratice & Clean Architecture.
 
 - Have to implant performance optimization
 
