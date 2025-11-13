@@ -5,7 +5,7 @@ import { UserTableAuthorized } from '@/domains/dashboard/components/users-table-
 import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
 import { UserData } from '@/lib/data/users';
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import dynamic from 'next/dynamic';
 
@@ -25,7 +25,7 @@ const Page = async (props: {
   const search = searchParams.q ?? '';
   const offset = Number(searchParams.offset ?? 20);
   const { users, newOffset } = await getUsersWithPageParam(search, offset);
-  const user = userConnected?.user as User;
+  const user = userConnected?.user as IUser;
   if (!user) return;
   const hasPermission = checkPermissions(user, 'can:delete', 'user');
   if (!hasPermission)

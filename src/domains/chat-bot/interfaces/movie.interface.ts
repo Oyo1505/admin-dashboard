@@ -9,6 +9,8 @@ export interface IMovieDetails extends IMovieBasicInfo {
   year: number | null;
   duration: number | null;
   director: string | null;
+  genresIds?: string[];
+  subtitles?: string[];
 }
 
 export interface IMovieService {

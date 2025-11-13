@@ -2,7 +2,7 @@ import { getServerSession } from '@/lib/auth';
 import { SelectUser } from '@/lib/db';
 import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import HttpStatus from '@/shared/constants/httpStatus';
 
 /**
@@ -155,7 +155,7 @@ export class PermissionService {
    * ```
    */
   static checkPermission(
-    user: User | SelectUser,
+    user: IUser | SelectUser,
     action: string,
     resource: string
   ): boolean {
@@ -204,7 +204,7 @@ export class PermissionService {
    * }
    * ```
    */
-  static isAdmin(user: User | SelectUser): boolean {
+  static isAdmin(user: IUser | SelectUser): boolean {
     return user?.role === 'ADMIN';
   }
 
@@ -214,7 +214,7 @@ export class PermissionService {
    * @param user - User object to check
    * @returns true if user has USER role
    */
-  static isRegularUser(user: User | SelectUser): boolean {
+  static isRegularUser(user: IUser | SelectUser): boolean {
     return user?.role === 'USER';
   }
 
@@ -399,7 +399,7 @@ export class PermissionService {
    * ```
    */
   static checkPermissionDetailed(
-    user: User | SelectUser,
+    user: IUser | SelectUser,
     action: string,
     resource: string
   ): PermissionCheckResult {
@@ -442,7 +442,7 @@ export class PermissionService {
    * ```
    */
   static canActOnOwnAccount(
-    currentUser: User | SelectUser,
+    currentUser: IUser | SelectUser,
     targetUserId: string,
     action: 'can:update' | 'can:delete'
   ): boolean {

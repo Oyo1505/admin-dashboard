@@ -1,6 +1,6 @@
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 
-const isFavorite = ({ id, user }: { id: string; user: User | undefined }) => {
+const isFavorite = ({ id, user }: { id: string; user: IUser | undefined }) => {
   return user?.favoriteMovies?.some(
     (favoriteMovie) => favoriteMovie.movieId === id
   );

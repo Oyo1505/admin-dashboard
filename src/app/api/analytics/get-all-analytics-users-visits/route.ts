@@ -38,6 +38,9 @@ export async function GET(): Promise<Response> {
     return Response.json({ transformedUsers }, { status: HttpStatus.OK });
   } catch (error) {
     logError(error, 'get-all-analytics-users-visits error');
-    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
+    return Response.json(
+      { error: 'Internal server error' },
+      { status: HttpStatus.INTERNAL_SERVER_ERROR }
+    );
   }
 }

@@ -74,10 +74,6 @@ describe('Mistral Tools Service', () => {
             director: 'Wachowskis',
             genresIds: [],
             subtitles: [],
-            googleDriveId: 'gdrive-123',
-            linkAsImage: 'http://example.com/matrix.jpg',
-            createdAt: new Date('2024-01-01'),
-            updatedAt: new Date('2024-01-01'),
           },
           {
             id: 'movie-2',
@@ -90,10 +86,6 @@ describe('Mistral Tools Service', () => {
             director: 'Christopher Nolan',
             genresIds: [],
             subtitles: [],
-            googleDriveId: 'gdrive-456',
-            linkAsImage: 'http://example.com/inception.jpg',
-            createdAt: new Date('2024-01-01'),
-            updatedAt: new Date('2024-01-01'),
           },
         ];
 
@@ -149,10 +141,6 @@ describe('Mistral Tools Service', () => {
             director: 'Test Director',
             genresIds: [],
             subtitles: [],
-            googleDriveId: 'gdrive-test',
-            linkAsImage: 'http://example.com/test.jpg',
-            createdAt: new Date(),
-            updatedAt: new Date(),
           },
         ];
 

@@ -133,6 +133,7 @@ describe('GenreService', () => {
   describe('addGenre', () => {
     it('should add genre successfully', async () => {
       const newGenre: IGenre = {
+        id: 'genre-new-123',
         nameFR: 'Comédie',
         nameEN: 'Comedy',
         nameJP: 'コメディ',
@@ -158,13 +159,14 @@ describe('GenreService', () => {
       // Note: This tests the logic at line 47-49 which checks if !genre
       // This is a potential bug - should check createdGenre instead
       const newGenre: IGenre = {
+        id: 'genre-456',
         nameFR: 'Test',
         nameEN: 'Test',
         nameJP: 'テスト',
       };
 
       (GenreData.create as jest.Mock).mockResolvedValue({
-        createdGenre: { id: 'genre-456', ...newGenre },
+        createdGenre: { ...newGenre },
         status: 200,
       });
 
@@ -178,6 +180,7 @@ describe('GenreService', () => {
     it('should handle database errors', async () => {
       const mockError = new Error('Creation failed');
       const newGenre: IGenre = {
+        id: 'genre-horror-123',
         nameFR: 'Horror',
         nameEN: 'Horror',
         nameJP: 'ホラー',
@@ -197,6 +200,7 @@ describe('GenreService', () => {
 
     it('should handle genres with all multilingual fields', async () => {
       const multilingualGenre: IGenre = {
+        id: 'genre-scifi-123',
         nameFR: 'Science-Fiction',
         nameEN: 'Science Fiction',
         nameJP: 'サイエンスフィクション',

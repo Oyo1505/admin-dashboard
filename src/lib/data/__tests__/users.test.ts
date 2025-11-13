@@ -280,7 +280,7 @@ describe('UserData', () => {
           },
         ],
       });
-      expect(result.users?.[1].analytics[0].lastMovieWatched).toBeUndefined();
+      expect(result.users?.[1]?.analytics?.[0]?.lastMovieWatched).toBeUndefined();
       expect(prisma.user.findMany).toHaveBeenCalledWith({
         where: {
           analytics: {
@@ -342,9 +342,9 @@ describe('UserData', () => {
 
       const result = await UserData.getAllAnalyticsUser();
 
-      expect(result.users?.[0].analytics).toHaveLength(2);
-      expect(result.users?.[0].analytics[0].visits).toBe(15);
-      expect(result.users?.[0].analytics[1].visits).toBe(8);
+      expect(result.users?.[0]?.analytics).toHaveLength(2);
+      expect(result.users?.[0]?.analytics?.[0]?.visits).toBe(15);
+      expect(result.users?.[0]?.analytics?.[1]?.visits).toBe(8);
     });
 
     it('should handle database errors', async () => {

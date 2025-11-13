@@ -1,12 +1,12 @@
 import { getFavoriteMovies } from '@/domains/dashboard/actions/movie';
 import { signIn, signOut } from '@/lib/auth-client';
-import { User } from '@/models/user/user';
+import { IUser as IUserModel } from '@/models/user/user';
 import { URL_BASE, URL_HOME } from '@/shared/route';
 import { redirect } from 'next/navigation';
 import { create } from 'zustand';
 import { PersistOptions, createJSONStorage, persist } from 'zustand/middleware';
 
-interface IUser extends User {
+interface IUser extends IUserModel {
   token?: string;
 }
 

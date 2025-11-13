@@ -1,4 +1,4 @@
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import HttpStatus from '@/shared/constants/httpStatus';
 
 export const MESSAGES_ERRORS_API = {
@@ -30,7 +30,7 @@ export const MESSAGES_ERRORS_API = {
   518: 'Network read timeout error',
 };
 
-export const userNotUnautorized = (user: User) => {
+export const userNotUnautorized = (user: IUser) => {
   if (user.role !== 'ADMIN')
     return {
       status: HttpStatus.FORBIDDEN,

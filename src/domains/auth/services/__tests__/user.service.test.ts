@@ -1,7 +1,7 @@
-import { UserService } from '../user.service';
-import prisma from '@/lib/prisma';
 import { handlePrismaError, logError } from '@/lib/errors';
-import { User } from '@/models/user/user';
+import prisma from '@/lib/prisma';
+import { IUser } from '@/models/user/user';
+import { UserService } from '../user.service';
 
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
@@ -137,14 +137,14 @@ describe('UserService', () => {
   });
 
   describe('deleteUser', () => {
-    const mockAdminUser: User = {
+    const mockAdminUser: IUser = {
       id: 'admin-1',
       name: 'Admin User',
       email: 'admin@example.com',
       role: 'ADMIN',
     };
 
-    const mockRegularUser: User = {
+    const mockRegularUser: IUser = {
       id: 'user-1',
       name: 'Regular User',
       email: 'user@example.com',
