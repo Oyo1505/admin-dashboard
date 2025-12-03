@@ -34,9 +34,9 @@ const MovieTable = () => {
     );
   return (
     <Suspense fallback={<Loading />}>
-      <div className="flex flex-1 flex-col gap-4  md:gap-8 md:p-6">
+      <div className="flex flex-1 flex-col gap-4 w-full md:gap-8 md:p-6">
         {moviesFromGoogle && moviesFromGoogle?.length > 0 && !isLoading ? (
-          <form className="border  bg-primary text-background shadow-xs rounded-lg">
+          <form className="border bg-primary text-background shadow-xs rounded-lg">
             <Table>
               <TableHeader>
                 <TableRow className="border-b border-background border-opacity-20">
@@ -47,7 +47,12 @@ const MovieTable = () => {
               </TableHeader>
               <TableBody>
                 {moviesFromGoogle?.map((movie: IMovie) => (
-                  <MovieRow key={movie?.id} movie={movie} btnText={'Ajouter'} />
+                  <MovieRow
+                    key={movie?.id}
+                    movie={movie}
+                    btnText={'Ajouter'}
+                    moviesFromGoogleDrive={true}
+                  />
                 ))}
               </TableBody>
             </Table>
@@ -55,29 +60,30 @@ const MovieTable = () => {
         ) : null}
         {moviesFromPrisma?.movies && moviesFromPrisma.movies?.length > 0 && (
           <>
-            <form className="border  bg-primary text-background shadow-xs rounded-lg mt-4">
+            <form className="border bg-primary text-background shadow-xs rounded-lg  mt-4 w-full min-w-0 overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-background border-opacity-20">
-                    <TableHead className="max-w-[150px] font-bold">
+                    <TableHead className="font-bold">
                       {t('movieAdded')}
                     </TableHead>
-                    <TableHead className="max-w-[150px] font-bold">
+                    <TableHead className="font-bold w-32 text-center">
                       {t('togglePublished')}
+                    </TableHead>
+                    <TableHead className="font-bold text-right">
+                      Actions
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {moviesFromPrisma.movies
-                    ? moviesFromPrisma.movies?.map(
-                        (movie: IMovie, index: number) => (
-                          <MovieRow
-                            key={movie?.id}
-                            movie={movie}
-                            btnText={'Editer'}
-                          />
-                        )
-                      )
+                    ? moviesFromPrisma.movies?.map((movie: IMovie) => (
+                        <MovieRow
+                          key={movie?.id}
+                          movie={movie}
+                          btnText={'Editer'}
+                        />
+                      ))
                     : t('noMovie')}
                 </TableBody>
               </Table>
