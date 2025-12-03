@@ -40,13 +40,13 @@ describe('GenreData', () => {
   describe('create', () => {
     it('should create a genre successfully', async () => {
       const mockGenre: IGenre = {
+        id: '1',
         nameFR: 'Action',
         nameEN: 'Action',
         nameJP: 'アクション',
       };
 
       const mockCreatedGenre = {
-        id: '1',
         ...mockGenre,
       };
 
@@ -65,6 +65,7 @@ describe('GenreData', () => {
 
     it('should handle database errors', async () => {
       const mockGenre: IGenre = {
+        id: '2',
         nameFR: 'Action',
         nameEN: 'Action',
         nameJP: 'アクション',

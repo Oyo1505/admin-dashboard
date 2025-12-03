@@ -1,6 +1,6 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_DASHBOARD_ROUTE, URL_HOME } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
@@ -18,7 +18,7 @@ export class UserService {
   static async getUsersWithPageParam(
     search: string,
     pageParam: number
-  ): Promise<{ users?: User[]; newOffset?: number | null; status: number }> {
+  ): Promise<{ users?: IUser[]; newOffset?: number | null; status: number }> {
     try {
       if (typeof search !== 'string') {
         return { status: HttpStatus.BAD_REQUEST };
@@ -43,7 +43,7 @@ export class UserService {
 
       const newOffset = users.length >= 20 ? pageParam + 20 : null;
       return {
-        users: users as User[],
+        users: users as IUser[],
         status: HttpStatus.OK,
         newOffset: newOffset,
       };
@@ -58,7 +58,7 @@ export class UserService {
     user,
   }: {
     id: string;
-    user: User;
+    user: IUser;
   }): Promise<{ status: number; message?: string }> {
     try {
       if (!id?.trim()) {

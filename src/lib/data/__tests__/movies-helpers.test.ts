@@ -54,6 +54,11 @@ describe('movies-helpers', () => {
     it('should handle missing optional fields', () => {
       const mockMovieForm: IMovieFormData = {
         title: 'Simple Movie',
+        idGoogleDive: '',
+        subtitles: [],
+        originalTitle: 'Simple Movie',
+        year: 2024,
+        duration: 120,
         director: 'Unknown',
         genresIds: ['1'],
       };
@@ -68,12 +73,12 @@ describe('movies-helpers', () => {
         image: '',
         director: 'Unknown',
         imdbId: undefined,
-        originalTitle: undefined,
-        duration: null,
-        idGoogleDive: undefined,
+        originalTitle: 'Simple Movie',
+        duration: 120,
+        idGoogleDive: '',
         language: undefined,
         subtitles: [],
-        year: null,
+        year: 2024,
         country: undefined,
         synopsis: undefined,
         trailer: undefined,
@@ -83,6 +88,11 @@ describe('movies-helpers', () => {
     it('should use link as fallback for image when image is missing', () => {
       const mockMovieForm: IMovieFormData = {
         title: 'Movie with Link',
+        idGoogleDive: '',
+        subtitles: [],
+        originalTitle: 'Movie with Link',
+        year: 2024,
+        duration: 120,
         link: 'https://example.com/movie',
         director: 'Director',
         genresIds: ['1'],
@@ -97,6 +107,11 @@ describe('movies-helpers', () => {
     it('should prefer image over link when both are provided', () => {
       const mockMovieForm: IMovieFormData = {
         title: 'Movie',
+        idGoogleDive: '',
+        subtitles: [],
+        originalTitle: 'Movie',
+        year: 2024,
+        duration: 120,
         link: 'https://example.com/movie',
         image: 'https://example.com/custom-image.jpg',
         director: 'Director',
@@ -111,6 +126,10 @@ describe('movies-helpers', () => {
     it('should convert string duration to number', () => {
       const mockMovieForm: IMovieFormData = {
         title: 'Movie',
+        idGoogleDive: '',
+        subtitles: [],
+        originalTitle: 'Movie',
+        year: 2024,
         director: 'Director',
         duration: '120' as any,
         genresIds: ['1'],
@@ -125,6 +144,10 @@ describe('movies-helpers', () => {
     it('should convert string year to number', () => {
       const mockMovieForm: IMovieFormData = {
         title: 'Movie',
+        idGoogleDive: '',
+        subtitles: [],
+        originalTitle: 'Movie',
+        duration: 120,
         director: 'Director',
         year: '2024' as any,
         genresIds: ['1'],
@@ -139,6 +162,10 @@ describe('movies-helpers', () => {
     it('should return null for invalid duration', () => {
       const mockMovieForm: IMovieFormData = {
         title: 'Movie',
+        idGoogleDive: '',
+        subtitles: [],
+        originalTitle: 'Movie',
+        year: 2024,
         director: 'Director',
         duration: NaN as any,
         genresIds: ['1'],
@@ -152,6 +179,10 @@ describe('movies-helpers', () => {
     it('should return null for invalid year', () => {
       const mockMovieForm: IMovieFormData = {
         title: 'Movie',
+        idGoogleDive: '',
+        subtitles: [],
+        originalTitle: 'Movie',
+        duration: 120,
         director: 'Director',
         year: NaN as any,
         genresIds: ['1'],

@@ -16,6 +16,8 @@ export function NavItem({
   return (
     <Link
       href={href}
+      aria-label="Navigation Item"
+      aria-selected={segment ? href.includes(segment) : false}
       className={clsx(
         'flex items-center gap-3 rounded-lg  px-3 py-2 text-white  transition-all hover:text-gray-400',
         {

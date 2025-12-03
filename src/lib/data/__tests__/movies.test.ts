@@ -1,6 +1,7 @@
 import { MovieData } from '../movies';
 import prisma from '@/lib/prisma';
 import { handlePrismaError, logError } from '@/lib/errors';
+import { IMovie } from '@/models/movie/movie';
 
 jest.mock('@/lib/prisma', () => ({
   __esModule: true,
@@ -258,6 +259,9 @@ describe('MovieData', () => {
       id: '1',
       title: 'Inception Updated',
       titleEnglish: 'Inception',
+      idGoogleDive: 'google-drive-id',
+      subtitles: [],
+      originalTitle: 'Inception',
       director: 'Christopher Nolan',
       year: 2010,
       duration: 148,
@@ -990,6 +994,12 @@ describe('MovieData', () => {
       };
 
       const movieData = {
+        title: 'Test Movie',
+        originalTitle: 'Test Movie',
+        year: 2024,
+        duration: 120,
+        subtitles: [],
+        genresIds: [],
         idGoogleDive: 'google-drive-id-123',
       };
 
@@ -1011,6 +1021,12 @@ describe('MovieData', () => {
       (prisma.movie.findUnique as jest.Mock).mockResolvedValue(null);
 
       const result = await MovieData.findByGoogleDriveId({
+        title: 'Test',
+        originalTitle: 'Test',
+        year: 2024,
+        duration: 120,
+        subtitles: [],
+        genresIds: [],
         idGoogleDive: 'nonexistent-id',
       });
 
@@ -1023,7 +1039,15 @@ describe('MovieData', () => {
     it('should handle empty Google Drive ID', async () => {
       (prisma.movie.findUnique as jest.Mock).mockResolvedValue(null);
 
-      const result = await MovieData.findByGoogleDriveId({});
+      const result = await MovieData.findByGoogleDriveId({
+        title: '',
+        originalTitle: '',
+        year: 0,
+        duration: 0,
+        subtitles: [],
+        genresIds: [],
+        idGoogleDive: '',
+      });
 
       expect(result).toEqual({
         existingMovie: undefined,
@@ -1040,6 +1064,12 @@ describe('MovieData', () => {
       (prisma.movie.findUnique as jest.Mock).mockRejectedValue(mockError);
 
       const result = await MovieData.findByGoogleDriveId({
+        title: 'Test',
+        originalTitle: 'Test',
+        year: 2024,
+        duration: 120,
+        subtitles: [],
+        genresIds: [],
         idGoogleDive: 'google-drive-id',
       });
 
@@ -1182,11 +1212,11 @@ describe('MovieData', () => {
       const movieInDb = {
         id: 'movie-123',
         title: 'Current Movie',
-      };
+      } as IMovie;
 
       const mockMovies = [
-        { id: 'movie-456', title: 'Similar Movie 1' },
-        { id: 'movie-789', title: 'Similar Movie 2' },
+        { id: 'movie-456', title: 'Similar Movie 1' } as IMovie,
+        { id: 'movie-789', title: 'Similar Movie 2' } as IMovie,
       ];
 
       (prisma.movie.findMany as jest.Mock).mockResolvedValue(mockMovies);
@@ -1224,7 +1254,7 @@ describe('MovieData', () => {
       const movieInDb = {
         id: 'movie-123',
         title: 'Current Movie',
-      };
+      } as IMovie;
 
       (prisma.movie.findMany as jest.Mock).mockResolvedValue(null);
 
@@ -1252,7 +1282,7 @@ describe('MovieData', () => {
       const movieInDb = {
         id: 'movie-123',
         title: 'Current Movie',
-      };
+      } as IMovie;
 
       const mockError = new Error('Database error');
       (prisma.movie.findMany as jest.Mock).mockRejectedValue(mockError);

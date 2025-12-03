@@ -4,7 +4,7 @@ import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
 import { GenreData } from '@/lib/data/genres';
 import { UserData } from '@/lib/data/users';
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import dynamic from 'next/dynamic';
 
@@ -23,7 +23,7 @@ const Page = async () => {
   const userConnected = await UserData.getUserConnected(
     session?.user?.email ?? ''
   );
-  const user = userConnected?.user as User;
+  const user = userConnected?.user as IUser;
   const hasPermission =
     user &&
     checkPermissions(user, 'can:update', 'genre') &&

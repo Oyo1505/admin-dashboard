@@ -1,7 +1,7 @@
 import { IFavoriteMovieResponse } from '@/models/movie/movie';
 import { UserRole } from '@prisma/client';
 
-export interface User {
+export interface IUser {
   id?: string;
   name?: string | null;
   email?: string | null;

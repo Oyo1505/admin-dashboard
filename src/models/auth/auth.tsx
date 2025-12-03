@@ -1,7 +1,7 @@
-import { User } from '../user/user';
+import { IUser } from '../user/user';
 
 export type Session = {
-  user: User;
+  user: IUser;
   expires: Date;
 };
 

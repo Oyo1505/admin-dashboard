@@ -2,7 +2,7 @@
 
 import { StaticImageData } from 'next/image';
 
-export interface User {
+export interface IUser {
   id: string;
   name?: string;
   email?: string;
@@ -10,7 +10,7 @@ export interface User {
   role: 'USER' | 'ADMIN';
 }
 
-export interface Movie {
+export interface IMovie {
   id: string;
   title: string;
   originalTitle?: string;
@@ -34,18 +34,18 @@ export interface Movie {
   createdAt: Date;
 }
 
-export interface ApiResponse<T> {
+export interface IApiResponse<T> {
   data?: T;
   error?: string;
   success: boolean;
 }
 
-export interface PaginationParams {
+export interface IPaginationParams {
   page: number;
   limit: number;
 }
 
-export interface SearchParams {
+export interface ISearchParams {
   query?: string;
   genre?: string;
   year?: number;

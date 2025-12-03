@@ -3,8 +3,8 @@ import Text from '@/domains/ui/components/text/text';
 import { getServerSession } from '@/lib/auth';
 import { DirectorData } from '@/lib/data/director';
 import { UserData } from '@/lib/data/users';
-import { User } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import { IUser } from '@/types';
 
 async function getData() {
   const { director } = await DirectorData.getDirectorFromSection();
@@ -17,7 +17,7 @@ export default async function Page() {
     session?.user?.email ?? ''
   );
   const { director } = await getData();
-  const user = userConnected?.user as User;
+  const user = userConnected?.user as IUser;
   const hasPermission =
     user &&
     checkPermissions(user, 'can:update', 'director') &&

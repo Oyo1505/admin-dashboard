@@ -1,8 +1,8 @@
-import { MovieDetailService } from '../movie-detail.service';
 import { validateId } from '@/lib/api-wrapper';
 import { MovieData } from '@/lib/data/movies';
 import { handlePrismaError, logError } from '@/lib/errors';
 import { IMovie } from '@/models/movie/movie';
+import { MovieDetailService } from '../movie-detail.service';
 
 // Mock dependencies
 jest.mock('@/lib/api-wrapper', () => ({
@@ -25,7 +25,7 @@ jest.mock('@/lib/errors', () => ({
 }));
 
 describe('MovieDetailService', () => {
-  const mockMovie: IMovie = {
+  const mockMovie = {
     id: 'movie-123',
     title: 'The Matrix',
     synopsis: 'A computer hacker learns about reality',
@@ -34,17 +34,13 @@ describe('MovieDetailService', () => {
     duration: 136,
     director: 'Wachowskis',
     genresIds: [
-      { id: 'rel-1', movieId: 'movie-123', genreId: 'genre-action' },
-      { id: 'rel-2', movieId: 'movie-123', genreId: 'genre-scifi' },
+      { genre: { id: 'genre-action', nameFR: 'Action', nameEN: 'Action', nameJP: 'アクション' } },
+      { genre: { id: 'genre-scifi', nameFR: 'Science-Fiction', nameEN: 'Science Fiction', nameJP: 'サイエンスフィクション' } },
     ],
     subtitles: [],
-    googleDriveId: 'gdrive-123',
-    linkAsImage: 'http://example.com/matrix.jpg',
-    createdAt: new Date('2024-01-01'),
-    updatedAt: new Date('2024-01-01'),
-  };
+  } as unknown as IMovie;
 
-  const mockSuggestedMovies: IMovie[] = [
+  const mockSuggestedMovies = [
     {
       id: 'movie-456',
       title: 'Inception',
@@ -54,14 +50,10 @@ describe('MovieDetailService', () => {
       duration: 148,
       director: 'Christopher Nolan',
       genresIds: [
-        { id: 'rel-3', movieId: 'movie-456', genreId: 'genre-scifi' },
+        { genre: { id: 'genre-scifi', nameFR: 'Science-Fiction', nameEN: 'Science Fiction', nameJP: 'サイエンスフィクション' } },
       ],
       subtitles: [],
-      googleDriveId: 'gdrive-456',
-      linkAsImage: 'http://example.com/inception.jpg',
-      createdAt: new Date('2024-01-01'),
-      updatedAt: new Date('2024-01-01'),
-    },
+    } as unknown as IMovie,
   ];
 
   beforeEach(() => {
@@ -93,8 +85,12 @@ describe('MovieDetailService', () => {
       );
       expect(MovieData.findManyMovieGenres).toHaveBeenCalledWith(
         expect.objectContaining({
-          movieId: 'movie-123',
-          genreId: expect.any(String),
+          genre: expect.objectContaining({
+            id: expect.any(String),
+            nameFR: expect.any(String),
+            nameEN: expect.any(String),
+            nameJP: expect.any(String),
+          }),
         }),
         mockMovie
       );
@@ -257,7 +253,7 @@ describe('MovieDetailService', () => {
       const movieWithSingleGenre = {
         ...mockMovie,
         genresIds: [
-          { id: 'rel-1', movieId: 'movie-123', genreId: 'genre-action' },
+          { genre: { id: 'genre-action', nameFR: 'Action', nameEN: 'Action', nameJP: 'アクション' } },
         ],
       };
 

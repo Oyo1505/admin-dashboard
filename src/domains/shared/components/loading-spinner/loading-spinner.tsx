@@ -5,6 +5,7 @@ const LoadingSpinner = ({ className }: { className?: string }) => {
       role="status"
       aria-live="polite"
       aria-label="Chargement en cours"
+      aria-busy="true"
       className={clsx(
         className,
         'flex w-full h-full justify-center items-center'

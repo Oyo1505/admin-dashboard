@@ -10,7 +10,7 @@ import {
 } from '@/domains/ui/components/table/table';
 import { useSession } from '@/lib/auth-client';
 import { logError } from '@/lib/errors';
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { useRouter } from 'next/navigation';
@@ -21,7 +21,7 @@ const UsersTable = ({
   users,
   offset,
 }: {
-  users: User[];
+  users: IUser[];
   offset?: number | null;
 }) => {
   const router = useRouter();
@@ -69,7 +69,7 @@ const UsersTable = ({
   );
 };
 
-function UserRow({ user }: { user: User }) {
+function UserRow({ user }: { user: IUser }) {
   const userId = user.id;
   const { user: userConnected } = useUserStore((state) => state);
   const [optimitiscUser, setOptimitiscUser] = useOptimistic(userId);

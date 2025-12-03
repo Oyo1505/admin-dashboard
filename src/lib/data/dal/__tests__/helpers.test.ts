@@ -229,11 +229,11 @@ describe('DAL helpers', () => {
       }
 
       const mockAuthCheck = jest.fn().mockResolvedValue(undefined);
-      const mockHandler = jest.fn().mockResolvedValue<ComplexReturn>({
+      const mockHandler = jest.fn().mockResolvedValue({
         status: 200,
         user: { id: '123', name: 'John' },
         metadata: { timestamp: new Date() },
-      });
+      } as ComplexReturn);
 
       const wrappedFunction = withDALAuth<[string], ComplexReturn>(
         mockAuthCheck,

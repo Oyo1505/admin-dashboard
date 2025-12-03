@@ -1,4 +1,4 @@
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 
 const userPermissions = {
   ADMIN: [
@@ -28,7 +28,7 @@ const userPermissions = {
     'can:viewAnalyticsUser:dashboard',
   ],
 };
-const checkPermissions = (user: User, action: string, resource: string) => {
+const checkPermissions = (user: IUser, action: string, resource: string) => {
   const permissions =
     userPermissions[user.role as keyof typeof userPermissions];
   if (!permissions) return false;

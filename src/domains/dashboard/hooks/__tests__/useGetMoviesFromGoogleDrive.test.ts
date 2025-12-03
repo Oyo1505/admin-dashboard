@@ -15,7 +15,7 @@ const createWrapper = () => {
     defaultOptions: {
       queries: {
         retry: false, // Disable retries for faster tests
-        cacheTime: 0, // Disable cache for isolated tests
+        gcTime: 0, // Disable garbage collection time for isolated tests (renamed from cacheTime in v5)
       },
     },
   });

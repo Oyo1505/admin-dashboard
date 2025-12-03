@@ -2,13 +2,13 @@
 import { UserService } from '@/domains/auth/services/user.service';
 import { verifyAdmin, verifyOwnership } from '@/lib/data/dal/core/auth';
 import { withAuth, withDALAuth } from '@/lib/data/dal/helpers';
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import { EmailService } from '../services';
 
 export const getUsersWithPageParam = async (
   search: string,
   pageParam: number
-): Promise<{ users?: User[]; newOffset?: number | null; status: number }> => {
+): Promise<{ users?: IUser[]; newOffset?: number | null; status: number }> => {
   return await UserService.getUsersWithPageParam(search, pageParam);
 };
 
@@ -26,7 +26,7 @@ export const deleteUserById = withAuth(
     user,
   }: {
     id: string;
-    user: User;
+    user: IUser;
   }): Promise<{ status: number; message?: string }> => {
     return await UserService.deleteUser({ id, user });
   }

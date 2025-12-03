@@ -1,7 +1,7 @@
 'use client';
 import { Favorite } from '@/domains/ui/components/icons/icons';
 import { IMovie } from '@/models/movie/movie';
-import { User } from '@/models/user/user';
+import { IUser } from '@/models/user/user';
 import { URL_MOVIE_ID } from '@/shared/route';
 import { minutesToHours } from '@/shared/utils/number/minutesToHours';
 import isFavorite from '@/shared/utils/string/isUserFavoriteMovie';
@@ -12,7 +12,7 @@ import Link from 'next/link';
 
 interface IMovieCardSearchPage {
   movie: IMovie;
-  user?: User;
+  user?: IUser;
   priority?: boolean;
 }
 const MovieCardSearchPageMobileView = ({

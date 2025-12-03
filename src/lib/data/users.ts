@@ -1,12 +1,12 @@
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
-import { IAnalytics, User } from '@/models/user/user';
+import { IAnalytics, IUser } from '@/models/user/user';
 import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { AnalyticsData } from './analytics';
 
-export interface IUserAnalytics extends User {
+export interface IUserAnalytics extends IUser {
   analytics?: IAnalytics[];
 }
 
