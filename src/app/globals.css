@@ -70,6 +70,7 @@
   --background-image-chicago: url('/images/chicago.avif');
   --background-image-ticket: url('/images/ticket.jpg');
   --background-image-forest: url('/images/forest.jpg');
+  --text-shadow-accessible: 0 2px 8px rgb(0 0 0 / 80%);
 }
 
 @layer base {

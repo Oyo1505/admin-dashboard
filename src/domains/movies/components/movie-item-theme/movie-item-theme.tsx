@@ -32,9 +32,9 @@ const MovieItemTheme = ({
               height={200}
             />
           </div>
-          <div className="absolute inset-0 rounded-lg group-hover:bg-background group-hover:opacity-50"></div>
+          <div className="absolute inset-0 rounded-lg group-hover:bg-background group-hover:opacity-95"></div>
         </div>
-        <div className="absolute pr-2 pl-2 inset-0 flex text-center items-center  justify-center text-lg font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute pr-2 pl-2 inset-0 flex text-center items-center justify-center text-lg font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity [text-shadow:0_2px_8px_rgb(0_0_0/80%)]">
           {titleOnlocale(movie, locale)}
         </div>
       </div>
