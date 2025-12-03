@@ -1,4 +1,4 @@
-# 🎬 Admin Dashboard - Plateforme de Gestion de Films
+# 🎬 Nūberu Bāgu - Plateforme de Gestion de Films
 
 ## 📋 Aperçu
 
