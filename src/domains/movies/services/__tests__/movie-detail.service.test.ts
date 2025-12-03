@@ -1,8 +1,8 @@
-import { MovieDetailService } from '../movie-detail.service';
 import { validateId } from '@/lib/api-wrapper';
 import { MovieData } from '@/lib/data/movies';
 import { handlePrismaError, logError } from '@/lib/errors';
 import { IMovie } from '@/models/movie/movie';
+import { MovieDetailService } from '../movie-detail.service';
 
 // Mock dependencies
 jest.mock('@/lib/api-wrapper', () => ({
@@ -85,8 +85,12 @@ describe('MovieDetailService', () => {
       );
       expect(MovieData.findManyMovieGenres).toHaveBeenCalledWith(
         expect.objectContaining({
-          movieId: 'movie-123',
-          genreId: expect.any(String),
+          genre: expect.objectContaining({
+            id: expect.any(String),
+            nameFR: expect.any(String),
+            nameEN: expect.any(String),
+            nameJP: expect.any(String),
+          }),
         }),
         mockMovie
       );
@@ -249,7 +253,7 @@ describe('MovieDetailService', () => {
       const movieWithSingleGenre = {
         ...mockMovie,
         genresIds: [
-          { id: 'rel-1', movieId: 'movie-123', genreId: 'genre-action' },
+          { genre: { id: 'genre-action', nameFR: 'Action', nameEN: 'Action', nameJP: 'アクション' } },
         ],
       };
 
