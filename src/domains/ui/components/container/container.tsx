@@ -9,7 +9,7 @@ interface Props {
 
 const Container = ({ className, children, marginSide = true }: Props) => {
   return (
-    <div
+    <main
       className={cn(
         marginSide ? 'mr-12 ml-12' : null,
         'pr-3 pl-3 container mx-auto flex flex-col justify-center',
@@ -17,7 +17,7 @@ const Container = ({ className, children, marginSide = true }: Props) => {
       )}
     >
       {children}
-    </div>
+    </main>
   );
 };
 export default Container;

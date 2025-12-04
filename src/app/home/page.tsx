@@ -92,12 +92,19 @@ const Page = async () => {
   const countryChosen = findCountry?.[0]?.label?.[locale];
   return (
     <div className="flex flex-col mt-6 gap-8">
+      <Title
+        className="sr-only"
+        translationTheme="HomePage"
+        translationText="title"
+        type="h1"
+      />
+
       <Container className="pt-14">
         <Title
           translationTheme="HomePage"
           className={clsx(lobster.className, 'text-2xl md:text-3xl')}
           translationText="lastFiveMovies"
-          type="h3"
+          type="h2"
         />
         <Suspense fallback={<MoviesHomeSectionSkeleton />}>
           <MoviesHomeSection
@@ -122,7 +129,7 @@ const Page = async () => {
             translationTheme="HomePage"
             className={clsx(lobster.className, 'text-2xl md:text-3xl')}
             translationText="Akind"
-            type="h3"
+            type="h2"
           >
             {' '}
             {displayGenreTranslated(genre, locale)}
@@ -157,7 +164,7 @@ const Page = async () => {
                 className={clsx(lobster.className, 'text-2xl md:text-3xl')}
                 textColor="text-background"
                 translationText="AHeart"
-                type="h3"
+                type="h2"
               />
               <Suspense fallback={<MoviesHomeSectionSkeleton />}>
                 <MoviesHomeSection

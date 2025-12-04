@@ -48,6 +48,7 @@ export default async function RootLayout({
       <body
         className={`h-full mb-14 mx-auto relative bg-background text-primary font-semibold `}
       >
+
         <ToastContainer />
         <NextIntlClientProvider messages={messages}>
           <TanstackProvider>
@@ -60,6 +61,7 @@ export default async function RootLayout({
             <Analytics />
           </TanstackProvider>
         </NextIntlClientProvider>
+
       </body>
     </html>
   );

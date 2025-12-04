@@ -37,6 +37,7 @@ const FormAddEmailAuthrizedEmail = ({
       {hasPermission && (
         <>
           <Input
+            aria-label="input-add-email-authorized"
             placeholder="Email"
             type="email"
             className="w-full mb-4  text-background bg-primary"

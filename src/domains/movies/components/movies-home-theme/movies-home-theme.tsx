@@ -57,13 +57,13 @@ const MoviesHomeTheme = ({
     <div
       className={`w-full aspect-[0/0.4] md:aspect-[1/0.4] relative bg-chicago bg-cover bg-center`}
     >
-      <div className="absolute w-full h-full bg-slate-950 opacity-50  top-0 left-0 z-0"></div>
+      <div className="absolute w-full h-full bg-slate-950 opacity-90 top-0 left-0 z-0"></div>
       <Container className="h-full pt-6 pb-6 flex relative flex-col justify-start items-start">
         {country && (
           <Title
             className={clsx(fontFamily, 'text-2xl relative md:text-6xl')}
             text={country}
-            type="h3"
+            type="h2"
           />
         )}
 

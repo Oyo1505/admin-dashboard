@@ -70,6 +70,7 @@
   --background-image-chicago: url('/images/chicago.avif');
   --background-image-ticket: url('/images/ticket.jpg');
   --background-image-forest: url('/images/forest.jpg');
+  --text-shadow-accessible: 0 2px 8px rgb(0 0 0 / 80%);
 }
 
 @layer base {
@@ -95,8 +96,8 @@
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
