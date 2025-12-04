@@ -48,7 +48,12 @@ const GenreForm = () => {
               className="text-white"
               htmlFor="nameFR"
             />
-            <Input className="text-black" type="text" {...register('nameFR')} />
+            <Input
+              aria-label="input-genre-french"
+              className="text-black"
+              type="text"
+              {...register('nameFR')}
+            />
           </div>
           <div>
             <LabelForm
@@ -56,7 +61,12 @@ const GenreForm = () => {
               className="text-white"
               htmlFor="nameEN"
             />
-            <Input className="text-black" type="text" {...register('nameEN')} />
+            <Input
+              aria-label="input-genre-english"
+              className="text-black"
+              type="text"
+              {...register('nameEN')}
+            />
           </div>
           <div>
             <LabelForm
@@ -64,7 +74,12 @@ const GenreForm = () => {
               className="text-white"
               htmlFor="nameJP"
             />
-            <Input className="text-black" type="text" {...register('nameJP')} />
+            <Input
+              aria-label="input-genre-japanese"
+              className="text-black"
+              type="text"
+              {...register('nameJP')}
+            />
           </div>
         </fieldset>
 

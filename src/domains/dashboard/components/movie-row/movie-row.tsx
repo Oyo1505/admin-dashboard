@@ -39,9 +39,7 @@ function MovieRow({
     movie &&
     movie.id && (
       <TableRow className="border-b border-background border-opacity-20">
-        <TableCell className="font-bold">
-          {movie.title ?? movie.id}
-        </TableCell>
+        <TableCell className="font-bold">{movie.title ?? movie.id}</TableCell>
         {movie.title && (
           <TableCell className="text-center w-32">
             <Toggle
@@ -67,8 +65,9 @@ function MovieRow({
             )}
             {hasPermissionToDelete && !moviesFromGoogleDrive && (
               <Button
+                aria-label="delete-movie-button"
                 variant="destructive"
-                className="font-bold"
+                className="font-bold hover:cursor-pointer"
                 formAction={onClickDeleteMovie}
               >
                 Supprimer

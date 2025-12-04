@@ -92,6 +92,7 @@ const SuggestionForm = () => {
               required: true,
               onChange: handleTopicChange,
             })}
+            aria-label="select-suggestion-topic"
           >
             {topicOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -105,6 +106,7 @@ const SuggestionForm = () => {
         </div>
         <div className="flex flex-col gap-2">
           <Textarea
+            aria-label="textarea-suggestion-message"
             className="focus:outline-none h-20 md:h-48 md:w-1/2"
             {...register('message', {
               required: true,

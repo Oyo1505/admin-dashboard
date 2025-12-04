@@ -16,7 +16,9 @@ const Toggle = ({
 
   return publish === undefined ? null : (
     <label className="inline-flex items-center cursor-pointer">
+      <span className="sr-only">{t('togglePublished')}</span>
       <Input
+        aria-label="toggle-published-movie"
         type="checkbox"
         checked={publish}
         disabled={isFetching}
@@ -24,7 +26,7 @@ const Toggle = ({
         className="sr-only peer w-14"
         onChange={toggle}
       />
-    <div className="toggle-switch" />
+      <div className="toggle-switch" />
     </label>
   );
 };

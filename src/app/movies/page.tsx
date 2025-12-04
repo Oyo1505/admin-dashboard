@@ -3,7 +3,6 @@ import Movies from '@/domains/movies/components/movies/movies';
 import SearchMovie from '@/domains/movies/components/search-movie/search-movie';
 import MoviesSkeleton from '@/domains/skeleton/components/movies-skeleton/movies-skeleton';
 import { GenreData } from '@/lib/data/genres';
-
 import { MovieData } from '@/lib/data/movies';
 
 import { Suspense, cache } from 'react';
@@ -33,6 +32,7 @@ const Page = async (props: {
 
   return (
     <>
+      <h1 className="sr-only">Movies</h1>
       <SearchMovie search={search} />
       <MovieFilters genres={genres} countries={countries ?? []} />
       <Suspense fallback={<MoviesSkeleton />}>
