@@ -101,7 +101,35 @@ describe('LandingPage', () => {
       expect(screen.getByText('translated.welcome')).toBeInTheDocument();
     });
 
-    it('should display NOTHING for an authenticated user (session exists)', () => {
+    it('should display LoadingSpinner for the session isPending to true', () => {
+      // Arrange: Simulate a non-logged-in user
+      (useSession as jest.Mock).mockReturnValue({
+        data: null,
+        isPending: true,
+        error: null,
+      });
+
+      // Act: Render the component
+      render(<LandingPage />);
+
+      // Assert: The loading-spinner should be visible
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+    });
+    it('should not display LoadingSpinner when session isPending is false', () => {
+      // Arrange: Simulate a non-logged-in user with session loaded
+      (useSession as jest.Mock).mockReturnValue({
+        data: null,
+        isPending: false,
+        error: null,
+      });
+
+      // Act: Render the component
+      render(<LandingPage />);
+
+      // Assert: The loading-spinner should NOT be visible
+      expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
+    });
+    it('should hide login content for authenticated users but keep welcome heading', () => {
       // Arrange: Simulate a logged-in user with session
       (useSession as jest.Mock).mockReturnValue({
         data: { user: { email: 'test@example.com' } },
@@ -117,16 +145,25 @@ describe('LandingPage', () => {
       });
 
       // Act: Render the component
-      const { container } = render(<LandingPage />);
+      render(<LandingPage />);
 
-      // Assert: No content should be displayed (renders nothing/null)
-      expect(screen.queryByText('translated.welcome')).not.toBeInTheDocument();
-      // Container should be empty or contain only null/false
-      expect(container.textContent).toBe('');
+      // Assert: Welcome heading is visible (always renders)
+      expect(screen.getByText('translated.welcome')).toBeInTheDocument();
+
+      // Assert: Login-specific content is hidden
+      expect(screen.queryByText('translated.title')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('button-login')).not.toBeInTheDocument();
+
+      // Assert: Loading spinner is not present
+      expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
+
+      // Assert: Footer links are still visible
+      expect(screen.getByText('translated.privacy')).toBeInTheDocument();
+      expect(screen.getByText('translated.legalMentions')).toBeInTheDocument();
     });
 
-    it('should display content during initial load when session is null', () => {
-      // Arrange: Simulate initial state (no session yet)
+    it('should display loading spinner and welcome during initial load', () => {
+      // Arrange: Simulate initial state (session loading)
       (useSession as jest.Mock).mockReturnValue({
         data: null,
         isPending: true,
@@ -136,8 +173,15 @@ describe('LandingPage', () => {
       // Act
       render(<LandingPage />);
 
-      // Assert: Component renders content when session is null (even if pending)
+      // Assert: Welcome heading is visible during loading
       expect(screen.getByText('translated.welcome')).toBeInTheDocument();
+
+      // Assert: Loading spinner is displayed
+      expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
+      // Assert: Login content is hidden while loading
+      expect(screen.queryByText('translated.title')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('button-login')).not.toBeInTheDocument();
     });
   });
 

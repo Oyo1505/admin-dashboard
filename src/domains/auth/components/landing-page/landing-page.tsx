@@ -1,4 +1,5 @@
 'use client';
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import ButtonLogin from '@/domains/ui/components/button-login/button-login';
 import Container from '@/domains/ui/components/container/container';
 import { useSession } from '@/lib/auth-client';
@@ -15,29 +16,34 @@ const lobster = Lobster({
   subsets: ['latin'],
 });
 const LandingPage = () => {
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
   const { user } = useUserStore();
   const t = useTranslations('LandingPage');
 
   const userIsNotLogged = session === null && Object.keys(user).length === 0;
+
   return (
-    userIsNotLogged && (
-      <Container>
-        <div className="h-screen flex flex-col items-center justify-center">
-          <div className="flex flex-col gap-5 justify-center items-center">
-            <h1 className={clsx(lobster.className, 'text-5xl text-center')}>
-              {t('welcome')}
-            </h1>
-            <div>{t('title')}</div>
-            <ButtonLogin />
-          </div>
-          <div className="text-center flex gap-6 mt-5">
-            <Link href={URL_PRIVACY}>{t('privacy')}</Link>
-            <Link href={URL_LEGAL_MENTIONS}>{t('legalMentions')}</Link>
-          </div>
+    <Container>
+      <div className="h-screen flex flex-col items-center justify-center">
+        <div className="flex flex-col gap-5 justify-center items-center">
+          <h1 className={clsx(lobster.className, 'text-5xl text-center')}>
+            {t('welcome')}
+          </h1>
+
+          {userIsNotLogged && !isPending && (
+            <>
+              <div>{t('title')}</div>
+              <ButtonLogin />
+            </>
+          )}
+          {isPending && <LoadingSpinner data-testid={'loading-spinner'} />}
         </div>
-      </Container>
-    )
+        <div className="text-center flex gap-6 mt-5">
+          <Link href={URL_PRIVACY}>{t('privacy')}</Link>
+          <Link href={URL_LEGAL_MENTIONS}>{t('legalMentions')}</Link>
+        </div>
+      </div>
+    </Container>
   );
 };
 
