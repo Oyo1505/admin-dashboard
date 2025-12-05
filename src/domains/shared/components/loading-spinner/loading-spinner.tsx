@@ -1,7 +1,13 @@
 import clsx from 'clsx';
-const LoadingSpinner = ({ className }: { className?: string }) => {
+
+interface LoadingSpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
+}
+
+const LoadingSpinner = ({ className, ...props }: LoadingSpinnerProps) => {
   return (
     <div
+      {...props}
       role="status"
       aria-live="polite"
       aria-label="Chargement en cours"
