@@ -6,13 +6,12 @@ import {
   IMovie,
   IMovieFormData,
 } from '@/models/movie/movie';
+import HttpStatus from '@/shared/constants/httpStatus';
 import {
   MAX_LATEST_MOVIES,
   MAX_MOVIES_BY_COUNTRY,
   MAX_MOVIES_BY_GENRE,
 } from '@/shared/constants/pagination';
-import { CACHE_TTL_SHORT } from '@/shared/constants/time';
-import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
@@ -571,7 +570,8 @@ export class MovieData {
             updatedAt: 'desc',
           },
         });
-        if (movies) return { movies: movies as IMovie[], status: HttpStatus.OK };
+        if (movies)
+          return { movies: movies as IMovie[], status: HttpStatus.OK };
         return { movies: [], status: HttpStatus.NOT_FOUND };
       } catch (error) {
         logError(error, 'findManyOrderByDesc data');
@@ -598,10 +598,9 @@ export class MovieData {
               },
             },
           },
-          //@ts-ignore
-          cacheStrategy: { ttl: CACHE_TTL_SHORT },
         });
-        if (movies) return { movieInDb: movies as IMovie, status: HttpStatus.OK };
+        if (movies)
+          return { movieInDb: movies as IMovie, status: HttpStatus.OK };
         return { movieInDb: undefined, status: HttpStatus.NOT_FOUND };
       } catch (error) {
         logError(error, 'findUniqueIncludesGenres');

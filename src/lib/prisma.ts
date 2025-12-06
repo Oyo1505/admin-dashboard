@@ -1,13 +1,12 @@
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import { PrismaClient } from '@prisma/client';
-import { withAccelerate } from '@prisma/extension-accelerate';
 
-const globalForPrisma = global as unknown as {
-  prisma: PrismaClient;
-};
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL_NON_POOLING ?? '',
+});
 
-const prisma =
-  globalForPrisma.prisma || new PrismaClient().$extends(withAccelerate());
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 export default prisma;
