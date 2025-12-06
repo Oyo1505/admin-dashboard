@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import {
   IFavoriteMovieResponse,
@@ -21,6 +22,28 @@ import {
   buildMovieData,
   buildMovieInclude,
 } from './movies-helpers';
+
+// Type pour les favoris avec les relations incluses
+type UserFavoriteWithMovie = Prisma.UserFavoriteMoviesGetPayload<{
+  include: {
+    movie: {
+      include: {
+        genresIds: {
+          select: {
+            genre: {
+              select: {
+                id: true;
+                nameFR: true;
+                nameEN: true;
+                nameJP: true;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+}>;
 
 export class MovieData {
   /**
@@ -189,7 +212,9 @@ export class MovieData {
           },
         });
 
-        const movies: IFavoriteMovieResponse[] = favorites.map((favorite) => ({
+        const movies: IFavoriteMovieResponse[] = (
+          favorites as UserFavoriteWithMovie[]
+        ).map((favorite) => ({
           id: favorite.id.toString(),
           movieId: favorite.movieId,
           userId: favorite.userId,

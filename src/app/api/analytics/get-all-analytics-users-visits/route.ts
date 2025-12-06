@@ -2,6 +2,17 @@ import { IUserAnalytics } from '@/lib/data/users';
 import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import HttpStatus from '@/shared/constants/httpStatus';
+import { Prisma } from '@prisma/client';
+
+type UserWithAnalytics = Prisma.UserGetPayload<{
+  include: {
+    analytics: {
+      orderBy: {
+        lastLogin: 'desc';
+      };
+    };
+  };
+}>;
 
 export async function GET(): Promise<Response> {
   try {
@@ -20,7 +31,9 @@ export async function GET(): Promise<Response> {
       },
     });
 
-    const transformedUsers: IUserAnalytics[] = users.map((user) => ({
+    const transformedUsers: IUserAnalytics[] = (
+      users as UserWithAnalytics[]
+    ).map((user) => ({
       id: user.id,
       name: user.name,
       email: user.email,
