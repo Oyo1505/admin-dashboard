@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import { IAnalytics, IUser } from '@/models/user/user';
@@ -9,6 +10,17 @@ import { AnalyticsData } from './analytics';
 export interface IUserAnalytics extends IUser {
   analytics?: IAnalytics[];
 }
+
+// Type pour les utilisateurs avec analytics
+type UserWithAnalytics = Prisma.UserGetPayload<{
+  include: {
+    analytics: {
+      orderBy: {
+        lastLogin: 'desc';
+      };
+    };
+  };
+}>;
 
 export class UserData {
   static findUnique = cache(
@@ -96,7 +108,9 @@ export class UserData {
           },
         });
 
-        const transformedUsers: IUserAnalytics[] = users.map((user) => ({
+        const transformedUsers: IUserAnalytics[] = (
+          users as UserWithAnalytics[]
+        ).map((user) => ({
           id: user.id,
           name: user.name,
           email: user.email,
