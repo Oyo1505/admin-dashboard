@@ -2,6 +2,7 @@
 import useEmailsAutorized from '@/domains/auth/hooks/useEmailsAutorized';
 import { Button } from '@/domains/ui/components/button/button';
 import { useTranslations } from 'next-intl';
+import { Activity } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const EmailAuthrizedEmailRow = ({
@@ -21,7 +22,7 @@ export const EmailAuthrizedEmailRow = ({
         onSubmit={handleSubmit(() => deleteEmailMutation.mutate(email))}
         className="flex justify-end "
       >
-        {hasPermission && (
+        <Activity mode={hasPermission ? 'visible' : 'hidden'}>
           <Button
             variant={'destructive'}
             className="font-bold"
@@ -30,7 +31,7 @@ export const EmailAuthrizedEmailRow = ({
           >
             {deleteEmailMutation.isPending ? t('deleting') : t('deleteButton')}
           </Button>
-        )}
+        </Activity>
       </form>
     </div>
   );

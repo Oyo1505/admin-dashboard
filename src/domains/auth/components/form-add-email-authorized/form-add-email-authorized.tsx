@@ -3,6 +3,7 @@ import { Button } from '@/domains/ui/components/button/button';
 import { Input } from '@/domains/ui/components/input/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { Activity } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import useEmailsAutorized from '../../hooks/useEmailsAutorized';
@@ -50,7 +51,12 @@ const FormAddEmailAuthrizedEmail = ({
             className="w-full mb-4"
             disabled={addEmailMutation.isPending}
           >
-            {addEmailMutation.isPending ? t('loading') : t('addButton')}
+            <Activity mode={addEmailMutation.isPending ? 'visible' : 'hidden'}>
+              {t('loading')}
+            </Activity>
+            <Activity mode={addEmailMutation.isPending ? 'hidden' : 'visible'}>
+              {t('addButton')}
+            </Activity>
           </Button>
         </>
       )}

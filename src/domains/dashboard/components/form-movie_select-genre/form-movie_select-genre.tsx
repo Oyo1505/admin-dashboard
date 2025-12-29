@@ -3,6 +3,7 @@ import FormCheckBox from '@/domains/shared/components/form-checkbox/form-checkbo
 import LabelForm from '@/domains/ui/components/label-form/label-form';
 import LabelGenre from '@/domains/ui/components/label-genre/label-genre';
 import { IGenre } from '@/models/movie/movie';
+import { Activity } from 'react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 interface IFormMovieSelectGenre {
@@ -58,14 +59,14 @@ const FormMovieSelectGenre = ({
                 />
               ))}
           </div>
-          {availableGenres && (
+          <Activity mode={availableGenres ? 'visible' : 'hidden'}>
             <SelectGenreMovieForm
-              optionsList={availableGenres}
+              optionsList={availableGenres || []}
               locale={locale}
               onChange={handleGenreChange}
               errors={errors}
             />
-          )}
+          </Activity>
         </div>
       </fieldset>
       <fieldset className="border-0 p-0 m-0 mb-[15px]">
