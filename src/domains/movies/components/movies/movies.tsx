@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import qs from 'qs';
+import { Activity } from 'react';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
 import MovieCardSearchPageMobileView from '../movie-card-mobile-view_search-page/movie-card-mobile-view_search-page';
 import MovieCardSearchPage from '../movie-card_search-page/movie-card_search-page';
@@ -78,7 +79,11 @@ const Movies = ({
 
   return (
     <>
-      {moviesFromStore && moviesFromStore.length > 0 ? (
+      <Activity
+        mode={
+          moviesFromStore && moviesFromStore.length > 0 ? 'visible' : 'hidden'
+        }
+      >
         <div className="grid grid-cols-1 md:mx-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-4 mt-6">
           {moviesFromStore.map((movie, index) =>
             movie?.title ? (
@@ -100,11 +105,12 @@ const Movies = ({
             ) : null
           )}
         </div>
-      ) : (
+      </Activity>
+      <Activity mode={!moviesFromStore ? 'hidden' : 'visible'}>
         <div className=" text-center mt-14 mx-auto text-2xl">
           {t('NoMovie')}
         </div>
-      )}
+      </Activity>
       <div className="flex justify-center mt-10">
         {isFetching || (isFetchingNextPage && status !== 'success') ? (
           <LoadingSpinner />

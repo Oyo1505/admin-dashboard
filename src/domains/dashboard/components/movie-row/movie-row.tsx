@@ -10,6 +10,7 @@ import {
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import Link from 'next/link';
+import { Activity } from 'react';
 import { deleteMovieById } from '../../actions/movie';
 import { useMovieData } from '../../hooks/useMovieData';
 
@@ -63,7 +64,13 @@ function MovieRow({
                 {btnText}
               </Link>
             )}
-            {hasPermissionToDelete && !moviesFromGoogleDrive && (
+            <Activity
+              mode={
+                hasPermissionToDelete && !moviesFromGoogleDrive
+                  ? 'visible'
+                  : 'hidden'
+              }
+            >
               <Button
                 aria-label="delete-movie-button"
                 variant="destructive"
@@ -72,7 +79,7 @@ function MovieRow({
               >
                 Supprimer
               </Button>
-            )}
+            </Activity>
           </div>
         </TableCell>
       </TableRow>

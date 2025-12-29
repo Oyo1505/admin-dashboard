@@ -8,13 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
-import { useSession } from '@/lib/auth-client';
 import { logError } from '@/lib/errors';
 import { IUser } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { useRouter } from 'next/navigation';
-import { useOptimistic } from 'react';
+import { Activity, useOptimistic } from 'react';
 import { deleteUserById } from '../../actions/user';
 
 const UsersTable = ({
@@ -56,7 +55,7 @@ const UsersTable = ({
           </TableBody>
         </Table>
       </form>
-      {offset !== null && (
+      <Activity mode={offset ? 'visible' : 'hidden'}>
         <Button
           className="mt-4 w-40"
           variant="secondary"
@@ -64,7 +63,7 @@ const UsersTable = ({
         >
           Next Page
         </Button>
-      )}
+      </Activity>
     </>
   );
 };
@@ -73,7 +72,6 @@ function UserRow({ user }: { user: IUser }) {
   const userId = user.id;
   const { user: userConnected } = useUserStore((state) => state);
   const [optimitiscUser, setOptimitiscUser] = useOptimistic(userId);
-  const session = useSession();
   const deleteUser = async () => {
     setOptimitiscUser('');
     try {
@@ -94,7 +92,13 @@ function UserRow({ user }: { user: IUser }) {
       <TableCell className="font-medium">{user.name}</TableCell>
       <TableCell className="hidden md:table-cell">{user.email}</TableCell>
       <TableCell>{user.role ?? 'USER'}</TableCell>
-      {optimitiscUser !== userConnected?.id && hasPermission && (
+      <Activity
+        mode={
+          optimitiscUser !== userConnected?.id && hasPermission
+            ? 'visible'
+            : 'hidden'
+        }
+      >
         <TableCell>
           <Button
             className="w-full font-bold"
@@ -105,7 +109,7 @@ function UserRow({ user }: { user: IUser }) {
             Delete
           </Button>
         </TableCell>
-      )}
+      </Activity>
     </TableRow>
   );
 }

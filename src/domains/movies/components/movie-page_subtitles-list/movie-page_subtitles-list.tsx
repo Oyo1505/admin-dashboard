@@ -1,5 +1,6 @@
 import { IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
+import { Activity } from 'react';
 import MovieHeaderSubtitleLink from '../movie-header_subtitle-link/movie-header_subtitle-link';
 
 const MoviePageSubtitlesList = ({ movie }: { movie: IMovie }) => {
@@ -21,12 +22,13 @@ const MoviePageSubtitlesList = ({ movie }: { movie: IMovie }) => {
             link={`https://subdl.org/search/?srcname=${titleCompute(movie?.titleEnglish)}`}
             subtitleWebSite={'Subdl.org'}
           />
-          {movie?.imdbId && (
+          <Activity mode={movie?.imdbId ? 'visible' : 'hidden'}>
             <MovieHeaderSubtitleLink
               link={`https://yifysubtitles.ch/movie-imdb/${movie?.imdbId}`}
               subtitleWebSite={'Yifi Subtitles'}
             />
-          )}
+          </Activity>
+
           <MovieHeaderSubtitleLink
             link={`https://www.subtitlecat.com/index.php?search=${movie?.titleEnglish?.replaceAll(' ', '+')?.toLocaleLowerCase()}`}
             subtitleWebSite={'SubtitleCat'}

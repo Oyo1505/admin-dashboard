@@ -11,6 +11,7 @@ import { URL_DASHBOARD, URL_DASHBOARD_ROUTE } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
+import { Activity } from 'react';
 
 const MenuDashboard = () => {
   const { user } = useUserStore((state) => state);
@@ -30,26 +31,24 @@ const MenuDashboard = () => {
           <AddIncon />
           {t('suggestion')}
         </NavItem>
-        {user && hasPermission && (
-          <>
-            <NavItem href={URL_DASHBOARD_ROUTE.users}>
-              <UsersIcon className="h-4 w-4" />
-              {t('users')}
-            </NavItem>
-            <NavItem href={URL_DASHBOARD_ROUTE.movie}>
-              <AddIncon />
-              {t('movies')}
-            </NavItem>
-            <NavItem href={URL_DASHBOARD_ROUTE.director}>
-              <AddIncon />
-              {t('director')}
-            </NavItem>
-            <NavItem href={URL_DASHBOARD_ROUTE.genre}>
-              <AddIncon />
-              {t('genre')}
-            </NavItem>
-          </>
-        )}
+        <Activity mode={user && hasPermission ? 'visible' : 'hidden'}>
+          <NavItem href={URL_DASHBOARD_ROUTE.users}>
+            <UsersIcon className="h-4 w-4" />
+            {t('users')}
+          </NavItem>
+          <NavItem href={URL_DASHBOARD_ROUTE.movie}>
+            <AddIncon />
+            {t('movies')}
+          </NavItem>
+          <NavItem href={URL_DASHBOARD_ROUTE.director}>
+            <AddIncon />
+            {t('director')}
+          </NavItem>
+          <NavItem href={URL_DASHBOARD_ROUTE.genre}>
+            <AddIncon />
+            {t('genre')}
+          </NavItem>
+        </Activity>
         <NavItem href={URL_DASHBOARD_ROUTE.favorite}>
           <Favorite />
           {t('favorite')}

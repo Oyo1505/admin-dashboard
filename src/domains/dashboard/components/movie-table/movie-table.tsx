@@ -10,7 +10,7 @@ import {
 } from '@/domains/ui/components/table/table';
 import { IMovie } from '@/models/movie/movie';
 import { useTranslations } from 'next-intl';
-import { Suspense, useState } from 'react';
+import { Activity, Suspense, useState } from 'react';
 import useGetMoviesFromGoogleDrive from '../../hooks/useGetMoviesFromGoogleDrive';
 import MovieRow from '../movie-row/movie-row';
 
@@ -35,7 +35,13 @@ const MovieTable = () => {
   return (
     <Suspense fallback={<Loading />}>
       <div className="flex flex-1 flex-col gap-4 w-full md:gap-8 md:p-6">
-        {moviesFromGoogle && moviesFromGoogle?.length > 0 && !isLoading ? (
+        <Activity
+          mode={
+            moviesFromGoogle && moviesFromGoogle?.length > 0 && !isLoading
+              ? 'visible'
+              : 'hidden'
+          }
+        >
           <form className="border bg-primary text-background shadow-xs rounded-lg">
             <Table>
               <TableHeader>
@@ -57,65 +63,67 @@ const MovieTable = () => {
               </TableBody>
             </Table>
           </form>
-        ) : null}
-        {moviesFromPrisma?.movies && moviesFromPrisma.movies?.length > 0 && (
-          <>
-            <form className="border bg-primary text-background shadow-xs rounded-lg  mt-4 w-full min-w-0 overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-b border-background border-opacity-20">
-                    <TableHead className="font-bold">
-                      {t('movieAdded')}
-                    </TableHead>
-                    <TableHead className="font-bold w-32 text-center">
-                      {t('togglePublished')}
-                    </TableHead>
-                    <TableHead className="font-bold text-right">
-                      Actions
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {moviesFromPrisma.movies
-                    ? moviesFromPrisma.movies?.map((movie: IMovie) => (
-                        <MovieRow
-                          key={movie?.id}
-                          movie={movie}
-                          btnText={'Editer'}
-                        />
-                      ))
-                    : t('noMovie')}
-                </TableBody>
-              </Table>
-            </form>
-            <div className="flex gap-4 mt-4 justify-center">
-              <button
-                onClick={() => setPage((old) => Math.max(old - 1, 0))}
-                disabled={page === 0}
-                className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
-              >
-                {t('previousPage')}
-              </button>
-              <button
-                onClick={() => {
-                  if (
-                    !isPlaceholderData &&
-                    moviesFromPrisma.movies?.length === 5
-                  ) {
-                    setPage((old) => old + 1);
-                  }
-                }}
-                disabled={
-                  isPlaceholderData ||
-                  (moviesFromPrisma.movies?.length ?? 0) < 5
+        </Activity>
+
+        <Activity
+          mode={
+            moviesFromPrisma?.movies && moviesFromPrisma.movies?.length > 0
+              ? 'visible'
+              : 'hidden'
+          }
+        >
+          <form className="border bg-primary text-background shadow-xs rounded-lg  mt-4 w-full min-w-0 overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-b border-background border-opacity-20">
+                  <TableHead className="font-bold">{t('movieAdded')}</TableHead>
+                  <TableHead className="font-bold w-32 text-center">
+                    {t('togglePublished')}
+                  </TableHead>
+                  <TableHead className="font-bold text-right">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {moviesFromPrisma.movies
+                  ? moviesFromPrisma.movies?.map((movie: IMovie) => (
+                      <MovieRow
+                        key={movie?.id}
+                        movie={movie}
+                        btnText={'Editer'}
+                      />
+                    ))
+                  : t('noMovie')}
+              </TableBody>
+            </Table>
+          </form>
+          <div className="flex gap-4 mt-4 justify-center">
+            <button
+              onClick={() => setPage((old) => Math.max(old - 1, 0))}
+              disabled={page === 0}
+              className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
+            >
+              {t('previousPage')}
+            </button>
+            <button
+              onClick={() => {
+                if (
+                  !isPlaceholderData &&
+                  moviesFromPrisma.movies?.length === 5
+                ) {
+                  setPage((old) => old + 1);
                 }
-                className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
-              >
-                {t('nextPage')}
-              </button>
-            </div>
-          </>
-        )}
+              }}
+              disabled={
+                isPlaceholderData || (moviesFromPrisma.movies?.length ?? 0) < 5
+              }
+              className="border-2 border-white text-white p-2 rounded-md cursor-pointer disabled:opacity-50"
+            >
+              {t('nextPage')}
+            </button>
+          </div>
+        </Activity>
       </div>
     </Suspense>
   );
