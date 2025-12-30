@@ -6,6 +6,7 @@ import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Activity } from 'react';
 
 interface IMovieCardSearchPage {
   movie: IMovie;
@@ -33,11 +34,12 @@ const MovieCardSearchPage = ({
       href={`${URL_MOVIE_ID(movie?.id)}`}
       key={`${movie?.id}-link`}
     >
-      {isFavorite(movie?.id) && (
+      <Activity mode={isFavorite(movie?.id) ? 'visible' : 'hidden'}>
         <div className="absolute z-1 top-1 right-1">
           <Favorite fill />
         </div>
-      )}
+      </Activity>
+
       <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
         <div className="w-24 h-full md:w-full md:h-72 rounded-lg relative overflow-hidden">
           <Image

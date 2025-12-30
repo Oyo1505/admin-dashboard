@@ -37,11 +37,10 @@ function MovieRow({
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
   const isMoviePublished = data?.publish ?? movie.publish;
   return (
-    movie &&
-    movie.id && (
+    <Activity mode={movie && movie.id ? 'visible' : 'hidden'}>
       <TableRow className="border-b border-background border-opacity-20">
         <TableCell className="font-bold">{movie.title ?? movie.id}</TableCell>
-        {movie.title && (
+        <Activity mode={movie.title ? 'visible' : 'hidden'}>
           <TableCell className="text-center w-32">
             <Toggle
               toggle={() => refetch()}
@@ -49,10 +48,11 @@ function MovieRow({
               isFetching={isFetching}
             />
           </TableCell>
-        )}
+        </Activity>
+
         <TableCell>
           <div className="flex gap-2 items-center flex-wrap justify-end">
-            {hasPermissionToUpdate && (
+            <Activity mode={hasPermissionToUpdate ? 'visible' : 'hidden'}>
               <Link
                 href={
                   isMoviePublished !== undefined
@@ -63,7 +63,8 @@ function MovieRow({
               >
                 {btnText}
               </Link>
-            )}
+            </Activity>
+
             <Activity
               mode={
                 hasPermissionToDelete && !moviesFromGoogleDrive
@@ -83,7 +84,7 @@ function MovieRow({
           </div>
         </TableCell>
       </TableRow>
-    )
+    </Activity>
   );
 }
 

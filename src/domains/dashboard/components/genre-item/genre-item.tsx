@@ -17,7 +17,7 @@ export const GenreItem = ({ item }: { item: IGenre }) => {
   };
   return (
     <div className="text-black rounded-sm pr-4 pl-2 relative bg-primary text-center  min-w-16 ">
-      {locale === 'fr' ? nameFR : locale === 'en' ? nameEN : nameJP}{' '}
+      {locale === 'fr' ? nameFR : locale === 'en' ? nameEN : nameJP}
       <span
         onClick={onDelete}
         className="text-xs absolute top-0 right-1 hover:cursor-pointer"

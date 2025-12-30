@@ -5,6 +5,7 @@ import { IMovie } from '@/models/movie/movie';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 import dynamic from 'next/dynamic';
+import { Activity } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -59,19 +60,23 @@ const MoviesHomeTheme = ({
     >
       <div className="absolute w-full h-full bg-slate-950 opacity-90 top-0 left-0 z-0"></div>
       <Container className="h-full pt-6 pb-6 flex relative flex-col justify-start items-start">
-        {country && (
+        <Activity mode={country ? 'visible' : 'hidden'}>
           <Title
             className={clsx(fontFamily, 'text-2xl relative md:text-6xl')}
             text={country}
             type="h2"
           />
-        )}
+        </Activity>
 
         <div className="h-full flex flex-wrap justify-start items-end gap-2">
-          {movies &&
-            movies?.length > 0 &&
-            !isMobileView &&
-            movies?.map((movie, index) => (
+          <Activity
+            mode={
+              movies && movies?.length > 0 && !isMobileView
+                ? 'visible'
+                : 'hidden'
+            }
+          >
+            {movies?.map((movie, index) => (
               <MovieItemTheme
                 key={index}
                 locale={locale}
@@ -80,8 +85,13 @@ const MoviesHomeTheme = ({
                 id={movie.id}
               />
             ))}
+          </Activity>
         </div>
-        {movies && movies?.length > 0 && isMobileView && (
+        <Activity
+          mode={
+            movies && movies?.length > 0 && isMobileView ? 'visible' : 'hidden'
+          }
+        >
           <Carousel
             containerClass="w-full mt-6 "
             autoPlay={false}
@@ -101,7 +111,7 @@ const MoviesHomeTheme = ({
               />
             ))}
           </Carousel>
-        )}
+        </Activity>
       </Container>
     </div>
   );

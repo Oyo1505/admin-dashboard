@@ -17,7 +17,7 @@ const LabelGenre = ({
     locale === 'fr' ? nameFR : locale === 'en' ? nameEN : nameJP;
   return (
     <div className="text-black rounded-sm pr-4 pl-2 relative bg-primary text-center  min-w-16 ">
-      {locale === 'fr' ? nameFR : locale === 'en' ? nameEN : nameJP}{' '}
+      {locale === 'fr' ? nameFR : locale === 'en' ? nameEN : nameJP}
       <button
         type="button"
         aria-label={`Supprimer le genre ${genreName}`}

@@ -9,6 +9,7 @@ import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Activity } from 'react';
 
 interface IMovieCardSearchPage {
   movie: IMovie;
@@ -28,11 +29,13 @@ const MovieCardSearchPageMobileView = ({
       href={`${URL_MOVIE_ID(movie?.id)}`}
       key={movie?.id}
     >
-      {isFavorite({ id: movie?.id, user }) && (
+      <Activity
+        mode={isFavorite({ id: movie?.id, user }) ? 'visible' : 'hidden'}
+      >
         <div className="absolute z-1 top-1 right-1">
           <Favorite fill />
         </div>
-      )}
+      </Activity>
 
       <div className="min-w-24 h-full rounded-lg relative overflow-hidden">
         <Image
@@ -52,7 +55,7 @@ const MovieCardSearchPageMobileView = ({
         </h3>
         <p className="text-sm text-gray-400 line-clamp-2">{movie?.synopsis}</p>
         <p className="text-sm text-gray-400 mt-auto">
-          {`${movie?.year}`}{' '}
+          {`${movie?.year}`}
           {movie?.duration && ` • ${minutesToHours(movie?.duration)}`}
         </p>
       </div>
