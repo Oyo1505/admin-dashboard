@@ -43,6 +43,14 @@ export default async function proxy(req: NextRequest) {
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
+    // Set test mode cookie for client-side detection
+    if (isTestMode) {
+      response.cookies.set('playwright_test_mode', 'true', {
+        path: '/',
+        sameSite: 'lax',
+      });
+    }
+
     // Skip session check in test mode or development mode
     if (!isTestMode && !isDevMode) {
       const session = await auth.api.getSession({

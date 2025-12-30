@@ -16,8 +16,18 @@ const lobster = Lobster({
   display: 'swap',
   subsets: ['latin'],
 });
+
 const LandingPage = () => {
-  const { data: session, isPending } = useSession();
+  // In test mode, skip useSession to avoid hanging on auth API calls
+  // Check for test mode cookie set by middleware
+  const isTestMode =
+    typeof document !== 'undefined' &&
+    document.cookie.includes('playwright_test_mode=true');
+
+  const { data: session, isPending } = isTestMode
+    ? { data: null, isPending: false }
+    : useSession();
+
   const { user } = useUserStore();
   const t = useTranslations('LandingPage');
 
