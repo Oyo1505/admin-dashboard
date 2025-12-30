@@ -151,8 +151,8 @@ describe('LandingPage', () => {
       expect(screen.getByText('translated.welcome')).toBeInTheDocument();
 
       // Assert: Login-specific content is hidden
-      expect(screen.queryByText('translated.title')).toBeVisible();
-      expect(screen.queryByTestId('button-login')).toBeVisible();
+      expect(screen.queryByText('translated.title')).not.toBeVisible();
+      expect(screen.queryByTestId('button-login')).not.toBeVisible();
 
       // Assert: Loading spinner is not present
       expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();

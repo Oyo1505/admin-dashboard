@@ -12,15 +12,17 @@ export function User({ mobile = false }: { mobile: boolean }) {
     <Activity mode={user ? 'visible' : 'hidden'}>
       <div className="flex items-center gap-4">
         <ButtonLogout />
-        <Activity mode={mobile ? 'visible' : 'hidden'}>
-          <Image
-            className="h-8 w-8 rounded-full"
-            src={user?.image ?? ''}
-            height={32}
-            priority
-            width={32}
-            alt={`${user?.name} avatar`}
-          />
+        <Activity mode={mobile && user?.image ? 'visible' : 'hidden'}>
+          {user?.image && (
+            <Image
+              className="h-8 w-8 rounded-full"
+              src={user?.image}
+              height={32}
+              priority
+              width={32}
+              alt={`${user?.name} avatar`}
+            />
+          )}
         </Activity>
       </div>
     </Activity>

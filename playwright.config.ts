@@ -77,8 +77,7 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // In CI: automatically start the server
-  // Locally: reuse existing server if available (run 'pnpm dev' manually)
+  // Always start fresh server with PLAYWRIGHT_TEST_MODE=true to ensure middleware auth bypass
   webServer: process.env.CI
     ? {
         command: 'pnpm dev',
@@ -92,7 +91,7 @@ export default defineConfig({
     : {
         command: 'cross-env PLAYWRIGHT_TEST_MODE=true pnpm dev',
         url: 'http://localhost:3000',
-        reuseExistingServer: true,
+        reuseExistingServer: false, // Changed: Force restart to ensure env var is set
         timeout: 120000,
         env: {
           PLAYWRIGHT_TEST_MODE: 'true',

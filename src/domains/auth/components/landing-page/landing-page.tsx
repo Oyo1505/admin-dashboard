@@ -40,7 +40,7 @@ const LandingPage = () => {
           <h1 className={clsx(lobster.className, 'text-5xl text-center')}>
             {t('welcome')}
           </h1>
-          <Activity mode={userIsNotLogged && isPending ? 'hidden' : 'visible'}>
+          <Activity mode={userIsNotLogged && !isPending ? 'visible' : 'hidden'}>
             <div>{t('title')}</div>
             <ButtonLogin />
           </Activity>
