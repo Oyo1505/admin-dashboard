@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Lobster } from 'next/font/google';
 import Link from 'next/link';
+import { Activity } from 'react';
 
 const lobster = Lobster({
   weight: '400',
@@ -29,13 +30,11 @@ const LandingPage = () => {
           <h1 className={clsx(lobster.className, 'text-5xl text-center')}>
             {t('welcome')}
           </h1>
+          <Activity mode={userIsNotLogged && isPending ? 'hidden' : 'visible'}>
+            <div>{t('title')}</div>
+            <ButtonLogin />
+          </Activity>
 
-          {userIsNotLogged && !isPending && (
-            <>
-              <div>{t('title')}</div>
-              <ButtonLogin />
-            </>
-          )}
           {isPending && <LoadingSpinner data-testid={'loading-spinner'} />}
         </div>
         <div className="text-center flex gap-6 mt-5">

@@ -54,14 +54,14 @@ const Page = async () => {
         </p>
         <p>
           Les informations que nous recevons de Google dépendent des paramètres
-          de votre compte Google. Nous vous encourageons à consulter la{' '}
+          de votre compte Google. Nous vous encourageons à consulter la
           <a
             className="font-bold"
             href="https://policies.google.com/privacy?hl=fr"
             target="_blank"
           >
             politique de confidentialité de Google
-          </a>{' '}
+          </a>
           pour comprendre comment vos informations personnelles sont collectées
           et utilisées par Google.
         </p>

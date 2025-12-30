@@ -11,7 +11,7 @@ const MenuHeader = async () => {
   const isMobileView = userAgent?.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
   );
-  console.log(isMobileView);
+
   return (
     <>
       <Activity mode={isMobileView ? 'visible' : 'hidden'}>

@@ -12,7 +12,7 @@ const Page = () => {
         Conformément aux dispositions de la loi n°2004-575 du 21 juin 2004 pour
         la Confiance en l&apos;économie numérique, il est porté à la
         connaissance des utilisateurs et visiteurs, ci-après l&apos;
-        <strong>&ldquo;Utilisateur&ldquo;</strong>, du site{' '}
+        <strong>&ldquo;Utilisateur&ldquo;</strong>, du site
         <a href="https://www.nuberubagu.fr/" target="_blank">
           https://www.nuberubagu.fr/
         </a>
@@ -31,7 +31,7 @@ const Page = () => {
       <p>
         L&apos;édition et la direction de la publication du Site est assurée par
         Monsieur Henri-Pierre RIGOULET, domicilié 80 Rue Marat 94200,
-        Ivry-sur-Seine, France, et l&apos; adresse e-mail{' '}
+        Ivry-sur-Seine, France, et l&apos; adresse e-mail
         <a href="mailto:rigoulet.henri.pierre@gmail.com">
           rigoulet.henri.pierre@gmail.com
         </a>
@@ -62,7 +62,7 @@ const Page = () => {
         fichiers aux libertés et dans le respect de la règlementation applicable
         en matière de traitement des données à caractère personnel conformément
         au règlement (UE) 2016/679 du Parlement européen et du Conseil du 27
-        avril 2016 (ci-après, ensemble, la{' '}
+        avril 2016 (ci-après, ensemble, la
         <strong>
           &ldquo;Règlementation applicable en matière de protection des Données
           à caractère personnel&ldquo;
@@ -80,7 +80,7 @@ const Page = () => {
 
       <ul>
         <li>
-          par mail à l&apos;adresse e-mail{' '}
+          par mail à l&apos;adresse e-mail
           <a href="mailto:rigoulet.henri.pierre@gmail.com">
             rigoulet.henri.pierre@gmail.com
           </a>

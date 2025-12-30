@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { Suspense, cache } from 'react';
+import { Activity, Suspense, cache } from 'react';
 import Loading from './loading';
 
 const lobster = Lobster({
@@ -64,32 +64,36 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
     <div className="h-auto pt-6 flex flex-col justify-start items-start">
       <Suspense fallback={<Loading />}>
         <div className="justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col">
-          {movie && (
+          <Activity mode={movie ? 'visible' : 'hidden'}>
             <div className="lg:grow-0 w-full mb-4 lg:mb-0">
               {movie?.idGoogleDive && <MoviePlayerIframe movie={movie} />}
               <MoviePageButtons isFavorite={isFavorite} movie={movie} />
             </div>
-          )}
+          </Activity>
           <MovieHeader movie={movie} />
         </div>
       </Suspense>
       <div className="w-full  mt-14 mb-10 flex gap-7 flex-col lg:flex-row">
         <Suspense fallback={<Loading />}>
-          {movie && movie?.trailer && (
-            <>
-              <div className="h-96 w-full lg:w-1/2">
-                <Title
-                  translationTheme="MoviePage"
-                  className={clsx(lobster.className, 'text-2xl md:text-3xl')}
-                  translationText="trailer"
-                  type="h2"
-                />
-                <VideoPlayerYoutube movie={movie?.trailer} />
-              </div>
-            </>
-          )}
+          <Activity mode={movie && movie?.trailer ? 'visible' : 'hidden'}>
+            <div className="h-96 w-full lg:w-1/2">
+              <Title
+                translationTheme="MoviePage"
+                className={clsx(lobster.className, 'text-2xl md:text-3xl')}
+                translationText="trailer"
+                type="h2"
+              />
+              {movie?.trailer && <VideoPlayerYoutube movie={movie?.trailer} />}
+            </div>
+          </Activity>
           <Suspense fallback={<Loading />}>
-            {suggestedMovies && suggestedMovies?.length > 0 ? (
+            <Activity
+              mode={
+                suggestedMovies && suggestedMovies?.length > 0
+                  ? 'visible'
+                  : 'hidden'
+              }
+            >
               <div className="h-full w-full mt-10 lg:mt-0 lg:w-1/2">
                 <Title
                   translationTheme="MoviePage"
@@ -102,7 +106,7 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
                   isMobileView={isMobileView}
                 />
               </div>
-            ) : null}
+            </Activity>
           </Suspense>
         </Suspense>
       </div>

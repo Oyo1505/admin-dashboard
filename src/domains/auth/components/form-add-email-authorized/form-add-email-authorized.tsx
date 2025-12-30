@@ -35,31 +35,29 @@ const FormAddEmailAuthrizedEmail = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-      {hasPermission && (
-        <>
-          <Input
-            aria-label="input-add-email-authorized"
-            placeholder="Email"
-            type="email"
-            className="w-full mb-4  text-background bg-primary"
-            {...register('email', {
-              required: true,
-            })}
-          />
-          <Button
-            type="submit"
-            className="w-full mb-4"
-            disabled={addEmailMutation.isPending}
-          >
-            <Activity mode={addEmailMutation.isPending ? 'visible' : 'hidden'}>
-              {t('loading')}
-            </Activity>
-            <Activity mode={addEmailMutation.isPending ? 'hidden' : 'visible'}>
-              {t('addButton')}
-            </Activity>
-          </Button>
-        </>
-      )}
+      <Activity mode={hasPermission ? 'visible' : 'hidden'}>
+        <Input
+          aria-label="input-add-email-authorized"
+          placeholder="Email"
+          type="email"
+          className="w-full mb-4  text-background bg-primary"
+          {...register('email', {
+            required: true,
+          })}
+        />
+        <Button
+          type="submit"
+          className="w-full mb-4"
+          disabled={addEmailMutation.isPending}
+        >
+          <Activity mode={addEmailMutation.isPending ? 'visible' : 'hidden'}>
+            {t('loading')}
+          </Activity>
+          <Activity mode={addEmailMutation.isPending ? 'hidden' : 'visible'}>
+            {t('addButton')}
+          </Activity>
+        </Button>
+      </Activity>
     </form>
   );
 };

@@ -9,7 +9,7 @@ export function User({ mobile = false }: { mobile: boolean }) {
   const user = session?.user;
 
   return (
-    user && (
+    <Activity mode={user ? 'visible' : 'hidden'}>
       <div className="flex items-center gap-4">
         <ButtonLogout />
         <Activity mode={mobile ? 'visible' : 'hidden'}>
@@ -23,6 +23,6 @@ export function User({ mobile = false }: { mobile: boolean }) {
           />
         </Activity>
       </div>
-    )
+    </Activity>
   );
 }

@@ -18,7 +18,7 @@ import clsx from 'clsx';
 import { getLocale } from 'next-intl/server';
 import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
-import { Suspense } from 'react';
+import { Activity, Suspense } from 'react';
 // import ChatDebug from '@/domains/chat-bot/components/chat-debug';
 
 const lobster = Lobster({
@@ -123,7 +123,13 @@ const Page = async () => {
           />
         </Suspense>
       </div>
-      {moviesByARandomGenre && moviesByARandomGenre.length > 0 && (
+      <Activity
+        mode={
+          moviesByARandomGenre && moviesByARandomGenre.length > 0
+            ? 'visible'
+            : 'hidden'
+        }
+      >
         <Container>
           <Title
             translationTheme="HomePage"
@@ -131,7 +137,6 @@ const Page = async () => {
             translationText="Akind"
             type="h2"
           >
-            {' '}
             {displayGenreTranslated(genre, locale)}
           </Title>
           <Suspense fallback={<MoviesHomeSectionSkeleton />}>
@@ -141,41 +146,51 @@ const Page = async () => {
             />
           </Suspense>
         </Container>
-      )}
+      </Activity>
+
       <Suspense fallback={<MoviesHomeThemeSkeleton />}>
-        {directorMovies && directorMovies?.length > 0 && director && (
+        <Activity
+          mode={
+            directorMovies && directorMovies?.length > 0 ? 'visible' : 'hidden'
+          }
+        >
           <div>
             <MoviesHomeDirector
               fontFamily={lobster.className}
-              movies={directorMovies}
+              movies={directorMovies ?? []}
               isMobileView={isMobileView}
-              director={director}
+              director={director ?? undefined}
               imageBackdrop={imageBackdrop}
             />
           </div>
-        )}
+        </Activity>
       </Suspense>
-      {extractFavoriteMovie && extractFavoriteMovie?.length > 0 && (
-        <>
-          <div className="w-full bg-primary pb-6 pt-6">
-            <Container>
-              <Title
-                translationTheme="HomePage"
-                className={clsx(lobster.className, 'text-2xl md:text-3xl')}
-                textColor="text-background"
-                translationText="AHeart"
-                type="h2"
+      <Activity
+        mode={
+          extractFavoriteMovie && extractFavoriteMovie?.length > 0
+            ? 'visible'
+            : 'hidden'
+        }
+      >
+        <div className="w-full bg-primary pb-6 pt-6">
+          <Container>
+            <Title
+              translationTheme="HomePage"
+              className={clsx(lobster.className, 'text-2xl md:text-3xl')}
+              textColor="text-background"
+              translationText="AHeart"
+              type="h2"
+            />
+            <Suspense fallback={<MoviesHomeSectionSkeleton />}>
+              <MoviesHomeSection
+                movies={extractFavoriteMovie}
+                isMobileView={isMobileView}
               />
-              <Suspense fallback={<MoviesHomeSectionSkeleton />}>
-                <MoviesHomeSection
-                  movies={extractFavoriteMovie}
-                  isMobileView={isMobileView}
-                />
-              </Suspense>
-            </Container>
-          </div>
-        </>
-      )}
+            </Suspense>
+          </Container>
+        </div>
+      </Activity>
+
       {/*
       <Container>
         <ChatDebug />

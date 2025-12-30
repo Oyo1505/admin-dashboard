@@ -9,6 +9,7 @@ import {
 } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { Activity } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -104,7 +105,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
           />
         </div>
         <div className="mt-[25px] gap-2 flex justify-end">
-          {director?.id && (
+          <Activity mode={director?.id ? 'visible' : 'hidden'}>
             <Button
               size="sm"
               variant="secondary"
@@ -114,7 +115,8 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
             >
               {t('delete')}
             </Button>
-          )}
+          </Activity>
+
           <Button
             size="sm"
             variant="outline"

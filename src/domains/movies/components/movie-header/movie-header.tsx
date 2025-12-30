@@ -9,6 +9,7 @@ import displayGenreTranslated from '@/shared/utils/string/displayGenreTranslated
 import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
+import { Activity } from 'react';
 import useGetDetailsMovie from '../../hooks/use-get-details-movie';
 
 const MoviePageSubtitlesList = dynamic(
@@ -55,88 +56,90 @@ const MovieHeader = ({ movie }: { movie: IMovie }) => {
         <h1 className="text-3xl font-bold">
           {movie && titleOnlocale(movie, locale)}
         </h1>
-        {movie?.originalTitle && (
+        <Activity mode={movie?.originalTitle ? 'visible' : 'hidden'}>
           <div className="mt-2 mb-2 font-normal italic">
-            {' '}
             {t('originalTitle')}: {movie?.originalTitle}
           </div>
-        )}
-        {movie?.director && (
+        </Activity>
+        <Activity mode={movie?.director ? 'visible' : 'hidden'}>
           <div className="mt-2 mb-2  font-bold">
-            {' '}
             {t('director')}: {movie?.director}
           </div>
-        )}
+        </Activity>
       </div>
       <div className="mb-4 flex flex-col gap-2">
-        {movie?.year && (
+        <Activity mode={movie?.year ? 'visible' : 'hidden'}>
           <div className="inline">
             {t('release')}: {movie?.year}
           </div>
-        )}
-        {genresMovie && genresMovie.length > 0 && (
+        </Activity>
+        <Activity
+          mode={genresMovie && genresMovie.length > 0 ? 'visible' : 'hidden'}
+        >
           <div className="inline">
-            {t('genre')}:{' '}
+            {t('genre')}:
             {genresMovie?.map((item) => (
               <span className="mr-1" key={item.id}>
                 {displayGenreTranslated(item, locale)}
               </span>
             ))}
           </div>
-        )}
-        {movie?.country && (
+        </Activity>
+        <Activity mode={movie?.country ? 'visible' : 'hidden'}>
           <div className="inline">
             {t('country')}: {findCountry?.[0]?.label?.[locale]}
           </div>
-        )}
-        {movie?.duration && movie?.duration > 0 && (
+        </Activity>
+        <Activity
+          mode={movie?.duration && movie?.duration > 0 ? 'visible' : 'hidden'}
+        >
           <span>
-            {t('duration')}: {minutesToHours(movie?.duration)}
+            {t('duration')}:{movie?.duration && minutesToHours(movie?.duration)}
           </span>
-        )}
-        {movie?.language && (
+        </Activity>
+        <Activity mode={movie?.language ? 'visible' : 'hidden'}>
           <span>
             {t('langage')}: {language?.[0]?.label?.[locale]}
           </span>
-        )}
+        </Activity>
       </div>
-
-      {movie?.subtitles && movie?.subtitles?.length > 0 && (
+      <Activity
+        mode={
+          movie?.subtitles && movie?.subtitles?.length > 0
+            ? 'visible'
+            : 'hidden'
+        }
+      >
         <div className="flex flex-wrap gap-2">
-          {t('subtitles')}:{' '}
+          {t('subtitles')}:
           {movie?.subtitles?.map((item) => (
             <span key={item}>{displaySubtitles(item)}</span>
           ))}
         </div>
-      )}
-      {synopsis ? (
+      </Activity>
+      <Activity mode={synopsis ? 'visible' : 'hidden'}>
         <div className="mt-6 font-normal">
-          {' '}
           {t('synopsis')} : {synopsis}
         </div>
-      ) : (
-        movie?.synopsis && (
-          <div className="mt-6 font-normal">
-            {' '}
-            {t('synopsis')} : {movie?.synopsis}
-          </div>
-        )
-      )}
-      {movie && (
-        <>
-          <hr className="my-5" />
-          <a
-            href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`}
-            className="inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background font-bold hover:bg-primary hover:text-green-700"
-            target="_blank"
-            download
-          >
-            {<DownloadLogo />}
-            {t('download')}
-          </a>
-          <MoviePageSubtitlesList movie={movie} />
-        </>
-      )}
+      </Activity>
+      <Activity mode={movie?.synopsis ? 'visible' : 'hidden'}>
+        <div className="mt-6 font-normal">
+          {t('synopsis')} : {movie?.synopsis}
+        </div>
+      </Activity>
+      <Activity mode={movie ? 'visible' : 'hidden'}>
+        <hr className="my-5" />
+        <a
+          href={`https://drive.usercontent.google.com/download?id=${movie?.idGoogleDive}&export=download`}
+          className="inline-flex gap-2 rounded-md p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background font-bold hover:bg-primary hover:text-green-700"
+          target="_blank"
+          download
+        >
+          {<DownloadLogo />}
+          {t('download')}
+        </a>
+        <MoviePageSubtitlesList movie={movie} />
+      </Activity>
     </div>
   );
 };
