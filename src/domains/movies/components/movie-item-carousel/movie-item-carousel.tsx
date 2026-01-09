@@ -17,7 +17,7 @@ const MovieItemCarousel = ({
   id: string;
 }) => {
   return (
-    <Link href={URL_MOVIE_ID(id)} tabIndex={-1}>
+    <Link href={URL_MOVIE_ID(id)}>
       <div
         className={`group relative flex w-28 md:w-44 lg:w-60 rounded-lg flex-col justify-between h-full`}
       >

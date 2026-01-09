@@ -54,6 +54,7 @@ export default async function SettingsPage() {
             <Image
               alt="Chat on WhatsApp"
               src={whatsapp}
+              priority
               width="190"
               height="90"
             />
@@ -61,6 +62,7 @@ export default async function SettingsPage() {
           <a href="https://line.me/ti/p/Fhs7Qtfv-d" target="_blank">
             <Image
               src={line}
+              priority
               alt="Contacter nous sur LINE"
               width="40"
               height="90"
