@@ -28,6 +28,7 @@ const MoviesFavorite = ({ movies }: { movies?: IMovie[] }) => {
                   className="object-fill h-72 w-full"
                   src={movie?.image ? movie?.image : imageDefault}
                   width={200}
+                  priority
                   height={150}
                   alt={
                     titleOnlocale(movie, locale) ||
