@@ -79,6 +79,12 @@ const webSitesRessources: Ressource[] = [
     url: 'https://www.rakuten.tv/fr/gardens/avod-fast',
     description: 'Rakuten',
   },
+  {
+    id: 12,
+    name: 'WikiFlix',
+    url: 'https://wikiflix.com/',
+    description: 'WikiFlix',
+  },
 ];
 
 const Page = () => {
