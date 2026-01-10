@@ -65,6 +65,7 @@ model User {
   analytics      AnalyticsUser[]
   sessions       Session[]
 
+  @@index([createdAt])
   @@map("user")
 }
 
@@ -93,6 +94,8 @@ model Movie {
   updatedAt      DateTime             @updatedAt
   genresIds      MovieGenre[]
   favoriteMovies UserFavoriteMovies[]
+
+  @@index([createdAt])
 }
 
 model UserFavoriteMovies {
@@ -144,6 +147,8 @@ model AnalyticsUser {
   updatedAt        DateTime @updatedAt
   user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([lastLogin])
+  @@index([visits(sort: Desc)])
   @@map("analytics_user")
 }
 

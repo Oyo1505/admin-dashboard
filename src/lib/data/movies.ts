@@ -665,4 +665,136 @@ export class MovieData {
       }
     }
   );
+
+  /**
+   * Get recent favorites for a user with limit
+   * @param userId - User ID
+   * @param limit - Maximum number of favorites to return
+   * @returns Recent favorite movies with genres
+   */
+  static getRecentFavorites = cache(
+    async (
+      userId: string,
+      limit: number = 5
+    ): Promise<{
+      favorites?: IMovie[];
+      status: number;
+    }> => {
+      try {
+        const favoriteRecords = await prisma.userFavoriteMovies.findMany({
+          where: {
+            userId,
+          },
+          include: {
+            movie: {
+              include: {
+                genresIds: {
+                  select: {
+                    genre: {
+                      select: {
+                        id: true,
+                        nameFR: true,
+                        nameEN: true,
+                        nameJP: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          orderBy: {
+            id: 'desc', // Assuming id is auto-incremented
+          },
+          take: limit,
+        });
+
+        const favorites: IMovie[] = (
+          favoriteRecords as UserFavoriteWithMovie[]
+        ).map((record) => record.movie as IMovie);
+
+        return { favorites, status: HttpStatus.OK };
+      } catch (error) {
+        logError(error, 'getRecentFavorites');
+        const appError = handlePrismaError(error);
+        return { status: appError.statusCode };
+      }
+    }
+  );
+
+  /**
+   * Get user favorite statistics (total count and favorite genre)
+   * @param userId - User ID
+   * @returns User favorite statistics
+   */
+  static getUserFavoriteStats = cache(
+    async (
+      userId: string
+    ): Promise<{
+      stats?: {
+        totalFavorites: number;
+        favoriteGenre?: IGenre;
+      };
+      status: number;
+    }> => {
+      try {
+        // Get all user favorites with genres
+        const favorites = await prisma.userFavoriteMovies.findMany({
+          where: {
+            userId,
+          },
+          include: {
+            movie: {
+              include: {
+                genresIds: {
+                  select: {
+                    genre: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        const totalFavorites = favorites.length;
+
+        // Count genres across all favorites using reduce for memory safety
+        const genreCounts = favorites.reduce((acc, favorite) => {
+          favorite.movie.genresIds.forEach(({ genre }) => {
+            const genreId = genre.id;
+            const current = acc.get(genreId);
+
+            acc.set(genreId, {
+              count: (current?.count ?? 0) + 1,
+              genre: genre as IGenre,
+            });
+          });
+          return acc;
+        }, new Map<string, { count: number; genre: IGenre }>());
+
+        // Find the most frequent genre using reduce for cleaner code
+        const favoriteGenre = Array.from(genreCounts.values()).reduce<IGenre | undefined>(
+          (mostFrequent, current) => {
+            if (!mostFrequent || current.count > (genreCounts.get(mostFrequent.id)?.count ?? 0)) {
+              return current.genre;
+            }
+            return mostFrequent;
+          },
+          undefined
+        );
+
+        return {
+          stats: {
+            totalFavorites,
+            favoriteGenre,
+          },
+          status: HttpStatus.OK,
+        };
+      } catch (error) {
+        logError(error, 'getUserFavoriteStats');
+        const appError = handlePrismaError(error);
+        return { status: appError.statusCode };
+      }
+    }
+  );
 }
