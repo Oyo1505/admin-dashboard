@@ -106,7 +106,7 @@ const Movies = ({
           )}
         </div>
       </Activity>
-      <Activity mode={!moviesFromStore ? 'hidden' : 'visible'}>
+      <Activity mode={moviesFromStore.length === 0 ? 'visible' : 'hidden'}>
         <div className=" text-center mt-14 mx-auto text-2xl">
           {t('NoMovie')}
         </div>
