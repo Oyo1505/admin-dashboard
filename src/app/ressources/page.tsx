@@ -82,7 +82,7 @@ const webSitesRessources: Ressource[] = [
   {
     id: 12,
     name: 'WikiFlix',
-    url: 'https://wikiflix.com/',
+    url: 'https://wikiflix.toolforge.org/',
     description: 'WikiFlix',
   },
 ];
