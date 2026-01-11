@@ -1,4 +1,5 @@
 import { verifyAdmin } from '@/lib/data/dal';
+import { DALError } from '@/lib/data/dal/core/errors';
 import { AnalyticsService } from '@/domains/dashboard/services';
 import { logError } from '@/lib/errors';
 import HttpStatus from '@/shared/constants/httpStatus';
@@ -30,6 +31,15 @@ export async function GET(request: NextRequest): Promise<Response> {
 
     return Response.json(result.data, { status: HttpStatus.OK });
   } catch (error) {
+    // Handle DAL errors with proper HTTP status codes
+    if (error instanceof DALError) {
+      return Response.json(
+        { error: error.message },
+        { status: error.toHTTPStatus() }
+      );
+    }
+
+    // Handle other errors as 500
     logError(error, 'GET /api/analytics/top-genres');
     return Response.json(
       { error: 'Internal server error' },
