@@ -58,10 +58,6 @@ export class GenreData {
     }> => {
       try {
         const genres = await prisma.genre.findMany();
-
-        if (!genres) {
-          return { status: HttpStatus.NOT_FOUND };
-        }
         return { genres, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getAllGenres');
@@ -71,7 +67,7 @@ export class GenreData {
     }
   );
 
-  getMoviesByARandomGenreById = cache(
+  static getMoviesByARandomGenreById = cache(
     async (genreId: string): Promise<{ movies?: IMovie[]; status: number }> => {
       try {
         if (!genreId?.trim()) {

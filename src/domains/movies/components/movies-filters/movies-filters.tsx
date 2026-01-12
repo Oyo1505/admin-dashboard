@@ -41,21 +41,21 @@ const MovieFilters = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams.toString(), setFiltersData]);
 
-  const onChangeSubtitles = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFiltersData({ ...filters, subtitles: e.target.value });
-  };
+  // Generic filter handler creator to reduce duplication
+  const createFilterHandler =
+    (
+      key: keyof typeof filters,
+      transform?: (value: string) => string | number | undefined
+    ) =>
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = transform ? transform(e.target.value) : e.target.value;
+      setFiltersData({ ...filters, [key]: value });
+    };
 
-  const onChangeCountry = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFiltersData({ ...filters, language: e.target.value });
-  };
-
-  const onChangeDecade = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFiltersData({ ...filters, decade: Number(e.target.value) });
-  };
-
-  const onChangeGenre = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFiltersData({ ...filters, genre: e.target.value });
-  };
+  const onChangeSubtitles = createFilterHandler('subtitles');
+  const onChangeCountry = createFilterHandler('language');
+  const onChangeDecade = createFilterHandler('decade', Number);
+  const onChangeGenre = createFilterHandler('genre');
 
   const onClick = () => {
     const queryString = qs.stringify({
