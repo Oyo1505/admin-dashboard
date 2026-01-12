@@ -220,13 +220,14 @@ describe('GenreData', () => {
       expect(prisma.genre.findMany).toHaveBeenCalled();
     });
 
-    it('should return 404 when no genres found', async () => {
-      (prisma.genre.findMany as jest.Mock).mockResolvedValue(null);
+    it('should return empty array when no genres found', async () => {
+      (prisma.genre.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await GenreData.getAllGenres();
 
       expect(result).toEqual({
-        status: 404,
+        genres: [],
+        status: 200,
       });
     });
 
@@ -245,8 +246,6 @@ describe('GenreData', () => {
   });
 
   describe('getMoviesByARandomGenreById', () => {
-    const genreDataInstance = new GenreData();
-
     it('should return movies for a given genre', async () => {
       const genreId = 'action-123';
       const mockMovies = [
@@ -264,8 +263,7 @@ describe('GenreData', () => {
 
       (prisma.movie.findMany as jest.Mock).mockResolvedValue(mockMovies);
 
-      const result =
-        await genreDataInstance.getMoviesByARandomGenreById(genreId);
+      const result = await GenreData.getMoviesByARandomGenreById(genreId);
 
       expect(result).toEqual({
         movies: mockMovies,
@@ -283,7 +281,7 @@ describe('GenreData', () => {
     });
 
     it('should return 400 when genreId is empty', async () => {
-      const result = await genreDataInstance.getMoviesByARandomGenreById('');
+      const result = await GenreData.getMoviesByARandomGenreById('');
 
       expect(result).toEqual({
         status: 400,
@@ -292,7 +290,7 @@ describe('GenreData', () => {
     });
 
     it('should return 400 when genreId is whitespace', async () => {
-      const result = await genreDataInstance.getMoviesByARandomGenreById('   ');
+      const result = await GenreData.getMoviesByARandomGenreById('   ');
 
       expect(result).toEqual({
         status: 400,
@@ -305,7 +303,7 @@ describe('GenreData', () => {
       (prisma.movie.findMany as jest.Mock).mockResolvedValue([]);
 
       const result =
-        await genreDataInstance.getMoviesByARandomGenreById(genreId);
+        await GenreData.getMoviesByARandomGenreById(genreId);
 
       expect(result).toEqual({
         movies: [],
@@ -319,7 +317,7 @@ describe('GenreData', () => {
       (prisma.movie.findMany as jest.Mock).mockRejectedValue(mockError);
 
       const result =
-        await genreDataInstance.getMoviesByARandomGenreById(genreId);
+        await GenreData.getMoviesByARandomGenreById(genreId);
 
       expect(result).toEqual({
         status: 500,

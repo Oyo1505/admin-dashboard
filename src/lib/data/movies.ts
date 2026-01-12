@@ -144,28 +144,12 @@ export class MovieData {
           where: {
             publish: true,
           },
-          include: {
-            genresIds: {
-              select: {
-                genre: {
-                  select: {
-                    id: true,
-                    nameFR: true,
-                    nameEN: true,
-                    nameJP: true,
-                  },
-                },
-              },
-            },
-          },
+          include: buildMovieInclude(),
           orderBy: {
             createdAt: 'desc',
           },
           take: MAX_LATEST_MOVIES,
         });
-        if (!moviesInDb) {
-          return { status: HttpStatus.NOT_FOUND, movies: [] };
-        }
         return { movies: moviesInDb, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'getLastMovies');
@@ -353,9 +337,6 @@ export class MovieData {
           },
           distinct: ['country'],
         });
-        if (!uniqueCountries) {
-          return { status: HttpStatus.BAD_REQUEST };
-        }
         const getARandomCountry =
           uniqueCountries[Math.floor(Math.random() * uniqueCountries.length)];
         if (!getARandomCountry?.country) {
@@ -366,29 +347,13 @@ export class MovieData {
             country: getARandomCountry.country,
             publish: true,
           },
-          include: {
-            genresIds: {
-              select: {
-                genre: {
-                  select: {
-                    id: true,
-                    nameFR: true,
-                    nameEN: true,
-                    nameJP: true,
-                  },
-                },
-              },
-            },
-          },
+          include: buildMovieInclude(),
           orderBy: {
             createdAt: 'desc',
           },
           take: MAX_MOVIES_BY_COUNTRY,
         });
 
-        if (!movies) {
-          return { status: HttpStatus.BAD_REQUEST, movies: [] };
-        }
         return {
           status: HttpStatus.OK,
           movies,
@@ -410,9 +375,6 @@ export class MovieData {
     }> => {
       try {
         const uniqueGenres = await prisma.genre.findMany();
-        if (!uniqueGenres) {
-          return { status: HttpStatus.BAD_REQUEST };
-        }
         const randomGenre =
           uniqueGenres[Math.floor(Math.random() * uniqueGenres.length)];
         if (!randomGenre) {
@@ -431,9 +393,6 @@ export class MovieData {
           },
           take: MAX_MOVIES_BY_GENRE,
         });
-        if (!movies) {
-          return { status: HttpStatus.BAD_REQUEST, movies: [] };
-        }
         return { status: HttpStatus.OK, movies, genre: randomGenre };
       } catch (error) {
         logError(error, 'getMoviesByARandomGenre');
@@ -445,7 +404,6 @@ export class MovieData {
   static getAll = cache(async () => {
     try {
       const movies = await prisma.movie.findMany();
-      if (!movies) return { movies: [], status: HttpStatus.NOT_FOUND };
       return { movies, status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'getAll');
@@ -492,14 +450,9 @@ export class MovieData {
           distinct: ['country'],
         });
 
-        if (!countriesValues) {
-          return { status: HttpStatus.BAD_REQUEST };
-        }
-
-        const countries =
-          countriesValues?.flatMap((item) =>
-            item.country ? [item.country] : []
-          ) ?? [];
+        const countries = countriesValues.flatMap((item) =>
+          item.country ? [item.country] : []
+        );
 
         return { status: HttpStatus.OK, countries };
       } catch (error) {
@@ -595,9 +548,7 @@ export class MovieData {
             updatedAt: 'desc',
           },
         });
-        if (movies)
-          return { movies: movies as IMovie[], status: HttpStatus.OK };
-        return { movies: [], status: HttpStatus.NOT_FOUND };
+        return { movies: movies as IMovie[], status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'findManyOrderByDesc data');
         const appError = handlePrismaError(error);
@@ -656,8 +607,7 @@ export class MovieData {
             NOT: { id: movieInDb.id },
           },
         });
-        if (movies) return { movies: movies, status: HttpStatus.OK };
-        return { movies: undefined, status: HttpStatus.NOT_FOUND };
+        return { movies: movies, status: HttpStatus.OK };
       } catch (error) {
         logError(error, 'findManyMovieGenres');
         const appError = handlePrismaError(error);

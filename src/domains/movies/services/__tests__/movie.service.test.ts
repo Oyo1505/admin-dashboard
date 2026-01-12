@@ -80,7 +80,7 @@ describe('MovieService', () => {
 
       expect(result).toEqual({
         status: 400,
-        message: 'Le titre du film est requis',
+        message: 'Movie title cannot be empty',
       });
       expect(MovieData.create).not.toHaveBeenCalled();
     });
@@ -91,7 +91,7 @@ describe('MovieService', () => {
 
       expect(result).toEqual({
         status: 400,
-        message: 'Au moins un genre est requis',
+        message: 'At least one genre is required',
       });
       expect(MovieData.create).not.toHaveBeenCalled();
     });
@@ -199,7 +199,7 @@ describe('MovieService', () => {
 
       expect(result).toEqual({
         status: 400,
-        message: 'Au moins un genre est requis',
+        message: 'At least one genre is required',
       });
       expect(MovieData.update).not.toHaveBeenCalled();
     });
@@ -220,7 +220,7 @@ describe('MovieService', () => {
 
       expect(result).toEqual({
         status: 400,
-        message: 'ID du film est requis',
+        message: 'Movie ID cannot be empty',
       });
       expect(MovieData.delete).not.toHaveBeenCalled();
     });

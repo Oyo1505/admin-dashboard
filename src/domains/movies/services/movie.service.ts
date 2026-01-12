@@ -5,6 +5,7 @@ import {
   IMovieFormData,
   IUpdateMovieData,
 } from '@/models/movie/movie';
+import { validateArrayNotEmpty, validateRequired } from '@/lib/utils/validation';
 import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
@@ -14,16 +15,14 @@ export class MovieService {
     movie: IMovieFormData
   ): Promise<{ status: number; message: string }> {
     try {
-      if (!movie?.title?.trim()) {
-        return { status: HttpStatus.BAD_REQUEST, message: 'Le titre du film est requis' };
+      const titleValidation = validateRequired(movie?.title, 'Movie title');
+      if (!titleValidation.valid) {
+        return titleValidation.error;
       }
 
-      if (
-        !movie.genresIds ||
-        !Array.isArray(movie.genresIds) ||
-        movie.genresIds.length === 0
-      ) {
-        return { status: HttpStatus.BAD_REQUEST, message: 'Au moins un genre est requis' };
+      const genresValidation = validateArrayNotEmpty(movie.genresIds, 'genre');
+      if (!genresValidation.valid) {
+        return genresValidation.error;
       }
 
       const { existingMovie } = await MovieData.findByGoogleDriveId(movie);
@@ -52,12 +51,9 @@ export class MovieService {
         return { status: HttpStatus.NOT_FOUND, message: "Le film n'existe pas" };
       }
 
-      if (
-        !movie.genresIds ||
-        !Array.isArray(movie.genresIds) ||
-        movie.genresIds.length === 0
-      ) {
-        return { status: HttpStatus.BAD_REQUEST, message: 'Au moins un genre est requis' };
+      const genresValidation = validateArrayNotEmpty(movie.genresIds, 'genre');
+      if (!genresValidation.valid) {
+        return genresValidation.error;
       }
 
       await MovieData.update(movie);
@@ -74,12 +70,11 @@ export class MovieService {
     id: string
   ): Promise<{ status: number; message?: string }> {
     try {
-      if (!id) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          message: 'ID du film est requis',
-        };
+      const idValidation = validateRequired(id, 'Movie ID');
+      if (!idValidation.valid) {
+        return idValidation.error;
       }
+
       await MovieData.delete(id);
       revalidatePath('/dashboard/add-movie');
       return { status: HttpStatus.OK };

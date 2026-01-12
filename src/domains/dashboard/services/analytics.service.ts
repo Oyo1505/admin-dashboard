@@ -178,40 +178,55 @@ export class AnalyticsService {
   }
 
   /**
+   * Private helper to handle common validation and fetch pattern
+   * Reduces duplication across analytics methods
+   */
+  private static async fetchWithValidation<T>(
+    validator: () => { valid: boolean; error?: { status: number; message: string } },
+    fetcher: () => Promise<{ status: number; [key: string]: any }>,
+    context: string,
+    dataKey: string
+  ): Promise<{ status: number; data?: T; message?: string }> {
+    try {
+      const validation = validator();
+      if (!validation.valid) {
+        return validation.error!;
+      }
+
+      const result = await fetcher();
+
+      if (result.status !== HttpStatus.OK) {
+        return { status: result.status, message: `Failed to fetch ${context}` };
+      }
+
+      return { status: HttpStatus.OK, data: result[dataKey] ?? [] };
+    } catch (error) {
+      logError(error, `AnalyticsService.${context}`);
+      return { status: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Internal server error' };
+    }
+  }
+
+  /**
    * Get top movies by favorites
    * @param limit - Maximum number of movies to return
    * @returns Top movies
    */
   static async getTopMovies(limit: number = MAX_TOP_MOVIES) {
-    try {
-      // Validate limit parameter
-      if (limit < MIN_LIMIT || limit > MAX_LIMIT) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          message: `Limit must be between ${MIN_LIMIT} and ${MAX_LIMIT}`,
-        };
-      }
-
-      const result = await AnalyticsData.getTopMovies(limit);
-
-      if (result.status !== HttpStatus.OK) {
-        return {
-          status: result.status,
-          message: 'Failed to fetch top movies',
-        };
-      }
-
-      return {
-        status: HttpStatus.OK,
-        data: result.movies ?? [],
-      };
-    } catch (error) {
-      logError(error, 'AnalyticsService.getTopMovies');
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Internal server error',
-      };
-    }
+    return this.fetchWithValidation(
+      () =>
+        limit >= MIN_LIMIT && limit <= MAX_LIMIT
+          ? { valid: true }
+          : {
+              valid: false,
+              error: {
+                status: HttpStatus.BAD_REQUEST,
+                message: `Limit must be between ${MIN_LIMIT} and ${MAX_LIMIT}`,
+              },
+            },
+      () => AnalyticsData.getTopMovies(limit),
+      'getTopMovies',
+      'movies'
+    );
   }
 
   /**
@@ -220,35 +235,21 @@ export class AnalyticsService {
    * @returns Top users
    */
   static async getTopUsers(limit: number = MAX_TOP_USERS) {
-    try {
-      // Validate limit parameter
-      if (limit < MIN_LIMIT || limit > MAX_LIMIT) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          message: `Limit must be between ${MIN_LIMIT} and ${MAX_LIMIT}`,
-        };
-      }
-
-      const result = await AnalyticsData.getTopUsers(limit);
-
-      if (result.status !== HttpStatus.OK) {
-        return {
-          status: result.status,
-          message: 'Failed to fetch top users',
-        };
-      }
-
-      return {
-        status: HttpStatus.OK,
-        data: result.users ?? [],
-      };
-    } catch (error) {
-      logError(error, 'AnalyticsService.getTopUsers');
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Internal server error',
-      };
-    }
+    return this.fetchWithValidation(
+      () =>
+        limit >= MIN_LIMIT && limit <= MAX_LIMIT
+          ? { valid: true }
+          : {
+              valid: false,
+              error: {
+                status: HttpStatus.BAD_REQUEST,
+                message: `Limit must be between ${MIN_LIMIT} and ${MAX_LIMIT}`,
+              },
+            },
+      () => AnalyticsData.getTopUsers(limit),
+      'getTopUsers',
+      'users'
+    );
   }
 
   /**
@@ -257,35 +258,21 @@ export class AnalyticsService {
    * @returns Top genres
    */
   static async getTopGenres(limit: number = MAX_TOP_GENRES) {
-    try {
-      // Validate limit parameter
-      if (limit < MIN_LIMIT || limit > MAX_LIMIT) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          message: `Limit must be between ${MIN_LIMIT} and ${MAX_LIMIT}`,
-        };
-      }
-
-      const result = await AnalyticsData.getTopGenres(limit);
-
-      if (result.status !== HttpStatus.OK) {
-        return {
-          status: result.status,
-          message: 'Failed to fetch top genres',
-        };
-      }
-
-      return {
-        status: HttpStatus.OK,
-        data: result.genres ?? [],
-      };
-    } catch (error) {
-      logError(error, 'AnalyticsService.getTopGenres');
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Internal server error',
-      };
-    }
+    return this.fetchWithValidation(
+      () =>
+        limit >= MIN_LIMIT && limit <= MAX_LIMIT
+          ? { valid: true }
+          : {
+              valid: false,
+              error: {
+                status: HttpStatus.BAD_REQUEST,
+                message: `Limit must be between ${MIN_LIMIT} and ${MAX_LIMIT}`,
+              },
+            },
+      () => AnalyticsData.getTopGenres(limit),
+      'getTopGenres',
+      'genres'
+    );
   }
 
   /**
@@ -294,34 +281,20 @@ export class AnalyticsService {
    * @returns Recent activity
    */
   static async getRecentActivity(days: number = RECENT_ACTIVITY_PERIOD) {
-    try {
-      // Validate days parameter
-      if (days < MIN_DAYS || days > MAX_DAYS) {
-        return {
-          status: HttpStatus.BAD_REQUEST,
-          message: `Days must be between ${MIN_DAYS} and ${MAX_DAYS}`,
-        };
-      }
-
-      const result = await AnalyticsData.getRecentActivity(days);
-
-      if (result.status !== HttpStatus.OK) {
-        return {
-          status: result.status,
-          message: 'Failed to fetch recent activity',
-        };
-      }
-
-      return {
-        status: HttpStatus.OK,
-        data: result.activity,
-      };
-    } catch (error) {
-      logError(error, 'AnalyticsService.getRecentActivity');
-      return {
-        status: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Internal server error',
-      };
-    }
+    return this.fetchWithValidation(
+      () =>
+        days >= MIN_DAYS && days <= MAX_DAYS
+          ? { valid: true }
+          : {
+              valid: false,
+              error: {
+                status: HttpStatus.BAD_REQUEST,
+                message: `Days must be between ${MIN_DAYS} and ${MAX_DAYS}`,
+              },
+            },
+      () => AnalyticsData.getRecentActivity(days),
+      'getRecentActivity',
+      'activity'
+    );
   }
 }

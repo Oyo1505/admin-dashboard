@@ -377,13 +377,13 @@ describe('MovieData', () => {
       );
     });
 
-    it('should return 404 when no movies found', async () => {
-      (prisma.movie.findMany as jest.Mock).mockResolvedValue(null);
+    it('should return empty array when no movies found', async () => {
+      (prisma.movie.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await MovieData.getLastMovies();
 
       expect(result).toEqual({
-        status: 404,
+        status: 200,
         movies: [],
       });
     });
@@ -667,12 +667,13 @@ describe('MovieData', () => {
     });
 
     it('should return 400 when no countries found', async () => {
-      (prisma.movie.findMany as jest.Mock).mockResolvedValue(null);
+      (prisma.movie.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await MovieData.getMoviesByARandomCountry();
 
       expect(result).toEqual({
         status: 400,
+        movies: [],
       });
     });
 
@@ -735,12 +736,13 @@ describe('MovieData', () => {
     });
 
     it('should return 400 when no genres found', async () => {
-      (prisma.genre.findMany as jest.Mock).mockResolvedValue(null);
+      (prisma.genre.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await MovieData.getMoviesByARandomGenre();
 
       expect(result).toEqual({
         status: 400,
+        movies: [],
       });
     });
 
@@ -862,13 +864,14 @@ describe('MovieData', () => {
       });
     });
 
-    it('should return 400 when no countries found', async () => {
-      (prisma.movie.findMany as jest.Mock).mockResolvedValue(null);
+    it('should return empty array when no countries found', async () => {
+      (prisma.movie.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await MovieData.getMoviesCountries();
 
       expect(result).toEqual({
-        status: 400,
+        status: 200,
+        countries: [],
       });
     });
 
@@ -1106,14 +1109,14 @@ describe('MovieData', () => {
       );
     });
 
-    it('should return 404 when no movies found', async () => {
-      (prisma.movie.findMany as jest.Mock).mockResolvedValue(null);
+    it('should return empty array when no movies found', async () => {
+      (prisma.movie.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await MovieData.findManyOrderByDesc();
 
       expect(result).toEqual({
         movies: [],
-        status: 404,
+        status: 200,
       });
     });
 
@@ -1241,7 +1244,7 @@ describe('MovieData', () => {
       );
     });
 
-    it('should return 404 when no movies found', async () => {
+    it('should return empty array when no movies found', async () => {
       const randomGenre = {
         genre: {
           id: '1',
@@ -1256,7 +1259,7 @@ describe('MovieData', () => {
         title: 'Current Movie',
       } as IMovie;
 
-      (prisma.movie.findMany as jest.Mock).mockResolvedValue(null);
+      (prisma.movie.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await MovieData.findManyMovieGenres(
         randomGenre,
@@ -1264,8 +1267,8 @@ describe('MovieData', () => {
       );
 
       expect(result).toEqual({
-        movies: undefined,
-        status: 404,
+        movies: [],
+        status: 200,
       });
     });
 

@@ -235,7 +235,7 @@ describe('AnalyticsService', () => {
       const result = await AnalyticsService.getTopMovies(5);
 
       expect(result.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
-      expect(result.message).toBe('Failed to fetch top movies');
+      expect(result.message).toBe('Failed to fetch getTopMovies');
     });
   });
 
@@ -270,7 +270,7 @@ describe('AnalyticsService', () => {
       const result = await AnalyticsService.getTopUsers(5);
 
       expect(result.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
-      expect(result.message).toBe('Failed to fetch top users');
+      expect(result.message).toBe('Failed to fetch getTopUsers');
     });
   });
 
@@ -303,7 +303,7 @@ describe('AnalyticsService', () => {
       const result = await AnalyticsService.getTopGenres(5);
 
       expect(result.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
-      expect(result.message).toBe('Failed to fetch top genres');
+      expect(result.message).toBe('Failed to fetch getTopGenres');
     });
   });
 
@@ -340,7 +340,7 @@ describe('AnalyticsService', () => {
       const result = await AnalyticsService.getRecentActivity(7);
 
       expect(result.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
-      expect(result.message).toBe('Failed to fetch recent activity');
+      expect(result.message).toBe('Failed to fetch getRecentActivity');
     });
 
     it('should handle exceptions', async () => {
