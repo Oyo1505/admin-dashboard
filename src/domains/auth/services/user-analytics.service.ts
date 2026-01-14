@@ -2,6 +2,7 @@ import { validateId } from '@/lib/api-wrapper';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import HttpStatus from '@/shared/constants/httpStatus';
+import { isSameDay } from '@/shared/utils/date/isSameDay';
 
 /**
  * User Analytics Service
@@ -74,6 +75,7 @@ export class UserAnalyticsService {
       });
 
       const now = new Date();
+      const lastLogin = analytics?.lastLogin;
 
       if (!analytics) {
         // 4a. Create initial analytics record
@@ -84,7 +86,7 @@ export class UserAnalyticsService {
             visits: 1,
           },
         });
-      } else {
+      } else if (!isSameDay(now, lastLogin)) {
         // 4b. Update existing analytics record
         await prisma.analyticsUser.update({
           where: { id: analytics.id },
@@ -136,11 +138,17 @@ export class UserAnalyticsService {
     try {
       // 1. Validate inputs
       if (!userId?.trim()) {
-        return { status: HttpStatus.BAD_REQUEST, message: 'User ID is required' };
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'User ID is required',
+        };
       }
 
       if (!movieId?.trim()) {
-        return { status: HttpStatus.BAD_REQUEST, message: 'Movie ID is required' };
+        return {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Movie ID is required',
+        };
       }
 
       // 2. Update analytics with last movie watched

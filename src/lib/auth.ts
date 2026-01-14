@@ -1,6 +1,10 @@
-import { EmailAuthorizationService } from '@/domains/auth/services';
+import {
+  EmailAuthorizationService,
+  UserAnalyticsService,
+} from '@/domains/auth/services';
 import { APIError, betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { createAuthMiddleware } from 'better-auth/api';
 import { nextCookies } from 'better-auth/next-js';
 import prisma from './prisma';
 
@@ -31,6 +35,13 @@ const auth = betterAuth({
   },
   trustedOrigins: [process.env.NEXTAUTH_URL as string],
   plugins: [nextCookies()],
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      // Update lastLogin for authenticated users
+      const userId = ctx.context.session?.user?.id;
+      userId && UserAnalyticsService.recordUserLogin(userId);
+    }),
+  },
   databaseHooks: {
     user: {
       create: {
