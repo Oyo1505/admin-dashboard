@@ -1,10 +1,15 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/ui/components/card/card';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
-import { useRecentActivity } from '../../hooks/useAdminStats';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/domains/ui/components/card/card';
+import { Clock, Film, UserPlus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { UserPlus, Film, Clock } from 'lucide-react';
+import { useRecentActivity } from '../../hooks/useAdminStats';
 
 const RecentActivityFeed = () => {
   const t = useTranslations('DashboardAnalytics');
@@ -15,11 +20,7 @@ const RecentActivityFeed = () => {
   }
 
   if (error) {
-    return (
-      <div className="text-red-500">
-        {t('errorLoading')}
-      </div>
-    );
+    return <div className="text-red-500">{t('errorLoading')}</div>;
   }
 
   return (
@@ -42,7 +43,9 @@ const RecentActivityFeed = () => {
               <Film className="h-4 w-4 text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">{data?.newMovies ?? 0}</p>
-                <p className="text-xs text-muted-foreground">{t('newMovies')}</p>
+                <p className="text-xs text-muted-foreground">
+                  {t('newMovies')}
+                </p>
               </div>
             </div>
           </div>
@@ -50,21 +53,29 @@ const RecentActivityFeed = () => {
           {/* Recent Users */}
           {data?.recentUsers && data.recentUsers.length > 0 && (
             <div>
-              <h4 className="mb-2 text-sm font-semibold">{t('recentUsersAdded')}</h4>
+              <h4 className="mb-2 text-sm font-semibold">
+                {t('recentUsersAdded')}
+              </h4>
               <div className="space-y-2">
-                {data.recentUsers.map((user: { id: string; name: string; createdAt: string | Date }) => (
-                  <div
-                    key={user.id}
-                    className="flex items-center gap-2 rounded-lg border p-2 text-sm"
-                  >
-                    <UserPlus className="h-4 w-4 text-green-500" />
-                    <span className="font-medium">{user.name}</span>
-                    <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                ))}
+                {data.recentUsers.map(
+                  (user: {
+                    id: string;
+                    name: string;
+                    createdAt: string | Date;
+                  }) => (
+                    <div
+                      key={user.id}
+                      className="flex items-center gap-2 rounded-lg border p-2 text-sm"
+                    >
+                      <UserPlus className="h-4 w-4 text-green-500" />
+                      <span className="font-medium">{user.name}</span>
+                      <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           )}
@@ -72,28 +83,38 @@ const RecentActivityFeed = () => {
           {/* Recent Movies */}
           {data?.recentMovies && data.recentMovies.length > 0 && (
             <div>
-              <h4 className="mb-2 text-sm font-semibold">{t('recentMoviesAdded')}</h4>
+              <h4 className="mb-2 text-sm font-semibold">
+                {t('recentMoviesAdded')}
+              </h4>
               <div className="space-y-2">
-                {data.recentMovies.map((movie: { id: string; title: string; createdAt: string | Date }) => (
-                  <div
-                    key={movie.id}
-                    className="flex items-center gap-2 rounded-lg border p-2 text-sm"
-                  >
-                    <Film className="h-4 w-4 text-blue-500" />
-                    <span className="font-medium">{movie.title}</span>
-                    <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      {new Date(movie.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                ))}
+                {data.recentMovies.map(
+                  (movie: {
+                    id: string;
+                    title: string;
+                    createdAt: string | Date;
+                  }) => (
+                    <div
+                      key={movie.id}
+                      className="flex items-center gap-2 rounded-lg border p-2 text-sm"
+                    >
+                      <Film className="h-4 w-4 text-blue-500" />
+                      <span className="font-medium">{movie.title}</span>
+                      <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {new Date(movie.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           )}
 
           {(!data?.recentUsers || data.recentUsers.length === 0) &&
             (!data?.recentMovies || data.recentMovies.length === 0) && (
-              <p className="text-sm text-muted-foreground">{t('noRecentActivity')}</p>
+              <p className="text-sm text-muted-foreground">
+                {t('noRecentActivity')}
+              </p>
             )}
         </div>
       </CardContent>

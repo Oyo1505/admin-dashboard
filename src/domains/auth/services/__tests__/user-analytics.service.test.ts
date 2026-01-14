@@ -2,6 +2,7 @@ import { UserAnalyticsService } from '../user-analytics.service';
 import { validateId } from '@/lib/api-wrapper';
 import { handlePrismaError, logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
+import { isSameDay } from '@/shared/utils/date/isSameDay';
 
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
@@ -36,6 +37,10 @@ jest.mock('@/lib/errors', () => ({
     message: 'Database error',
   })),
   logError: jest.fn(),
+}));
+
+jest.mock('@/shared/utils/date/isSameDay', () => ({
+  isSameDay: jest.fn(),
 }));
 
 describe('UserAnalyticsService', () => {
@@ -74,8 +79,9 @@ describe('UserAnalyticsService', () => {
       });
     });
 
-    it('should update analytics record for returning user', async () => {
+    it('should update analytics record for returning user on different day', async () => {
       (validateId as jest.Mock).mockImplementation(() => {});
+      (isSameDay as jest.Mock).mockReturnValue(false); // Different day
       (prisma.user.findUnique as jest.Mock).mockResolvedValue({
         id: 'user-123',
         email: 'user@example.com',
@@ -99,6 +105,67 @@ describe('UserAnalyticsService', () => {
         status: 200,
         message: 'Login recorded successfully',
       });
+      expect(prisma.analyticsUser.update).toHaveBeenCalledWith({
+        where: { id: 'analytics-1' },
+        data: {
+          lastLogin: expect.any(Date),
+          visits: { increment: 1 },
+        },
+      });
+    });
+
+    it('should NOT update analytics if user already logged in same day (optimization)', async () => {
+      (validateId as jest.Mock).mockImplementation(() => {});
+      (isSameDay as jest.Mock).mockReturnValue(true); // Same day
+      (prisma.user.findUnique as jest.Mock).mockResolvedValue({
+        id: 'user-123',
+        email: 'user@example.com',
+      });
+      (prisma.analyticsUser.findFirst as jest.Mock).mockResolvedValue({
+        id: 'analytics-1',
+        userId: 'user-123',
+        visits: 5,
+        lastLogin: new Date(), // Today
+      });
+
+      const result = await UserAnalyticsService.recordUserLogin('user-123');
+
+      expect(result).toEqual({
+        status: 200,
+        message: 'Login recorded successfully',
+      });
+      // Should NOT call update because same day
+      expect(prisma.analyticsUser.update).not.toHaveBeenCalled();
+      expect(prisma.analyticsUser.create).not.toHaveBeenCalled();
+    });
+
+    it('should update analytics if lastLogin is null (legacy user)', async () => {
+      (validateId as jest.Mock).mockImplementation(() => {});
+      (isSameDay as jest.Mock).mockReturnValue(false); // null date returns false
+      (prisma.user.findUnique as jest.Mock).mockResolvedValue({
+        id: 'user-123',
+        email: 'user@example.com',
+      });
+      (prisma.analyticsUser.findFirst as jest.Mock).mockResolvedValue({
+        id: 'analytics-1',
+        userId: 'user-123',
+        visits: 5,
+        lastLogin: null, // Legacy user without lastLogin
+      });
+      (prisma.analyticsUser.update as jest.Mock).mockResolvedValue({
+        id: 'analytics-1',
+        userId: 'user-123',
+        visits: 6,
+        lastLogin: new Date(),
+      });
+
+      const result = await UserAnalyticsService.recordUserLogin('user-123');
+
+      expect(result).toEqual({
+        status: 200,
+        message: 'Login recorded successfully',
+      });
+      expect(isSameDay).toHaveBeenCalledWith(expect.any(Date), null);
       expect(prisma.analyticsUser.update).toHaveBeenCalledWith({
         where: { id: 'analytics-1' },
         data: {

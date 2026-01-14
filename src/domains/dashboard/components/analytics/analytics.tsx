@@ -2,15 +2,13 @@
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { Activity } from 'react';
-import AnalyticsVisits from '../analytics-visits/analytics-visits';
-import TableUsersAnalyticsAdmin from '../table_users-analytics-admin/table_users-analytics-admin';
-import TableUsersAnalyticsUser from '../table_users-analytics-user/table_users-analytics-user';
-import UserStatsCards from '../user-stats-cards/user-stats-cards';
-import UserFavoritesList from '../user-favorites-list/user-favorites-list';
 import AdminStatsCards from '../admin-stats-cards/admin-stats-cards';
+import AnalyticsVisits from '../analytics-visits/analytics-visits';
+import RecentActivityFeed from '../recent-activity-feed/recent-activity-feed';
 import TopMoviesTable from '../top-movies-table/top-movies-table';
 import TopUsersTable from '../top-users-table/top-users-table';
-import RecentActivityFeed from '../recent-activity-feed/recent-activity-feed';
+import UserFavoritesList from '../user-favorites-list/user-favorites-list';
+import UserStatsCards from '../user-stats-cards/user-stats-cards';
 
 const Analytics = () => {
   const { user } = useUserStore((state) => state);
@@ -35,9 +33,6 @@ const Analytics = () => {
 
           {/* User Favorites List */}
           {user?.id && <UserFavoritesList userId={user.id} />}
-
-          {/* Original User Analytics Table */}
-          <TableUsersAnalyticsUser />
         </div>
       </Activity>
 
@@ -58,9 +53,6 @@ const Analytics = () => {
 
           {/* Recent Activity Feed */}
           <RecentActivityFeed />
-
-          {/* Original Admin Analytics Table */}
-          <TableUsersAnalyticsAdmin />
         </div>
       </Activity>
     </div>
