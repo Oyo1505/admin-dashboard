@@ -13,7 +13,7 @@ const MoviePlayerIframe = ({ movie }: { movie: IMovie }) => {
   const [hasTracked, setHasTracked] = useState(false);
   if (!isValidIframeUrl(iframeUrl)) {
     return (
-      <div className="w-full md:h-[400px] lg:w-full h-[250px] lg:h-[450px] flex items-center justify-center bg-gray-100 rounded-lg">
+      <div className="w-full md:h-100 lg:w-full h-62.5 lg:h-112.5  flex items-center justify-center bg-gray-100 rounded-lg">
         <p className="text-gray-600">Vidéo non disponible</p>
       </div>
     );

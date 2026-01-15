@@ -11,6 +11,14 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '100mb',
     },
+    // Optimize barrel imports for better tree-shaking and faster cold starts
+    optimizePackageImports: [
+      'lucide-react',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-select',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-icons',
+    ],
   },
   images: {
     formats: ['image/avif', 'image/webp'],
