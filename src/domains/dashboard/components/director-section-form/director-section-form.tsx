@@ -83,7 +83,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
           <Input
             type="text"
             id="director"
-            className="text-black inline-flex bg-primary h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
+            className="text-black inline-flex bg-primary h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus:shadow-[0_0_0_2px]"
             {...register('director')}
           />
           {errors.director && (
@@ -100,7 +100,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
           <Input
             type="text"
             id="imageBackdrop"
-            className="text-black bg-primary inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-hidden focus:shadow-[0_0_0_2px]"
+            className="text-black bg-primary inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus:shadow-[0_0_0_2px]"
             {...register('imageBackdrop')}
           />
         </div>
@@ -111,7 +111,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
               variant="secondary"
               type="button"
               onClick={deleteDirectorSection}
-              className="bg-red-500 hover:bg-red-600 hover:cursor-pointer  text-white inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-hidden"
+              className="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
             >
               {t('delete')}
             </Button>
@@ -121,7 +121,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
             size="sm"
             variant="outline"
             type="submit"
-            className="inline-flex h-[35px] hover:cursor-pointer items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-hidden"
+            className="inline-flex h-[35px] hover:cursor-pointer items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
           >
             {director?.id ? 'Modifier' : t('save')}
           </Button>

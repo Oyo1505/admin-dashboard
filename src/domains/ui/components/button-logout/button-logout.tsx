@@ -9,7 +9,7 @@ const ButtonLogout = () => {
 
   return (
     <Button
-      className="transition-all hover:cursor-pointer duration-300"
+      className="transition-colors hover:cursor-pointer duration-300"
       onClick={logout}
     >
       {t('logout')}

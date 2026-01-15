@@ -7,12 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/domains/ui/components/card/card';
+import { localeDateString } from '@/shared/utils/date/localeDateString';
 import { Clock, Film, UserPlus } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRecentActivity } from '../../hooks/useAdminStats';
 
 const RecentActivityFeed = () => {
   const t = useTranslations('DashboardAnalytics');
+  const locale = useLocale();
   const { data, isLoading, error } = useRecentActivity();
 
   if (isLoading) {
@@ -71,7 +73,7 @@ const RecentActivityFeed = () => {
                       <span className="font-medium">{user.name}</span>
                       <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        {new Date(user.createdAt).toLocaleDateString()}
+                        {new Date(user.createdAt).toLocaleDateString(locale)}
                       </span>
                     </div>
                   )
@@ -101,7 +103,7 @@ const RecentActivityFeed = () => {
                       <span className="font-medium">{movie.title}</span>
                       <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        {new Date(movie.createdAt).toLocaleDateString()}
+                        {localeDateString(new Date(movie.createdAt), locale)}
                       </span>
                     </div>
                   )

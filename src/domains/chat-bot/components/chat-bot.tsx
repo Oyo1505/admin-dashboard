@@ -141,16 +141,12 @@ const ChatBot = () => {
     reset();
   };
 
-  // const handleSuggestionClick = async (suggestion: string) => {
-  //   await sendMessage(suggestion);
-  // };
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('fr-FR', {
+    return date.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit',
     });
@@ -174,15 +170,15 @@ const ChatBot = () => {
       }}
       onTransitionEnd={handleTransitionEnd}
       className={clsx(
-        'fixed bottom-10 z-20 right-10 w-20 h-20 text-black hidden md:block bg-white shadow-lg transition-all duration-300 ease-in-out border border-gray-300',
+        'fixed bottom-10 z-20 right-10 w-20 h-20 text-black hidden md:block bg-white shadow-lg transition-[width,height,border-radius,box-shadow,transform] duration-300 ease-in-out border border-gray-300',
         isChatBotEnabled
-          ? 'rounded-lg h-[500px] w-[400px]'
+          ? 'rounded-lg h-125 w-100'
           : 'rounded-full w-20 h-20 hover:cursor-pointer hover:shadow-xl hover:scale-105'
       )}
     >
       {isChatBotEnabled && isAnimationComplete ? (
         <div className="relative flex overflow-hidden flex-col items-center justify-between h-full w-full p-4 gap-2">
-          <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-slate-600 to-slate-700 text-white p-2 rounded-t-lg">
+          <div className="absolute top-0 left-0 right-0 bg-linear-to-r from-slate-600 to-slate-700 text-white p-2 rounded-t-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <div className="w-6 h-6">
@@ -225,8 +221,8 @@ const ChatBot = () => {
                   className={clsx(
                     'px-3 py-2 rounded-lg text-sm shadow-sm',
                     message.role === 'assistant'
-                      ? 'bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 border border-gray-200'
-                      : 'bg-gradient-to-r from-slate-50 to-slate-100 text-gray-700 border border-slate-200'
+                      ? 'bg-linear-to-r from-gray-50 to-gray-100 text-gray-700 border border-gray-200'
+                      : 'bg-linear-to-r from-slate-50 to-slate-100 text-gray-700 border border-slate-200'
                   )}
                 >
                   {message.role === 'assistant' ? (
@@ -246,7 +242,7 @@ const ChatBot = () => {
 
             {isLoading && (
               <div className="flex flex-col gap-1 self-start max-w-[85%]">
-                <div className="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-lg text-sm shadow-sm">
+                <div className="bg-linear-to-r from-gray-50 to-gray-100 text-gray-700 border border-gray-200 px-3 py-2 rounded-lg text-sm shadow-sm">
                   <div className="flex items-center gap-2">
                     <LoadingSpinner />
                     <span className="text-xs text-gray-600">
@@ -289,10 +285,10 @@ const ChatBot = () => {
                 type="submit"
                 disabled={isLoading || !message.trim()}
                 className={clsx(
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-[background-color,box-shadow] duration-200',
                   isLoading || !message.trim()
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-slate-600 to-slate-700 text-white hover:from-slate-700 hover:to-slate-800 hover:shadow-md'
+                    : 'bg-linear-to-r from-slate-600 to-slate-700 text-white hover:from-slate-700 hover:to-slate-800 hover:shadow-md'
                 )}
               >
                 {isLoading ? '⏳' : '📤'}
