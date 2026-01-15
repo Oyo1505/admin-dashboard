@@ -2,6 +2,7 @@ import FromSelectInput from '@/domains/shared/components/form-select-input/form-
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
 interface IFormMovieSelects {
   locale: string;
@@ -17,16 +18,23 @@ const FormMovieSelects = ({
   handleLangageChange,
 }: IFormMovieSelects) => {
   const t = useTranslations('AddMovie');
-  const langageSorted = languagesList.sort(
-    (
-      a: { label: { fr: string; jp: string; en: string } },
-      b: { label: { fr: string; jp: string; en: string } }
-    ) =>
-      locale === 'fr'
-        ? a.label.fr.localeCompare(b.label.fr)
-        : locale === 'jp'
-          ? a.label.jp.localeCompare(b.label.jp)
-          : a.label.en.localeCompare(b.label.en)
+
+  // Memoize sorted list to avoid sorting on every render
+  // Using toSorted() instead of sort() to avoid mutating the original array
+  const langageSorted = useMemo(
+    () =>
+      languagesList.toSorted(
+        (
+          a: { label: { fr: string; jp: string; en: string } },
+          b: { label: { fr: string; jp: string; en: string } }
+        ) =>
+          locale === 'fr'
+            ? a.label.fr.localeCompare(b.label.fr)
+            : locale === 'jp'
+              ? a.label.jp.localeCompare(b.label.jp)
+              : a.label.en.localeCompare(b.label.en)
+      ),
+    [locale]
   );
 
   return (

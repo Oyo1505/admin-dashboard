@@ -13,6 +13,30 @@ const MovieItemCarousel = dynamic(
   }
 );
 
+// Hoisted outside component to avoid recreation on every render
+const CAROUSEL_RESPONSIVE = {
+  desktop: {
+    breakpoint: { max: 5000, min: 1025 },
+    items: 5,
+    slidesToSlide: 1,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 465 },
+    items: 3,
+    slidesToSlide: 1,
+  },
+  tabletHorizontal: {
+    breakpoint: { max: 1400, min: 1025 },
+    items: 3,
+    slidesToSlide: 1,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 3,
+    slidesToSlide: 1,
+  },
+} as const;
+
 const MoviesHomeSection = ({
   movies,
   isMobileView,
@@ -21,28 +45,6 @@ const MoviesHomeSection = ({
   isMobileView?: boolean;
 }) => {
   const locale = useLocale();
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 5000, min: 1025 },
-      items: 5,
-      slidesToSlide: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 465 },
-      items: 3,
-      slidesToSlide: 1,
-    },
-    tabletHorizontal: {
-      breakpoint: { max: 1400, min: 1025 },
-      items: 3,
-      slidesToSlide: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 3,
-      slidesToSlide: 1,
-    },
-  };
 
   return movies && movies.length > 0 ? (
     <Carousel
@@ -53,7 +55,7 @@ const MoviesHomeSection = ({
       transitionDuration={500}
       draggable={isMobileView ? true : false}
       infinite={true}
-      responsive={responsive}
+      responsive={CAROUSEL_RESPONSIVE}
     >
       {movies.map((movie, index) => (
         <MovieItemCarousel

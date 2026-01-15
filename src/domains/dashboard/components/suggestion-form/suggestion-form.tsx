@@ -107,7 +107,7 @@ const SuggestionForm = () => {
         <div className="flex flex-col gap-2">
           <Textarea
             aria-label="textarea-suggestion-message"
-            className="focus:outline-none h-20 md:h-48 md:w-1/2"
+            className="focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 h-20 md:h-48 md:w-1/2"
             {...register('message', {
               required: true,
             })}

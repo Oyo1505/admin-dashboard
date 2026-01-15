@@ -17,14 +17,21 @@ const Page = async (props: {
   searchParams: Promise<{ q: string; offset: string }>;
 }) => {
   const searchParams = await props.searchParams;
-  const session = await getServerSession();
+  const search = searchParams.q ?? '';
+  const offset = Number(searchParams.offset ?? 20);
+
+  // Parallel fetch: session and paginated users are independent
+  const [session, paginatedUsers] = await Promise.all([
+    getServerSession(),
+    getUsersWithPageParam(search, offset),
+  ]);
+  const { users, newOffset } = paginatedUsers;
+
+  // User profile depends on session email, so must be sequential
   const userEmail = session?.user?.email ?? '';
   const userConnected = userEmail
     ? await UserData.getUserConnected(userEmail)
     : null;
-  const search = searchParams.q ?? '';
-  const offset = Number(searchParams.offset ?? 20);
-  const { users, newOffset } = await getUsersWithPageParam(search, offset);
   const user = userConnected?.user as IUser;
   if (!user) return;
   const hasPermission = checkPermissions(user, 'can:delete', 'user');

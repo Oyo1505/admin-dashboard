@@ -8,9 +8,12 @@ import { MovieData } from '@/lib/data/movies';
 import { Suspense, cache } from 'react';
 
 const getData = cache(async () => {
-  const { genres } = await GenreData.getAllGenres();
-  const { countries } = await MovieData.getMoviesCountries();
-  return { genres, countries };
+  // Parallel fetch: genres and countries are independent
+  const [genresResult, countriesResult] = await Promise.all([
+    GenreData.getAllGenres(),
+    MovieData.getMoviesCountries(),
+  ]);
+  return { genres: genresResult.genres, countries: countriesResult.countries };
 });
 
 const Page = async (props: {

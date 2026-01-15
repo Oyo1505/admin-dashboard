@@ -16,7 +16,7 @@ const MenuHeaderItem = ({
   return (
     <Link
       className={cn(
-        'hover:text-red-500 text-primary transition-all duration-300',
+        'hover:text-red-500 text-primary transition-colors duration-300',
         {
           'text-red-500': segment ? pathname?.includes(segment) : null,
         }

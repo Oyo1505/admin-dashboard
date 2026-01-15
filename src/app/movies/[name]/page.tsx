@@ -47,9 +47,14 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
     )
   );
 
-  const { movie, suggestedMovies } = await getMovie(name);
-  const session = await getServerSession();
+  // Parallel fetch: movie data and session are independent
+  const [movieData, session] = await Promise.all([
+    getMovie(name),
+    getServerSession(),
+  ]);
+  const { movie, suggestedMovies } = movieData;
 
+  // Favorites depend on session, so must be sequential
   const favoriteMovives = !session?.user?.id
     ? null
     : await getFavoriteMovies(session.user.id);
