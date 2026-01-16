@@ -3,6 +3,7 @@ import { getMovieDetail } from '@/domains/movies/actions/movie';
 import MovieHeader from '@/domains/movies/components/movie-header/movie-header';
 import MoviePageButtons from '@/domains/movies/components/movie-page_buttons/movie-page_buttons';
 import MoviePlayerIframe from '@/domains/movies/components/movie-player-iframe/movie-player-iframe';
+import { WatchTracker } from '@/domains/movies/components/movie_watch-tracker/watch-tracker';
 import MovieCarouselSuggestion from '@/domains/movies/components/movies-carrousel-suggestion/movies-carrousel-suggestion';
 import Title from '@/domains/ui/components/title/title';
 import { getServerSession } from '@/lib/auth';
@@ -64,14 +65,13 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
       (movieFromDb: { movieId: string }) => movieFromDb.movieId === movie?.id
     )
   );
-  if (movie) {
-    MovieData.incrementWatchCount(movie.id);
-  }
+
   return (
     <div className="h-auto pt-6 flex flex-col justify-start items-start">
       <Suspense fallback={<Loading />}>
         <div className="justify-center items-center w-full flex lg:flex-row lg:justify-start lg:items-start  lg:gap-4 flex-col">
           <Activity mode={movie ? 'visible' : 'hidden'}>
+            <WatchTracker movieId={movie.id} />
             <div className="lg:grow-0 w-full mb-4 lg:mb-0">
               {movie?.idGoogleDive && <MoviePlayerIframe movie={movie} />}
               <MoviePageButtons isFavorite={isFavorite} movie={movie} />
