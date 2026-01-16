@@ -1,7 +1,7 @@
-import { AnalyticsData } from '../analytics';
+import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
-import { handlePrismaError, logError } from '@/lib/errors';
 import HttpStatus from '@/shared/constants/httpStatus';
+import { AnalyticsData } from '../analytics';
 
 jest.mock('@/lib/prisma', () => ({
   __esModule: true,
@@ -88,13 +88,13 @@ describe('AnalyticsData - Extended Methods', () => {
           id: '1',
           title: 'Movie 1',
           image: 'image1.jpg',
-          _count: { favoriteMovies: 50 },
+          watchCount: 100,
         },
         {
           id: '2',
           title: 'Movie 2',
           image: 'image2.jpg',
-          _count: { favoriteMovies: 30 },
+          watchCount: 80,
         },
       ];
 
@@ -108,7 +108,7 @@ describe('AnalyticsData - Extended Methods', () => {
         id: '1',
         title: 'Movie 1',
         image: 'image1.jpg',
-        favoritesCount: 50,
+        watchCount: 100,
       });
       expect(prisma.movie.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
