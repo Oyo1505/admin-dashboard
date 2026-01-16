@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import {
   IFavoriteMovieResponse,
@@ -13,6 +12,7 @@ import {
   MAX_MOVIES_BY_COUNTRY,
   MAX_MOVIES_BY_GENRE,
 } from '@/shared/constants/pagination';
+import { Prisma } from '@prisma/client';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
@@ -723,15 +723,17 @@ export class MovieData {
         }, new Map<string, { count: number; genre: IGenre }>());
 
         // Find the most frequent genre using reduce for cleaner code
-        const favoriteGenre = Array.from(genreCounts.values()).reduce<IGenre | undefined>(
-          (mostFrequent, current) => {
-            if (!mostFrequent || current.count > (genreCounts.get(mostFrequent.id)?.count ?? 0)) {
-              return current.genre;
-            }
-            return mostFrequent;
-          },
-          undefined
-        );
+        const favoriteGenre = Array.from(genreCounts.values()).reduce<
+          IGenre | undefined
+        >((mostFrequent, current) => {
+          if (
+            !mostFrequent ||
+            current.count > (genreCounts.get(mostFrequent.id)?.count ?? 0)
+          ) {
+            return current.genre;
+          }
+          return mostFrequent;
+        }, undefined);
 
         return {
           stats: {
@@ -747,4 +749,44 @@ export class MovieData {
       }
     }
   );
+
+  static incrementWatchCount = async (
+    movieId: string
+  ): Promise<{ status: number }> => {
+    try {
+      await prisma.movie.update({
+        where: { id: movieId },
+        data: {
+          watchCount: {
+            increment: 1,
+          },
+        },
+      });
+      return { status: HttpStatus.OK };
+    } catch (error) {
+      logError(error, 'MovieData.incrementWatchCount');
+      const appError = handlePrismaError(error);
+      return { status: appError.statusCode };
+    }
+  };
+
+  static incrementDownloadCount = async (
+    movieId: string
+  ): Promise<{ status: number }> => {
+    try {
+      await prisma.movie.update({
+        where: { id: movieId },
+        data: {
+          downloadCount: {
+            increment: 1,
+          },
+        },
+      });
+      return { status: HttpStatus.OK };
+    } catch (error) {
+      logError(error, 'MovieData.incrementDownloadCount');
+      const appError = handlePrismaError(error);
+      return { status: appError.statusCode };
+    }
+  };
 }

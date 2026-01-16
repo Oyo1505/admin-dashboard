@@ -1,4 +1,3 @@
-import HttpStatus from '@/shared/constants/httpStatus';
 import {
   ACTIVE_USERS_PERIOD,
   MAX_TOP_GENRES,
@@ -6,6 +5,7 @@ import {
   MAX_TOP_USERS,
   RECENT_ACTIVITY_PERIOD,
 } from '@/shared/constants/analytics';
+import HttpStatus from '@/shared/constants/httpStatus';
 import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
@@ -25,7 +25,7 @@ export interface ITopMovie {
   id: string;
   title: string;
   image: string;
-  favoritesCount: number;
+  watchCount: number;
 }
 
 export interface ITopUser {
@@ -167,16 +167,10 @@ export class AnalyticsData {
             id: true,
             title: true,
             image: true,
-            _count: {
-              select: {
-                favoriteMovies: true,
-              },
-            },
+            watchCount: true,
           },
           orderBy: {
-            favoriteMovies: {
-              _count: 'desc',
-            },
+            watchCount: 'desc',
           },
           take: limit,
         });
@@ -185,7 +179,7 @@ export class AnalyticsData {
           id: movie.id,
           title: movie.title,
           image: movie.image,
-          favoritesCount: movie._count.favoriteMovies,
+          watchCount: movie.watchCount,
         }));
 
         return { movies: topMovies, status: HttpStatus.OK };

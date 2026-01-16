@@ -1302,4 +1302,118 @@ describe('MovieData', () => {
       expect(logError).toHaveBeenCalledWith(mockError, 'findManyMovieGenres');
     });
   });
+
+  describe('incrementWatchCount', () => {
+    it('should increment watch count and return status 200', async () => {
+      const movieId = 'movie-123';
+
+      (prisma.movie.update as jest.Mock).mockResolvedValue({
+        id: movieId,
+        watchCount: 1,
+      });
+
+      const result = await MovieData.incrementWatchCount(movieId);
+
+      expect(result).toEqual({
+        status: 200,
+      });
+
+      expect(prisma.movie.update).toHaveBeenCalledWith({
+        where: { id: movieId },
+        data: {
+          watchCount: {
+            increment: 1,
+          },
+        },
+      });
+    });
+
+    it('should handle database errors and return status 500', async () => {
+      const movieId = 'movie-123';
+      const mockError = new Error('Database error');
+
+      (prisma.movie.update as jest.Mock).mockRejectedValue(mockError);
+
+      const result = await MovieData.incrementWatchCount(movieId);
+
+      expect(result).toEqual({
+        status: 500,
+      });
+
+      expect(logError).toHaveBeenCalledWith(
+        mockError,
+        'MovieData.incrementWatchCount'
+      );
+      expect(handlePrismaError).toHaveBeenCalledWith(mockError);
+    });
+
+    it('should handle non-existent movie gracefully', async () => {
+      const movieId = 'non-existent-id';
+      const mockError = { code: 'P2025', meta: { target: ['Movie'] } };
+
+      (prisma.movie.update as jest.Mock).mockRejectedValue(mockError);
+
+      const result = await MovieData.incrementWatchCount(movieId);
+
+      expect(result.status).toBe(500);
+      expect(logError).toHaveBeenCalled();
+    });
+  });
+
+  describe('incrementDownloadCount', () => {
+    it('should increment download count and return status 200', async () => {
+      const movieId = 'movie-123';
+
+      (prisma.movie.update as jest.Mock).mockResolvedValue({
+        id: movieId,
+        downloadCount: 1,
+      });
+
+      const result = await MovieData.incrementDownloadCount(movieId);
+
+      expect(result).toEqual({
+        status: 200,
+      });
+
+      expect(prisma.movie.update).toHaveBeenCalledWith({
+        where: { id: movieId },
+        data: {
+          downloadCount: {
+            increment: 1,
+          },
+        },
+      });
+    });
+
+    it('should handle database errors and return status 500', async () => {
+      const movieId = 'movie-123';
+      const mockError = new Error('Database error');
+
+      (prisma.movie.update as jest.Mock).mockRejectedValue(mockError);
+
+      const result = await MovieData.incrementDownloadCount(movieId);
+
+      expect(result).toEqual({
+        status: 500,
+      });
+
+      expect(logError).toHaveBeenCalledWith(
+        mockError,
+        'MovieData.incrementDownloadCount'
+      );
+      expect(handlePrismaError).toHaveBeenCalledWith(mockError);
+    });
+
+    it('should handle non-existent movie gracefully', async () => {
+      const movieId = 'non-existent-id';
+      const mockError = { code: 'P2025', meta: { target: ['Movie'] } };
+
+      (prisma.movie.update as jest.Mock).mockRejectedValue(mockError);
+
+      const result = await MovieData.incrementDownloadCount(movieId);
+
+      expect(result.status).toBe(500);
+      expect(logError).toHaveBeenCalled();
+    });
+  });
 });
