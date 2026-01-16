@@ -1,11 +1,14 @@
 import { MovieData } from '@/lib/data/movies';
 import { handlePrismaError, logError } from '@/lib/errors';
 import {
+  validateArrayNotEmpty,
+  validateRequired,
+} from '@/lib/utils/validation';
+import {
   IFavoriteMovieResponse,
   IMovieFormData,
   IUpdateMovieData,
 } from '@/models/movie/movie';
-import { validateArrayNotEmpty, validateRequired } from '@/lib/utils/validation';
 import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
 import { revalidatePath } from 'next/cache';
@@ -48,7 +51,10 @@ export class MovieService {
       const { movie: movieInDb } = await MovieData.findUnique(movie.id);
 
       if (!movieInDb) {
-        return { status: HttpStatus.NOT_FOUND, message: "Le film n'existe pas" };
+        return {
+          status: HttpStatus.NOT_FOUND,
+          message: "Le film n'existe pas",
+        };
       }
 
       const genresValidation = validateArrayNotEmpty(movie.genresIds, 'genre');
@@ -122,6 +128,29 @@ export class MovieService {
       logError(error, 'favoriteMovies');
       const appError = handlePrismaError(error);
       return { status: appError.statusCode };
+    }
+  }
+  static async incrementWatchCount(id: string): Promise<void> {
+    try {
+      const idValidation = validateRequired(id, 'Movie ID');
+      if (!idValidation.valid) {
+        return;
+      }
+      await MovieData.incrementWatchCount(id);
+    } catch (error) {
+      logError(error, 'incrementWatchCount');
+    }
+  }
+
+  static async incrementDownloadCount(id: string): Promise<void> {
+    try {
+      const idValidation = validateRequired(id, 'Movie ID');
+      if (!idValidation.valid) {
+        return;
+      }
+      await MovieData.incrementDownloadCount(id);
+    } catch (error) {
+      logError(error, 'incrementDownloadCount');
     }
   }
 }

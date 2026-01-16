@@ -90,6 +90,8 @@ model Movie {
   titleJapanese  String?
   director       String?
   imdbId         String?
+  watchCount     Int                  @default(0)
+  downloadCount  Int                  @default(0)
   publish        Boolean              @default(true)
   updatedAt      DateTime             @updatedAt
   genresIds      MovieGenre[]

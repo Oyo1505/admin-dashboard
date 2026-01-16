@@ -64,7 +64,9 @@ const Page = async ({ params }: { params: Promise<{ name: string }> }) => {
       (movieFromDb: { movieId: string }) => movieFromDb.movieId === movie?.id
     )
   );
-
+  if (movie) {
+    MovieData.incrementWatchCount(movie.id);
+  }
   return (
     <div className="h-auto pt-6 flex flex-col justify-start items-start">
       <Suspense fallback={<Loading />}>

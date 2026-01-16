@@ -3,7 +3,6 @@ import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
 import { Activity } from 'react';
 import AdminStatsCards from '../admin-stats-cards/admin-stats-cards';
-import AnalyticsVisits from '../analytics-visits/analytics-visits';
 import RecentActivityFeed from '../recent-activity-feed/recent-activity-feed';
 import TopMoviesTable from '../top-movies-table/top-movies-table';
 import TopUsersTable from '../top-users-table/top-users-table';
@@ -41,9 +40,6 @@ const Analytics = () => {
         <div className="space-y-6">
           {/* Admin Stats Cards */}
           <AdminStatsCards />
-
-          {/* Application Visits */}
-          <AnalyticsVisits />
 
           {/* Top Movies and Users Tables */}
           <div className="grid gap-6 md:grid-cols-2">

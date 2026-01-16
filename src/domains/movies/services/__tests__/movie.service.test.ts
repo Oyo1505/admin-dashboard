@@ -13,6 +13,8 @@ jest.mock('@/lib/data/movies', () => ({
     findManyFavorite: jest.fn(),
     findUniqueMoviePublished: jest.fn(),
     findUnique: jest.fn(),
+    incrementWatchCount: jest.fn(),
+    incrementDownloadCount: jest.fn(),
   },
 }));
 
@@ -343,6 +345,70 @@ describe('MovieService', () => {
         status: 500,
       });
       expect(logError).toHaveBeenCalledWith(mockError, 'favoriteMovies');
+    });
+  });
+
+  describe('incrementWatchCount', () => {
+    it('should increment watch count successfully', async () => {
+      (MovieData.incrementWatchCount as jest.Mock).mockResolvedValue({
+        status: 200,
+      });
+
+      await MovieService.incrementWatchCount('movie-123');
+
+      expect(MovieData.incrementWatchCount).toHaveBeenCalledWith('movie-123');
+    });
+
+    it('should not call MovieData when id is empty', async () => {
+      await MovieService.incrementWatchCount('');
+
+      expect(MovieData.incrementWatchCount).not.toHaveBeenCalled();
+    });
+
+    it('should handle errors gracefully', async () => {
+      const mockError = new Error('Database error');
+      (MovieData.incrementWatchCount as jest.Mock).mockRejectedValue(mockError);
+
+      // Should not throw
+      await expect(
+        MovieService.incrementWatchCount('movie-123')
+      ).resolves.toBeUndefined();
+
+      expect(logError).toHaveBeenCalledWith(mockError, 'incrementWatchCount');
+    });
+  });
+
+  describe('incrementDownloadCount', () => {
+    it('should increment download count successfully', async () => {
+      (MovieData.incrementDownloadCount as jest.Mock).mockResolvedValue({
+        status: 200,
+      });
+
+      await MovieService.incrementDownloadCount('movie-123');
+
+      expect(MovieData.incrementDownloadCount).toHaveBeenCalledWith(
+        'movie-123'
+      );
+    });
+
+    it('should not call MovieData when id is empty', async () => {
+      await MovieService.incrementDownloadCount('');
+
+      expect(MovieData.incrementDownloadCount).not.toHaveBeenCalled();
+    });
+
+    it('should handle errors gracefully', async () => {
+      const mockError = new Error('Database error');
+      (MovieData.incrementDownloadCount as jest.Mock).mockRejectedValue(
+        mockError
+      );
+
+      // Should not throw
+      await expect(
+        MovieService.incrementDownloadCount('movie-123')
+      ).resolves.toBeUndefined();
+
+      expect(logError).toHaveBeenCalledWith(mockError, 'incrementDownloadCount');
     });
   });
 });
