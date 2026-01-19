@@ -237,6 +237,14 @@
     "submitButton": "Soumettre",
     "uploadInProgress": "Téléchargement en cours...",
     "fileTooLarge": "Le fichier est trop volumineux",
-    "invalidFileType": "Type de fichier invalide"
+    "invalidFileType": "Type de fichier invalide",
+    "dropzone": "Déposez votre vidéo ici",
+    "dropzoneHint": "ou cliquez pour parcourir",
+    "dragActive": "Déposez ici !",
+    "supportedFormats": "Fichiers MP4 jusqu'à 10 Go",
+    "selectedFile": "Fichier sélectionné",
+    "changeFile": "Changer",
+    "uploadButton": "Uploader le film",
+    "uploadingButton": "Upload en cours..."
   }
 }

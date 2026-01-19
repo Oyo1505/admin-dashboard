@@ -235,6 +235,14 @@
     "submitButton": "送信",
     "uploadInProgress": "アップロード中...",
     "fileTooLarge": "ファイルが大きすぎます",
-    "invalidFileType": "無効なファイル形式"
+    "invalidFileType": "無効なファイル形式",
+    "dropzone": "ここに動画をドロップ",
+    "dropzoneHint": "またはクリックして選択",
+    "dragActive": "ここにドロップ！",
+    "supportedFormats": "MP4ファイル（最大10GB）",
+    "selectedFile": "選択されたファイル",
+    "changeFile": "変更",
+    "uploadButton": "映画をアップロード",
+    "uploadingButton": "アップロード中..."
   }
 }

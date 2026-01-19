@@ -236,6 +236,14 @@
     "submitButton": "Submit",
     "uploadInProgress": "Upload in progress...",
     "fileTooLarge": "File is too large",
-    "invalidFileType": "Invalid file type"
+    "invalidFileType": "Invalid file type",
+    "dropzone": "Drop your video here",
+    "dropzoneHint": "or click to browse",
+    "dragActive": "Drop it here!",
+    "supportedFormats": "MP4 files up to 10GB",
+    "selectedFile": "Selected file",
+    "changeFile": "Change",
+    "uploadButton": "Upload Movie",
+    "uploadingButton": "Uploading..."
   }
 }

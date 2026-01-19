@@ -1,6 +1,7 @@
 'use client';
 import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
+import { Activity } from 'react';
 import ButtonAddMovie from '../button-add-movie/button-add-movie';
 const TitleDashboard = () => {
   const t = useTranslations('Dashboard');
@@ -11,7 +12,9 @@ const TitleDashboard = () => {
       <h1 className="text-2xl text-primary">
         {t('welcome')}, {user?.name} 👋
       </h1>
-      <ButtonAddMovie />
+      <Activity mode={user.role === 'ADMIN' ? 'visible' : 'hidden'}>
+        <ButtonAddMovie />
+      </Activity>
     </div>
   );
 };
