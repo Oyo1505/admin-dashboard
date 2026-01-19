@@ -56,13 +56,35 @@ export const directorSectionSchema = z.object({
   imageBackdrop: z.string(),
 });
 
+/**
+ * Custom Zod schema for File validation
+ * Preserves the actual File object (with slice method) instead of transforming it
+ */
+const fileSchema = z.custom<File>(
+  (val) => {
+    // Check if it's a File or has File-like properties
+    if (typeof window !== 'undefined' && val instanceof File) {
+      return true;
+    }
+    // Fallback for edge cases: check duck typing
+    if (
+      val &&
+      typeof val === 'object' &&
+      'name' in val &&
+      'size' in val &&
+      'type' in val &&
+      typeof (val as File).slice === 'function'
+    ) {
+      return true;
+    }
+    return false;
+  },
+  {
+    message: 'A valid file is required',
+  }
+);
+
 export type MovieUploadSchema = z.infer<typeof movieUploadSchema>;
 export const movieUploadSchema = z.object({
-  file: z
-    .object({
-      name: z.string(),
-      type: z.string(),
-      size: z.number(),
-    })
-    .optional(),
+  file: fileSchema,
 });

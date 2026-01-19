@@ -1,6 +1,7 @@
 import LayoutLogic from '@/domains/layout/components/layout-logic';
 import MenuHeader from '@/domains/layout/components/menu-header/menu-header';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
+import UploadProgressWrapper from '@/domains/dashboard/components/upload-progress-indicator/upload-progress-wrapper';
 import TanstackProvider from '@/providers/tanstack-provider';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
@@ -48,7 +49,6 @@ export default async function RootLayout({
       <body
         className={`h-full mb-14 mx-auto relative bg-background text-primary font-semibold `}
       >
-
         <ToastContainer />
         <NextIntlClientProvider messages={messages}>
           <TanstackProvider>
@@ -58,10 +58,10 @@ export default async function RootLayout({
               </Suspense>
               <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
             </LayoutLogic>
+            <UploadProgressWrapper />
             <Analytics />
           </TanstackProvider>
         </NextIntlClientProvider>
-
       </body>
     </html>
   );

@@ -222,5 +222,29 @@
   "Search": {
     "searchLabel": "Rechercher des utilisateurs",
     "loadingLabel": "Recherche en cours"
+  },
+  "Upload": {
+    "uploadSuccess": "Fichier téléchargé avec succès",
+    "uploadError": "Échec du téléchargement",
+    "statusPending": "Préparation...",
+    "statusUploading": "Téléchargement...",
+    "statusCompleted": "Terminé",
+    "statusFailed": "Échec",
+    "statusCancelled": "Annulé",
+    "dismissUpload": "Fermer la notification",
+    "uploadProgress": "Progression du téléchargement",
+    "selectFile": "Sélectionner un fichier vidéo",
+    "submitButton": "Soumettre",
+    "uploadInProgress": "Téléchargement en cours...",
+    "fileTooLarge": "Le fichier est trop volumineux",
+    "invalidFileType": "Type de fichier invalide",
+    "dropzone": "Déposez votre vidéo ici",
+    "dropzoneHint": "ou cliquez pour parcourir",
+    "dragActive": "Déposez ici !",
+    "supportedFormats": "Fichiers MP4 jusqu'à 10 Go",
+    "selectedFile": "Fichier sélectionné",
+    "changeFile": "Changer",
+    "uploadButton": "Uploader le film",
+    "uploadingButton": "Upload en cours..."
   }
 }

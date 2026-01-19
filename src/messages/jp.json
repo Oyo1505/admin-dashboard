@@ -219,6 +219,30 @@
   },
   "Search": {
     "searchLabel": "ユーザーを検索",
-    "loadingLabel": "Recherche en cours"
+    "loadingLabel": "検索中"
+  },
+  "Upload": {
+    "uploadSuccess": "ファイルのアップロードに成功しました",
+    "uploadError": "ファイルのアップロードに失敗しました",
+    "statusPending": "準備中...",
+    "statusUploading": "アップロード中...",
+    "statusCompleted": "完了",
+    "statusFailed": "失敗",
+    "statusCancelled": "キャンセル",
+    "dismissUpload": "通知を閉じる",
+    "uploadProgress": "アップロードの進行状況",
+    "selectFile": "動画ファイルを選択",
+    "submitButton": "送信",
+    "uploadInProgress": "アップロード中...",
+    "fileTooLarge": "ファイルが大きすぎます",
+    "invalidFileType": "無効なファイル形式",
+    "dropzone": "ここに動画をドロップ",
+    "dropzoneHint": "またはクリックして選択",
+    "dragActive": "ここにドロップ！",
+    "supportedFormats": "MP4ファイル（最大10GB）",
+    "selectedFile": "選択されたファイル",
+    "changeFile": "変更",
+    "uploadButton": "映画をアップロード",
+    "uploadingButton": "アップロード中..."
   }
 }
