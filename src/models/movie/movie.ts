@@ -34,8 +34,12 @@ export interface IMovie {
   mimeType?: string;
   updatedAt?: Date;
   isFavorite?: boolean;
+  owners?: OwnersMovieResponse[];
 }
-
+export interface OwnersMovieResponse {
+  displayName: string;
+  emailAddress: string;
+}
 export interface IFilters {
   subtitles?: string;
   language?: string;

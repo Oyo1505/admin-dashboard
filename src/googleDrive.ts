@@ -5,8 +5,8 @@ import { revalidatePath } from 'next/cache';
 import { Readable } from 'stream';
 import { logError } from './lib/errors';
 import { auth } from './lib/google-api';
-import { URL_DASHBOARD_ROUTE } from './shared/route';
 import HttpStatus from './shared/constants/httpStatus';
+import { URL_DASHBOARD_ROUTE } from './shared/route';
 
 export const getDataFromGoogleDrive = async () => {
   // allows you to use drive API methods e.g. listing files, creating files.
@@ -14,12 +14,36 @@ export const getDataFromGoogleDrive = async () => {
   try {
     const movies = await drive.files.list({
       q: `mimeType='video/mp4' and '${process.env.GOOGLE_DRIVE_FOLDER_ID}' in parents`,
+      fields:
+        'files(kind, id, name, mimeType, owners(displayName, emailAddress))',
     });
 
     return { movies: movies.data.files };
   } catch (error) {
     logError(error, 'getDataFromGoogleDrive');
     return null;
+  }
+};
+
+export const deleteFileFromGoogleDrive = async (
+  fileId: string
+): Promise<{ data: unknown; status: number } | null> => {
+  if (!fileId) return null;
+  const drive = google.drive({ version: 'v3', auth });
+
+  try {
+    const response = await drive.files.delete({
+      fileId: fileId,
+    });
+
+    if (response) {
+      revalidatePath(URL_DASHBOARD_ROUTE.movie);
+      return { data: response, status: HttpStatus.OK };
+    }
+    return { data: null, status: HttpStatus.NOT_FOUND };
+  } catch (error) {
+    logError(error, 'deleteFileFromGoogleDrive');
+    throw error;
   }
 };
 

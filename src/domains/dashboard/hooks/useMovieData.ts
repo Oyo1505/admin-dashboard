@@ -1,7 +1,12 @@
 import { IMovie, IMovieFormData, IUpdateMovieData } from '@/models/movie/movie';
 import { MovieSchema } from '@/shared/schema/movieSchema';
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
-import { publishedMovieById } from '../actions/movie';
+import {
+  UseQueryResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { deleteMovieById, publishedMovieById } from '../actions/movie';
 
 interface UseMovieDataProps {
   editMovie: boolean;
@@ -26,6 +31,7 @@ export const useMovieData = ({
   editMovie,
   movie,
 }: UseMovieDataProps): UseMovieDataReturn => {
+  const queryClient = useQueryClient();
   const getDefaultValues = (
     movie?: IMovie,
     idFromGoogleDrive?: string
@@ -89,6 +95,13 @@ export const useMovieData = ({
     enabled: false,
     queryFn: () =>
       movie?.id ? publishedMovieById(movie.id) : Promise.resolve(undefined),
+  });
+
+  const deleteMovieFromPrisma = useMutation({
+    mutationFn: (movieId: string) => deleteMovieById(movieId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['moviePublish'] });
+    },
   });
 
   return {

@@ -1,5 +1,6 @@
 'use server';
 import { MovieService } from '@/domains/movies/services/movie.service';
+import { deleteFileFromGoogleDrive } from '@/googleDrive';
 import { verifyAdmin, verifyOwnership } from '@/lib/data/dal/core/auth';
 import { withAuth, withDALAuth } from '@/lib/data/dal/helpers';
 import {
@@ -32,7 +33,16 @@ export const deleteMovieById = withAuth(
     return await MovieService.deleteMovie(id);
   }
 );
-
+export const deleteMovieByIdToGoogleDrive = withAuth(
+  verifyAdmin,
+  async (id: string): Promise<{ status: number; message?: string }> => {
+    const response = await deleteFileFromGoogleDrive(id);
+    return {
+      status: response?.status ?? 404,
+      message: response?.status === 200 ? 'File deleted successfully' : 'Failed to delete file',
+    };
+  }
+);
 export const publishedMovieById = withAuth(
   verifyAdmin,
   async (

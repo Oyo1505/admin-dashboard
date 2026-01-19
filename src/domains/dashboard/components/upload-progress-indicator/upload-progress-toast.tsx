@@ -1,8 +1,8 @@
 'use client';
 
-import { UploadState } from '@/models/upload/upload';
+import { UploadState, UploadStatus } from '@/models/upload/upload';
 import { useUploadStore } from '@/store/upload/upload-store';
-import { CheckCircle, AlertCircle, Upload, X } from 'lucide-react';
+import { AlertCircle, CheckCircle, Upload, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 interface UploadProgressToastProps {
@@ -21,6 +21,31 @@ const formatFileSize = (bytes: number): string => {
 };
 
 /**
+ * Memoized Status Icon Component
+ * Extracted to prevent re-renders when parent updates
+ * @see rerender-memo
+ */
+const StatusIcon = ({ status }: { status: UploadStatus }) => {
+  switch (status) {
+    case 'completed':
+      return (
+        <CheckCircle className="h-5 w-5 text-green-500" aria-hidden="true" />
+      );
+    case 'failed':
+      return (
+        <AlertCircle className="h-5 w-5 text-red-500" aria-hidden="true" />
+      );
+    default:
+      return (
+        <Upload
+          className="h-5 w-5 text-blue-500 animate-pulse"
+          aria-hidden="true"
+        />
+      );
+  }
+};
+
+/**
  * Upload Progress Toast Component
  * Displays individual upload progress with status icon, progress bar, and dismiss button
  *
@@ -31,32 +56,11 @@ const formatFileSize = (bytes: number): string => {
  */
 export const UploadProgressToast = ({ upload }: UploadProgressToastProps) => {
   const t = useTranslations('Upload');
-  const removeUpload = useUploadStore((state) => state.removeUpload);
 
-  /**
-   * Get status icon based on upload state
-   */
-  const getStatusIcon = () => {
-    switch (upload.status) {
-      case 'completed':
-        return (
-          <CheckCircle
-            className="h-5 w-5 text-green-500"
-            aria-hidden="true"
-          />
-        );
-      case 'failed':
-        return (
-          <AlertCircle className="h-5 w-5 text-red-500" aria-hidden="true" />
-        );
-      default:
-        return (
-          <Upload
-            className="h-5 w-5 text-blue-500 animate-pulse"
-            aria-hidden="true"
-          />
-        );
-    }
+  // Use getState() to avoid subscribing to store for actions only used in callbacks
+  // @see rerender-defer-reads
+  const handleDismiss = () => {
+    useUploadStore.getState().removeUpload(upload.id);
   };
 
   /**
@@ -79,7 +83,8 @@ export const UploadProgressToast = ({ upload }: UploadProgressToastProps) => {
     }
   };
 
-  const canDismiss = upload.status === 'completed' || upload.status === 'failed';
+  const canDismiss =
+    upload.status === 'completed' || upload.status === 'failed';
   const showProgressBar =
     upload.status === 'pending' || upload.status === 'uploading';
 
@@ -90,7 +95,7 @@ export const UploadProgressToast = ({ upload }: UploadProgressToastProps) => {
       aria-label={`${upload.fileName}: ${getStatusText()}`}
     >
       <div className="flex items-start gap-3">
-        {getStatusIcon()}
+        <StatusIcon status={upload.status} />
 
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
@@ -121,7 +126,7 @@ export const UploadProgressToast = ({ upload }: UploadProgressToastProps) => {
 
         {canDismiss && (
           <button
-            onClick={() => removeUpload(upload.id)}
+            onClick={handleDismiss}
             className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
             aria-label={t('dismissUpload')}
             type="button"
