@@ -1,12 +1,13 @@
 'use client';
 
+import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { Button } from '@/domains/ui/components/button/button';
-import { cn } from '@/lib/utils';
 import { logError } from '@/lib/errors';
+import { cn } from '@/lib/utils';
 import { movieUploadSchema } from '@/shared/schema/movieSchema';
 import { useUploadStore } from '@/store/upload/upload-store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Film, Upload, CloudUpload, X } from 'lucide-react';
+import { CloudUpload, Film, Upload, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -270,17 +271,18 @@ const ButtonAddMovie = () => {
         disabled={!selectedFile || isDisabled}
         className={cn(
           'w-full mt-4 h-12 text-base font-semibold',
-          'bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700',
-          'disabled:from-gray-400 disabled:to-gray-500',
           'transition-all duration-300',
           'shadow-lg hover:shadow-xl',
-          isUploading && 'animate-pulse'
+          'cursor-pointer'
         )}
         aria-busy={isUploading}
       >
         {isDisabled ? (
           <span className="flex items-center gap-2">
-            <Upload className="h-5 w-5 animate-spin" />
+            <LoadingSpinner
+              className="h-5 w-5"
+              data-testid={'loading-spinner'}
+            />
             {t('uploadingButton')}
           </span>
         ) : (

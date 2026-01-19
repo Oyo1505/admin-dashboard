@@ -1,30 +1,30 @@
 import { getDataFromGoogleDrive } from '@/googleDrive';
-import { verifyAdmin, withAuthAPI } from '@/lib/data/dal';
+import { verifyAdmin, withAuth } from '@/lib/data/dal';
 import { MovieData } from '@/lib/data/movies';
 import { logError } from '@/lib/errors';
 import { IMovie } from '@/models/movie/movie';
 import HttpStatus from '@/shared/constants/httpStatus';
 
-export const GET = withAuthAPI(verifyAdmin, async () => {
+export const GET = withAuth(verifyAdmin, async () => {
   try {
-    const response = await getDataFromGoogleDrive();
+    const [driveResponse, dbResult] = await Promise.all([
+      getDataFromGoogleDrive(),
+      MovieData.getAll(),
+    ]);
 
-    if (!response) {
+    if (!driveResponse) {
       return Response.json({ movies: [] }, { status: HttpStatus.NOT_FOUND });
     }
-    const { movies } = await MovieData.getAll();
 
-    if (!movies) {
+    if (!dbResult) {
       return Response.json({ movies: [] }, { status: HttpStatus.NOT_FOUND });
     }
-    const idsMoviesFromDatabase = movies.map(
-      (movie: IMovie) => movie.idGoogleDive
+    const idsInDatabase = new Set(
+      dbResult.movies?.map((movie: IMovie) => movie.idGoogleDive)
     );
-
-    const filteredMoviesNotAdded = response?.movies?.filter(
+    const filteredMoviesNotAdded = driveResponse?.movies?.filter(
       (movieFromDrive) =>
-        movieFromDrive?.id &&
-        !idsMoviesFromDatabase?.includes(movieFromDrive.id)
+        movieFromDrive?.id && !idsInDatabase.has(movieFromDrive.id)
     );
 
     return Response.json(
