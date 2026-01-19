@@ -13,7 +13,7 @@ const useDeleteMovieFromPrisma = () => {
       console.error('Error deleting movie from Prisma:', error);
     },
   });
-  console.log(deleteMovieFromPrisma);
+
   return { deleteMovieFromPrisma };
 };
 

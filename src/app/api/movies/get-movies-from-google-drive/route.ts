@@ -1,11 +1,11 @@
 import { getDataFromGoogleDrive } from '@/googleDrive';
-import { verifyAdmin, withAuth } from '@/lib/data/dal';
+import { verifyAdmin, withAuthAPI } from '@/lib/data/dal';
 import { MovieData } from '@/lib/data/movies';
 import { logError } from '@/lib/errors';
 import { IMovie } from '@/models/movie/movie';
 import HttpStatus from '@/shared/constants/httpStatus';
 
-export const GET = withAuth(verifyAdmin, async () => {
+export const GET = withAuthAPI(verifyAdmin, async () => {
   try {
     const response = await getDataFromGoogleDrive();
 

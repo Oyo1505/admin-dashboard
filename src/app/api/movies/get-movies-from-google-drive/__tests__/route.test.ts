@@ -12,10 +12,12 @@ jest.mock('@/lib/errors', () => ({
 
 // Mock DAL authentication layer
 jest.mock('@/lib/data/dal', () => ({
-  withAuth: jest.fn((_verifyFn: unknown, handler: () => Promise<Response>) => {
-    // Return the handler directly for testing, bypassing auth
-    return handler;
-  }),
+  withAuthAPI: jest.fn(
+    (_verifyFn: unknown, handler: () => Promise<Response>) => {
+      // Return the handler directly for testing, bypassing auth
+      return handler;
+    }
+  ),
   verifyAdmin: jest.fn(),
 }));
 

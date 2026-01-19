@@ -29,7 +29,6 @@ export default function TestModeProvider({
       };
 
       setUser(mockAdminUser, true);
-      console.log('[TestMode] Mock admin user initialized for Playwright tests');
     }
   }, [isTestMode, setUser, user]);
 
