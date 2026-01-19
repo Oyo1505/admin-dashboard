@@ -1,11 +1,11 @@
-import { google } from 'googleapis';
-import { Readable } from 'stream';
-import { revalidatePath } from 'next/cache';
-import { auth } from '@/lib/google-api';
 import { logError } from '@/lib/errors';
+import { auth } from '@/lib/google-api';
+import { GoogleDriveUploadResult } from '@/models/upload/upload';
 import HttpStatus from '@/shared/constants/httpStatus';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
-import { GoogleDriveUploadResult } from '@/models/upload/upload';
+import { google } from 'googleapis';
+import { revalidatePath } from 'next/cache';
+import { Readable } from 'stream';
 
 /**
  * Upload Result Interface
@@ -194,7 +194,10 @@ export class GoogleDriveUploadService {
 
       if (!initResponse.ok) {
         const errorText = await initResponse.text();
-        logError(new Error(errorText), 'GoogleDriveUploadService.initResumableUpload');
+        logError(
+          new Error(errorText),
+          'GoogleDriveUploadService.initResumableUpload'
+        );
         return {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Failed to initialize resumable upload',
@@ -222,9 +225,12 @@ export class GoogleDriveUploadService {
       });
 
       // Clean up session after 7 days (supports very long uploads for large files)
-      setTimeout(() => {
-        activeUploadSessions.delete(uploadId);
-      }, 7 * 24 * 60 * 60 * 1000);
+      setTimeout(
+        () => {
+          activeUploadSessions.delete(uploadId);
+        },
+        7 * 24 * 60 * 60 * 1000
+      );
 
       return {
         status: HttpStatus.OK,

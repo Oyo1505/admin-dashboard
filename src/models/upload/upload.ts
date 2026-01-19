@@ -17,7 +17,10 @@ export interface GoogleDriveUploadResult {
   fileId: string;
   webViewLink?: string;
   webContentLink?: string;
-  name: string;
+  fileName?: string;
+  mimeType?: string;
+  size?: number;
+  name?: string;
 }
 
 /**

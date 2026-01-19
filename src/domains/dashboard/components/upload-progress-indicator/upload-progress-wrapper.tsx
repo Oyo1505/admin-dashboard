@@ -1,7 +1,11 @@
 'use client';
 
-import { Activity, useEffect, useState } from 'react';
-import UploadProgressIndicator from './upload-progress-indicator';
+import dynamic from 'next/dynamic';
+import { Activity } from 'react';
+const UploadProgressIndicator = dynamic(
+  () => import('./upload-progress-indicator'),
+  { ssr: false }
+);
 
 /**
  * Client-Only Wrapper for Upload Progress Indicator
@@ -14,14 +18,8 @@ import UploadProgressIndicator from './upload-progress-indicator';
  * provider conflicts in Next.js 15+ with React 19.
  */
 const UploadProgressWrapper = () => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   return (
-    <Activity mode={isMounted ? 'visible' : 'hidden'}>
+    <Activity mode="visible">
       <UploadProgressIndicator />
     </Activity>
   );

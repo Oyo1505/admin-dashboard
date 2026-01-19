@@ -51,7 +51,9 @@ const validateFile = (file: unknown): file is File => {
   const hasSlice = typeof fileObj.slice === 'function';
 
   if (!hasSize || !hasSlice) {
-    throw new Error('Invalid file: expected File or Blob object with slice method');
+    throw new Error(
+      'Invalid file: expected File or Blob object with slice method'
+    );
   }
 
   if (fileObj.size <= 0) {

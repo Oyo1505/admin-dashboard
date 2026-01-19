@@ -1,5 +1,6 @@
 'use client';
 
+import useTime from '@/hooks/use-time';
 import { UPLOAD_VISIBILITY } from '@/shared/constants/upload';
 import { useUploadStore } from '@/store/upload/upload-store';
 import { useMemo } from 'react';
@@ -24,12 +25,9 @@ import { UploadProgressToast } from './upload-progress-toast';
 const UploadProgressIndicator = () => {
   // Get uploads from store
   const uploadsRecord = useUploadStore((state) => state.uploads);
-
+  const time = useTime();
   // Convert Record to array
-  const uploads = useMemo(
-    () => Object.values(uploadsRecord),
-    [uploadsRecord]
-  );
+  const uploads = useMemo(() => Object.values(uploadsRecord), [uploadsRecord]);
 
   // Filter uploads to show:
   // - All pending/uploading uploads
@@ -43,13 +41,13 @@ const UploadProgressIndicator = () => {
 
     // Show completed uploads for configured duration
     if (upload.status === 'completed' && upload.completedAt) {
-      const elapsed = Date.now() - upload.completedAt.getTime();
+      const elapsed = time - upload.completedAt.getTime();
       return elapsed < UPLOAD_VISIBILITY.COMPLETED_DURATION_MS;
     }
 
     // Show failed uploads for configured duration
     if (upload.status === 'failed' && upload.completedAt) {
-      const elapsed = Date.now() - upload.completedAt.getTime();
+      const elapsed = time - upload.completedAt.getTime();
       return elapsed < UPLOAD_VISIBILITY.FAILED_DURATION_MS;
     }
 
