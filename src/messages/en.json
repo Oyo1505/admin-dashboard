@@ -221,5 +221,21 @@
   "Search": {
     "searchLabel": "Search for users",
     "loadingLabel": "Searching"
+  },
+  "Upload": {
+    "uploadSuccess": "File uploaded successfully",
+    "uploadError": "Failed to upload file",
+    "statusPending": "Preparing upload...",
+    "statusUploading": "Uploading...",
+    "statusCompleted": "Completed",
+    "statusFailed": "Failed",
+    "statusCancelled": "Cancelled",
+    "dismissUpload": "Dismiss upload notification",
+    "uploadProgress": "Upload progress",
+    "selectFile": "Select video file",
+    "submitButton": "Submit",
+    "uploadInProgress": "Upload in progress...",
+    "fileTooLarge": "File is too large",
+    "invalidFileType": "Invalid file type"
   }
 }
