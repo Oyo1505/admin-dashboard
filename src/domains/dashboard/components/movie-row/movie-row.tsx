@@ -9,9 +9,11 @@ import {
 } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import useUserStore from '@/store/user/user-store';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Activity } from 'react';
-import { deleteMovieById } from '../../actions/movie';
+import useDeleteMovieFromGoogleDrive from '../../hooks/useDeleteMovieFromGoogleDrive';
+import useDeleteMovieFromPrisma from '../../hooks/useDeleteMovieFromPrisma';
 import { useMovieData } from '../../hooks/useMovieData';
 
 function MovieRow({
@@ -24,14 +26,24 @@ function MovieRow({
   moviesFromGoogleDrive?: boolean;
 }) {
   const { user } = useUserStore();
+  const { deleteMovieFromGoogleDrive } = useDeleteMovieFromGoogleDrive();
+  const { deleteMovieFromPrisma } = useDeleteMovieFromPrisma();
+  const t = useTranslations('Dashboard');
   const onClickDeleteMovie = async (): Promise<void> => {
     if (movie?.id) {
-      await deleteMovieById(movie?.id);
+      await deleteMovieFromPrisma.mutateAsync(movie?.id);
     }
   };
 
+  const onClickDeleteMovieToGoogleDrive = async (): Promise<void> => {
+    if (movie?.id) {
+      await deleteMovieFromGoogleDrive.mutateAsync(movie?.id);
+    }
+  };
+  const { status: statusPrismaDelete } = deleteMovieFromPrisma;
+  const { status: statusGoogleDriveDelete } = deleteMovieFromGoogleDrive;
   const { getMoviePublish } = useMovieData({ editMovie: false, movie });
-  const { data, isFetching, refetch, status } = getMoviePublish;
+  const { data, isFetching, refetch } = getMoviePublish;
 
   const hasPermissionToDelete = checkPermissions(user, 'can:delete', 'movie');
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
@@ -64,7 +76,24 @@ function MovieRow({
                 {btnText}
               </Link>
             </Activity>
-
+            <Activity
+              mode={
+                movie.owners?.[0]?.emailAddress ===
+                process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE
+                  ? 'visible'
+                  : 'hidden'
+              }
+            >
+              <Button
+                aria-label="delete-movie-button-from-google-drive"
+                variant="destructive"
+                className="font-bold hover:cursor-pointer"
+                disabled={statusGoogleDriveDelete === 'pending'}
+                formAction={onClickDeleteMovieToGoogleDrive}
+              >
+                {t('deleteButton')}
+              </Button>
+            </Activity>
             <Activity
               mode={
                 hasPermissionToDelete && !moviesFromGoogleDrive
@@ -76,9 +105,10 @@ function MovieRow({
                 aria-label="delete-movie-button"
                 variant="destructive"
                 className="font-bold hover:cursor-pointer"
+                disabled={statusPrismaDelete === 'pending'}
                 formAction={onClickDeleteMovie}
               >
-                Supprimer
+                {t('deleteButton')}
               </Button>
             </Activity>
           </div>

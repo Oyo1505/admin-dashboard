@@ -46,7 +46,7 @@ const MovieTable = () => {
             <Table>
               <TableHeader>
                 <TableRow className="border-b border-background border-opacity-20">
-                  <TableHead className="max-w-[150px] font-bold">
+                  <TableHead className="max-w-37.5 font-bold">
                     {t('movieNotAdded')}
                   </TableHead>
                 </TableRow>

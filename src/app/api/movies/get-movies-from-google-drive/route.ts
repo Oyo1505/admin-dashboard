@@ -8,6 +8,7 @@ import HttpStatus from '@/shared/constants/httpStatus';
 export const GET = withAuth(verifyAdmin, async () => {
   try {
     const response = await getDataFromGoogleDrive();
+
     if (!response) {
       return Response.json({ movies: [] }, { status: HttpStatus.NOT_FOUND });
     }
@@ -34,6 +35,9 @@ export const GET = withAuth(verifyAdmin, async () => {
     );
   } catch (error) {
     logError(error, 'get-movies-from-google-drive');
-    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
+    return Response.json(
+      { error: 'Internal server error' },
+      { status: HttpStatus.INTERNAL_SERVER_ERROR }
+    );
   }
 });

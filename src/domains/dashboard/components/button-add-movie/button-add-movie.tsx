@@ -28,6 +28,31 @@ const formatFileSize = (bytes: number): string => {
 };
 
 /**
+ * Static icons hoisted outside component to prevent re-creation
+ * @see rendering-hoist-jsx
+ */
+const DROPZONE_ICONS = {
+  dragOver: (
+    <CloudUpload
+      className="h-8 w-8 text-blue-500 animate-bounce"
+      aria-hidden="true"
+    />
+  ),
+  selected: (
+    <Film
+      className="h-8 w-8 text-green-600 dark:text-green-400"
+      aria-hidden="true"
+    />
+  ),
+  default: (
+    <Upload
+      className="h-8 w-8 text-gray-500 dark:text-gray-400"
+      aria-hidden="true"
+    />
+  ),
+} as const;
+
+/**
  * Button Add Movie Component
  *
  * Beautiful file upload component with drag-and-drop support.
@@ -43,7 +68,13 @@ const formatFileSize = (bytes: number): string => {
 const ButtonAddMovie = () => {
   const t = useTranslations('Upload');
   const { upload, isUploading } = useUploadToGoogleDrive();
-  const hasActiveUploads = useUploadStore((state) => state.hasActiveUploads());
+  // Derived state selector to prevent re-renders from function calls
+  // @see rerender-derived-state
+  const hasActiveUploads = useUploadStore((state) =>
+    Object.values(state.uploads).some(
+      (u) => u.status === 'pending' || u.status === 'uploading'
+    )
+  );
 
   const [isDragOver, setIsDragOver] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -168,7 +199,7 @@ const ButtonAddMovie = () => {
           )}
         />
 
-        {/* Icon */}
+        {/* Icon - using hoisted static JSX */}
         <div
           className={cn(
             'rounded-full p-4 transition-all duration-300',
@@ -179,22 +210,11 @@ const ButtonAddMovie = () => {
                 : 'bg-gray-100 dark:bg-gray-800'
           )}
         >
-          {isDragOver ? (
-            <CloudUpload
-              className="h-8 w-8 text-blue-500 animate-bounce"
-              aria-hidden="true"
-            />
-          ) : selectedFile ? (
-            <Film
-              className="h-8 w-8 text-green-600 dark:text-green-400"
-              aria-hidden="true"
-            />
-          ) : (
-            <Upload
-              className="h-8 w-8 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-            />
-          )}
+          {isDragOver
+            ? DROPZONE_ICONS.dragOver
+            : selectedFile
+              ? DROPZONE_ICONS.selected
+              : DROPZONE_ICONS.default}
         </div>
 
         {/* Text content */}

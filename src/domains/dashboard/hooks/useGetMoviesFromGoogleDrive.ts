@@ -10,6 +10,7 @@ const useGetMoviesFromGoogleDrive = () => {
         throw new Error('Failed to fetch movies');
       }
       const { filteredMoviesNotAdded } = await response.json();
+
       return filteredMoviesNotAdded;
     },
   });

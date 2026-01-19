@@ -96,7 +96,6 @@ model Movie {
   updatedAt      DateTime             @updatedAt
   genresIds      MovieGenre[]
   favoriteMovies UserFavoriteMovies[]
-
   @@index([createdAt])
 }
 

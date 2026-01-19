@@ -82,7 +82,7 @@ export class MovieService {
       }
 
       await MovieData.delete(id);
-      revalidatePath('/dashboard/add-movie');
+      revalidatePath(URL_DASHBOARD_ROUTE.movie);
       return { status: HttpStatus.OK };
     } catch (error) {
       logError(error, 'deleteMovieById');
