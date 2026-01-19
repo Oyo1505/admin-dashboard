@@ -1,6 +1,5 @@
 import MenuDashboard from '@/domains/layout/components/menu-dashboard/menu-dashboard';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
-import TestModeProvider from '@/domains/shared/components/test-mode-provider/test-mode-provider';
 import Container from '@/domains/ui/components/container/container';
 import { getServerSession } from '@/lib/auth';
 import { URL_BASE } from '@/shared/route';
@@ -26,19 +25,17 @@ export default async function Layout({
   }
 
   return (
-    <TestModeProvider>
-      <Container className="pt-18" marginSide={false}>
-        <Suspense fallback={<LoadingSpinner />}>
-          <div className="grid  w-full lg:grid-cols-[280px_1fr] ">
-            <div className=" h-52 lg:h-[calc(100vh-10rem)]  lg:block rounded-md">
-              <div className="flex h-full max-h-screen flex-col gap-2">
-                <MenuDashboard />
-              </div>
+    <Container className="pt-18" marginSide={false}>
+      <Suspense fallback={<LoadingSpinner />}>
+        <div className="grid  w-full lg:grid-cols-[280px_1fr] ">
+          <div className=" h-52 lg:h-[calc(100vh-10rem)]  lg:block rounded-md">
+            <div className="flex h-full max-h-screen flex-col gap-2">
+              <MenuDashboard />
             </div>
-            {children}
           </div>
-        </Suspense>
-      </Container>
-    </TestModeProvider>
+          {children}
+        </div>
+      </Suspense>
+    </Container>
   );
 }

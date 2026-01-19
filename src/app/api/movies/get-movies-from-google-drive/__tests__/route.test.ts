@@ -1,24 +1,13 @@
-import { GET } from '../route';
-import { MovieData } from '@/lib/data/movies';
 import { getDataFromGoogleDrive } from '@/googleDrive';
+import { MovieData } from '@/lib/data/movies';
 import { logError } from '@/lib/errors';
+import { GET } from '../route';
 
 // Mock dependencies
 jest.mock('@/lib/data/movies');
 jest.mock('@/googleDrive');
 jest.mock('@/lib/errors', () => ({
   logError: jest.fn(),
-}));
-
-// Mock DAL authentication layer
-jest.mock('@/lib/data/dal', () => ({
-  withAuthAPI: jest.fn(
-    (_verifyFn: unknown, handler: () => Promise<Response>) => {
-      // Return the handler directly for testing, bypassing auth
-      return handler;
-    }
-  ),
-  verifyAdmin: jest.fn(),
 }));
 
 // Mock Response.json for Node.js environment
@@ -32,9 +21,7 @@ global.Response = class Response {
   }
 
   async json() {
-    return typeof this.body === 'string'
-      ? JSON.parse(this.body)
-      : this.body;
+    return typeof this.body === 'string' ? JSON.parse(this.body) : this.body;
   }
 
   static json(data: unknown, init?: { status?: number }) {
