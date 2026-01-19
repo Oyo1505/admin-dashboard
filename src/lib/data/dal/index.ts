@@ -20,3 +20,6 @@ export { DALError, type DALErrorType } from './core/errors';
 
 // Helper functions for Actions
 export { withAuth, withDALAuth } from './helpers';
+
+// Helper for API Routes
+export { withAuthAPI } from './helpers';
