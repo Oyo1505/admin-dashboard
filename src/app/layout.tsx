@@ -1,7 +1,7 @@
+import UploadProgressWrapper from '@/domains/dashboard/components/upload-progress-indicator/upload-progress-wrapper';
 import LayoutLogic from '@/domains/layout/components/layout-logic';
 import MenuHeader from '@/domains/layout/components/menu-header/menu-header';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
-import UploadProgressWrapper from '@/domains/dashboard/components/upload-progress-indicator/upload-progress-wrapper';
 import TanstackProvider from '@/providers/tanstack-provider';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
@@ -53,7 +53,7 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <TanstackProvider>
             <LayoutLogic>
-              <Suspense>
+              <Suspense fallback={null}>
                 <MenuHeader />
               </Suspense>
               <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>

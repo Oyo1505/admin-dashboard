@@ -17,9 +17,7 @@ const MenuHeaderItem = ({
     <Link
       className={cn(
         'hover:text-red-500 text-primary transition-colors duration-300',
-        {
-          'text-red-500': segment ? pathname?.includes(segment) : null,
-        }
+        segment ? pathname?.includes(segment) ? 'text-red-500' : '' : pathname === '/' ? 'text-red-500' : '',
       )}
       prefetch
       href={pathname}
