@@ -9,7 +9,6 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Lobster } from 'next/font/google';
 import Link from 'next/link';
-import { Activity } from 'react';
 
 const lobster = Lobster({
   weight: '400',
@@ -31,7 +30,8 @@ const LandingPage = () => {
   const { user } = useUserStore();
   const t = useTranslations('LandingPage');
 
-  const userIsNotLogged = session === null && Object.keys(user).length === 0;
+  const userIsNotLogged =
+    session === null && Object.keys(user).length === 0 && !isPending;
 
   return (
     <Container>
@@ -40,10 +40,12 @@ const LandingPage = () => {
           <h1 className={clsx(lobster.className, 'text-5xl text-center')}>
             {t('welcome')}
           </h1>
-          <Activity mode={userIsNotLogged && !isPending ? 'visible' : 'hidden'}>
-            <div>{t('title')}</div>
-            <ButtonLogin />
-          </Activity>
+          {userIsNotLogged && (
+            <>
+              <div>{t('title')}</div>
+              <ButtonLogin />
+            </>
+          )}
 
           {isPending && <LoadingSpinner data-testid={'loading-spinner'} />}
         </div>
