@@ -1,10 +1,9 @@
 'use client';
 
-import { useSession } from '@/lib/auth-client';
 import { URL_DASHBOARD, URL_HOME, URL_MOVIES } from '@/shared/route';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import React, { Activity } from 'react';
+import React from 'react';
 
 const MenuMobileItem = ({
   setIsActive,
@@ -13,11 +12,10 @@ const MenuMobileItem = ({
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   isActive: boolean;
 }) => {
-  const { data: session } = useSession();
   const t = useTranslations('Menu');
 
   return (
-    <Activity mode={session ? 'visible' : 'hidden'}>
+    <>
       <Link
         className="hover:text-red-600"
         href={URL_HOME}
@@ -40,7 +38,7 @@ const MenuMobileItem = ({
       >
         {t('dashboard')}
       </Link>
-    </Activity>
+    </>
   );
 };
 

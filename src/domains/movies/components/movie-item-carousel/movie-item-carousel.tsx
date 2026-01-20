@@ -27,6 +27,7 @@ const MovieItemCarousel = ({
               priority
               src={image}
               alt={`poster-${movie?.title}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
               width={300}
               height={200}
