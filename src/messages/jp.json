@@ -131,7 +131,8 @@
     "toastMovieMessageSuccess": "映画をお気に入りに追加しました",
     "toastMovieMessageSuccessDelete": "お気に入りリストから削除されました",
     "titleSection": "タイトル情報",
-    "languageAndCountry": "言語と国"
+    "languageAndCountry": "言語と国",
+    "videoPreview": "ビデオプレビュー"
   },
   "DirectorSectionForm": {
     "title": "ディレクターセクションを追加",
@@ -198,7 +199,12 @@
     "clearChat": "チャット履歴をクリア",
     "thinking": "考え中...",
     "error": "エラーが発生しました",
-    "askMovie": "映画について質問してください"
+    "askMovie": "映画について質問してください",
+    "openChat": "アシスタントを開く",
+    "closeChat": "アシスタントを閉じる",
+    "messageHistory": "メッセージ履歴",
+    "messageLabel": "あなたのメッセージ",
+    "sendMessage": "メッセージを送信"
   },
   "RessourcesPage": {
     "title": "リソース",

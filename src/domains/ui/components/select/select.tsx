@@ -10,6 +10,7 @@ interface SelectInputProps<T = Record<string, unknown>> {
   // eslint-disable-next-line no-unused-vars
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
+  id?: string;
 }
 
 const SelectInput = ({
@@ -20,6 +21,7 @@ const SelectInput = ({
   locale,
   onChange,
   className = 'text-background',
+  id,
 }: SelectInputProps) => {
   const getFormValue = (
     data: typeof formData,
@@ -31,9 +33,11 @@ const SelectInput = ({
       : undefined;
   };
 
+  const selectId = id || `select-${formDataKey}`;
+
   return (
     <select
-      id={`select-${formDataKey}`}
+      id={selectId}
       onChange={onChange}
       defaultValue={defaultValue || getFormValue(formData, formDataKey)}
       className={clsx(
@@ -41,7 +45,6 @@ const SelectInput = ({
         'border border-input rounded-md px-3 py-2',
         className
       )}
-      aria-label={formDataKey}
     >
       <option value=""> </option>
       {optionsList.map((option, index) => (

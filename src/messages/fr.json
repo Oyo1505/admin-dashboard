@@ -132,7 +132,8 @@
     "toastMovieMessageSuccess": "Edition du film réussie",
     "toastMovieMessageSuccessDelete": "Une erreur est survenue",
     "titleSection": "Informations sur les titres",
-    "languageAndCountry": "Langue et pays"
+    "languageAndCountry": "Langue et pays",
+    "videoPreview": "Apercu de la video"
   },
   "DirectorSectionForm": {
     "title": "Ajouter une section réalisateur",
@@ -200,7 +201,12 @@
     "clearChat": "Effacer la conversation",
     "thinking": "L'assistant réfléchit...",
     "error": "Une erreur est survenue. Veuillez réessayer.",
-    "welcome": "Bienvenue ! Comment puis-je vous aider avec vos questions cinéma ?"
+    "welcome": "Bienvenue ! Comment puis-je vous aider avec vos questions cinéma ?",
+    "openChat": "Ouvrir l'assistant",
+    "closeChat": "Fermer l'assistant",
+    "messageHistory": "Historique des messages",
+    "messageLabel": "Votre message",
+    "sendMessage": "Envoyer le message"
   },
   "RessourcesPage": {
     "title": "Ressources",

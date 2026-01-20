@@ -165,7 +165,7 @@ const ButtonAddMovie = () => {
         aria-label={t('selectFile')}
         aria-disabled={isDisabled}
         className={cn(
-          'relative mt-4 rounded-xl border-2 border-dashed p-6 transition-all duration-300',
+          'relative mt-4 border-2 border-dashed p-6 transition-all duration-300',
           'flex flex-col items-center justify-center gap-3',
           'cursor-pointer select-none',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
@@ -196,6 +196,7 @@ const ButtonAddMovie = () => {
               className="sr-only"
               aria-label={t('selectFile')}
               disabled={isDisabled}
+              tabIndex={-1}
             />
           )}
         />
@@ -243,7 +244,7 @@ const ButtonAddMovie = () => {
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {t('dropzoneHint')}
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               {t('supportedFormats')}
             </p>
           </div>

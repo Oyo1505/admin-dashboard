@@ -96,6 +96,7 @@ const FormMovie = ({
           <Activity mode={formData?.idGoogleDive ? 'visible' : 'hidden'}>
             <iframe
               src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`}
+              title={t('videoPreview')}
               width="100%"
               height="150"
               allow="autoplay"

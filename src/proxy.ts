@@ -52,15 +52,15 @@ export default async function proxy(req: NextRequest) {
     }
 
     // Skip session check in test mode or development mode
-    if (!isTestMode && !isDevMode) {
-      const session = await auth.api.getSession({
-        headers: await headers(),
-      });
 
-      if (!session) {
-        return NextResponse.redirect(new URL(URL_BASE, req.url));
-      }
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session) {
+      return NextResponse.redirect(new URL(URL_BASE, req.url));
     }
+
     return NextResponse.rewrite(url);
   } catch (error) {
     logError(error, 'Middleware error');

@@ -34,6 +34,7 @@ const FromSelectInput = ({
         htmlFor={htmlFor}
       />
       <SelectInput
+        id={htmlFor}
         optionsList={optionsList}
         formData={formData}
         formDataKey={formDataKey}

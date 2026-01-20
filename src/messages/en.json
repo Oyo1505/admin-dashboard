@@ -132,7 +132,8 @@
     "toastMovieMessageSuccess": "Movie added to favorites",
     "toastMovieMessageSuccessDelete": "An error occurred",
     "titleSection": "Title Information",
-    "languageAndCountry": "Language and Country"
+    "languageAndCountry": "Language and Country",
+    "videoPreview": "Video preview"
   },
   "DirectorSectionForm": {
     "title": "Add Director Section",
@@ -199,7 +200,12 @@
     "clearChat": "Clear chat",
     "thinking": "Thinking...",
     "error": "An error occurred",
-    "askMovie": "Ask me about movies"
+    "askMovie": "Ask me about movies",
+    "openChat": "Open assistant",
+    "closeChat": "Close assistant",
+    "messageHistory": "Message history",
+    "messageLabel": "Your message",
+    "sendMessage": "Send message"
   },
   "RessourcesPage": {
     "title": "Ressources",
