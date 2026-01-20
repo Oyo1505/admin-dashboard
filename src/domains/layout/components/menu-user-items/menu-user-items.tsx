@@ -8,18 +8,22 @@ export function User({ mobile = false }: { mobile: boolean }) {
   const user = session?.user;
 
   return (
-    <div className="flex items-center gap-4">
-      <ButtonLogout />
-      {user?.image && !mobile && (
-        <Image
-          className="h-8 w-8 rounded-full"
-          src={user?.image}
-          height={32}
-          priority
-          width={32}
-          alt={`${user?.name} avatar`}
-        />
+    <>
+      {user && (
+        <div className="flex items-center gap-4">
+          <ButtonLogout />
+          {user?.image && !mobile && (
+            <Image
+              className="h-8 w-8 rounded-full"
+              src={user?.image}
+              height={32}
+              priority
+              width={32}
+              alt={`${user?.name} avatar`}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
