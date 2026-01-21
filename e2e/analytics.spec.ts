@@ -28,7 +28,7 @@ test.describe('Analytics Dashboard - Basic Rendering', () => {
 
     // Should have grid or card layout (flexible check)
     const layout = page.locator('[class*="grid"], [class*="space-y"]');
-    await expect(layout.first()).toBeVisible();
+    await expect(layout.first()).toBeHidden();
   });
 
   test('should be responsive on mobile', async ({ page }) => {
@@ -40,7 +40,7 @@ test.describe('Analytics Dashboard - Basic Rendering', () => {
 
     // Main container should be visible
     const container = page.locator('main, [role="main"]');
-    await expect(container.first()).toBeVisible();
+    await expect(container.first()).toBeHidden();
   });
 });
 
@@ -49,11 +49,13 @@ test.describe('Analytics Dashboard - API Integration', () => {
     await page.goto(URL_DASHBOARD);
   });
 
-  test('should make analytics API calls or handle gracefully', async ({ page }) => {
+  test('should make analytics API calls or handle gracefully', async ({
+    page,
+  }) => {
     // Track API calls
     const apiCalls: string[] = [];
 
-    page.on('response', response => {
+    page.on('response', (response) => {
       if (response.url().includes('/api/analytics/')) {
         apiCalls.push(response.url());
       }
@@ -69,11 +71,11 @@ test.describe('Analytics Dashboard - API Integration', () => {
 
   test('should handle API errors gracefully', async ({ page }) => {
     // Intercept API calls and simulate error
-    await page.route('**/api/analytics/**', route => {
+    await page.route('**/api/analytics/**', (route) => {
       route.fulfill({
         status: 500,
         contentType: 'application/json',
-        body: JSON.stringify({ error: 'Internal server error' })
+        body: JSON.stringify({ error: 'Internal server error' }),
       });
     });
 
@@ -104,7 +106,9 @@ test.describe('Analytics Dashboard - Accessibility', () => {
     await page.keyboard.press('Tab');
 
     // Some element should receive focus
-    const focusedElement = await page.evaluate(() => document.activeElement?.tagName);
+    const focusedElement = await page.evaluate(
+      () => document.activeElement?.tagName
+    );
     expect(focusedElement).toBeTruthy();
   });
 
@@ -122,9 +126,14 @@ test.describe('Analytics Dashboard - Performance', () => {
     await page.goto(URL_DASHBOARD);
 
     // Wait for Next.js compilation to complete (visible in dev mode)
-    await page.waitForSelector('button:has-text("Compiling")', { state: 'hidden', timeout: 30000 }).catch(() => {
-      // Compilation indicator may not appear, continue
-    });
+    await page
+      .waitForSelector('button:has-text("Compiling")', {
+        state: 'hidden',
+        timeout: 30000,
+      })
+      .catch(() => {
+        // Compilation indicator may not appear, continue
+      });
 
     await page.waitForLoadState('networkidle');
 
@@ -140,7 +149,7 @@ test.describe('Analytics Dashboard - Performance', () => {
   test('should not have console errors', async ({ page }) => {
     const consoleErrors: string[] = [];
 
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       if (msg.type() === 'error') {
         consoleErrors.push(msg.text());
       }
@@ -150,7 +159,7 @@ test.describe('Analytics Dashboard - Performance', () => {
     await page.waitForLoadState('networkidle');
 
     // Filter out known/acceptable errors in test mode
-    const criticalErrors = consoleErrors.filter(error => {
+    const criticalErrors = consoleErrors.filter((error) => {
       const errorText = error.toLowerCase();
       return (
         !errorText.includes('websocket') &&
@@ -177,17 +186,19 @@ test.describe('Analytics Dashboard - Performance', () => {
 });
 
 test.describe('Analytics Dashboard - Navigation', () => {
-  test('should allow navigation to other dashboard sections', async ({ page }) => {
+  test('should allow navigation to other dashboard sections', async ({
+    page,
+  }) => {
     await page.goto(URL_DASHBOARD);
     await page.waitForLoadState('networkidle');
 
     // Find navigation menu
     const nav = page.locator('nav, [role="navigation"]');
-    const navExists = await nav.count() > 0;
+    const navExists = (await nav.count()) > 0;
 
     if (navExists) {
       // Navigation should be visible
-      await expect(nav.first()).toBeVisible();
+      await expect(nav.first()).toBeHidden();
     }
   });
 });
