@@ -65,24 +65,24 @@ This is a Next.js 16 movie management platform with a domain-driven architecture
 
 - ✅ Implemented **Data Access Layer (DAL)** for centralized security following Next.js best practices
 - ✅ Established **4-layer architecture**: DAL → Service → Data → Database
-- ✅ Added comprehensive test coverage (26+ test files, 99.13% DAL coverage)
+- ✅ Added comprehensive test coverage (47 unit test files + 6 E2E test files, 99.13% DAL coverage)
 - ✅ Created helper functions and constants to improve code maintainability
 - ✅ Service layer separation across all domains for clean business logic
 
 ### Tech Stack
 
-- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
+- **Frontend**: Next.js 16.1 (App Router), React 19.2, TypeScript 5.4, Tailwind CSS v4
 - **UI Components**: Radix UI, Shadcn/ui, Lucide React icons
-- **Backend**: Next.js API routes, Prisma ORM v6.18, PostgreSQL
-- **Authentication**: Better Auth v1.3 with Google OAuth (migrated from NextAuth.js)
+- **Backend**: Next.js API routes, Prisma ORM v7.2, PostgreSQL
+- **Authentication**: Better Auth v1.4 with Google OAuth (migrated from NextAuth.js)
 - **State Management**:
   - Client state: Zustand
   - Server state: TanStack Query v5 (React Query)
 - **AI Integration**: Mistral AI for chatbot functionality
 - **File Storage**: Google Drive API integration
 - **Testing**:
-  - Unit tests: Jest with Testing Library
-  - E2E tests: Playwright with CI/CD integration
+  - Unit tests: Jest 30 with Testing Library
+  - E2E tests: Playwright 1.57 with CI/CD integration
 - **Deployment**: Vercel with analytics
 - **Internationalization**: next-intl (French, English, Japanese support)
 
@@ -107,6 +107,18 @@ src/domains/
 └── ressources/     # Resource management
 ```
 
+### Project Statistics
+
+| Metric | Count | Details |
+|--------|-------|---------|
+| **Domains** | 9 | auth, chat-bot, dashboard, layout, movies, ressources, shared, skeleton, ui |
+| **Components** | 106+ | 33 dashboard, 25 movies, 21 UI, 9 layout, 7 skeleton, 6 shared |
+| **Services** | 13 | auth (4), dashboard (4), movies (5), chat-bot (1) |
+| **Custom Hooks** | 20+ | 11 dashboard, 4 movies, 1 auth, plus shared |
+| **API Routes** | 18 | analytics (8), movies (2), genres (1), auth (1), upload (3), users (1), tmdb (1), search (1) |
+| **Unit Tests** | 47 | DAL (3), Data (8), Services (12), Hooks (5), Components (10+), Store (1) |
+| **E2E Tests** | 6 | analytics, dashboard, home, landing-page, movies, ressources |
+
 ### Key Features
 
 - **Multi-role system**: USER/ADMIN roles with different permissions
@@ -124,7 +136,9 @@ Key models include:
 - `User` - Authentication and user management with Better Auth
 - `Session` - Better Auth session management
 - `Account` - OAuth account linking
+- `Verification` - Email verification tokens (Better Auth)
 - `Movie` - Core movie entity with metadata, genres, and Google Drive integration
+- `MovieGenre` - Movie-genre relationships (junction table)
 - `Genre` - Multilingual genre system
 - `UserFavoriteMovies` - User-movie relationships
 - `AnalyticsUser/AnalyticsApplication` - Usage tracking
@@ -132,7 +146,7 @@ Key models include:
 
 ### Authentication & Security
 
-- Uses Better Auth v1.3 with Google OAuth provider (migrated from NextAuth.js)
+- Uses Better Auth v1.4 with Google OAuth provider (migrated from NextAuth.js)
 - Middleware-based route protection via `proxy.ts` (all routes except /, privacy, and legal pages require authentication)
 - Role-based access control (USER/ADMIN)
 - Email authorization system for controlling access
@@ -145,7 +159,7 @@ Key models include:
 - Prettier configuration enforces consistent code style
 - ESLint with Next.js and Prettier integration
 - Testing setup:
-  - Jest with jsdom environment for unit tests (26+ test files)
+  - Jest with jsdom environment for unit tests (47 test files)
   - Comprehensive test coverage:
     - DAL Security Layer: 99.13% coverage
     - Data Layer: Full CRUD operations tested
@@ -166,9 +180,14 @@ Key models include:
 - Components organized by domain in `src/domains/`
 - Data layer abstraction in `src/lib/data/` (analytics, director, email, genres, movies, users)
 - Shared utilities in `src/lib/` and `src/shared/`
+- Shared constants in `src/shared/constants/` (analytics, countries, decade, httpStatus, lang, pagination, time, upload)
 - E2E tests in `e2e/` directory (landing-page, dashboard, home, movies, resources)
 - Prisma schema defines the complete database structure
 - Proxy middleware (`src/proxy.ts`) handles authentication and internationalization
+- Global hooks in `src/hooks/` (use-error-handler.ts, use-time.tsx)
+- TypeScript models in `src/models/` (auth, director, lang, movie, upload, user)
+- Shared utilities in `src/shared/utils/` organized by type (date, locale, number, permissions, status, string, time)
+- Zod schemas in `src/shared/schema/` (dashboardSchema, movieSchema)
 
 ### Important Patterns
 
@@ -177,14 +196,17 @@ Key models include:
 - Data layer separation in `src/lib/data/` for database queries
 - API Routes for GET operations, Server Actions for mutations
 - Custom hooks with TanStack Query for server state:
-  - `useEmailsAutorized` - Email authorization management
-  - `useAnalyticsUsersVisits` - Analytics data fetching
-  - `useGoogleQueries` - Google Drive queries
-  - `useMovieFilters` - Movie filtering logic
-  - `useMovieData` - Movie data management
+  - **Auth**: `useEmailsAutorized` - Email authorization management
+  - **Dashboard**: `useAnalyticsUsersVisits`, `useAdminStats`, `useUserStats` - Analytics and stats
+  - **Google Drive**: `useGoogleQueries`, `useGetMoviesFromGoogleDrive`, `useDeleteMovieFromGoogleDrive`, `useUploadToGoogleDrive`
+  - **Movies**: `useMovieFilters`, `useMovieData`, `useMovieForm`, `useMovieGenres`, `useDeleteMovieFromPrisma`
 - Consistent use of TypeScript interfaces
 - Shadcn/ui component library for consistent design system
 - Accessibility-first approach (recent accessibility improvements)
+- Zustand stores for client state (`src/store/`):
+  - `movie/movie-store.tsx` - Movie selection and filtering state
+  - `upload/upload-store.tsx` - File upload progress tracking
+  - `user/user-store.tsx` - User preferences and session state
 
 ## Project-Specific Conventions
 
@@ -293,6 +315,8 @@ src/domains/[domain]/services/
 - **Dashboard Services** ([src/domains/dashboard/services/](src/domains/dashboard/services/)):
   - `email.service.ts` - Email operations for admin
   - `director.service.ts` - Director management
+  - `analytics.service.ts` - Analytics data operations
+  - `google-drive-upload.service.ts` - Google Drive file upload management
 
 - **Chat-Bot Services** ([src/domains/chat-bot/services/](src/domains/chat-bot/services/)):
   - `mistral-tools.service.ts` - Mistral AI integration
@@ -309,6 +333,12 @@ src/domains/[domain]/services/
 
 ```
 src/lib/data/
+├── dal/                # Data Access Layer (security)
+│   ├── core/
+│   │   ├── auth.ts     # verifySession, getCurrentUser, verifyAdmin
+│   │   └── errors.ts   # DALError class
+│   ├── helpers.ts      # withAuth, withDALAuth wrappers
+│   └── index.ts        # Public exports
 ├── analytics.ts        # Analytics data queries
 ├── director.ts         # Director data operations
 ├── email.ts            # Email authorization queries
@@ -317,6 +347,25 @@ src/lib/data/
 ├── movies-helpers.ts   # Helper functions for movie operations
 ├── search.ts           # Search functionality
 └── users.ts            # User data operations
+```
+
+#### Library Utilities (`src/lib/`)
+
+```
+src/lib/
+├── data/               # Data layer (see above)
+├── utils/              # Utility functions
+│   ├── error-handler.ts    # withErrorHandling wrapper
+│   ├── query-helpers.ts    # TanStack Query utilities
+│   └── validation.ts       # Input validation helpers
+├── auth.ts             # Better Auth configuration
+├── auth-client.ts      # Client-side auth client
+├── prisma.ts           # Prisma client singleton
+├── errors.ts           # Error handling utilities
+├── security.ts         # Security utilities
+├── google-api.ts       # Google Drive API integration
+├── mistral.ts          # Mistral AI client
+└── api-wrapper.ts      # API validation wrapper
 ```
 
 **Data Layer Benefits**:
@@ -730,15 +779,15 @@ The project has comprehensive test coverage with **28 test suites** containing *
   - [src/lib/data/dal/core/**tests**/errors.test.ts](src/lib/data/dal/core/__tests__/errors.test.ts)
   - [src/lib/data/dal/**tests**/helpers.test.ts](src/lib/data/dal/__tests__/helpers.test.ts)
 
-- **Data Layer**: 7 test files covering all data operations
-  - [src/lib/data/**tests**/movies.test.ts](src/lib/data/__tests__/movies.test.ts)
-  - [src/lib/data/**tests**/movies-helpers.test.ts](src/lib/data/__tests__/movies-helpers.test.ts)
-  - [src/lib/data/**tests**/users.test.ts](src/lib/data/__tests__/users.test.ts)
-  - [src/lib/data/**tests**/genres.test.ts](src/lib/data/__tests__/genres.test.ts)
-  - [src/lib/data/**tests**/director.test.ts](src/lib/data/__tests__/director.test.ts)
-  - [src/lib/data/**tests**/analytics.test.ts](src/lib/data/__tests__/analytics.test.ts)
-  - [src/lib/data/**tests**/email.test.ts](src/lib/data/__tests__/email.test.ts)
-  - [src/lib/data/**tests**/search.test.ts](src/lib/data/__tests__/search.test.ts)
+- **Data Layer**: 8 test files covering all data operations
+  - [src/lib/data/__tests__/movies.test.ts](src/lib/data/__tests__/movies.test.ts)
+  - [src/lib/data/__tests__/movies-helpers.test.ts](src/lib/data/__tests__/movies-helpers.test.ts)
+  - [src/lib/data/__tests__/users.test.ts](src/lib/data/__tests__/users.test.ts)
+  - [src/lib/data/__tests__/genres.test.ts](src/lib/data/__tests__/genres.test.ts)
+  - [src/lib/data/__tests__/director.test.ts](src/lib/data/__tests__/director.test.ts)
+  - [src/lib/data/__tests__/analytics.test.ts](src/lib/data/__tests__/analytics.test.ts)
+  - [src/lib/data/__tests__/email.test.ts](src/lib/data/__tests__/email.test.ts)
+  - [src/lib/data/__tests__/search.test.ts](src/lib/data/__tests__/search.test.ts)
 
 - **Service Layer**: 11 test files covering business logic
   - Auth services: 4 test files
@@ -805,7 +854,7 @@ Le projet utilise deux workflows GitHub Actions pour l'intégration continue et 
    pnpm test -- --coverage --maxWorkers=2
    ```
 
-   - Exécute tous les tests Jest (26+ fichiers)
+   - Exécute tous les tests Jest (47 fichiers)
    - Génère le rapport de couverture
    - Parallélisation avec 2 workers
 
@@ -890,8 +939,8 @@ BETTER_AUTH_SECRET: test-secret-key-for-ci-only-minimum-32-characters-long-safe
 **Sur chaque Pull Request, vous obtiendrez** :
 
 1. **Statut des workflows** :
-   - ✅ Jest Unit Tests - 28 suites, 458 tests
-   - ✅ Playwright E2E Tests
+   - ✅ Jest Unit Tests - 47 fichiers de tests unitaires
+   - ✅ Playwright E2E Tests - 6 fichiers de tests E2E
 
 2. **Commentaire automatique avec** :
    - Métriques de couverture (statements, branches, functions, lines)
@@ -907,7 +956,7 @@ BETTER_AUTH_SECRET: test-secret-key-for-ci-only-minimum-32-characters-long-safe
 Pour reproduire les tests CI/CD localement :
 
 ```bash
-# Tests unitaires Jest (28 suites, 458 tests)
+# Tests unitaires Jest (47 fichiers de tests)
 pnpm test                                      # Tous les tests
 pnpm exec jest --coverage                      # Avec couverture
 pnpm exec jest --coverage --maxWorkers=2       # Comme en CI/CD
