@@ -1,5 +1,7 @@
 import Container from '@/domains/ui/components/container/container';
 
+export const dynamic = 'force-static';
+
 const Page = () => {
   return (
     <Container className="pt-14 flex flex-col gap-4">
