@@ -157,7 +157,9 @@ export class GoogleDriveUploadService {
       }
 
       // Get access token
-      const accessToken = await auth.getAccessToken();
+      const tokenResponse = await auth.getAccessToken();
+      const accessToken = tokenResponse?.token;
+
       if (!accessToken) {
         return {
           status: HttpStatus.UNAUTHORIZED,
@@ -173,7 +175,10 @@ export class GoogleDriveUploadService {
 
       // Use provided origin or fall back to BETTER_AUTH_URL for CORS
       const corsOrigin =
-        origin || process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+        origin ||
+        process.env.BETTER_AUTH_URL ||
+        process.env.NEXTAUTH_URL ||
+        'http://localhost:3000';
 
       // Initialize resumable upload with Origin header for CORS
       // This enables direct browser uploads to the returned resumableUri

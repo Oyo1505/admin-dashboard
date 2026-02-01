@@ -1,22 +1,26 @@
 import { google } from 'googleapis';
 
-export const auth = new google.auth.GoogleAuth({
-  credentials: {
-    type: process.env.TYPE,
-    project_id: process.env.PROJECT_ID,
-    private_key_id: process.env.PRIVATE_KEY_ID,
-    private_key: process.env.PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    client_email: process.env.CLIENT_EMAIL_GOOGLE_DRIVE,
-    client_id: process.env.CLIENT_ID,
-    //@ts-ignore
-    auth_uri: process.env.AUTH_URI,
-    token_uri: process.env.TOKEN_URI,
-    auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
-    client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
-    universe_domain: process.env.UNIVERSE_DOMAIN,
-  },
-  scopes: [
-    'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/drive.file',
-  ],
+/**
+ * Google Drive OAuth2 Authentication
+ *
+ * Uses OAuth2 with a refresh token to authenticate as a personal Google account.
+ * This allows files to be owned by your personal account (using your 200GB quota)
+ * instead of a service account (limited to 15GB).
+ *
+ * Required environment variables:
+ * - GOOGLE_CLIENT_ID: OAuth2 client ID
+ * - GOOGLE_CLIENT_SECRET: OAuth2 client secret
+ * - GOOGLE_REFRESH_TOKEN: Refresh token for your personal Google account
+ */
+
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET
+);
+
+// Set the refresh token - this allows automatic token refresh
+oauth2Client.setCredentials({
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
+
+export const auth = oauth2Client;
