@@ -23,9 +23,32 @@ if (typeof global.Request === 'undefined') {
 }
 
 // @ts-ignore - Response is not available in Node.js global types
-if (typeof global.Response === 'undefined') {
+if (typeof global.Response === 'undefined' || !global.Response.json) {
   // @ts-ignore
-  global.Response = class Response {};
+  global.Response = class Response {
+    body: string;
+    status: number;
+    headers: Map<string, string>;
+
+    constructor(body?: BodyInit | null, init?: ResponseInit) {
+      this.body = typeof body === 'string' ? body : JSON.stringify(body);
+      this.status = init?.status || 200;
+      this.headers = new Map();
+    }
+
+    async json() {
+      return JSON.parse(this.body);
+    }
+
+    async text() {
+      return this.body;
+    }
+
+    static json(data: unknown, init?: ResponseInit) {
+      const response = new Response(JSON.stringify(data), init);
+      return response;
+    }
+  };
 }
 
 // @ts-ignore - Headers is not available in Node.js global types

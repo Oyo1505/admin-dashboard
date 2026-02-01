@@ -48,6 +48,7 @@ function MovieRow({
   const hasPermissionToDelete = checkPermissions(user, 'can:delete', 'movie');
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
   const isMoviePublished = data?.publish ?? movie.publish;
+  console.log('movie-row render', movie.owners?.[0]?.emailAddress);
   return (
     <Activity mode={movie && movie.id ? 'visible' : 'hidden'}>
       <TableRow className="border-b border-background border-opacity-20">
