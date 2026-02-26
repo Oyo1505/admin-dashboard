@@ -6,6 +6,15 @@ import { IMovie } from '@/models/movie/movie';
 import HttpStatus from '@/shared/constants/httpStatus';
 
 export const GET = withAuth(verifyAdmin, async () => {
+  const driveEnabled = process.env.NEXT_PUBLIC_GOOGLE_DRIVE_ENABLED !== 'false';
+
+  if (!driveEnabled) {
+    return Response.json(
+      { filteredMoviesNotAdded: [] },
+      { status: HttpStatus.OK }
+    );
+  }
+
   try {
     const [driveResponse, dbResult] = await Promise.all([
       getDataFromGoogleDrive(),
@@ -13,7 +22,10 @@ export const GET = withAuth(verifyAdmin, async () => {
     ]);
 
     if (!driveResponse) {
-      return Response.json({ movies: [] }, { status: HttpStatus.NOT_FOUND });
+      return Response.json(
+        { filteredMoviesNotAdded: [] },
+        { status: HttpStatus.OK }
+      );
     }
 
     if (!dbResult) {

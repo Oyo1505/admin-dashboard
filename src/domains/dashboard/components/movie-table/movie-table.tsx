@@ -26,12 +26,6 @@ const MovieTable = () => {
     page,
   });
   if (isLoading) return <Loading />;
-  if (error)
-    return (
-      <div className="p-4 text-red-500">
-        Failed to load movies from Google Drive
-      </div>
-    );
   return (
     <Suspense fallback={<Loading />}>
       <div className="flex flex-1 flex-col gap-4 w-full md:gap-8 md:p-6">
