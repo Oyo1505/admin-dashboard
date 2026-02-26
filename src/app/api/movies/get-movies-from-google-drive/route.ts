@@ -13,7 +13,10 @@ export const GET = withAuth(verifyAdmin, async () => {
     ]);
 
     if (!driveResponse) {
-      return Response.json({ movies: [] }, { status: HttpStatus.NOT_FOUND });
+      return Response.json(
+        { filteredMoviesNotAdded: [] },
+        { status: HttpStatus.OK }
+      );
     }
 
     if (!dbResult) {

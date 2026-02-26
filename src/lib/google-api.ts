@@ -1,26 +1,27 @@
 import { google } from 'googleapis';
 
 /**
- * Google Drive OAuth2 Authentication
+ * Google Drive Service Account Authentication
  *
- * Uses OAuth2 with a refresh token to authenticate as a personal Google account.
- * This allows files to be owned by your personal account (using your 200GB quota)
- * instead of a service account (limited to 15GB).
+ * Uses a service account instead of OAuth2 - no token expiry, no Google app approval needed.
+ * The target Google Drive folder must be shared with the service account email:
+ * CLIENT_EMAIL_GOOGLE_DRIVE (id-y0-884@y0flix-auth.iam.gserviceaccount.com)
  *
  * Required environment variables:
- * - GOOGLE_CLIENT_ID: OAuth2 client ID
- * - GOOGLE_CLIENT_SECRET: OAuth2 client secret
- * - GOOGLE_REFRESH_TOKEN: Refresh token for your personal Google account
+ * - CLIENT_EMAIL_GOOGLE_DRIVE: Service account email
+ * - PRIVATE_KEY: Service account private key
+ *
+ * Scopes:
+ * - drive.readonly: list and read files (used for movie list)
+ * - drive.file: create/delete files (used for upload when re-enabled)
  */
-
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET
-);
-
-// Set the refresh token - this allows automatic token refresh
-oauth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+export const auth = new google.auth.GoogleAuth({
+  credentials: {
+    client_email: process.env.CLIENT_EMAIL_GOOGLE_DRIVE,
+    private_key: process.env.PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  },
+  scopes: [
+    'https://www.googleapis.com/auth/drive.readonly',
+    'https://www.googleapis.com/auth/drive.file',
+  ],
 });
-
-export const auth = oauth2Client;

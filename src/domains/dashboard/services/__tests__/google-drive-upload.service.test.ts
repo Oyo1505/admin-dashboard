@@ -36,8 +36,8 @@ describe('GoogleDriveUploadService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockFetch.mockReset();
-    // Default: return valid token
-    mockGetAccessToken.mockResolvedValue({ token: 'mock-access-token' });
+    // Default: return valid token (GoogleAuth returns string directly)
+    mockGetAccessToken.mockResolvedValue('mock-access-token');
   });
 
   describe('uploadFile - validation tests', () => {
@@ -115,9 +115,9 @@ describe('GoogleDriveUploadService', () => {
     });
   });
 
-  describe('initResumableUpload - OAuth2 authentication', () => {
+  describe('initResumableUpload - service account authentication', () => {
     it('should return UNAUTHORIZED when access token is null', async () => {
-      mockGetAccessToken.mockResolvedValue({ token: null });
+      mockGetAccessToken.mockResolvedValue(null);
 
       const result = await GoogleDriveUploadService.initResumableUpload(
         'test.mp4',

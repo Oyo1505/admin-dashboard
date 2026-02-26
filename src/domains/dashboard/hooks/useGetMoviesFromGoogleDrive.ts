@@ -7,11 +7,11 @@ const useGetMoviesFromGoogleDrive = () => {
     queryFn: async () => {
       const response = await fetch(`/api/movies/get-movies-from-google-drive`);
       if (!response.ok) {
-        throw new Error('Failed to fetch movies');
+        return [];
       }
       const { filteredMoviesNotAdded } = await response.json();
 
-      return filteredMoviesNotAdded;
+      return filteredMoviesNotAdded ?? [];
     },
   });
 
