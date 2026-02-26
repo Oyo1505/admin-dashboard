@@ -156,9 +156,8 @@ export class GoogleDriveUploadService {
         };
       }
 
-      // Get access token
-      const tokenResponse = await auth.getAccessToken();
-      const accessToken = tokenResponse?.token;
+      // Get access token (GoogleAuth returns string | null directly)
+      const accessToken = await auth.getAccessToken();
 
       if (!accessToken) {
         return {

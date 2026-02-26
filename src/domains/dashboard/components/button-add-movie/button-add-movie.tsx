@@ -67,7 +67,7 @@ const DROPZONE_ICONS = {
  * - Full accessibility support (WCAG 2.2 AA)
  */
 const ButtonAddMovie = () => {
-  if (process.env.NEXT_PUBLIC_GOOGLE_DRIVE_ENABLED === 'false') return null;
+  if (process.env.NEXT_PUBLIC_GOOGLE_DRIVE_UPLOAD_ENABLED === 'false') return null;
 
   const t = useTranslations('Upload');
   const { upload, isUploading } = useUploadToGoogleDrive();
