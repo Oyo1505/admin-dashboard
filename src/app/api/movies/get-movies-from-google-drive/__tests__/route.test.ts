@@ -173,9 +173,9 @@ describe('GET /api/movies/get-movies-from-google-drive', () => {
   });
 
   describe('Error scenarios', () => {
-    it('should return 404 when Google Drive returns no data', async () => {
-      // Arrange: Null response from Google Drive
-      // Note: With Promise.all, both calls are made in parallel
+    it('should return 200 with empty array when Google Drive returns no data', async () => {
+      // Arrange: Null response from Google Drive (token expired, API error, etc.)
+      // The route now gracefully degrades instead of returning 404
       (getDataFromGoogleDrive as jest.Mock).mockResolvedValue(null);
       (MovieData.getAll as jest.Mock).mockResolvedValue({
         movies: [],
@@ -187,15 +187,14 @@ describe('GET /api/movies/get-movies-from-google-drive', () => {
       const data = await response.json();
 
       // Assert
-      expect(response.status).toBe(404);
-      expect(data.movies).toEqual([]);
+      expect(response.status).toBe(200);
+      expect(data.filteredMoviesNotAdded).toEqual([]);
       // With Promise.all, both calls are executed in parallel
       expect(MovieData.getAll).toHaveBeenCalledTimes(1);
     });
 
-    it('should return 404 when Google Drive returns undefined', async () => {
-      // Arrange: Undefined response
-      // Note: With Promise.all, both calls are made in parallel
+    it('should return 200 with empty array when Google Drive returns undefined', async () => {
+      // Arrange: Undefined response - same graceful degradation
       (getDataFromGoogleDrive as jest.Mock).mockResolvedValue(undefined);
       (MovieData.getAll as jest.Mock).mockResolvedValue({
         movies: [],
@@ -207,8 +206,8 @@ describe('GET /api/movies/get-movies-from-google-drive', () => {
       const data = await response.json();
 
       // Assert
-      expect(response.status).toBe(404);
-      expect(data.movies).toEqual([]);
+      expect(response.status).toBe(200);
+      expect(data.filteredMoviesNotAdded).toEqual([]);
     });
 
     it('should return all Google Drive movies when MovieData returns null movies', async () => {

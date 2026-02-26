@@ -158,8 +158,9 @@ describe('useGetMoviesFromGoogleDrive', () => {
   });
 
   describe('Error handling', () => {
-    it('should handle fetch error with ok: false', async () => {
+    it('should handle fetch error with ok: false by returning empty array', async () => {
       // Arrange: Mock error response
+      // Hook gracefully degrades (Google Drive unavailable) instead of throwing
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: false,
         status: 500,
@@ -170,12 +171,11 @@ describe('useGetMoviesFromGoogleDrive', () => {
         wrapper: createWrapper(),
       });
 
-      // Assert: Wait for error state
-      await waitFor(() => expect(result.current.error).toBeTruthy());
+      // Assert: Returns empty array, no error state
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.data).toBeUndefined();
-      expect(result.current.error).toBeDefined();
+      expect(result.current.data).toEqual([]);
+      expect(result.current.error).toBeNull();
     });
 
     it('should handle network error', async () => {
@@ -216,8 +216,8 @@ describe('useGetMoviesFromGoogleDrive', () => {
       expect(result.current.data).toBeUndefined();
     });
 
-    it('should handle 404 not found', async () => {
-      // Arrange: Mock 404 response
+    it('should handle 404 not found by returning empty array', async () => {
+      // Arrange: Mock 404 response (e.g. Google Drive unavailable)
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: false,
         status: 404,
@@ -228,14 +228,14 @@ describe('useGetMoviesFromGoogleDrive', () => {
         wrapper: createWrapper(),
       });
 
-      // Assert: Wait for error state
-      await waitFor(() => expect(result.current.error).toBeTruthy());
+      // Assert: Returns empty array, no error state
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      expect(result.current.isLoading).toBe(false);
-      expect(result.current.data).toBeUndefined();
+      expect(result.current.data).toEqual([]);
+      expect(result.current.error).toBeNull();
     });
 
-    it('should handle 401 unauthorized', async () => {
+    it('should handle 401 unauthorized by returning empty array', async () => {
       // Arrange: Mock unauthorized response
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: false,
@@ -247,13 +247,14 @@ describe('useGetMoviesFromGoogleDrive', () => {
         wrapper: createWrapper(),
       });
 
-      // Assert: Wait for error state
-      await waitFor(() => expect(result.current.error).toBeTruthy());
+      // Assert: Returns empty array, no error state
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.data).toEqual([]);
+      expect(result.current.error).toBeNull();
     });
 
-    it('should handle 403 forbidden', async () => {
+    it('should handle 403 forbidden by returning empty array', async () => {
       // Arrange: Mock forbidden response (not admin)
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: false,
@@ -265,10 +266,11 @@ describe('useGetMoviesFromGoogleDrive', () => {
         wrapper: createWrapper(),
       });
 
-      // Assert: Wait for error state
-      await waitFor(() => expect(result.current.error).toBeTruthy());
+      // Assert: Returns empty array, no error state
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      expect(result.current.isLoading).toBe(false);
+      expect(result.current.data).toEqual([]);
+      expect(result.current.error).toBeNull();
     });
   });
 
@@ -418,10 +420,10 @@ describe('useGetMoviesFromGoogleDrive', () => {
         wrapper: createWrapper(),
       });
 
-      // Assert: Should handle undefined gracefully
+      // Assert: Falls back to empty array via ?? []
       await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-      expect(result.current.data).toBeUndefined();
+      expect(result.current.data).toEqual([]);
     });
   });
 
