@@ -56,7 +56,7 @@ export default async function proxy(req: NextRequest) {
       const session = await auth.api.getSession({
         headers: await headers(),
       });
-      console.log('Session in middleware:', session); // Debug log for session
+
       if (!session) {
         return NextResponse.redirect(new URL(URL_BASE, req.url));
       }
