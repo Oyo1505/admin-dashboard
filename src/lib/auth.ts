@@ -14,6 +14,12 @@ const auth = betterAuth({
     provider: 'postgresql',
   }),
   user: {
+    additionalFields: {
+      role: {
+        type: 'string',
+        input: false,
+      },
+    },
     deleteUser: {
       enabled: true,
     },

@@ -4,7 +4,6 @@ import ButtonLogin from '@/domains/ui/components/button-login/button-login';
 import Container from '@/domains/ui/components/container/container';
 import { useSession } from '@/lib/auth-client';
 import { URL_LEGAL_MENTIONS, URL_PRIVACY } from '@/shared/route';
-import useUserStore from '@/store/user/user-store';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import { Lobster } from 'next/font/google';
@@ -17,8 +16,6 @@ const lobster = Lobster({
 });
 
 const LandingPage = () => {
-  // In test mode, skip useSession to avoid hanging on auth API calls
-  // Check for test mode cookie set by middleware
   const isTestMode =
     typeof document !== 'undefined' &&
     document.cookie.includes('playwright_test_mode=true');
@@ -27,11 +24,9 @@ const LandingPage = () => {
     ? { data: null, isPending: false }
     : useSession();
 
-  const { user } = useUserStore();
   const t = useTranslations('LandingPage');
 
-  const userIsNotLogged =
-    session === null && Object.keys(user).length === 0 && !isPending;
+  const userIsNotLogged = session === null && !isPending;
 
   return (
     <Container>

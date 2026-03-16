@@ -7,14 +7,15 @@ import {
   SettingsIcon,
   UsersIcon,
 } from '@/domains/ui/components/icons/icons';
+import { useSession } from '@/lib/auth-client';
 import { URL_DASHBOARD, URL_DASHBOARD_ROUTE } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import { Activity } from 'react';
 
 const MenuDashboard = () => {
-  const { user } = useUserStore((state) => state);
+  const { data: session } = useSession();
+  const user = { role: session?.user?.role as 'ADMIN' | 'USER' | undefined };
   const t = useTranslations('DashboardNav');
   const hasPermission =
     checkPermissions(user, 'can:delete', 'user') &&

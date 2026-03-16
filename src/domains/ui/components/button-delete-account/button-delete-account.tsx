@@ -2,11 +2,11 @@
 
 import { deleteUserByIdFromUser } from '@/domains/dashboard/actions/user';
 import { Button } from '@/domains/ui/components/button/button';
-import { useSession } from '@/lib/auth-client';
-import useUserStore from '@/store/user/user-store';
+import { signOut, useSession } from '@/lib/auth-client';
 import * as Dialog from '@radix-ui/react-dialog';
 
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 
 const ButtonDeleteAccount = ({
   translationTheme,
@@ -17,15 +17,16 @@ const ButtonDeleteAccount = ({
   translationText: string;
   className: string;
 }) => {
-  const { logout } = useUserStore((state) => state);
   const t = useTranslations(translationTheme);
   const { data: session } = useSession();
+  const router = useRouter();
 
   const deleteUser = async () => {
     if (session?.user?.id) {
       await deleteUserByIdFromUser(session?.user?.id);
     }
-    logout();
+    await signOut();
+    router.push('/');
   };
 
   return (
@@ -38,7 +39,7 @@ const ButtonDeleteAccount = ({
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-background opacity-60 data-[state=open]:animate-overlayShow" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus-visible:ring-2 focus-visible:ring-violet8 data-[state=open]:animate-contentShow">
+          <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-112.5 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus-visible:ring-2 focus-visible:ring-violet8 data-[state=open]:animate-contentShow">
             <Dialog.Title className="m-0 text-[17px] font-medium text-black">
               {t(translationText)}
             </Dialog.Title>
@@ -58,7 +59,7 @@ const ButtonDeleteAccount = ({
             </div>
             <Dialog.Close asChild>
               <button
-                className="absolute text-black right-2.5 top-2.5 inline-flex size-[25px] appearance-none items-center justify-center rounded-full text-violet11 hover:bg-violet4 focus-visible:ring-2 focus-visible:ring-violet7"
+                className="absolute text-black right-2.5 top-2.5 inline-flex size-6.25 appearance-none items-center justify-center rounded-full text-violet11 hover:bg-violet4 focus-visible:ring-2 focus-visible:ring-violet7"
                 aria-label="Close"
               >
                 X
