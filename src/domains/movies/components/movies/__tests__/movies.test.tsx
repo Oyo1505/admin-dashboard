@@ -16,9 +16,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import Movies from '../movies';
+import { useSession } from '@/lib/auth-client';
 import { useMovieFormStore } from '@/store/movie/movie-store';
-import useUserStore from '@/store/user/user-store';
 import { useGetMoviesInfiniteScroll } from '../../../hooks/use-get-all-image-infinite-scroll';
+import { useFavoriteMovies } from '../../../hooks/use-favorite-movies';
 
 // Mock next/navigation
 jest.mock('next/navigation', () => ({
@@ -64,9 +65,14 @@ jest.mock('@/store/movie/movie-store', () => ({
   useMovieFormStore: jest.fn(),
 }));
 
-jest.mock('@/store/user/user-store', () => ({
-  __esModule: true,
-  default: jest.fn(),
+// Mock Better Auth client
+jest.mock('@/lib/auth-client', () => ({
+  useSession: jest.fn(),
+}));
+
+// Mock favorite movies hook
+jest.mock('../../../hooks/use-favorite-movies', () => ({
+  useFavoriteMovies: jest.fn(),
 }));
 
 /**
@@ -120,9 +126,15 @@ describe('Movies Component', () => {
       setMoviesStore: mockSetMoviesStore,
     });
 
-    // Default user store mock
-    (useUserStore as unknown as jest.Mock).mockReturnValue({
-      user: mockUser,
+    // Default session mock
+    (useSession as jest.Mock).mockReturnValue({
+      data: { user: mockUser },
+      isPending: false,
+    });
+
+    // Default favorite movies mock
+    (useFavoriteMovies as jest.Mock).mockReturnValue({
+      data: [],
     });
 
     // Default infinite scroll hook mock

@@ -2,10 +2,10 @@
 import { Button } from '@/domains/ui/components/button/button';
 import { EditMovieLogo, Favorite } from '@/domains/ui/components/icons/icons';
 import { logError } from '@/lib/errors';
+import { useSession } from '@/lib/auth-client';
 import { IMovie } from '@/models/movie/movie';
 import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Activity, useTransition } from 'react';
@@ -19,17 +19,18 @@ const MoviePageButtons = ({
   isFavorite: boolean;
   movie: IMovie;
 }) => {
-  const user = useUserStore((state) => state.user);
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+  const user = { role: session?.user?.role as 'ADMIN' | 'USER' | undefined };
   const [loading, startTransiton] = useTransition();
   const hasPermission = checkPermissions(user, 'can:update', 'movie');
   const t = useTranslations('MoviePage');
 
   const handleFavorite = async () => {
-    if (user?.id) {
+    if (userId) {
       startTransiton(async () => {
         try {
-          const res =
-            user?.id && (await addOrRemoveToFavorite(user?.id, movie?.id));
+          const res = await addOrRemoveToFavorite(userId, movie?.id);
           if (res && typeof res !== 'string' && res.status === 200) {
             if (res?.message === 'Ajouté aux favoris avec succès') {
               toast.success(t('toastMessageSuccess'), {

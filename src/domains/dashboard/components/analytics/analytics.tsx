@@ -1,6 +1,6 @@
 'use client';
+import { useSession } from '@/lib/auth-client';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import useUserStore from '@/store/user/user-store';
 import { Activity } from 'react';
 import AdminStatsCards from '../admin-stats-cards/admin-stats-cards';
 import RecentActivityFeed from '../recent-activity-feed/recent-activity-feed';
@@ -10,14 +10,16 @@ import UserFavoritesList from '../user-favorites-list/user-favorites-list';
 import UserStatsCards from '../user-stats-cards/user-stats-cards';
 
 const Analytics = () => {
-  const { user } = useUserStore((state) => state);
+  const { data: session } = useSession();
+  const user = session?.user;
+
   const hasAdminPermission = checkPermissions(
-    user,
+    { role: user?.role as 'ADMIN' | 'USER' | undefined },
     'can:viewAnalyticsAdmin',
     'dashboard'
   );
   const hasUserPermission = checkPermissions(
-    user,
+    { role: user?.role as 'ADMIN' | 'USER' | undefined },
     'can:viewAnalyticsUser',
     'dashboard'
   );

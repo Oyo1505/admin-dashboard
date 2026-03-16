@@ -17,12 +17,6 @@ import React from 'react';
 // This avoids importing nanostores which causes Jest parsing errors
 jest.mock('@/lib/auth-client');
 
-// Mock Zustand user store - needed for userIsNotLogged check
-jest.mock('@/store/user/user-store', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({ user: {} })),
-}));
-
 // Mock next-intl - returns a function that returns the translation key
 jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => `translated.${key}`,
@@ -73,11 +67,8 @@ import LandingPage from '../components/landing-page/landing-page';
 
 describe('LandingPage', () => {
   beforeEach(() => {
-    // Reset user store mock to empty user for each test
-    const mockUseUserStore = jest.requireMock(
-      '@/store/user/user-store'
-    ).default;
-    mockUseUserStore.mockReturnValue({ user: {} });
+    // Reset mocks between tests
+    jest.clearAllMocks();
   });
 
   /**
@@ -135,13 +126,6 @@ describe('LandingPage', () => {
         data: { user: { email: 'test@example.com' } },
         isPending: false,
         error: null,
-      });
-      // Also mock user store with populated user
-      const mockUseUserStore = jest.requireMock(
-        '@/store/user/user-store'
-      ).default;
-      mockUseUserStore.mockReturnValue({
-        user: { email: 'test@example.com', id: '1' },
       });
 
       // Act: Render the component

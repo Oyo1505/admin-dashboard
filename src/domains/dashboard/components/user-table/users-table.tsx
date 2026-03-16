@@ -9,9 +9,9 @@ import {
   TableRow,
 } from '@/domains/ui/components/table/table';
 import { logError } from '@/lib/errors';
+import { useSession } from '@/lib/auth-client';
 import { IUser } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import useUserStore from '@/store/user/user-store';
 import { useRouter } from 'next/navigation';
 import { Activity, useOptimistic } from 'react';
 import { deleteUserById } from '../../actions/user';
@@ -70,7 +70,11 @@ const UsersTable = ({
 
 function UserRow({ user }: { user: IUser }) {
   const userId = user.id;
-  const { user: userConnected } = useUserStore((state) => state);
+  const { data: session } = useSession();
+  const userConnected = {
+    id: session?.user?.id,
+    role: session?.user?.role as 'ADMIN' | 'USER' | undefined,
+  };
   const [optimitiscUser, setOptimitiscUser] = useOptimistic(userId);
   const deleteUser = async () => {
     setOptimitiscUser('');

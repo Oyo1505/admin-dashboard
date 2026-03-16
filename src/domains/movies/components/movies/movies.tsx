@@ -1,14 +1,15 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
 import { logError } from '@/lib/errors';
+import { useSession } from '@/lib/auth-client';
 import { useMovieFormStore } from '@/store/movie/movie-store';
-import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import qs from 'qs';
 import { Activity } from 'react';
 import { useGetMoviesInfiniteScroll } from '../../hooks/use-get-all-image-infinite-scroll';
+import { useFavoriteMovies } from '../../hooks/use-favorite-movies';
 import MovieCardSearchPageMobileView from '../movie-card-mobile-view_search-page/movie-card-mobile-view_search-page';
 import MovieCardSearchPage from '../movie-card_search-page/movie-card_search-page';
 
@@ -32,7 +33,9 @@ const Movies = ({
   offset?: number;
   viewport?: string;
 }) => {
-  const { user } = useUserStore();
+  const { data: session } = useSession();
+  const { data: favoriteMovies } = useFavoriteMovies(session?.user?.id);
+  const userWithFavorites = { favoriteMovies };
   const { moviesFromStore, setMoviesStore } = useMovieFormStore();
   const searchParams: ReadonlyURLSearchParams = useSearchParams();
   const searchQuery = qs.stringify({
@@ -89,14 +92,14 @@ const Movies = ({
             movie?.title ? (
               viewport === 'desktop' || viewport === 'tablet' ? (
                 <MovieCardSearchPage
-                  user={user}
+                  user={userWithFavorites}
                   movie={movie}
                   priority={index < 6}
                   key={movie?.id + '-' + index}
                 />
               ) : (
                 <MovieCardSearchPageMobileView
-                  user={user}
+                  user={userWithFavorites}
                   movie={movie}
                   priority={index < 6}
                   key={movie?.title + '-' + index + '-mobile-view'}

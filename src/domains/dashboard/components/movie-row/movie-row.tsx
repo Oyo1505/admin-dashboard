@@ -2,13 +2,13 @@
 import { Button } from '@/domains/ui/components/button/button';
 import { TableCell, TableRow } from '@/domains/ui/components/table/table';
 import Toggle from '@/domains/ui/components/toggle/toggle';
+import { useSession } from '@/lib/auth-client';
 import { IMovie } from '@/models/movie/movie';
 import {
   URL_DASHBOARD_MOVIE_ADD,
   URL_DASHBOARD_MOVIE_EDIT,
 } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import useUserStore from '@/store/user/user-store';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Activity } from 'react';
@@ -25,7 +25,8 @@ function MovieRow({
   btnText: string;
   moviesFromGoogleDrive?: boolean;
 }) {
-  const { user } = useUserStore();
+  const { data: session } = useSession();
+  const user = { role: session?.user?.role as 'ADMIN' | 'USER' | undefined };
   const { deleteMovieFromGoogleDrive } = useDeleteMovieFromGoogleDrive();
   const { deleteMovieFromPrisma } = useDeleteMovieFromPrisma();
   const t = useTranslations('Dashboard');
