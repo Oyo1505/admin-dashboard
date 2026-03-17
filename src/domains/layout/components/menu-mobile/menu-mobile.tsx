@@ -20,9 +20,8 @@ const MenuMobile = ({ isMobileView }: { isMobileView: boolean }) => {
 
   useEffect(() => {
     if (isActive) {
-      const firstFocusable = dialogRef.current?.querySelector<HTMLElement>(
-        FOCUSABLE_SELECTORS,
-      );
+      const firstFocusable =
+        dialogRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTORS);
       firstFocusable?.focus();
     } else {
       triggerRef.current?.focus();
@@ -38,7 +37,7 @@ const MenuMobile = ({ isMobileView }: { isMobileView: boolean }) => {
 
     const focusable = Array.from(
       dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS) ??
-        [],
+        []
     );
     if (focusable.length === 0) return;
 
@@ -88,10 +87,18 @@ const MenuMobile = ({ isMobileView }: { isMobileView: boolean }) => {
             >
               <CrossIcon />
             </button>
-            <ul className="flex flex-col items-center justify-between min-h-62.5 text-primary">
+            <ul className="flex flex-col items-center gap-10 text-primary">
               <MenuMobileItem setIsActive={setIsActive} />
-              <User mobile={isMobileView} />
-              <LocaleSwitcher />
+              <li
+                className="w-16 border-t border-white/10"
+                aria-hidden="true"
+              />
+              <li>
+                <User mobile={isMobileView} />
+              </li>
+              <li>
+                <LocaleSwitcher />
+              </li>
             </ul>
           </div>
         </div>
