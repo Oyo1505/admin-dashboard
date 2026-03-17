@@ -7,10 +7,8 @@ import React from 'react';
 
 const MenuMobileItem = ({
   setIsActive,
-  isActive,
 }: {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-  isActive: boolean;
 }) => {
   const t = useTranslations('Menu');
 
@@ -19,7 +17,7 @@ const MenuMobileItem = ({
       <Link
         className="hover:text-red-600"
         href={URL_HOME}
-        onClick={() => setIsActive(!isActive)}
+        onClick={() => setIsActive(false)}
       >
         {t('home')}
       </Link>
@@ -27,12 +25,12 @@ const MenuMobileItem = ({
         className="hover:text-red-600"
         href={URL_MOVIES}
         replace={true}
-        onClick={() => setIsActive(!isActive)}
+        onClick={() => setIsActive(false)}
       >
         {t('movies')}
       </Link>
       <Link
-        onClick={() => setIsActive(!isActive)}
+        onClick={() => setIsActive(false)}
         className="hover:text-red-600"
         href={URL_DASHBOARD}
       >
