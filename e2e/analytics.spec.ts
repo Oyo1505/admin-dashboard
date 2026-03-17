@@ -198,7 +198,7 @@ test.describe('Analytics Dashboard - Navigation', () => {
 
     if (navExists) {
       // Navigation should be visible
-      await expect(nav.first()).toBeHidden();
+      await expect(nav.first()).toBeVisible();
     }
   });
 });
