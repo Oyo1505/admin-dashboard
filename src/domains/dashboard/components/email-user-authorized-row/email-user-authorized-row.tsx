@@ -1,5 +1,5 @@
 'use client';
-import useEmailsAutorized from '@/domains/auth/hooks/useEmailsAutorized';
+import useEmailsAutorized from '@/domains/auth/hooks/use-emails-autorized';
 import { Button } from '@/domains/ui/components/button/button';
 import { useTranslations } from 'next-intl';
 import { Activity } from 'react';

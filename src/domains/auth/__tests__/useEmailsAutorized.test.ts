@@ -19,7 +19,7 @@ import {
   deleteEmailAuthorized,
   postAuthorizedEmail,
 } from '../actions/action.email';
-import useEmailsAutorized from '../hooks/useEmailsAutorized';
+import useEmailsAutorized from '../hooks/use-emails-autorized';
 
 // Mock react-toastify - tracks toast calls
 jest.mock('react-toastify', () => ({

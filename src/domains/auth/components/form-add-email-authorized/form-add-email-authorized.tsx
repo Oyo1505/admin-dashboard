@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Activity } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import useEmailsAutorized from '../../hooks/useEmailsAutorized';
+import useEmailsAutorized from '../../hooks/use-emails-autorized';
 
 const formSchema = z.object({
   email: z.string().email().min(1, { message: 'Email is required' }),
