@@ -5,7 +5,7 @@ import { google } from 'googleapis';
  *
  * Uses a service account instead of OAuth2 - no token expiry, no Google app approval needed.
  * The target Google Drive folder must be shared with the service account email:
- * CLIENT_EMAIL_GOOGLE_DRIVE (id-y0-884@y0flix-auth.iam.gserviceaccount.com)
+ * CLIENT_EMAIL_GOOGLE_DRIVE
  *
  * Required environment variables:
  * - CLIENT_EMAIL_GOOGLE_DRIVE: Service account email
