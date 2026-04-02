@@ -3,7 +3,8 @@ import Text from '@/domains/ui/components/text/text';
 import { getServerSession } from '@/lib/auth';
 import { UserData } from '@/lib/data/users';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import { User } from 'better-auth/types/user';
+import { User } from 'better-auth';
+
 import { Suspense } from 'react';
 
 const Page = async () => {
