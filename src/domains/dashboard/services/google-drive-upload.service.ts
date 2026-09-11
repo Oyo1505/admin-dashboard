@@ -284,7 +284,7 @@ export class GoogleDriveUploadService {
           'Content-Length': String(chunk.length),
           'Content-Range': `bytes ${chunkStart}-${chunkEnd}/${totalSize}`,
         },
-        body: chunk,
+        body: new Uint8Array(chunk),
       });
 
       // For incomplete uploads, Google returns 308 Resume Incomplete

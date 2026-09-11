@@ -50,16 +50,11 @@ const SuggestionForm = () => {
     defaultValues: {
       topic: '',
       message: '',
-      emailUser: session?.user?.email ?? '',
     },
     resolver: zodResolver(suggestionSchema),
   });
 
-  const onSubmit = async (data: {
-    topic: string;
-    message: string;
-    emailUser: string;
-  }) => {
+  const onSubmit = async (data: { topic: string; message: string }) => {
     // @ts-ignore:next-line
     const topic = topicOptions.find((option) => option.value === data.topic)
       ?.label[locale];

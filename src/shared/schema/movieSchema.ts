@@ -20,15 +20,12 @@ export const FormDataMovieSchema = z.object({
   imdbId: z.string().optional(),
   genresIds: z.array(z.string()).min(1, 'Un genre est requis'),
   country: z.string().optional(),
-  duration: z.preprocess((val) => Number(val), z.number()),
+  duration: z.number(),
   langage: z.string().optional(),
   link: z.string().optional(),
   trailer: z.string().optional(),
-  year: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1890).max(new Date().getFullYear())
-  ),
-  subtitles: z.array(z.string()).optional().default([]),
+  year: z.number().min(1890).max(new Date().getFullYear()),
+  subtitles: z.array(z.string()),
   idGoogleDive: z.string().min(1, 'Un id google drive est requis'),
 });
 

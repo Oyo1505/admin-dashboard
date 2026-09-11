@@ -1,5 +1,10 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
+
+// The component reads this flag at module-evaluation time; force it on so
+// the suite doesn't depend on the ambient .env value picked up by next/jest.
+process.env.NEXT_PUBLIC_GOOGLE_DRIVE_UPLOAD_ENABLED = 'true';
+
 import ButtonAddMovie from '../button-add-movie';
 
 // Mock translations
