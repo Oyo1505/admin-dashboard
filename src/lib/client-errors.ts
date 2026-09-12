@@ -90,7 +90,6 @@ export function getErrorMessage(code: string, defaultMessage: string): string {
     // External API errors
     EXTERNAL_API_ERROR: 'Erreur avec un service externe.',
     GOOGLE_DRIVE_ERROR: 'Erreur avec Google Drive.',
-    MISTRAL_API_ERROR: "Erreur avec l'IA Mistral.",
   };
 
   return errorMessages[code] || defaultMessage;

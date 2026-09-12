@@ -14,7 +14,6 @@ Cette application est une plateforme complète de gestion de films avec authenti
 - **Interface responsive** adaptée à tous les appareils
 - **Système de tags et genres** pour organiser les films
 - **Intégration Google Drive** pour le stockage des médias
-- **Chatbot IA** intégré avec Mistral AI
 
 ### 🎬 Gestion des Films
 - Ajout/modification/suppression de films
@@ -47,7 +46,6 @@ Cette application est une plateforme complète de gestion de films avec authenti
 
 ### Intégrations
 - **[Google Drive API](https://developers.google.com/drive)** - Stockage des médias
-- **[Mistral AI](https://mistral.ai/)** - Chatbot IA
 - **[Vercel](https://vercel.com/)** - Déploiement
 
 ### Outils de Développement
@@ -92,9 +90,6 @@ NEXTAUTH_URL="http://localhost:3000"
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# Mistral AI
-MISTRAL_API_KEY="your-mistral-api-key"
-
 # Email (optionnel)
 EMAIL_SERVER_HOST="smtp.gmail.com"
 EMAIL_SERVER_PORT=587
@@ -135,7 +130,6 @@ admin-dashboard/
 │   │   ├── auth/             # Authentification
 │   │   ├── movies/           # Gestion des films
 │   │   ├── dashboard/        # Interface admin
-│   │   ├── chat-bot/         # Chatbot IA
 │   │   └── shared/           # Composants partagés
 │   ├── lib/                   # Utilitaires et configuration
 │   ├── messages/              # Fichiers de traduction
@@ -158,13 +152,11 @@ admin-dashboard/
 2. **Gestion des films** : CRUD complet des films
 3. **Gestion des utilisateurs** : Administration des comptes
 4. **Gestion des genres** : Organisation des catégories
-5. **Chatbot IA** : Assistant intelligent intégré
 
 ### API Endpoints
 - `/api/auth/*` - Authentification
 - `/api/movies/*` - Gestion des films
 - `/api/users/*` - Gestion des utilisateurs
-- `/api/chat/*` - Chatbot IA
 
 ## 🔧 Scripts Disponibles
 
@@ -196,7 +188,6 @@ pnpm lint         # Vérifier le code
 - `NEXTAUTH_SECRET` - Clé secrète pour l'authentification
 - `GOOGLE_CLIENT_ID` - ID client Google OAuth
 - `GOOGLE_CLIENT_SECRET` - Secret client Google OAuth
-- `MISTRAL_API_KEY` - Clé API Mistral AI
 
 ## 🤝 Contribution
 

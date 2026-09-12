@@ -19,7 +19,6 @@ import { getLocale } from 'next-intl/server';
 import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
 import { Activity, Suspense } from 'react';
-// import ChatDebug from '@/domains/chat-bot/components/chat-debug';
 
 const lobster = Lobster({
   weight: '400',
@@ -190,11 +189,6 @@ const Page = async () => {
           </Container>
         </div>
       </Activity>
-
-      {/*
-      <Container>
-        <ChatDebug />
-      </Container> */}
     </div>
   );
 };

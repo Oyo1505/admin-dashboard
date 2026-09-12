@@ -190,17 +190,6 @@
     "subtitlesEN": "English",
     "genre": "Genre"
   },
-  "ChatBot": {
-    "title": "ChatBot",
-    "placeholder": "Hello I am CineSensei the chatbot, how can I help you to advise movies?",
-    "send": "Send",
-    "close": "Close",
-    "placeholderMessage": "Your message",
-    "clearChat": "Clear chat",
-    "thinking": "Thinking...",
-    "error": "An error occurred",
-    "askMovie": "Ask me about movies"
-  },
   "RessourcesPage": {
     "title": "Ressources",
     "noRessource": "No resource found"

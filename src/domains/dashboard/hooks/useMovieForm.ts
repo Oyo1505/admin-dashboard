@@ -59,9 +59,10 @@ export const useMovieForm = ({
         router.push(URL_DASHBOARD_ROUTE.movie);
         return;
       }
-      return toast.error(t('toastMovieMessageError'), {
+      toast.error(t('toastMovieMessageError'), {
         position: 'top-center',
       });
+      return;
     } catch (err) {
       logError(err, editMovie ? 'editMovie' : 'createMovie');
       toast.error(t('toastMovieMessageError'), {

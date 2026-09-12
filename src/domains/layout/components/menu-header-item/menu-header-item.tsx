@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useSelectedLayoutSegment } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 const MenuHeaderItem = ({
   pathname,
@@ -11,13 +11,16 @@ const MenuHeaderItem = ({
   pathname: string;
   translation: string;
 }) => {
-  const segment = useSelectedLayoutSegment();
+  const currentPathname = usePathname();
   const t = useTranslations('Menu');
+  const isActive =
+    currentPathname === pathname || currentPathname?.startsWith(`${pathname}/`);
+
   return (
     <Link
       className={cn(
         'hover:text-red-500 text-primary transition-colors duration-300',
-        segment ? pathname?.includes(segment) ? 'text-red-500' : '' : pathname === '/' ? 'text-red-500' : '',
+        isActive ? 'text-red-500' : ''
       )}
       prefetch
       href={pathname}

@@ -34,7 +34,6 @@ export enum ErrorCode {
   // External API errors
   EXTERNAL_API_ERROR = 'EXTERNAL_API_ERROR',
   GOOGLE_DRIVE_ERROR = 'GOOGLE_DRIVE_ERROR',
-  MISTRAL_API_ERROR = 'MISTRAL_API_ERROR',
 }
 
 export interface ApiError {
