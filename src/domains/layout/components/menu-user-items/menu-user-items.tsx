@@ -1,11 +1,28 @@
 'use client';
 import { useSession } from '@/lib/auth-client';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import ButtonLogout from '../../../ui/components/button-logout/button-logout';
 
-export function User({ mobile = false }: { mobile: boolean }) {
+interface InitialUser {
+  name?: string | null;
+  image?: string | null;
+}
+
+export function User({
+  mobile = false,
+  initialUser = null,
+}: {
+  mobile: boolean;
+  initialUser?: InitialUser | null;
+}) {
   const { data: session } = useSession();
-  const user = session?.user;
+  // Same rationale as MenuHeaderItems: use the server-resolved user for the
+  // first render so it matches SSR, then hand off to the reactive client
+  // session (e.g. for sign-out) once mounted, to avoid a hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const user = mounted ? session?.user : initialUser;
 
   return (
     <>

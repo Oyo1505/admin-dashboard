@@ -75,7 +75,7 @@ const threadChatBot = async (
 
     try {
       const response = await mistral.chat.complete({
-        model: 'mistral-large-latest',
+        model: 'mistral-mini-latest',
         temperature: 0.3,
         tools: mistralTools,
         toolChoice: 'any',
@@ -141,7 +141,7 @@ N'oublie pas d'inclure TOUJOURS les liens HTML pour chaque film recommandé !`,
       });
     } else {
       finalResponse = await mistral.chat.complete({
-        model: 'mistral-large-latest',
+        model: 'mistral-small-2603',
         temperature: 0.3,
         messages: [
           {
