@@ -369,47 +369,6 @@ export const EditMovieLogo = () => {
   );
 };
 
-export const ChatBotLogo = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      width="80"
-      height="80"
-      viewBox="0 0 80 80"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn(className)}
-    >
-      <circle cx="40" cy="40" r="38" fill="#E53935" />
-      <g transform="translate(20, 16)">
-        <circle
-          cx="20"
-          cy="24"
-          r="16"
-          fill="white"
-          stroke="black"
-          strokeWidth="2"
-        />
-
-        <circle cx="14" cy="24" r="4" fill="black" />
-        <circle cx="26" cy="24" r="4" fill="black" />
-        <rect x="17.6" y="23.2" width="4.8" height="1.6" fill="black" />
-
-        <path
-          d="M14,32 Q20,38 26,32"
-          stroke="black"
-          strokeWidth="2"
-          fill="none"
-        />
-
-        <rect x="12" y="4" width="16" height="8" fill="black" />
-        <path d="M12,4 l4,-4 l16,0 l-4,4 z" fill="#E53935" />
-        <line x1="14" y1="2" x2="18" y2="6" stroke="white" strokeWidth="1.2" />
-        <line x1="18" y1="2" x2="22" y2="6" stroke="white" strokeWidth="1.2" />
-        <line x1="22" y1="2" x2="26" y2="6" stroke="white" strokeWidth="1.2" />
-      </g>
-    </svg>
-  );
-};
-
 export const WebLogo = ({ className }: { className?: string }) => {
   return (
     <svg

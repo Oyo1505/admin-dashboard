@@ -78,7 +78,6 @@ This is a Next.js 16 movie management platform with a domain-driven architecture
 - **State Management**:
   - Client state: Zustand
   - Server state: TanStack Query v5 (React Query)
-- **AI Integration**: Mistral AI for chatbot functionality
 - **File Storage**: Google Drive API integration
 - **Testing**:
   - Unit tests: Jest 30 with Testing Library
@@ -99,7 +98,6 @@ src/domains/
 ├── auth/           # Authentication logic, user management
 ├── movies/         # Movie CRUD, filtering, favorites
 ├── dashboard/      # Admin interface, analytics
-├── chat-bot/       # Mistral AI integration
 ├── layout/         # Navigation, menus, layout components
 ├── ui/             # Reusable UI components
 ├── skeleton/       # Loading states
@@ -111,9 +109,9 @@ src/domains/
 
 | Metric | Count | Details |
 |--------|-------|---------|
-| **Domains** | 9 | auth, chat-bot, dashboard, layout, movies, ressources, shared, skeleton, ui |
+| **Domains** | 8 | auth, dashboard, layout, movies, ressources, shared, skeleton, ui |
 | **Components** | 106+ | 33 dashboard, 25 movies, 21 UI, 9 layout, 7 skeleton, 6 shared |
-| **Services** | 13 | auth (4), dashboard (4), movies (5), chat-bot (1) |
+| **Services** | 12 | auth (4), dashboard (4), movies (5) |
 | **Custom Hooks** | 20+ | 11 dashboard, 4 movies, 1 auth, plus shared |
 | **API Routes** | 18 | analytics (8), movies (2), genres (1), auth (1), upload (3), users (1), tmdb (1), search (1) |
 | **Unit Tests** | 47 | DAL (3), Data (8), Services (12), Hooks (5), Components (10+), Store (1) |
@@ -171,7 +169,7 @@ Key models include:
     - **Playwright workflow** ([.github/workflows/playwright.yml](.github/workflows/playwright.yml)) - E2E tests
 - TanStack Query for efficient server state management
 - Internationalization handled via next-intl with locale middleware
-- Environment variables required for Google OAuth, database, Better Auth, and Mistral AI
+- Environment variables required for Google OAuth, database, and Better Auth
 
 ### File Organization
 
@@ -318,9 +316,6 @@ src/domains/[domain]/services/
   - `analytics.service.ts` - Analytics data operations
   - `google-drive-upload.service.ts` - Google Drive file upload management
 
-- **Chat-Bot Services** ([src/domains/chat-bot/services/](src/domains/chat-bot/services/)):
-  - `mistral-tools.service.ts` - Mistral AI integration
-
 **Service Layer Benefits**:
 
 - **Business Logic Isolation**: Separates business rules from data access
@@ -364,7 +359,6 @@ src/lib/
 ├── errors.ts           # Error handling utilities
 ├── security.ts         # Security utilities
 ├── google-api.ts       # Google Drive API integration
-├── mistral.ts          # Mistral AI client
 └── api-wrapper.ts      # API validation wrapper
 ```
 
@@ -789,11 +783,10 @@ The project has comprehensive test coverage with **28 test suites** containing *
   - [src/lib/data/__tests__/email.test.ts](src/lib/data/__tests__/email.test.ts)
   - [src/lib/data/__tests__/search.test.ts](src/lib/data/__tests__/search.test.ts)
 
-- **Service Layer**: 11 test files covering business logic
+- **Service Layer**: 10 test files covering business logic
   - Auth services: 4 test files
   - Movie services: 5 test files
   - Dashboard services: 2 test files
-  - Chat-Bot services: 1 test file
 
 - **Hooks**: 3 test files for TanStack Query hooks
   - [src/domains/auth/**tests**/useEmailsAutorized.test.ts](src/domains/auth/__tests__/useEmailsAutorized.test.ts)
