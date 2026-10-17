@@ -151,9 +151,9 @@ describe('AnalyticsService', () => {
       (AnalyticsData.getRecentActivity as jest.Mock).mockResolvedValue(
         mockRecentActivity
       );
-      (AnalyticsData.getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue(
-        mockApplicationVisits
-      );
+      (
+        AnalyticsData.getAnalyticsApplicationVisits as jest.Mock
+      ).mockResolvedValue(mockApplicationVisits);
 
       const result = await AnalyticsService.getAdminDashboardStats();
 
@@ -184,7 +184,9 @@ describe('AnalyticsService', () => {
       (AnalyticsData.getRecentActivity as jest.Mock).mockResolvedValue({
         status: HttpStatus.OK,
       });
-      (AnalyticsData.getAnalyticsApplicationVisits as jest.Mock).mockResolvedValue({
+      (
+        AnalyticsData.getAnalyticsApplicationVisits as jest.Mock
+      ).mockResolvedValue({
         status: HttpStatus.OK,
       });
 

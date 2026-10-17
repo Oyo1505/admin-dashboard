@@ -1,7 +1,6 @@
 'use client';
 import { Locale } from '@/config';
 import { DownloadLogo } from '@/domains/ui/components/icons/icons';
-import { incrementDownloadCount } from '../../actions/movie-stats.action';
 import { IGenre, IMovie } from '@/models/movie/movie';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
@@ -11,6 +10,7 @@ import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { Activity } from 'react';
+import { incrementDownloadCount } from '../../actions/movie-stats.action';
 import useGetDetailsMovie from '../../hooks/use-get-details-movie';
 
 const MoviePageSubtitlesList = dynamic(
@@ -118,14 +118,9 @@ const MovieHeader = ({ movie }: { movie: IMovie }) => {
           ))}
         </div>
       </Activity>
-      <Activity mode={synopsis ? 'visible' : 'hidden'}>
+      <Activity mode={synopsis || movie?.synopsis ? 'visible' : 'hidden'}>
         <div className="mt-6 font-normal">
-          {t('synopsis')} : {synopsis}
-        </div>
-      </Activity>
-      <Activity mode={movie?.synopsis ? 'visible' : 'hidden'}>
-        <div className="mt-6 font-normal">
-          {t('synopsis')} : {movie?.synopsis}
+          {t('synopsis')} : {synopsis ?? movie?.synopsis}
         </div>
       </Activity>
       <Activity mode={movie ? 'visible' : 'hidden'}>
