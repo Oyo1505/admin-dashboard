@@ -5,7 +5,11 @@
 /.pnp
 .pnp.js
 /.vscode
-/.claude
+/.claude/*
+# shared agent skills (Prisma ones are symlinks to .agents/skills, restored from skills-lock.json)
+!/.claude/skills/
+/.claude/skills/prisma-*
+/.windsurf
 # testing
 /coverage
 /claudedocs
