@@ -182,7 +182,10 @@ export class AnalyticsService {
    * Reduces duplication across analytics methods
    */
   private static async fetchWithValidation<T>(
-    validator: () => { valid: boolean; error?: { status: number; message: string } },
+    validator: () => {
+      valid: boolean;
+      error?: { status: number; message: string };
+    },
     fetcher: () => Promise<{ status: number; [key: string]: any }>,
     context: string,
     dataKey: string
@@ -202,7 +205,10 @@ export class AnalyticsService {
       return { status: HttpStatus.OK, data: result[dataKey] ?? [] };
     } catch (error) {
       logError(error, `AnalyticsService.${context}`);
-      return { status: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Internal server error' };
+      return {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal server error',
+      };
     }
   }
 
