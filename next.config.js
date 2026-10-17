@@ -47,6 +47,18 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'a.ltrbxd.com',
       },
+      {
+        // IMDb posters & stills
+        protocol: 'https',
+        hostname: 'm.media-amazon.com',
+        pathname: '/images/**',
+      },
+      {
+        // TMDB posters (IMDb id prefill)
+        protocol: 'https',
+        hostname: 'image.tmdb.org',
+        pathname: '/t/p/**',
+      },
     ],
   },
 };
