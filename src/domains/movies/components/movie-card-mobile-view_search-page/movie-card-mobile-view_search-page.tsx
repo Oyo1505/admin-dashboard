@@ -7,6 +7,7 @@ import { minutesToHours } from '@/shared/utils/number/minutesToHours';
 import isFavorite from '@/shared/utils/string/isUserFavoriteMovie';
 import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale } from 'next-intl';
+import imageDefault from '@/assets/image/default-placeholder.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Activity } from 'react';
@@ -42,7 +43,7 @@ const MovieCardSearchPageMobileView = ({
           priority={priority}
           loading={priority ? undefined : 'lazy'}
           className="w-full h-full rounded-lg transform transition-transform object-cover duration-300 group-hover:scale-110"
-          src={movie?.image ? movie?.image : 'imageDefault'}
+          src={movie?.image ? movie?.image : imageDefault}
           width={300}
           height={200}
           sizes="(max-width: 640px) 96px, (max-width: 768px) 96px, 96px"

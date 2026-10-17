@@ -59,6 +59,30 @@ describe('FormMovieInputsTitles', () => {
     expect(mockRegister).toHaveBeenCalledWith('director');
     expect(mockRegister).toHaveBeenCalledWith('link');
     expect(mockRegister).toHaveBeenCalledWith('imdbId');
+    expect(mockRegister).toHaveBeenCalledWith('idGoogleDive');
+  });
+
+  it('should render the editable Google Drive id input', () => {
+    render(
+      <NextIntlClientProvider locale="fr" messages={messages}>
+        <FormMovieInputsTitles register={mockRegister} />
+      </NextIntlClientProvider>
+    );
+
+    expect(screen.getByText('idGoogleDive')).toBeInTheDocument();
+  });
+
+  it('should render the IMDb prefill slot', () => {
+    render(
+      <NextIntlClientProvider locale="fr" messages={messages}>
+        <FormMovieInputsTitles
+          register={mockRegister}
+          imdbPrefill={<button type="button">prefill</button>}
+        />
+      </NextIntlClientProvider>
+    );
+
+    expect(screen.getByRole('button', { name: 'prefill' })).toBeInTheDocument();
   });
 
   it('should display error messages when errors are provided', () => {

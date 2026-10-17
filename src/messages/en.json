@@ -132,7 +132,13 @@
     "toastMovieMessageSuccess": "Movie added to favorites",
     "toastMovieMessageSuccessDelete": "An error occurred",
     "titleSection": "Title Information",
-    "languageAndCountry": "Language and Country"
+    "languageAndCountry": "Language and Country",
+    "prefillButton": "Prefill from IMDb",
+    "prefillHint": "Enter an IMDb id (e.g. tt0094625). Only empty fields will be filled.",
+    "prefillLoading": "Fetching movie information…",
+    "prefillSuccess": "Fields prefilled from TMDB.",
+    "prefillNotFound": "No movie found for this IMDb id.",
+    "prefillError": "Unable to fetch movie information."
   },
   "DirectorSectionForm": {
     "title": "Add Director Section",

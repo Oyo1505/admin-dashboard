@@ -132,7 +132,13 @@
     "toastMovieMessageSuccess": "Edition du film réussie",
     "toastMovieMessageSuccessDelete": "Une erreur est survenue",
     "titleSection": "Informations sur les titres",
-    "languageAndCountry": "Langue et pays"
+    "languageAndCountry": "Langue et pays",
+    "prefillButton": "Pré-remplir depuis IMDb",
+    "prefillHint": "Saisissez un identifiant IMDb (ex. tt0094625). Seuls les champs vides seront remplis.",
+    "prefillLoading": "Récupération des informations du film…",
+    "prefillSuccess": "Champs pré-remplis depuis TMDB.",
+    "prefillNotFound": "Aucun film trouvé pour cet identifiant IMDb.",
+    "prefillError": "Impossible de récupérer les informations du film."
   },
   "DirectorSectionForm": {
     "title": "Ajouter une section réalisateur",

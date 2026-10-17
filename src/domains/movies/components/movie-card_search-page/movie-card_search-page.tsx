@@ -4,6 +4,7 @@ import { IMovie } from '@/models/movie/movie';
 import { URL_MOVIE_ID } from '@/shared/route';
 import { titleOnlocale } from '@/shared/utils/string/titleOnlocale';
 import { useLocale } from 'next-intl';
+import imageDefault from '@/assets/image/default-placeholder.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Activity } from 'react';
@@ -46,7 +47,7 @@ const MovieCardSearchPage = ({
             priority={priority}
             loading={priority ? undefined : 'lazy'}
             className="w-full h-full rounded-lg transform transition-transform duration-300 group-hover:scale-110"
-            src={movie?.image ? movie?.image : 'imageDefault'}
+            src={movie?.image ? movie?.image : imageDefault}
             width={300}
             height={200}
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 16.66vw"

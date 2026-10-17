@@ -1,16 +1,20 @@
 import FormTextInput from '@/domains/shared/components/form-text-input/form-text-input';
 import { IMovieFormData } from '@/models/movie/movie';
 import { useTranslations } from 'next-intl';
+import { ReactNode } from 'react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 export interface IFormMovieInputsTitles {
   errors?: FieldErrors<IMovieFormData>;
   register: UseFormRegister<IMovieFormData>;
+  /** Rendered right after the IMDb id input */
+  imdbPrefill?: ReactNode;
 }
 
 const FormMovieInputsTitles = ({
   errors,
   register,
+  imdbPrefill,
 }: IFormMovieInputsTitles) => {
   const t = useTranslations('AddMovie');
   return (
@@ -64,6 +68,14 @@ const FormMovieInputsTitles = ({
         keyValue="imdbId"
         errors={errors}
         {...register('imdbId')}
+      />
+      {imdbPrefill}
+      <FormTextInput<IMovieFormData>
+        textTranslated={t('idGoogleDive')}
+        htmlFor="idGoogleDive"
+        keyValue="idGoogleDive"
+        errors={errors}
+        {...register('idGoogleDive')}
       />
     </fieldset>
   );

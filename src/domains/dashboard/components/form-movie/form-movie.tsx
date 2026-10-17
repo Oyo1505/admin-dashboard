@@ -4,8 +4,12 @@ import Title from '@/domains/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
 import { Activity } from 'react';
+import { useWatch } from 'react-hook-form';
 import { useMovieForm } from '../../hooks/useMovieForm';
 import { useMovieGenres } from '../../hooks/useMovieGenres';
+import { useTmdbPrefill } from '../../hooks/useTmdbPrefill';
+import { TmdbPrefillService } from '../../services/tmdb-prefill.service';
+import FormMovieImdbPrefill from '../form-movie_imdb-prefill/form-movie_imdb-prefill';
 import FormMovieInputsNumbers from '../form-movie_input-numbers/form-movie_inputs-numbers';
 import FormMovieInputsDescription from '../form-movie_inputs-description/form-movie_inputs-description';
 import FormMovieInputsTitles from '../form-movie_inputs-titles/form-movie_inputs-titles';
@@ -41,7 +45,7 @@ const FormMovie = ({
   const {
     register,
     formState: { errors },
-    watch,
+    control,
   } = form;
 
   const { genresMovie, handleGenreChange, handleGenreDelete, availableGenres } =
@@ -50,9 +54,20 @@ const FormMovie = ({
       setValue: form.setValue,
     });
 
+  const { prefill, status: prefillStatus } = useTmdbPrefill(form);
+
+  // Enter in the IMDb id input prefills instead of submitting the form
+  const handleImdbIdEnter = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    const target = e.target as HTMLInputElement;
+    if (e.key !== 'Enter' || target.name !== 'imdbId') return;
+    e.preventDefault();
+    if (TmdbPrefillService.isValidImdbId(target.value)) prefill(target.value);
+  };
+
   const locale = useLocale();
 
-  const watchedValues = watch();
+  // useWatch subscribes to changes; watch() is memoized away by the React Compiler
+  const watchedValues = useWatch({ control });
   const formData = {
     langage: watchedValues.langage,
     country: watchedValues.country,
@@ -68,8 +83,18 @@ const FormMovie = ({
           translationTheme="AddMovie"
           translationText="title"
         />
-        <form onSubmit={handleMovieSubmission}>
-          <FormMovieInputsTitles register={register} errors={errors as any} />
+        <form onSubmit={handleMovieSubmission} onKeyDown={handleImdbIdEnter}>
+          <FormMovieInputsTitles
+            register={register}
+            errors={errors as any}
+            imdbPrefill={
+              <FormMovieImdbPrefill
+                imdbId={watchedValues.imdbId}
+                status={prefillStatus}
+                onPrefill={prefill}
+              />
+            }
+          />
           <FormMovieSelects
             locale={locale}
             formData={formData}
