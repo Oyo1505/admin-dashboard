@@ -17,7 +17,7 @@ jest.mock('@/lib/data/movies', () => ({
 }));
 
 jest.mock('@/lib/errors', () => ({
-  handlePrismaError: jest.fn((error) => ({
+  handlePrismaError: jest.fn((_error) => ({
     statusCode: 500,
     message: 'Database error',
   })),
@@ -34,8 +34,22 @@ describe('MovieDetailService', () => {
     duration: 136,
     director: 'Wachowskis',
     genresIds: [
-      { genre: { id: 'genre-action', nameFR: 'Action', nameEN: 'Action', nameJP: 'アクション' } },
-      { genre: { id: 'genre-scifi', nameFR: 'Science-Fiction', nameEN: 'Science Fiction', nameJP: 'サイエンスフィクション' } },
+      {
+        genre: {
+          id: 'genre-action',
+          nameFR: 'Action',
+          nameEN: 'Action',
+          nameJP: 'アクション',
+        },
+      },
+      {
+        genre: {
+          id: 'genre-scifi',
+          nameFR: 'Science-Fiction',
+          nameEN: 'Science Fiction',
+          nameJP: 'サイエンスフィクション',
+        },
+      },
     ],
     subtitles: [],
   } as unknown as IMovie;
@@ -50,7 +64,14 @@ describe('MovieDetailService', () => {
       duration: 148,
       director: 'Christopher Nolan',
       genresIds: [
-        { genre: { id: 'genre-scifi', nameFR: 'Science-Fiction', nameEN: 'Science Fiction', nameJP: 'サイエンスフィクション' } },
+        {
+          genre: {
+            id: 'genre-scifi',
+            nameFR: 'Science-Fiction',
+            nameEN: 'Science Fiction',
+            nameJP: 'サイエンスフィクション',
+          },
+        },
       ],
       subtitles: [],
     } as unknown as IMovie,
@@ -253,7 +274,14 @@ describe('MovieDetailService', () => {
       const movieWithSingleGenre = {
         ...mockMovie,
         genresIds: [
-          { genre: { id: 'genre-action', nameFR: 'Action', nameEN: 'Action', nameJP: 'アクション' } },
+          {
+            genre: {
+              id: 'genre-action',
+              nameFR: 'Action',
+              nameEN: 'Action',
+              nameJP: 'アクション',
+            },
+          },
         ],
       };
 

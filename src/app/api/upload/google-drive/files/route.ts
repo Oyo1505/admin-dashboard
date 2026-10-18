@@ -34,7 +34,8 @@ export async function GET(): Promise<Response> {
       const response = await drive.files.list({
         pageSize: 100,
         pageToken,
-        fields: 'nextPageToken, files(id, name, size, mimeType, createdTime, modifiedTime)',
+        fields:
+          'nextPageToken, files(id, name, size, mimeType, createdTime, modifiedTime)',
         orderBy: 'createdTime desc',
       });
 

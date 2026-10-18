@@ -20,7 +20,7 @@ jest.mock('@/lib/prisma', () => ({
 }));
 
 jest.mock('@/lib/errors', () => ({
-  handlePrismaError: jest.fn((error) => ({
+  handlePrismaError: jest.fn((_error) => ({
     statusCode: 500,
     message: 'Database error',
   })),
@@ -302,8 +302,7 @@ describe('GenreData', () => {
       const genreId = 'unknown-genre';
       (prisma.movie.findMany as jest.Mock).mockResolvedValue([]);
 
-      const result =
-        await GenreData.getMoviesByARandomGenreById(genreId);
+      const result = await GenreData.getMoviesByARandomGenreById(genreId);
 
       expect(result).toEqual({
         movies: [],
@@ -316,8 +315,7 @@ describe('GenreData', () => {
       const mockError = new Error('Database query failed');
       (prisma.movie.findMany as jest.Mock).mockRejectedValue(mockError);
 
-      const result =
-        await GenreData.getMoviesByARandomGenreById(genreId);
+      const result = await GenreData.getMoviesByARandomGenreById(genreId);
 
       expect(result).toEqual({
         status: 500,

@@ -20,12 +20,8 @@ const Page = async () => {
   const { movies } = await getData();
   const moviesArray = movies?.map((movie: { movie: IMovie }) => movie?.movie);
   return (
-    <main
-      className="flex flex-1 flex-col gap-4 md:gap-8 md:p-6"
-      role="main"
-      aria-label="Page des favoris"
-    >
-      <div role="region" aria-label="Section des films favoris">
+    <div className="flex flex-1 flex-col gap-4 md:gap-8 md:p-6">
+      <div>
         <Title
           type="h1"
           translationTheme="DashboardNav"
@@ -34,7 +30,7 @@ const Page = async () => {
         />
         <MoviesFavorite movies={moviesArray} />
       </div>
-    </main>
+    </div>
   );
 };
 

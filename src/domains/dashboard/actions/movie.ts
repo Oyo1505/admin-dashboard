@@ -39,7 +39,10 @@ export const deleteMovieByIdToGoogleDrive = withAuth(
     const response = await deleteFileFromGoogleDrive(id);
     return {
       status: response?.status ?? 404,
-      message: response?.status === 200 ? 'File deleted successfully' : 'Failed to delete file',
+      message:
+        response?.status === 200
+          ? 'File deleted successfully'
+          : 'Failed to delete file',
     };
   }
 );

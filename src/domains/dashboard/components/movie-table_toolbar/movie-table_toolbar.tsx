@@ -20,8 +20,8 @@ interface IMovieTableToolbar {
   publish: MoviePublishFilter;
   total?: number;
   isFetching: boolean;
-  onSearchChange: (search: string) => void; // eslint-disable-line no-unused-vars
-  onPublishChange: (publish: MoviePublishFilter) => void; // eslint-disable-line no-unused-vars
+  onSearchChange: (search: string) => void;
+  onPublishChange: (publish: MoviePublishFilter) => void;
 }
 
 const MovieTableToolbar = ({

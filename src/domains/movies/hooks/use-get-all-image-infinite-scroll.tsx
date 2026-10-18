@@ -44,11 +44,12 @@ const useGetMoviesInfiniteScroll = ({
     },
   });
 
+  const firstPageMovies = data?.pages?.[0]?.movies;
   useEffect(() => {
-    if (data?.pages?.[0]?.movies && !isRefetching) {
-      setMoviesStore(data.pages[0].movies);
+    if (firstPageMovies && !isRefetching) {
+      setMoviesStore(firstPageMovies);
     }
-  }, [data?.pages?.[0]?.movies, setMoviesStore]);
+  }, [firstPageMovies, isRefetching, setMoviesStore]);
 
   return {
     data,

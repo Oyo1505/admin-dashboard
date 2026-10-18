@@ -5,7 +5,6 @@ import { IMovie } from '@/models/movie/movie';
 import clsx from 'clsx';
 import { useLocale } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { Activity } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -60,38 +59,30 @@ const MoviesHomeTheme = ({
     >
       <div className="absolute w-full h-full bg-slate-950 opacity-90 top-0 left-0 z-0"></div>
       <Container className="h-full pt-6 pb-6 flex relative flex-col justify-start items-start">
-        <Activity mode={country ? 'visible' : 'hidden'}>
+        {country ? (
           <Title
             className={clsx(fontFamily, 'text-2xl relative md:text-6xl')}
             text={country}
             type="h2"
           />
-        </Activity>
+        ) : null}
 
         <div className="h-full flex flex-wrap justify-start items-end gap-2">
-          <Activity
-            mode={
-              movies && movies?.length > 0 && !isMobileView
-                ? 'visible'
-                : 'hidden'
-            }
-          >
-            {movies?.map((movie, index) => (
-              <MovieItemTheme
-                key={index}
-                locale={locale}
-                movie={movie}
-                image={movie.image}
-                id={movie.id}
-              />
-            ))}
-          </Activity>
+          {movies && movies?.length > 0 && !isMobileView ? (
+            <>
+              {movies?.map((movie, index) => (
+                <MovieItemTheme
+                  key={index}
+                  locale={locale}
+                  movie={movie}
+                  image={movie.image}
+                  id={movie.id}
+                />
+              ))}
+            </>
+          ) : null}
         </div>
-        <Activity
-          mode={
-            movies && movies?.length > 0 && isMobileView ? 'visible' : 'hidden'
-          }
-        >
+        {movies && movies?.length > 0 && isMobileView ? (
           <Carousel
             containerClass="w-full mt-6 "
             autoPlay={false}
@@ -111,7 +102,7 @@ const MoviesHomeTheme = ({
               />
             ))}
           </Carousel>
-        </Activity>
+        ) : null}
       </Container>
     </div>
   );

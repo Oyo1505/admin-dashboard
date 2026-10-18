@@ -4,7 +4,10 @@ import { logError } from '@/lib/errors';
 
 // Mock DAL to prevent better-auth ESM import issues
 jest.mock('@/lib/data/dal', () => ({
-  withAuth: (_authCheck: () => Promise<void>, handler: () => Promise<Response>) => handler,
+  withAuth: (
+    _authCheck: () => Promise<void>,
+    handler: () => Promise<Response>
+  ) => handler,
   verifyAdmin: jest.fn().mockResolvedValue(undefined),
 }));
 

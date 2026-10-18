@@ -1,6 +1,11 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/ui/components/card/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/domains/ui/components/card/card';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { useUserStats } from '../../hooks/useUserStats';
 import { useTranslations } from 'next-intl';
@@ -19,11 +24,7 @@ const UserStatsCards = ({ userId }: UserStatsCardsProps) => {
   }
 
   if (error) {
-    return (
-      <div className="text-red-500">
-        {t('errorLoading')}
-      </div>
-    );
+    return <div className="text-red-500">{t('errorLoading')}</div>;
   }
 
   return (

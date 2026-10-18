@@ -1,5 +1,6 @@
 import { Input } from '@/domains/ui/components/input/input';
 import LabelForm from '@/domains/ui/components/label-form/label-form';
+import { FORM_FIELD_CLASS, FORM_LABEL_CLASS } from '../form-field-styles';
 
 const FormNumberInput = ({
   step,
@@ -14,12 +15,13 @@ const FormNumberInput = ({
   return (
     <div className="mb-[15px] flex flex-col items-center gap-5">
       <LabelForm
-        className="text-violet11  text-right text-[15px]"
+        className={FORM_LABEL_CLASS}
         titleLabel={titleLabel}
         htmlFor={htmlFor}
       />
       <Input
-        className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] focus-visible:ring-2 focus-visible:ring-violet8 focus-visible:ring-offset-1 focus:shadow-[0_0_0_2px]"
+        id={htmlFor}
+        className={`${FORM_FIELD_CLASS} h-[35px]`}
         type="number"
         step={step}
         {...props}

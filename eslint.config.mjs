@@ -13,16 +13,36 @@ const eslintConfig = defineConfig([
     plugins: {
       next: eslintNextPlugin,
     },
+    settings: {
+      // Explicit version: eslint-plugin-react's auto-detection calls
+      // context.getFilename(), removed in ESLint 10, and crashes the run
+      react: { version: '19.2' },
+    },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      // The base rule reports parameter names in TS function types;
+      // the TypeScript-aware rule replaces it
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-explicit-any': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
       '@typescript-eslint/ban-ts-comment': 'off',
     },
+  },
+  {
+    // Node CommonJS scripts and Jest module mocks legitimately use require()
+    files: ['scripts/**/*.js', '**/__tests__/**'],
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
+  {
+    // Mocks often need loose types
+    files: ['**/__tests__/**', 'e2e/**'],
+    rules: { '@typescript-eslint/no-explicit-any': 'off' },
   },
   // Override default ignores of eslint-config-next.
   globalIgnores([
@@ -33,6 +53,9 @@ const eslintConfig = defineConfig([
     'build/**',
     'src/assets/image/**',
     'next-env.d.ts',
+    'coverage/**',
+    'playwright-report/**',
+    'test-results/**',
   ]),
 ]);
 

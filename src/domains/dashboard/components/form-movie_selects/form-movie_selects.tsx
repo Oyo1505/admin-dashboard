@@ -1,4 +1,6 @@
-import FromSelectInput from '@/domains/shared/components/form-select-input/form-select-input';
+import FromSelectInput, {
+  SelectFormData,
+} from '@/domains/shared/components/form-select-input/form-select-input';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { useTranslations } from 'next-intl';
@@ -6,7 +8,7 @@ import { useMemo } from 'react';
 
 interface IFormMovieSelects {
   locale: string;
-  formData: any;
+  formData: SelectFormData;
   handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   handleLangageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -41,24 +43,24 @@ const FormMovieSelects = ({
     <fieldset className="border-0 p-0 m-0">
       <legend className="sr-only">{t('languageAndCountry')}</legend>
       <div className="grid grid-cols-2 gap-3">
-      <FromSelectInput
-        optionsList={langageSorted}
-        formData={formData}
-        formDataKey="langage"
-        titleLabel={t('langage')}
-        htmlFor="langage"
-        locale={locale}
-        onChange={handleLangageChange}
-      />
-      <FromSelectInput
-        optionsList={countriesList}
-        formData={formData}
-        formDataKey="country"
-        titleLabel={t('country')}
-        htmlFor="country"
-        locale={locale}
-        onChange={handleCountryChange}
-      />
+        <FromSelectInput
+          optionsList={langageSorted}
+          formData={formData}
+          formDataKey="langage"
+          titleLabel={t('langage')}
+          htmlFor="langage"
+          locale={locale}
+          onChange={handleLangageChange}
+        />
+        <FromSelectInput
+          optionsList={countriesList}
+          formData={formData}
+          formDataKey="country"
+          titleLabel={t('country')}
+          htmlFor="country"
+          locale={locale}
+          onChange={handleCountryChange}
+        />
       </div>
     </fieldset>
   );

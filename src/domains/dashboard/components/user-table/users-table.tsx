@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/domains/ui/components/button/button';
+import ConfirmDialog from '@/domains/ui/components/confirm-dialog/confirm-dialog';
 import {
   Table,
   TableBody,
@@ -8,13 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/domains/ui/components/table/table';
-import { logError } from '@/lib/errors';
 import { useSession } from '@/lib/auth-client';
+import { logError } from '@/lib/errors';
 import { IUser } from '@/models/user/user';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Activity, useOptimistic } from 'react';
+import { startTransition, useOptimistic } from 'react';
 import { deleteUserById } from '../../actions/user';
+
+const HEAD_CLASS = 'text-primary font-bold';
 
 const UsersTable = ({
   users,
@@ -24,27 +28,25 @@ const UsersTable = ({
   offset?: number | null;
 }) => {
   const router = useRouter();
+  const t = useTranslations('Dashboard');
 
-  function onClick() {
-    router.replace(`/dashboard/users?offset=${offset}`);
-  }
   return (
     <>
-      <form className="border shadow-xs rounded-lg">
+      <div className="border shadow-xs rounded-lg">
         <Table>
           <TableHeader>
             <TableRow className="border-b  border-background border-opacity-20">
-              <TableHead className="max-w-[150px] text-primary font-bold">
-                Name
+              <TableHead className={`max-w-[150px] ${HEAD_CLASS}`}>
+                {t('usersName')}
               </TableHead>
-              <TableHead className="hidden md:table-cell text-primary font-bold">
-                Email
+              <TableHead className={`hidden md:table-cell ${HEAD_CLASS}`}>
+                {t('usersEmail')}
               </TableHead>
-              <TableHead className="hidden md:table-cell text-primary font-bold">
-                Role
+              <TableHead className={`hidden md:table-cell ${HEAD_CLASS}`}>
+                {t('usersRole')}
               </TableHead>
-              <TableHead className="hidden md:table-cell text-primary font-bold">
-                Action
+              <TableHead className={`hidden md:table-cell ${HEAD_CLASS}`}>
+                {t('actions')}
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -54,66 +56,65 @@ const UsersTable = ({
             ))}
           </TableBody>
         </Table>
-      </form>
-      <Activity mode={offset ? 'visible' : 'hidden'}>
+      </div>
+      {offset ? (
         <Button
+          type="button"
           className="mt-4 w-40"
           variant="secondary"
-          onClick={() => onClick()}
+          onClick={() => router.replace(`/dashboard/users?offset=${offset}`)}
         >
-          Next Page
+          {t('nextPage')}
         </Button>
-      </Activity>
+      ) : null}
     </>
   );
 };
 
 function UserRow({ user }: { user: IUser }) {
   const userId = user.id;
+  const t = useTranslations('Dashboard');
   const { data: session } = useSession();
   const userConnected = {
     id: session?.user?.id,
     role: session?.user?.role as 'ADMIN' | 'USER' | undefined,
   };
-  const [optimitiscUser, setOptimitiscUser] = useOptimistic(userId);
-  const deleteUser = async () => {
-    setOptimitiscUser('');
-    try {
-      if (userId) {
-        await deleteUserById({
-          id: userId,
-          user: userConnected,
-        });
+  const [optimisticUser, setOptimisticUser] = useOptimistic(userId);
+
+  // useOptimistic updates must run inside a transition
+  const deleteUser = () =>
+    startTransition(async () => {
+      setOptimisticUser('');
+      try {
+        if (userId) {
+          await deleteUserById({ id: userId, user: userConnected });
+        }
+      } catch (err) {
+        logError(err, 'UserRow');
       }
-    } catch (err) {
-      logError(err, 'UserRow');
-      throw new Error('User not deleted');
-    }
-  };
+    });
+
   const hasPermission = checkPermissions(userConnected, 'can:delete', 'user');
+  const userName = user.name ?? user.email ?? userId ?? '';
+
   return (
     <TableRow>
       <TableCell className="font-medium">{user.name}</TableCell>
       <TableCell className="hidden md:table-cell">{user.email}</TableCell>
       <TableCell>{user.role ?? 'USER'}</TableCell>
-      <Activity
-        mode={
-          optimitiscUser !== userConnected?.id && hasPermission
-            ? 'visible'
-            : 'hidden'
-        }
-      >
+      {optimisticUser !== userConnected?.id && hasPermission && (
         <TableCell>
-          <Button
-            className="w-full font-bold"
-            size="sm"
-            variant="destructive"
-            formAction={deleteUser}
-          >
-            Delete
-          </Button>
+          <ConfirmDialog
+            triggerLabel={t('deleteButton')}
+            triggerAriaLabel={`${t('deleteButton')} ${userName}`}
+            title={t('confirmDeleteUserTitle', { name: userName })}
+            description={t('confirmDeleteDescription')}
+            confirmLabel={t('deleteButton')}
+            cancelLabel={t('cancel')}
+            onConfirm={deleteUser}
+          />
         </TableCell>
-      </Activity>
+      )}
     </TableRow>
   );
 }

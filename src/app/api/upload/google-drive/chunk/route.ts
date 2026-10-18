@@ -55,7 +55,10 @@ export async function PUT(request: Request): Promise<Response> {
 
     if (!chunkStart || !chunkEnd || !fileSize) {
       return Response.json(
-        { error: 'X-Chunk-Start, X-Chunk-End, and X-File-Size headers are required' },
+        {
+          error:
+            'X-Chunk-Start, X-Chunk-End, and X-File-Size headers are required',
+        },
         { status: HttpStatus.BAD_REQUEST }
       );
     }

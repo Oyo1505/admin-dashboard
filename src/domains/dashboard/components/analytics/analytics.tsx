@@ -1,7 +1,6 @@
 'use client';
 import { useSession } from '@/lib/auth-client';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
-import { Activity } from 'react';
 import AdminStatsCards from '../admin-stats-cards/admin-stats-cards';
 import RecentActivityFeed from '../recent-activity-feed/recent-activity-feed';
 import TopMoviesTable from '../top-movies-table/top-movies-table';
@@ -27,7 +26,7 @@ const Analytics = () => {
   return (
     <div className="space-y-6">
       {/* User Analytics Section */}
-      <Activity mode={hasUserPermission ? 'visible' : 'hidden'}>
+      {hasUserPermission ? (
         <div className="space-y-6">
           {/* User Stats Cards */}
           {user?.id && <UserStatsCards userId={user.id} />}
@@ -35,10 +34,10 @@ const Analytics = () => {
           {/* User Favorites List */}
           {user?.id && <UserFavoritesList userId={user.id} />}
         </div>
-      </Activity>
+      ) : null}
 
       {/* Admin Analytics Section */}
-      <Activity mode={hasAdminPermission ? 'visible' : 'hidden'}>
+      {hasAdminPermission ? (
         <div className="space-y-6">
           {/* Admin Stats Cards */}
           <AdminStatsCards />
@@ -52,7 +51,7 @@ const Analytics = () => {
           {/* Recent Activity Feed */}
           <RecentActivityFeed />
         </div>
-      </Activity>
+      ) : null}
     </div>
   );
 };

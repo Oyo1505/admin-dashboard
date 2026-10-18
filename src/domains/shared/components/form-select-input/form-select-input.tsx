@@ -1,18 +1,18 @@
 import LabelForm from '@/domains/ui/components/label-form/label-form';
 import SelectInput from '@/domains/ui/components/select/select';
 
-type formData = {
-  langage: string | undefined;
-  country: string | undefined;
-  idGoogleDive: string;
+export type SelectFormData = {
+  langage?: string;
+  country?: string;
+  idGoogleDive?: string;
 };
 
 type FromSelectInput = {
   locale: string;
-  formData: formData;
+  formData: SelectFormData;
   optionsList: Array<{ value: string; label: Record<string, string> }>;
   formDataKey: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line no-unused-vars
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   titleLabel: string;
   htmlFor: string;
 };
@@ -29,11 +29,12 @@ const FromSelectInput = ({
   return (
     <div className="mb-[15px] flex flex-col items-center gap-5">
       <LabelForm
-        className="text-violet11  text-right text-[15px]"
+        className="text-left w-full text-md"
         titleLabel={titleLabel}
         htmlFor={htmlFor}
       />
       <SelectInput
+        id={htmlFor}
         optionsList={optionsList}
         formData={formData}
         formDataKey={formDataKey}

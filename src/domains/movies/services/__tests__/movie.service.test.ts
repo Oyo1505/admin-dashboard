@@ -19,7 +19,7 @@ jest.mock('@/lib/data/movies', () => ({
 }));
 
 jest.mock('@/lib/errors', () => ({
-  handlePrismaError: jest.fn((error) => ({
+  handlePrismaError: jest.fn((_error) => ({
     statusCode: 500,
     message: 'Database error',
   })),
@@ -408,7 +408,10 @@ describe('MovieService', () => {
         MovieService.incrementDownloadCount('movie-123')
       ).resolves.toBeUndefined();
 
-      expect(logError).toHaveBeenCalledWith(mockError, 'incrementDownloadCount');
+      expect(logError).toHaveBeenCalledWith(
+        mockError,
+        'incrementDownloadCount'
+      );
     });
   });
 });

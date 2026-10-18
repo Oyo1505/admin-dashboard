@@ -9,7 +9,6 @@ import {
 } from '@/shared/schema/movieSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { Activity } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -36,17 +35,17 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
     resolver: zodResolver(directorSectionSchema),
   });
   const handleError = (success: boolean) => {
-    if (success) toast.success('Success');
-    if (!success) toast.error('Error');
+    if (success) toast.success(t('toastSuccess'));
+    else toast.error(t('toastError'));
   };
   const createDirectorSection = async (data: DirectorSectionSchema) => {
     const { success } = await createDirectorFromSection(data);
-    success && handleError(success);
+    handleError(Boolean(success));
   };
 
   const uploadDirectorSection = async (data: DirectorSectionSchema) => {
     const { success } = await updateDirectorFromSection(data);
-    success && handleError(success);
+    handleError(Boolean(success));
   };
 
   const deleteDirectorSection = async () => {
@@ -74,10 +73,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
         )}
       >
         <div className="mb-[15px] flex flex-col items-center gap-2">
-          <label
-            className="text-violet11  text-right  text-[15px]"
-            htmlFor="director"
-          >
+          <label className="text-right  text-[15px]" htmlFor="director">
             {t('director')}
           </label>
           <Input
@@ -91,10 +87,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
           )}
         </div>
         <div className="mb-[15px]  flex flex-col items-center gap-2">
-          <label
-            className="text-violet11  text-right  text-[15px]"
-            htmlFor="imageBackdrop"
-          >
+          <label className="text-right  text-[15px]" htmlFor="imageBackdrop">
             {t('image')}
           </label>
           <Input
@@ -105,7 +98,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
           />
         </div>
         <div className="mt-[25px] gap-2 flex justify-end">
-          <Activity mode={director?.id ? 'visible' : 'hidden'}>
+          {director?.id ? (
             <Button
               size="sm"
               variant="secondary"
@@ -115,7 +108,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
             >
               {t('delete')}
             </Button>
-          </Activity>
+          ) : null}
 
           <Button
             size="sm"

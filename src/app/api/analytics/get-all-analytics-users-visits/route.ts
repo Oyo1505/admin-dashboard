@@ -1,3 +1,5 @@
+import { verifyAdmin } from '@/lib/data/dal/core/auth';
+import { toDALErrorResponse } from '@/lib/data/dal/core/errors';
 import { IUserAnalytics } from '@/lib/data/users';
 import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
@@ -16,6 +18,8 @@ type UserWithAnalytics = Prisma.UserGetPayload<{
 
 export async function GET(): Promise<Response> {
   try {
+    await verifyAdmin();
+
     const users = await prisma.user.findMany({
       where: {
         analytics: {
@@ -50,6 +54,8 @@ export async function GET(): Promise<Response> {
 
     return Response.json({ transformedUsers }, { status: HttpStatus.OK });
   } catch (error) {
+    const dalResponse = toDALErrorResponse(error);
+    if (dalResponse) return dalResponse;
     logError(error, 'get-all-analytics-users-visits error');
     return Response.json(
       { error: 'Internal server error' },

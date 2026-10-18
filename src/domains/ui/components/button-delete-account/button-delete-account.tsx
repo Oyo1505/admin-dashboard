@@ -18,6 +18,7 @@ const ButtonDeleteAccount = ({
   className: string;
 }) => {
   const t = useTranslations(translationTheme);
+  const tA = useTranslations('Accessibility');
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -39,7 +40,7 @@ const ButtonDeleteAccount = ({
         </Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-background opacity-60 data-[state=open]:animate-overlayShow" />
-          <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-112.5 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus-visible:ring-2 focus-visible:ring-violet8 data-[state=open]:animate-contentShow">
+          <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-112.5 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus-visible:ring-2 focus-visible:ring-background data-[state=open]:animate-contentShow">
             <Dialog.Title className="m-0 text-[17px] font-medium text-black">
               {t(translationText)}
             </Dialog.Title>
@@ -59,10 +60,11 @@ const ButtonDeleteAccount = ({
             </div>
             <Dialog.Close asChild>
               <button
-                className="absolute text-black right-2.5 top-2.5 inline-flex size-6.25 appearance-none items-center justify-center rounded-full text-violet11 hover:bg-violet4 focus-visible:ring-2 focus-visible:ring-violet7"
-                aria-label="Close"
+                className="absolute text-black right-2.5 top-2.5 inline-flex size-6.25 appearance-none items-center justify-center rounded-full hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-background"
+                type="button"
+                aria-label={tA('closeDialog')}
               >
-                X
+                <span aria-hidden="true">X</span>
               </button>
             </Dialog.Close>
           </Dialog.Content>

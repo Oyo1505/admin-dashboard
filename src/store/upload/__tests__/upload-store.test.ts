@@ -204,7 +204,7 @@ describe('useUploadStore', () => {
       const file4 = new File(['4'], 'test4.mp4', { type: 'video/mp4' });
 
       act(() => {
-        const id1 = result.current.addUpload(file1); // pending
+        result.current.addUpload(file1); // pending
         const id2 = result.current.addUpload(file2);
         result.current.updateProgress(id2, 50); // uploading
         const id3 = result.current.addUpload(file3);
@@ -243,7 +243,10 @@ describe('useUploadStore', () => {
       let uploadId: string = '';
       act(() => {
         uploadId = result.current.addUpload(file);
-        result.current.completeUpload(uploadId, { fileId: '1', name: 'test.mp4' });
+        result.current.completeUpload(uploadId, {
+          fileId: '1',
+          name: 'test.mp4',
+        });
       });
 
       expect(result.current.hasActiveUploads()).toBe(false);

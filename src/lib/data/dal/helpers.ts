@@ -18,8 +18,8 @@ import { DALError } from './core/errors';
  * );
  * ```
  */
-export function withDALAuth<TArgs extends any[], TReturn>(
-  authCheck: (...args: TArgs) => Promise<any>,
+export function withDALAuth<TArgs extends unknown[], TReturn>(
+  authCheck: (...args: TArgs) => Promise<unknown>,
   handler: (...args: TArgs) => Promise<TReturn>
 ): (...args: TArgs) => Promise<TReturn> {
   return async (...args: TArgs): Promise<TReturn> => {
@@ -52,8 +52,8 @@ export function withDALAuth<TArgs extends any[], TReturn>(
  * );
  * ```
  */
-export function withAuth<TArgs extends any[], TReturn>(
-  authCheck: () => Promise<any>,
+export function withAuth<TArgs extends unknown[], TReturn>(
+  authCheck: () => Promise<unknown>,
   handler: (...args: TArgs) => Promise<TReturn>
 ): (...args: TArgs) => Promise<TReturn> {
   return async (...args: TArgs): Promise<TReturn> => {

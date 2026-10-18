@@ -1,5 +1,4 @@
 'use client';
-import Loading from '@/app/loading';
 import useGetMoviesPagination from '@/domains/movies/hooks/use-get-movies-pagination';
 import {
   Table,
@@ -14,7 +13,7 @@ import { MoviePublishFilter } from '@/models/movie/movie-filters';
 import { ADMIN_MOVIES_PAGE_SIZE } from '@/shared/constants/pagination';
 import { useDebouncedValue } from '@/shared/hooks/use-debounced-value';
 import { useTranslations } from 'next-intl';
-import { Activity, useState } from 'react';
+import { useState } from 'react';
 import useGetMoviesFromGoogleDrive from '../../hooks/useGetMoviesFromGoogleDrive';
 import MovieRow from '../movie-row/movie-row';
 import MovieTablePagination from '../movie-table_pagination/movie-table_pagination';
@@ -26,6 +25,7 @@ const HEADER_ROW_CLASS = 'border-b border-background border-opacity-20';
 
 const MovieTable = () => {
   const t = useTranslations('Dashboard');
+  const tNav = useTranslations('DashboardNav');
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [publish, setPublish] = useState<MoviePublishFilter>('all');
@@ -52,11 +52,15 @@ const MovieTable = () => {
     setPage(0);
   };
 
-  if (isLoading) return <Loading />;
-
   return (
     <div className="flex flex-1 flex-col gap-6 w-full md:gap-8 md:p-6">
-      <Activity mode={moviesFromGoogle?.length ? 'visible' : 'hidden'}>
+      <h1 className="text-2xl font-bold text-primary">{tNav('movies')}</h1>
+      {isLoading && (
+        <p role="status" className="text-sm text-primary">
+          {t('loading')}
+        </p>
+      )}
+      {(moviesFromGoogle?.length ?? 0) > 0 && (
         <section
           aria-labelledby="movies-not-added-title"
           className={SECTION_CLASS}
@@ -84,7 +88,7 @@ const MovieTable = () => {
             </TableBody>
           </Table>
         </section>
-      </Activity>
+      )}
 
       <section
         aria-labelledby="movies-added-title"

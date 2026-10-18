@@ -71,7 +71,16 @@
     "resultsCount": "{count, plural, =0 {映画なし} other {#本の映画}}",
     "noResults": "「{search}」に一致する映画はありません",
     "pageIndicator": "{page} / {totalPages} ページ",
-    "paginationLabel": "映画のページ送り"
+    "paginationLabel": "映画のページ送り",
+    "emailInputLabel": "許可するメールアドレス",
+    "confirmDeleteTitle": "「{title}」を削除しますか？",
+    "confirmDeleteDescription": "この操作は元に戻せません。",
+    "cancel": "キャンセル",
+    "usersName": "名前",
+    "usersEmail": "メール",
+    "usersRole": "役割",
+    "confirmDeleteUserTitle": "ユーザー「{name}」を削除しますか？",
+    "confirmDeleteEmailTitle": "「{email}」を許可リストから削除しますか？"
   },
   "DashboardAnalytics": {
     "title": "アナリティクス",
@@ -156,7 +165,9 @@
     "director": "ディレクター",
     "image": "画像",
     "delete": "削除",
-    "save": "保存"
+    "save": "保存",
+    "toastSuccess": "セクションを保存しました",
+    "toastError": "エラーが発生しました"
   },
   "MoviePage": {
     "duration": "時間",
@@ -205,14 +216,19 @@
     "subtitlesFR": "フランス語",
     "subtitlesJP": "日本語",
     "subtitlesEN": "英語",
-    "genre": "ジャンル"
+    "genre": "ジャンル",
+    "searchLabel": "映画を検索"
   },
   "RessourcesPage": {
     "title": "リソース",
     "noRessource": "リソースが見つかりません"
   },
   "ErrorMessage": {
-    "notPermitted": "あなたはこのページにアクセスする権限がありません"
+    "notPermitted": "あなたはこのページにアクセスする権限がありません",
+    "title": "エラーが発生しました",
+    "description": "もう一度お試しください。問題が解決しない場合はお問い合わせください。",
+    "reference": "参照番号：{digest}",
+    "retry": "再試行"
   },
   "NotFound": {
     "pageNotFound": "ページが見つかりません",
@@ -226,7 +242,8 @@
   },
   "Search": {
     "searchLabel": "ユーザーを検索",
-    "loadingLabel": "検索中"
+    "loadingLabel": "検索中",
+    "searchPlaceholder": "ユーザーを検索…"
   },
   "Upload": {
     "uploadSuccess": "ファイルのアップロードに成功しました",
@@ -251,5 +268,14 @@
     "changeFile": "変更",
     "uploadButton": "映画をアップロード",
     "uploadingButton": "アップロード中..."
+  },
+  "Accessibility": {
+    "skipToContent": "メインコンテンツへスキップ",
+    "suggestionTopic": "提案の件名",
+    "suggestionMessage": "提案のメッセージ",
+    "openMenu": "ナビゲーションメニューを開く",
+    "closeMenu": "ナビゲーションメニューを閉じる",
+    "navigationMenu": "ナビゲーションメニュー",
+    "closeDialog": "閉じる"
   }
 }

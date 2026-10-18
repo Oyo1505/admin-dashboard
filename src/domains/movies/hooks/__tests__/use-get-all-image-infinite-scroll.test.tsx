@@ -65,12 +65,6 @@ describe('useGetMoviesInfiniteScroll', () => {
     { id: '3', title: 'Movie 3' },
   ];
 
-  const mockMoviesPage2 = [
-    { id: '4', title: 'Movie 4' },
-    { id: '5', title: 'Movie 5' },
-    { id: '6', title: 'Movie 6' },
-  ];
-
   beforeEach(() => {
     jest.clearAllMocks();
 

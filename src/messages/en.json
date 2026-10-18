@@ -72,7 +72,16 @@
     "resultsCount": "{count, plural, =0 {No movies} one {# movie} other {# movies}}",
     "noResults": "No movie matches “{search}”",
     "pageIndicator": "Page {page} of {totalPages}",
-    "paginationLabel": "Movies pagination"
+    "paginationLabel": "Movies pagination",
+    "emailInputLabel": "Email address to authorize",
+    "confirmDeleteTitle": "Delete “{title}”?",
+    "confirmDeleteDescription": "This action is permanent and cannot be undone.",
+    "cancel": "Cancel",
+    "usersName": "Name",
+    "usersEmail": "Email",
+    "usersRole": "Role",
+    "confirmDeleteUserTitle": "Delete user “{name}”?",
+    "confirmDeleteEmailTitle": "Remove “{email}” from authorized emails?"
   },
   "DashboardAnalytics": {
     "title": "Analytics",
@@ -157,7 +166,9 @@
     "director": "Director",
     "image": "Image of the section",
     "delete": "Delete",
-    "save": "Save"
+    "save": "Save",
+    "toastSuccess": "Section saved",
+    "toastError": "An error occurred"
   },
   "MoviePage": {
     "duration": "Duration",
@@ -206,14 +217,19 @@
     "subtitlesFR": "French",
     "subtitlesJP": "Japanese",
     "subtitlesEN": "English",
-    "genre": "Genre"
+    "genre": "Genre",
+    "searchLabel": "Search a movie"
   },
   "RessourcesPage": {
     "title": "Ressources",
     "noRessource": "No resource found"
   },
   "ErrorMessage": {
-    "notPermitted": "You are not permitted to access this page"
+    "notPermitted": "You are not permitted to access this page",
+    "title": "Something went wrong",
+    "description": "Please try again. If the problem persists, contact us.",
+    "reference": "Reference: {digest}",
+    "retry": "Try again"
   },
   "NotFound": {
     "pageNotFound": "Page not found",
@@ -227,7 +243,8 @@
   },
   "Search": {
     "searchLabel": "Search for users",
-    "loadingLabel": "Searching"
+    "loadingLabel": "Searching",
+    "searchPlaceholder": "Search users…"
   },
   "Upload": {
     "uploadSuccess": "File uploaded successfully",
@@ -252,5 +269,14 @@
     "changeFile": "Change",
     "uploadButton": "Upload Movie",
     "uploadingButton": "Uploading..."
+  },
+  "Accessibility": {
+    "skipToContent": "Skip to main content",
+    "suggestionTopic": "Suggestion topic",
+    "suggestionMessage": "Suggestion message",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "navigationMenu": "Navigation menu",
+    "closeDialog": "Close"
   }
 }

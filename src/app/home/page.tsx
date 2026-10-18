@@ -18,7 +18,7 @@ import clsx from 'clsx';
 import { getLocale } from 'next-intl/server';
 import { Lobster } from 'next/font/google';
 import { headers } from 'next/headers';
-import { Activity, Suspense } from 'react';
+import { Suspense } from 'react';
 
 const lobster = Lobster({
   weight: '400',
@@ -122,13 +122,7 @@ const Page = async () => {
           />
         </Suspense>
       </div>
-      <Activity
-        mode={
-          moviesByARandomGenre && moviesByARandomGenre.length > 0
-            ? 'visible'
-            : 'hidden'
-        }
-      >
+      {moviesByARandomGenre && moviesByARandomGenre.length > 0 ? (
         <Container>
           <Title
             translationTheme="HomePage"
@@ -145,14 +139,10 @@ const Page = async () => {
             />
           </Suspense>
         </Container>
-      </Activity>
+      ) : null}
 
       <Suspense fallback={<MoviesHomeThemeSkeleton />}>
-        <Activity
-          mode={
-            directorMovies && directorMovies?.length > 0 ? 'visible' : 'hidden'
-          }
-        >
+        {directorMovies && directorMovies?.length > 0 ? (
           <div>
             <MoviesHomeDirector
               fontFamily={lobster.className}
@@ -162,15 +152,9 @@ const Page = async () => {
               imageBackdrop={imageBackdrop}
             />
           </div>
-        </Activity>
+        ) : null}
       </Suspense>
-      <Activity
-        mode={
-          extractFavoriteMovie && extractFavoriteMovie?.length > 0
-            ? 'visible'
-            : 'hidden'
-        }
-      >
+      {extractFavoriteMovie && extractFavoriteMovie?.length > 0 ? (
         <div className="w-full bg-primary pb-6 pt-6">
           <Container>
             <Title
@@ -188,7 +172,7 @@ const Page = async () => {
             </Suspense>
           </Container>
         </div>
-      </Activity>
+      ) : null}
     </div>
   );
 };

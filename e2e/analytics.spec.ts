@@ -28,7 +28,7 @@ test.describe('Analytics Dashboard - Basic Rendering', () => {
 
     // Should have grid or card layout (flexible check)
     const layout = page.locator('[class*="grid"], [class*="space-y"]');
-    await expect(layout.first()).toBeHidden();
+    await expect(layout.first()).toBeVisible();
   });
 
   test('should be responsive on mobile', async ({ page }) => {
@@ -38,9 +38,9 @@ test.describe('Analytics Dashboard - Basic Rendering', () => {
     // Page should still load
     await page.waitForLoadState('networkidle');
 
-    // Main container should be visible
-    const container = page.locator('main, [role="main"]');
-    await expect(container.first()).toBeHidden();
+    // Main container should be visible (single <main id="main-content">)
+    const container = page.locator('main#main-content');
+    await expect(container).toBeVisible();
   });
 });
 

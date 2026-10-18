@@ -14,10 +14,8 @@ interface FormDataStore {
 
 interface MovieFormState {
   formData: FormDataStore;
-  // eslint-disable-next-line no-unused-vars
   setFormData: (data: Partial<FormDataStore>) => void;
   moviesFromStore: IMovie[];
-  // eslint-disable-next-line no-unused-vars
   setMoviesStore: (data: IMovie[]) => void;
 }
 
@@ -50,16 +48,13 @@ const useMovieFormStore = create<MovieFormState>((set) => ({
 interface FiltersMovieState {
   filters: IFilters;
   hasBeenSearched: boolean;
-  // eslint-disable-next-line no-unused-vars
   setFiltersData: (data: Partial<IFilters>) => void;
-  // eslint-disable-next-line no-unused-vars
   setHasBeenSearched: (val: boolean) => void;
   clearFilters: () => void;
 }
 
 interface IGenreStore {
   genres: IGenre[];
-  // eslint-disable-next-line no-unused-vars
   setGenres: (data: IGenre[]) => void;
 }
 

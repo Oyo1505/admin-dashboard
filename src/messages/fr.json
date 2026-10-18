@@ -72,7 +72,16 @@
     "resultsCount": "{count, plural, =0 {Aucun film} one {# film} other {# films}}",
     "noResults": "Aucun film ne correspond à « {search} »",
     "pageIndicator": "Page {page} / {totalPages}",
-    "paginationLabel": "Pagination des films"
+    "paginationLabel": "Pagination des films",
+    "emailInputLabel": "Adresse email à autoriser",
+    "confirmDeleteTitle": "Supprimer « {title} » ?",
+    "confirmDeleteDescription": "Cette action est définitive et ne peut pas être annulée.",
+    "cancel": "Annuler",
+    "usersName": "Nom",
+    "usersEmail": "Email",
+    "usersRole": "Rôle",
+    "confirmDeleteUserTitle": "Supprimer l’utilisateur « {name} » ?",
+    "confirmDeleteEmailTitle": "Retirer « {email} » des emails autorisés ?"
   },
   "DashboardAnalytics": {
     "title": "Analytics",
@@ -157,7 +166,9 @@
     "director": "Réalisateur",
     "image": "Image de la section",
     "delete": "Supprimer",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "toastSuccess": "Section enregistrée",
+    "toastError": "Une erreur est survenue"
   },
   "MoviePage": {
     "duration": "Durée",
@@ -207,14 +218,19 @@
     "subtitlesFR": "Français",
     "subtitlesJP": "Japonais",
     "subtitlesEN": "Anglais",
-    "genre": "Genre"
+    "genre": "Genre",
+    "searchLabel": "Rechercher un film"
   },
   "RessourcesPage": {
     "title": "Ressources",
     "noRessource": "Aucune ressource trouvée"
   },
   "ErrorMessage": {
-    "notPermitted": "Vous n'avez pas les permissions pour accéder à cette page"
+    "notPermitted": "Vous n'avez pas les permissions pour accéder à cette page",
+    "title": "Une erreur est survenue",
+    "description": "Veuillez réessayer. Si le problème persiste, contactez-nous.",
+    "reference": "Référence : {digest}",
+    "retry": "Réessayer"
   },
   "NotFound": {
     "pageNotFound": "Page non trouvée",
@@ -228,7 +244,8 @@
   },
   "Search": {
     "searchLabel": "Rechercher des utilisateurs",
-    "loadingLabel": "Recherche en cours"
+    "loadingLabel": "Recherche en cours",
+    "searchPlaceholder": "Rechercher des utilisateurs…"
   },
   "Upload": {
     "uploadSuccess": "Fichier téléchargé avec succès",
@@ -253,5 +270,14 @@
     "changeFile": "Changer",
     "uploadButton": "Uploader le film",
     "uploadingButton": "Upload en cours..."
+  },
+  "Accessibility": {
+    "skipToContent": "Aller au contenu principal",
+    "suggestionTopic": "Sujet de la suggestion",
+    "suggestionMessage": "Message de la suggestion",
+    "openMenu": "Ouvrir le menu de navigation",
+    "closeMenu": "Fermer le menu de navigation",
+    "navigationMenu": "Menu de navigation",
+    "closeDialog": "Fermer"
   }
 }

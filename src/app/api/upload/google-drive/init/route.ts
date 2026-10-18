@@ -65,7 +65,9 @@ export async function POST(request: Request): Promise<Response> {
 
     // Validate MIME type
     const validMimeType = mimeType || 'video/mp4';
-    if (!UPLOAD_CONFIG.ALLOWED_MIME_TYPES.includes(validMimeType as 'video/mp4')) {
+    if (
+      !UPLOAD_CONFIG.ALLOWED_MIME_TYPES.includes(validMimeType as 'video/mp4')
+    ) {
       return Response.json(
         { error: 'Invalid file type. Only MP4 files are allowed.' },
         { status: HttpStatus.BAD_REQUEST }

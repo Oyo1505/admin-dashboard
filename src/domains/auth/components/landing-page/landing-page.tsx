@@ -3,6 +3,7 @@ import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-
 import ButtonLogin from '@/domains/ui/components/button-login/button-login';
 import Container from '@/domains/ui/components/container/container';
 import { useSession } from '@/lib/auth-client';
+import { useHydrated } from '@/shared/hooks/use-hydrated';
 import { URL_LEGAL_MENTIONS, URL_PRIVACY } from '@/shared/route';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -16,13 +17,17 @@ const lobster = Lobster({
 });
 
 const LandingPage = () => {
+  // Read the cookie only after hydration: the server cannot see it, so the
+  // first client render must match the server output (no hydration mismatch)
+  const isHydrated = useHydrated();
   const isTestMode =
-    typeof document !== 'undefined' &&
-    document.cookie.includes('playwright_test_mode=true');
+    isHydrated && document.cookie.includes('playwright_test_mode=true');
 
+  // Hooks must run on every render: override the result in test mode
+  const sessionState = useSession();
   const { data: session, isPending } = isTestMode
     ? { data: null, isPending: false }
-    : useSession();
+    : sessionState;
 
   const t = useTranslations('LandingPage');
 

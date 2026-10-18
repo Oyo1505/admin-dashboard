@@ -18,14 +18,11 @@ const Fieldset = ({
   };
   return (
     <div className="mb-[15px] flex items-center gap-5">
-      <label
-        className="text-violet11 w-[90px] text-right text-[15px]"
-        htmlFor={id}
-      >
+      <label className="w-[90px] text-right text-[15px]" htmlFor={id}>
         {label}
       </label>
       <Input
-        className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] focus-visible:ring-2 focus-visible:ring-violet8 focus-visible:ring-offset-1 focus:shadow-[0_0_0_2px]"
+        className="h-[35px] w-full flex-1 rounded-[4px] border border-gray-500 bg-white px-[10px] text-[15px] text-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-background focus-visible:ring-offset-1"
         id={id}
         defaultValue={defaultValue}
         onChange={handleChange}

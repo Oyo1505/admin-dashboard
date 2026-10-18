@@ -68,10 +68,7 @@ const createMockFile = (
 };
 
 // Helper to simulate file selection
-const selectFile = (
-  fileInput: HTMLInputElement,
-  file: File
-): void => {
+const selectFile = (fileInput: HTMLInputElement, file: File): void => {
   Object.defineProperty(fileInput, 'files', {
     value: [file],
     writable: false,
@@ -307,7 +304,9 @@ describe('ButtonAddMovie', () => {
 
     it('should detect active uploads via selector', () => {
       // Verify the selector logic works correctly
-      const selector = (state: { uploads: Record<string, { status: string }> }) =>
+      const selector = (state: {
+        uploads: Record<string, { status: string }>;
+      }) =>
         Object.values(state.uploads).some(
           (u) => u.status === 'pending' || u.status === 'uploading'
         );
@@ -319,9 +318,9 @@ describe('ButtonAddMovie', () => {
       expect(
         selector({ uploads: { 'upload-1': { status: 'uploading' } } })
       ).toBe(true);
-      expect(
-        selector({ uploads: { 'upload-1': { status: 'pending' } } })
-      ).toBe(true);
+      expect(selector({ uploads: { 'upload-1': { status: 'pending' } } })).toBe(
+        true
+      );
     });
   });
 

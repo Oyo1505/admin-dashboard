@@ -22,3 +22,15 @@ export class DALError extends Error {
     }
   }
 }
+
+/**
+ * Converts a DALError into a JSON Response for API routes.
+ * Returns null for any other error so the caller can handle it.
+ */
+export function toDALErrorResponse(error: unknown): Response | null {
+  if (!(error instanceof DALError)) return null;
+  return Response.json(
+    { error: error.message },
+    { status: error.toHTTPStatus() }
+  );
+}

@@ -1,9 +1,13 @@
+import { verifyAdmin } from '@/lib/data/dal/core/auth';
+import { toDALErrorResponse } from '@/lib/data/dal/core/errors';
 import { logError } from '@/lib/errors';
 import prisma from '@/lib/prisma';
 import HttpStatus from '@/shared/constants/httpStatus';
 
 export async function GET(request: Request): Promise<Response> {
   try {
+    await verifyAdmin();
+
     const { searchParams } = new URL(request.url);
     const pageParam = parseInt(searchParams.get('pageParam') ?? '0', 10);
 
@@ -33,7 +37,12 @@ export async function GET(request: Request): Promise<Response> {
       { status: HttpStatus.OK }
     );
   } catch (error) {
+    const dalResponse = toDALErrorResponse(error);
+    if (dalResponse) return dalResponse;
     logError(error, 'get-authorized-emails-pagination');
-    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
+    return Response.json(
+      { error: 'Internal server error' },
+      { status: HttpStatus.INTERNAL_SERVER_ERROR }
+    );
   }
 }

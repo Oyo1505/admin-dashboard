@@ -28,7 +28,6 @@ const MoviePlayerIframe = ({ movie }: { movie: IMovie }) => {
       height="450px"
       loading="eager"
       importance="high"
-      aria-label="video player"
       onLoad={() => {
         if (session?.user?.id && !hasTracked) {
           setHasTracked(true);

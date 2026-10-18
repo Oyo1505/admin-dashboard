@@ -15,7 +15,7 @@ jest.mock('@/lib/prisma', () => ({
 }));
 
 jest.mock('@/lib/errors', () => ({
-  handlePrismaError: jest.fn((error) => ({
+  handlePrismaError: jest.fn((_error) => ({
     statusCode: 500,
     message: 'Database error',
   })),
@@ -280,7 +280,9 @@ describe('UserData', () => {
           },
         ],
       });
-      expect(result.users?.[1]?.analytics?.[0]?.lastMovieWatched).toBeUndefined();
+      expect(
+        result.users?.[1]?.analytics?.[0]?.lastMovieWatched
+      ).toBeUndefined();
       expect(prisma.user.findMany).toHaveBeenCalledWith({
         where: {
           analytics: {

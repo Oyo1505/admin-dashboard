@@ -1,6 +1,6 @@
 import { IGenre, IMovie } from '@/models/movie/movie';
 import { MovieSchema } from '@/shared/schema/movieSchema';
-import { useGenreStore } from '@/store/movie/movie-store';
+import useInitGenreStore from '@/domains/movies/hooks/use-init-genre-store';
 import { useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
@@ -11,8 +11,8 @@ interface UseMovieGenresProps {
 
 interface UseMovieGenresReturn {
   genresMovie: IGenre[];
-  handleGenreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line no-unused-vars
-  handleGenreDelete: (id: string) => void; // eslint-disable-line no-unused-vars
+  handleGenreChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleGenreDelete: (id: string) => void;
   availableGenres: IGenre[] | undefined;
 }
 
@@ -20,7 +20,8 @@ export const useMovieGenres = ({
   movie,
   setValue,
 }: UseMovieGenresProps): UseMovieGenresReturn => {
-  const { genres } = useGenreStore();
+  // Genres are only needed by the movie form: load them here, not app-wide
+  const genres = useInitGenreStore();
 
   const [genresMovie, setGenresMovie] = useState<IGenre[]>(
     movie && movie?.genresIds && movie?.genresIds?.length > 0

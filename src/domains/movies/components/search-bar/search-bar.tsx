@@ -28,8 +28,8 @@ const SearchBar = (props: { value?: string }) => {
         }}
         spellCheck={false}
         className="w-full bg-white shadow-none appearance-none pl-8"
-        placeholder="Search users..."
-        aria-label="Rechercher des utilisateurs"
+        placeholder={t('searchPlaceholder')}
+        aria-label={t('searchLabel')}
       />
       {isPending && (
         <div

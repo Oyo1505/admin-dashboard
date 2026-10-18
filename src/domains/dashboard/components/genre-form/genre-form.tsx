@@ -49,7 +49,8 @@ const GenreForm = () => {
               htmlFor="nameFR"
             />
             <Input
-              aria-label="input-genre-french"
+              id="nameFR"
+              data-testid="input-genre-french"
               className="text-black"
               type="text"
               {...register('nameFR')}
@@ -62,7 +63,8 @@ const GenreForm = () => {
               htmlFor="nameEN"
             />
             <Input
-              aria-label="input-genre-english"
+              id="nameEN"
+              data-testid="input-genre-english"
               className="text-black"
               type="text"
               {...register('nameEN')}
@@ -75,7 +77,8 @@ const GenreForm = () => {
               htmlFor="nameJP"
             />
             <Input
-              aria-label="input-genre-japanese"
+              id="nameJP"
+              data-testid="input-genre-japanese"
               className="text-black"
               type="text"
               {...register('nameJP')}

@@ -3,7 +3,6 @@ import { Button } from '@/domains/ui/components/button/button';
 import Title from '@/domains/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
-import { Activity } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useMovieForm } from '../../hooks/useMovieForm';
 import { useMovieGenres } from '../../hooks/useMovieGenres';
@@ -86,7 +85,7 @@ const FormMovie = ({
         <form onSubmit={handleMovieSubmission} onKeyDown={handleImdbIdEnter}>
           <FormMovieInputsTitles
             register={register}
-            errors={errors as any}
+            errors={errors}
             imdbPrefill={
               <FormMovieImdbPrefill
                 imdbId={watchedValues.imdbId}
@@ -118,21 +117,21 @@ const FormMovie = ({
 
           <FormMovieInputsNumbers register={register} />
           <FormMovieInputsDescription register={register} />
-          <Activity mode={formData?.idGoogleDive ? 'visible' : 'hidden'}>
+          {formData?.idGoogleDive ? (
             <iframe
               src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`}
               width="100%"
               height="150"
               allow="autoplay"
             />
-          </Activity>
+          ) : null}
 
           <div className="mt-[25px] flex justify-end">
             <Button
               size="sm"
               variant="outline"
               type="submit"
-              className="bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-hidden"
+              className="inline-flex h-[35px] items-center justify-center rounded-[4px] border-green-700 bg-green-700 px-[15px] font-medium leading-none text-white hover:bg-green-800 hover:text-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-background focus-visible:ring-offset-2"
             >
               {t('save')}
             </Button>

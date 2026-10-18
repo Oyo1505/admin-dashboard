@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Activity } from 'react';
 import imageDefault from '../../../../assets/image/default-placeholder.png';
 
 const MoviesFavorite = ({ movies }: { movies?: IMovie[] }) => {
@@ -14,35 +13,37 @@ const MoviesFavorite = ({ movies }: { movies?: IMovie[] }) => {
   const locale = useLocale();
   return (
     <div className="flex flex-row gap-4 mt-6 items-start flex-wrap justify-start">
-      <Activity mode={movies && movies.length > 0 ? 'visible' : 'hidden'}>
-        {movies?.map(
-          (movie, index) =>
-            movie?.title && (
-              <Link
-                prefetch
-                className="w-52 group mb-5 flex flex-col gap-3 justify-start items-center hover:scale-105 transition-all duration-300"
-                key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
-                href={`${URL_MOVIE_ID(movie?.id)}`}
-              >
-                <Image
-                  className="object-fill h-72 w-full"
-                  src={movie?.image ? movie?.image : imageDefault}
-                  width={200}
-                  priority
-                  height={150}
-                  alt={
-                    titleOnlocale(movie, locale) ||
-                    `Affiche du film ${movie?.title}`
-                  }
-                />
-                <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
-                  {movie?.title}
-                </div>
-              </Link>
-            )
-        )}
-      </Activity>
-      <Activity mode={!movies ? 'visible' : 'hidden'}>{t('noMovie')}</Activity>
+      {movies && movies.length > 0 ? (
+        <>
+          {movies?.map(
+            (movie, index) =>
+              movie?.title && (
+                <Link
+                  prefetch
+                  className="w-52 group mb-5 flex flex-col gap-3 justify-start items-center hover:scale-105 transition-all duration-300"
+                  key={`${movie?.title.toLowerCase().replaceAll(' ', '-')}-${index}`}
+                  href={`${URL_MOVIE_ID(movie?.id)}`}
+                >
+                  <Image
+                    className="object-fill h-72 w-full"
+                    src={movie?.image ? movie?.image : imageDefault}
+                    width={200}
+                    priority
+                    height={150}
+                    alt={
+                      titleOnlocale(movie, locale) ||
+                      `Affiche du film ${movie?.title}`
+                    }
+                  />
+                  <div className="w-full text-center text-ellipsis whitespace-nowrap overflow-hidden">
+                    {movie?.title}
+                  </div>
+                </Link>
+              )
+          )}
+        </>
+      ) : null}
+      {!movies ? <>{t('noMovie')}</> : null}
     </div>
   );
 };

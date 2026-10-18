@@ -12,6 +12,9 @@ export async function GET(): Promise<Response> {
     return Response.json({ genres }, { status: HttpStatus.OK });
   } catch (error) {
     logError(error, 'get-all-genres');
-    return Response.json({ error: 'Internal server error' }, { status: HttpStatus.INTERNAL_SERVER_ERROR });
+    return Response.json(
+      { error: 'Internal server error' },
+      { status: HttpStatus.INTERNAL_SERVER_ERROR }
+    );
   }
 }

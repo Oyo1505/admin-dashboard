@@ -48,7 +48,8 @@ export async function GET(): Promise<Response> {
         usageInDrive: formatBytes(usageInDrive),
         usageInTrash: formatBytes(usageInTrash),
         available: formatBytes(limit - usage),
-        percentUsed: limit > 0 ? ((usage / limit) * 100).toFixed(1) + '%' : 'N/A',
+        percentUsed:
+          limit > 0 ? ((usage / limit) * 100).toFixed(1) + '%' : 'N/A',
       },
     });
   } catch (error) {

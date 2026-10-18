@@ -7,7 +7,6 @@ interface SelectGenreMovieForm {
   optionsList: IGenre[];
   locale: string;
   errors?: FieldErrors<MovieSchema>;
-  // eslint-disable-next-line no-unused-vars
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   className?: string;
 }

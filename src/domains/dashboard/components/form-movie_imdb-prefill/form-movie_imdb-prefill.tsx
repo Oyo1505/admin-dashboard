@@ -14,7 +14,7 @@ const STATUS_MESSAGE_KEYS: Record<TmdbPrefillStatus, string | null> = {
 interface IFormMovieImdbPrefill {
   imdbId?: string;
   status: TmdbPrefillStatus;
-  onPrefill: (imdbId: string) => void; // eslint-disable-line no-unused-vars
+  onPrefill: (imdbId: string) => void;
 }
 
 const FormMovieImdbPrefill = ({
