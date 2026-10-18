@@ -1,4 +1,6 @@
-import FromSelectInput from '@/domains/shared/components/form-select-input/form-select-input';
+import FromSelectInput, {
+  SelectFormData,
+} from '@/domains/shared/components/form-select-input/form-select-input';
 import countriesList from '@/shared/constants/countries';
 import { languagesList } from '@/shared/constants/lang';
 import { useTranslations } from 'next-intl';
@@ -6,7 +8,7 @@ import { useMemo } from 'react';
 
 interface IFormMovieSelects {
   locale: string;
-  formData: any;
+  formData: SelectFormData;
   handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   handleLangageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }

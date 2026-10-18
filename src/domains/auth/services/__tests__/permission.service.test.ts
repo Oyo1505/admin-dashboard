@@ -1,4 +1,4 @@
-import { PermissionService, Permission, UserRole } from '../permission.service';
+import { PermissionService, UserRole } from '../permission.service';
 import { getServerSession } from '@/lib/auth';
 import { SelectUser } from '@/lib/db';
 import { logError } from '@/lib/errors';

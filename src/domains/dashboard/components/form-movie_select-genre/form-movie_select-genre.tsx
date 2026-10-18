@@ -1,3 +1,4 @@
+import { MovieSchema } from '@/shared/schema/movieSchema';
 import SelectGenreMovieForm from '@/domains/movies/components/select-genre-movie-form/select-genre-movie-form';
 import FormCheckBox from '@/domains/shared/components/form-checkbox/form-checkbox';
 import LabelForm from '@/domains/ui/components/label-form/label-form';
@@ -13,8 +14,8 @@ interface IFormMovieSelectGenre {
   checkboxSubtitles: string[];
   handleCheckboxChange: (item: string) => void;
   locale: string;
-  errors?: FieldErrors<any>;
-  register: UseFormRegister<any>;
+  errors?: FieldErrors<MovieSchema>;
+  register: UseFormRegister<MovieSchema>;
   subtitles: string[];
   genreLabel: string;
   subtitlesLabel: string;

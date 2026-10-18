@@ -85,7 +85,7 @@ const FormMovie = ({
         <form onSubmit={handleMovieSubmission} onKeyDown={handleImdbIdEnter}>
           <FormMovieInputsTitles
             register={register}
-            errors={errors as any}
+            errors={errors}
             imdbPrefill={
               <FormMovieImdbPrefill
                 imdbId={watchedValues.imdbId}

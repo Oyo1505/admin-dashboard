@@ -39,6 +39,11 @@ const eslintConfig = defineConfig([
     files: ['scripts/**/*.js', '**/__tests__/**'],
     rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
+  {
+    // Mocks often need loose types
+    files: ['**/__tests__/**', 'e2e/**'],
+    rules: { '@typescript-eslint/no-explicit-any': 'off' },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

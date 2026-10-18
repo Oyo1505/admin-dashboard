@@ -166,7 +166,9 @@
     "director": "Réalisateur",
     "image": "Image de la section",
     "delete": "Supprimer",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "toastSuccess": "Section enregistrée",
+    "toastError": "Une erreur est survenue"
   },
   "MoviePage": {
     "duration": "Durée",

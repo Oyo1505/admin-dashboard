@@ -47,17 +47,11 @@ const Movies = ({
     q: searchParams.get('q') || undefined,
   });
 
-  const {
-    data,
-    isFetching,
-    status,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useGetMoviesInfiniteScroll({
-    pageParam: offset,
-    search: searchQuery,
-  });
+  const { isFetching, status, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useGetMoviesInfiniteScroll({
+      pageParam: offset,
+      search: searchQuery,
+    });
 
   const t = useTranslations('MoviesPage');
 

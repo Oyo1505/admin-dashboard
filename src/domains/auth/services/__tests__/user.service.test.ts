@@ -16,7 +16,7 @@ jest.mock('@/lib/prisma', () => ({
 }));
 
 jest.mock('@/lib/errors', () => ({
-  handlePrismaError: jest.fn((error) => ({
+  handlePrismaError: jest.fn((_error) => ({
     statusCode: 500,
     message: 'Database error',
   })),

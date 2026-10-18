@@ -34,7 +34,7 @@ const LoadingSpinner = ({ className, ...props }: LoadingSpinnerProps) => {
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">{t('loading')}</span>
     </div>
   );
 };

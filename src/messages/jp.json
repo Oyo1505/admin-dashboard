@@ -165,7 +165,9 @@
     "director": "ディレクター",
     "image": "画像",
     "delete": "削除",
-    "save": "保存"
+    "save": "保存",
+    "toastSuccess": "セクションを保存しました",
+    "toastError": "エラーが発生しました"
   },
   "MoviePage": {
     "duration": "時間",

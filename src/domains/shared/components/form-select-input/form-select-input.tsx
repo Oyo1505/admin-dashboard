@@ -1,15 +1,15 @@
 import LabelForm from '@/domains/ui/components/label-form/label-form';
 import SelectInput from '@/domains/ui/components/select/select';
 
-type formData = {
-  langage: string | undefined;
-  country: string | undefined;
-  idGoogleDive: string;
+export type SelectFormData = {
+  langage?: string;
+  country?: string;
+  idGoogleDive?: string;
 };
 
 type FromSelectInput = {
   locale: string;
-  formData: formData;
+  formData: SelectFormData;
   optionsList: Array<{ value: string; label: Record<string, string> }>;
   formDataKey: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;

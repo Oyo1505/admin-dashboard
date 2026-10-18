@@ -35,17 +35,17 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
     resolver: zodResolver(directorSectionSchema),
   });
   const handleError = (success: boolean) => {
-    if (success) toast.success('Success');
-    if (!success) toast.error('Error');
+    if (success) toast.success(t('toastSuccess'));
+    else toast.error(t('toastError'));
   };
   const createDirectorSection = async (data: DirectorSectionSchema) => {
     const { success } = await createDirectorFromSection(data);
-    success && handleError(success);
+    handleError(Boolean(success));
   };
 
   const uploadDirectorSection = async (data: DirectorSectionSchema) => {
     const { success } = await updateDirectorFromSection(data);
-    success && handleError(success);
+    handleError(Boolean(success));
   };
 
   const deleteDirectorSection = async () => {

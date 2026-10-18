@@ -11,13 +11,17 @@
 
 const http = require('http');
 const { google } = require('googleapis');
-const readline = require('readline');
 
-const CLIENT_ID = '146550297779-g2tqmj2emli9lohb6ceefel4pk9hdbdb.apps.googleusercontent.com';
+const CLIENT_ID =
+  '146550297779-g2tqmj2emli9lohb6ceefel4pk9hdbdb.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
 const REDIRECT_URI = 'http://localhost:3333/oauth2callback';
 
-const oauth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+const oauth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
 
 const SCOPES = [
   'https://www.googleapis.com/auth/drive',

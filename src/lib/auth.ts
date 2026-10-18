@@ -46,7 +46,7 @@ const auth = betterAuth({
     after: createAuthMiddleware(async (ctx) => {
       // Update lastLogin for authenticated users
       const userId = ctx.context.session?.user?.id;
-      userId && UserAnalyticsService.recordUserLogin(userId);
+      if (userId) void UserAnalyticsService.recordUserLogin(userId);
     }),
   },
   databaseHooks: {

@@ -1,8 +1,7 @@
 import { MovieData } from '../movies';
 import prisma from '@/lib/prisma';
-import { handlePrismaError, logError } from '@/lib/errors';
+import { logError } from '@/lib/errors';
 import HttpStatus from '@/shared/constants/httpStatus';
-import { IGenre } from '@/models/movie/movie';
 
 jest.mock('@/lib/prisma', () => ({
   __esModule: true,
@@ -14,7 +13,7 @@ jest.mock('@/lib/prisma', () => ({
 }));
 
 jest.mock('@/lib/errors', () => ({
-  handlePrismaError: jest.fn((error) => ({
+  handlePrismaError: jest.fn((_error) => ({
     statusCode: 500,
     message: 'Database error',
   })),

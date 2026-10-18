@@ -1,5 +1,6 @@
 import { AnalyticsData } from '@/lib/data/analytics';
 import { MovieData } from '@/lib/data/movies';
+import type { IUserAnalytics } from '@/lib/data/users';
 import {
   MAX_CONNECTION_HISTORY,
   MAX_RECENT_FAVORITES,
@@ -92,7 +93,7 @@ export class AnalyticsService {
       // For now, we'll return the analytics data
       const analyticsResult = await AnalyticsData.getAnalyticsUser({
         id: userId,
-      } as any);
+      } as IUserAnalytics);
 
       if (analyticsResult.status !== HttpStatus.OK) {
         return {
@@ -186,7 +187,7 @@ export class AnalyticsService {
       valid: boolean;
       error?: { status: number; message: string };
     },
-    fetcher: () => Promise<{ status: number; [key: string]: any }>,
+    fetcher: () => Promise<{ status: number; [key: string]: unknown }>,
     context: string,
     dataKey: string
   ): Promise<{ status: number; data?: T; message?: string }> {
@@ -202,7 +203,7 @@ export class AnalyticsService {
         return { status: result.status, message: `Failed to fetch ${context}` };
       }
 
-      return { status: HttpStatus.OK, data: result[dataKey] ?? [] };
+      return { status: HttpStatus.OK, data: (result[dataKey] ?? []) as T };
     } catch (error) {
       logError(error, `AnalyticsService.${context}`);
       return {
