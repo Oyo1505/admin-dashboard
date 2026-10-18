@@ -76,7 +76,12 @@
     "emailInputLabel": "Email address to authorize",
     "confirmDeleteTitle": "Delete “{title}”?",
     "confirmDeleteDescription": "This action is permanent and cannot be undone.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "usersName": "Name",
+    "usersEmail": "Email",
+    "usersRole": "Role",
+    "confirmDeleteUserTitle": "Delete user “{name}”?",
+    "confirmDeleteEmailTitle": "Remove “{email}” from authorized emails?"
   },
   "DashboardAnalytics": {
     "title": "Analytics",

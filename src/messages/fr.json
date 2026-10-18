@@ -76,7 +76,12 @@
     "emailInputLabel": "Adresse email à autoriser",
     "confirmDeleteTitle": "Supprimer « {title} » ?",
     "confirmDeleteDescription": "Cette action est définitive et ne peut pas être annulée.",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "usersName": "Nom",
+    "usersEmail": "Email",
+    "usersRole": "Rôle",
+    "confirmDeleteUserTitle": "Supprimer l’utilisateur « {name} » ?",
+    "confirmDeleteEmailTitle": "Retirer « {email} » des emails autorisés ?"
   },
   "DashboardAnalytics": {
     "title": "Analytics",

@@ -75,7 +75,12 @@
     "emailInputLabel": "許可するメールアドレス",
     "confirmDeleteTitle": "「{title}」を削除しますか？",
     "confirmDeleteDescription": "この操作は元に戻せません。",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "usersName": "名前",
+    "usersEmail": "メール",
+    "usersRole": "役割",
+    "confirmDeleteUserTitle": "ユーザー「{name}」を削除しますか？",
+    "confirmDeleteEmailTitle": "「{email}」を許可リストから削除しますか？"
   },
   "DashboardAnalytics": {
     "title": "アナリティクス",
