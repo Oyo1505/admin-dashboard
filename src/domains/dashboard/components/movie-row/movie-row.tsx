@@ -49,6 +49,8 @@ function MovieRow({
   const hasPermissionToDelete = checkPermissions(user, 'can:delete', 'movie');
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
   const isMoviePublished = data?.publish ?? movie.publish;
+  // Visible text first so the accessible name contains it (WCAG 2.5.3)
+  const deleteLabel = `${t('deleteButton')} ${movie.title ?? movie.id}`;
   return (
     <Activity mode={movie && movie.id ? 'visible' : 'hidden'}>
       <TableRow className="border-b border-background border-opacity-20">
@@ -86,11 +88,12 @@ function MovieRow({
               }
             >
               <Button
-                aria-label="delete-movie-button-from-google-drive"
+                type="button"
+                aria-label={deleteLabel}
                 variant="destructive"
                 className="font-bold hover:cursor-pointer"
                 disabled={statusGoogleDriveDelete === 'pending'}
-                formAction={onClickDeleteMovieToGoogleDrive}
+                onClick={onClickDeleteMovieToGoogleDrive}
               >
                 {t('deleteButton')}
               </Button>
@@ -103,11 +106,12 @@ function MovieRow({
               }
             >
               <Button
-                aria-label="delete-movie-button"
+                type="button"
+                aria-label={deleteLabel}
                 variant="destructive"
                 className="font-bold hover:cursor-pointer"
                 disabled={statusPrismaDelete === 'pending'}
-                formAction={onClickDeleteMovie}
+                onClick={onClickDeleteMovie}
               >
                 {t('deleteButton')}
               </Button>
