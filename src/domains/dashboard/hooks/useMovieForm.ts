@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 
-import { UseFormReturn, useForm } from 'react-hook-form';
+import { UseFormReturn, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { addMovieToDb, editMovieToDb } from '../actions/movie';
 import { useMovieData } from './useMovieData';
@@ -40,9 +40,10 @@ export const useMovieForm = ({
     resolver: zodResolver(FormDataMovieSchema),
   });
 
-  const { setValue, watch, handleSubmit } = form;
+  const { setValue, handleSubmit, control } = form;
 
-  const subtitles = watch('subtitles', []);
+  // useWatch subscribes to changes; watch() is memoized away by the React Compiler
+  const subtitles = useWatch({ control, name: 'subtitles' }) ?? [];
 
   const handleMovieSubmission = async (data: MovieSchema) => {
     try {

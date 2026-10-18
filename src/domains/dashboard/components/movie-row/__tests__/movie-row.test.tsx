@@ -1,4 +1,5 @@
 import { IMovie } from '@/models/movie/movie';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen } from '@testing-library/react';
 import MovieRow from '../movie-row';
 
@@ -41,29 +42,51 @@ const renderRow = (
   props: Partial<React.ComponentProps<typeof MovieRow>> = {}
 ) =>
   render(
-    <table>
-      <tbody>
-        <MovieRow movie={movie} btnText="editButton" {...props} />
-      </tbody>
-    </table>
+    <QueryClientProvider client={new QueryClient()}>
+      <table>
+        <tbody>
+          <MovieRow movie={movie} btnText="editButton" {...props} />
+        </tbody>
+      </table>
+    </QueryClientProvider>
   );
 
 describe('MovieRow', () => {
-  it('should delete the movie on click without needing a parent form', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('should ask for confirmation before deleting', () => {
     renderRow();
 
-    const button = screen.getByRole('button', { name: 'deleteButton Ran' });
-    expect(button).toHaveAttribute('type', 'button');
+    fireEvent.click(screen.getByRole('button', { name: 'deleteButton Ran' }));
 
-    fireEvent.click(button);
+    expect(screen.getByRole('alertdialog')).toHaveTextContent(
+      'confirmDeleteTitle'
+    );
+    expect(mockDeleteFromPrisma).not.toHaveBeenCalled();
+  });
+
+  it('should delete the movie once confirmed', () => {
+    renderRow();
+
+    fireEvent.click(screen.getByRole('button', { name: 'deleteButton Ran' }));
+    fireEvent.click(screen.getByRole('button', { name: 'deleteButton' }));
 
     expect(mockDeleteFromPrisma).toHaveBeenCalledWith('movie-1');
   });
 
-  it('should include the visible text in the delete button accessible name', () => {
+  it('should not delete when cancelled', () => {
     renderRow();
 
-    const button = screen.getByRole('button', { name: /^deleteButton/ });
-    expect(button).toHaveTextContent('deleteButton');
+    fireEvent.click(screen.getByRole('button', { name: 'deleteButton Ran' }));
+    fireEvent.click(screen.getByRole('button', { name: 'cancel' }));
+
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+    expect(mockDeleteFromPrisma).not.toHaveBeenCalled();
+  });
+
+  it('should render nothing for a movie without id', () => {
+    const { container } = renderRow({ movie: { title: 'x' } as IMovie });
+
+    expect(container.querySelector('tr')).toBeNull();
   });
 });

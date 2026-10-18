@@ -22,13 +22,14 @@ const MenuHeaderItems = ({ hasSession }: { hasSession: boolean }) => {
 
   return (
     <div className="flex items-center justify-start gap-5 ">
-      {showItems && <>
-        <MenuHeaderItem pathname={URL_HOME} translation="home" />
-        <MenuHeaderItem pathname={URL_MOVIES} translation="movies" />
-        <MenuHeaderItem pathname={URL_RESSOURCES} translation="ressources" />
-        <MenuHeaderItem pathname={URL_DASHBOARD} translation="dashboard" />
+      {showItems && (
+        <>
+          <MenuHeaderItem pathname={URL_HOME} translation="home" />
+          <MenuHeaderItem pathname={URL_MOVIES} translation="movies" />
+          <MenuHeaderItem pathname={URL_RESSOURCES} translation="ressources" />
+          <MenuHeaderItem pathname={URL_DASHBOARD} translation="dashboard" />
         </>
-      }
+      )}
     </div>
   );
 };

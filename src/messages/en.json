@@ -73,7 +73,10 @@
     "noResults": "No movie matches “{search}”",
     "pageIndicator": "Page {page} of {totalPages}",
     "paginationLabel": "Movies pagination",
-    "emailInputLabel": "Email address to authorize"
+    "emailInputLabel": "Email address to authorize",
+    "confirmDeleteTitle": "Delete “{title}”?",
+    "confirmDeleteDescription": "This action is permanent and cannot be undone.",
+    "cancel": "Cancel"
   },
   "DashboardAnalytics": {
     "title": "Analytics",

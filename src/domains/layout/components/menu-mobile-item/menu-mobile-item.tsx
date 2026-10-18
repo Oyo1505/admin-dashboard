@@ -35,7 +35,7 @@ const MenuMobileItem = ({
                 'text-2xl font-medium tracking-wide transition-colors duration-200 relative inline-block',
                 isActive
                   ? 'text-white after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-red-500'
-                  : 'text-white/50 hover:text-white',
+                  : 'text-white/50 hover:text-white'
               )}
             >
               {t(label)}

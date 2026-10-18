@@ -72,7 +72,10 @@
     "noResults": "「{search}」に一致する映画はありません",
     "pageIndicator": "{page} / {totalPages} ページ",
     "paginationLabel": "映画のページ送り",
-    "emailInputLabel": "許可するメールアドレス"
+    "emailInputLabel": "許可するメールアドレス",
+    "confirmDeleteTitle": "「{title}」を削除しますか？",
+    "confirmDeleteDescription": "この操作は元に戻せません。",
+    "cancel": "キャンセル"
   },
   "DashboardAnalytics": {
     "title": "アナリティクス",

@@ -41,24 +41,24 @@ const FormMovieSelects = ({
     <fieldset className="border-0 p-0 m-0">
       <legend className="sr-only">{t('languageAndCountry')}</legend>
       <div className="grid grid-cols-2 gap-3">
-      <FromSelectInput
-        optionsList={langageSorted}
-        formData={formData}
-        formDataKey="langage"
-        titleLabel={t('langage')}
-        htmlFor="langage"
-        locale={locale}
-        onChange={handleLangageChange}
-      />
-      <FromSelectInput
-        optionsList={countriesList}
-        formData={formData}
-        formDataKey="country"
-        titleLabel={t('country')}
-        htmlFor="country"
-        locale={locale}
-        onChange={handleCountryChange}
-      />
+        <FromSelectInput
+          optionsList={langageSorted}
+          formData={formData}
+          formDataKey="langage"
+          titleLabel={t('langage')}
+          htmlFor="langage"
+          locale={locale}
+          onChange={handleLangageChange}
+        />
+        <FromSelectInput
+          optionsList={countriesList}
+          formData={formData}
+          formDataKey="country"
+          titleLabel={t('country')}
+          htmlFor="country"
+          locale={locale}
+          onChange={handleCountryChange}
+        />
       </div>
     </fieldset>
   );

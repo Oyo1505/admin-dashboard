@@ -1,6 +1,11 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/ui/components/card/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/domains/ui/components/card/card';
 import {
   Table,
   TableBody,
@@ -23,11 +28,7 @@ const TopUsersTable = () => {
   }
 
   if (error) {
-    return (
-      <div className="text-red-500">
-        {t('errorLoading')}
-      </div>
-    );
+    return <div className="text-red-500">{t('errorLoading')}</div>;
   }
 
   return (
@@ -48,18 +49,27 @@ const TopUsersTable = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((user: { id: string; name: string; email: string; visits: number }) => (
-                <TableRow key={user.id}>
-                  <TableCell className="font-medium">{user.name}</TableCell>
-                  <TableCell className="text-muted-foreground">{user.email}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Activity className="h-4 w-4 text-muted-foreground" />
-                      <span>{user.visits}</span>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {data.map(
+                (user: {
+                  id: string;
+                  name: string;
+                  email: string;
+                  visits: number;
+                }) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">{user.name}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {user.email}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <Activity className="h-4 w-4 text-muted-foreground" />
+                        <span>{user.visits}</span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
             </TableBody>
           </Table>
         )}

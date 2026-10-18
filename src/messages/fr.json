@@ -73,7 +73,10 @@
     "noResults": "Aucun film ne correspond à « {search} »",
     "pageIndicator": "Page {page} / {totalPages}",
     "paginationLabel": "Pagination des films",
-    "emailInputLabel": "Adresse email à autoriser"
+    "emailInputLabel": "Adresse email à autoriser",
+    "confirmDeleteTitle": "Supprimer « {title} » ?",
+    "confirmDeleteDescription": "Cette action est définitive et ne peut pas être annulée.",
+    "cancel": "Annuler"
   },
   "DashboardAnalytics": {
     "title": "Analytics",

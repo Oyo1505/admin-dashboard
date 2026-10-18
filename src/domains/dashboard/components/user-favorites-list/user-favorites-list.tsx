@@ -1,6 +1,11 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/ui/components/card/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/domains/ui/components/card/card';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { useUserStats } from '../../hooks/useUserStats';
 import { useTranslations } from 'next-intl';
@@ -20,11 +25,7 @@ const UserFavoritesList = ({ userId }: UserFavoritesListProps) => {
   }
 
   if (error) {
-    return (
-      <div className="text-red-500">
-        {t('errorLoading')}
-      </div>
-    );
+    return <div className="text-red-500">{t('errorLoading')}</div>;
   }
 
   const recentFavorites = data?.recentFavorites as IMovie[] | undefined;
@@ -36,7 +37,9 @@ const UserFavoritesList = ({ userId }: UserFavoritesListProps) => {
       </CardHeader>
       <CardContent>
         {!recentFavorites || recentFavorites.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t('noRecentFavorites')}</p>
+          <p className="text-sm text-muted-foreground">
+            {t('noRecentFavorites')}
+          </p>
         ) : (
           <div className="space-y-4">
             {recentFavorites.map((movie) => (
@@ -53,9 +56,13 @@ const UserFavoritesList = ({ userId }: UserFavoritesListProps) => {
                   />
                 </div>
                 <div className="flex-1 space-y-1">
-                  <p className="text-sm font-medium leading-none">{movie.title}</p>
+                  <p className="text-sm font-medium leading-none">
+                    {movie.title}
+                  </p>
                   {movie.year && (
-                    <p className="text-xs text-muted-foreground">{movie.year}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {movie.year}
+                    </p>
                   )}
                   {movie.genresIds && movie.genresIds.length > 0 && (
                     <div className="flex flex-wrap gap-1">

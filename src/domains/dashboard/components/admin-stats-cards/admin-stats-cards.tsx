@@ -1,10 +1,22 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/domains/ui/components/card/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/domains/ui/components/card/card';
 import LoadingSpinner from '@/domains/shared/components/loading-spinner/loading-spinner';
 import { useAdminStats } from '../../hooks/useAdminStats';
 import { useTranslations } from 'next-intl';
-import { Users, Film, Folder, Activity, CheckCircle, XCircle } from 'lucide-react';
+import {
+  Users,
+  Film,
+  Folder,
+  Activity,
+  CheckCircle,
+  XCircle,
+} from 'lucide-react';
 
 const AdminStatsCards = () => {
   const t = useTranslations('DashboardAnalytics');
@@ -15,11 +27,7 @@ const AdminStatsCards = () => {
   }
 
   if (error) {
-    return (
-      <div className="text-red-500">
-        {t('errorLoading')}
-      </div>
-    );
+    return <div className="text-red-500">{t('errorLoading')}</div>;
   }
 
   const stats = data?.aggregatedStats;
@@ -75,9 +83,7 @@ const AdminStatsCards = () => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats?.activeUsers ?? 0}</div>
-          <p className="text-xs text-muted-foreground">
-            {t('lastWeek')}
-          </p>
+          <p className="text-xs text-muted-foreground">{t('lastWeek')}</p>
         </CardContent>
       </Card>
 
@@ -90,7 +96,9 @@ const AdminStatsCards = () => {
           <CheckCircle className="h-4 w-4 text-green-500" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats?.publishedMovies ?? 0}</div>
+          <div className="text-2xl font-bold">
+            {stats?.publishedMovies ?? 0}
+          </div>
         </CardContent>
       </Card>
 
@@ -103,7 +111,9 @@ const AdminStatsCards = () => {
           <XCircle className="h-4 w-4 text-red-500" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats?.unpublishedMovies ?? 0}</div>
+          <div className="text-2xl font-bold">
+            {stats?.unpublishedMovies ?? 0}
+          </div>
         </CardContent>
       </Card>
     </div>
