@@ -84,6 +84,36 @@ describe('MovieRow', () => {
     expect(mockDeleteFromPrisma).not.toHaveBeenCalled();
   });
 
+  it('should not show the Drive delete button when the Drive email is not configured', () => {
+    const previous = process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE;
+    delete process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE;
+
+    renderRow();
+
+    expect(
+      screen.getAllByRole('button', { name: 'deleteButton Ran' })
+    ).toHaveLength(1);
+    process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE = previous;
+  });
+
+  it('should show the Drive delete button for a file owned by the Drive account', () => {
+    const previous = process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE;
+    process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE = 'drive@test.fr';
+
+    renderRow({
+      movie: {
+        ...movie,
+        owners: [{ emailAddress: 'drive@test.fr' }],
+      } as unknown as IMovie,
+      moviesFromGoogleDrive: true,
+    });
+
+    expect(
+      screen.getAllByRole('button', { name: 'deleteButton Ran' })
+    ).toHaveLength(1);
+    process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE = previous;
+  });
+
   it('should render nothing for a movie without id', () => {
     const { container } = renderRow({ movie: { title: 'x' } as IMovie });
 

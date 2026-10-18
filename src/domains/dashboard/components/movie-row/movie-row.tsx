@@ -55,9 +55,12 @@ function MovieRow({
   const hasPermissionToDelete = checkPermissions(user, 'can:delete', 'movie');
   const hasPermissionToUpdate = checkPermissions(user, 'can:update', 'movie');
   const isMoviePublished = data?.publish ?? movie.publish;
+  // Both sides must be defined: undefined === undefined would show the
+  // Drive delete button on every movie when the env var is missing
+  const driveAccountEmail = process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE;
+  const ownerEmail = movie.owners?.[0]?.emailAddress;
   const isOwnedByDriveAccount =
-    movie.owners?.[0]?.emailAddress ===
-    process.env.NEXT_PUBLIC_CLIENT_EMAIL_GOOGLE_DRIVE;
+    Boolean(driveAccountEmail) && ownerEmail === driveAccountEmail;
   const movieName = movie.title ?? movie.id;
 
   const deleteDialogProps = {
