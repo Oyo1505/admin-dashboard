@@ -74,10 +74,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
         )}
       >
         <div className="mb-[15px] flex flex-col items-center gap-2">
-          <label
-            className="text-violet11  text-right  text-[15px]"
-            htmlFor="director"
-          >
+          <label className="text-right  text-[15px]" htmlFor="director">
             {t('director')}
           </label>
           <Input
@@ -91,10 +88,7 @@ const DirectorSectionForm = ({ director }: { director?: IDirector | null }) => {
           )}
         </div>
         <div className="mb-[15px]  flex flex-col items-center gap-2">
-          <label
-            className="text-violet11  text-right  text-[15px]"
-            htmlFor="imageBackdrop"
-          >
+          <label className="text-right  text-[15px]" htmlFor="imageBackdrop">
             {t('image')}
           </label>
           <Input

@@ -27,7 +27,7 @@ const FormCheckBox = ({
         {...props}
       />
       <LabelForm
-        className="text-violet11  text-right text-[15px]"
+        className="text-right text-[15px]"
         titleLabel={titleLabel}
         htmlFor={id}
       />

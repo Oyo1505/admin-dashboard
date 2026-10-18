@@ -37,7 +37,8 @@ const FormAddEmailAuthrizedEmail = ({
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <Activity mode={hasPermission ? 'visible' : 'hidden'}>
         <Input
-          aria-label="input-add-email-authorized"
+          aria-label={t('emailInputLabel')}
+          data-testid="input-add-email-authorized"
           placeholder="Email"
           type="email"
           autoComplete="email"

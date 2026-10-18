@@ -15,8 +15,8 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="p-4 flex h-screen w-full flex-col items-center justify-center">
+    <div className="p-4 flex h-screen w-full flex-col items-center justify-center">
       <div className="mb-8 space-y-4">ERROR : {errorMessage}</div>
-    </main>
+    </div>
   );
 }

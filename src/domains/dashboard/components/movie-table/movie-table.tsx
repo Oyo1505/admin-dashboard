@@ -26,6 +26,7 @@ const HEADER_ROW_CLASS = 'border-b border-background border-opacity-20';
 
 const MovieTable = () => {
   const t = useTranslations('Dashboard');
+  const tNav = useTranslations('DashboardNav');
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [publish, setPublish] = useState<MoviePublishFilter>('all');
@@ -56,6 +57,7 @@ const MovieTable = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-6 w-full md:gap-8 md:p-6">
+      <h1 className="text-2xl font-bold text-primary">{tNav('movies')}</h1>
       <Activity mode={moviesFromGoogle?.length ? 'visible' : 'hidden'}>
         <section
           aria-labelledby="movies-not-added-title"

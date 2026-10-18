@@ -32,7 +32,7 @@ const SearchMovie = ({ search }: { search: string }) => {
       <Input
         ref={inputRef}
         value={localSearch}
-        aria-label="search-input"
+        aria-label={t('searchLabel')}
         data-testid="input-search"
         onInput={(e) => {
           const value = (e.target as HTMLInputElement).value;

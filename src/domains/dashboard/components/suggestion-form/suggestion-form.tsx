@@ -4,7 +4,7 @@ import { Textarea } from '@/domains/ui/components/textarea/textarea';
 import { useSession } from '@/lib/auth-client';
 import { suggestionSchema } from '@/shared/schema/dashboardShema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { sendEmail } from '../../actions/user';
@@ -39,6 +39,7 @@ const topicOptions: Topic[] = [
 
 const SuggestionForm = () => {
   const locale = useLocale();
+  const tA = useTranslations('Accessibility');
   const { data: session } = useSession();
 
   const {
@@ -87,7 +88,8 @@ const SuggestionForm = () => {
               required: true,
               onChange: handleTopicChange,
             })}
-            aria-label="select-suggestion-topic"
+            aria-label={tA('suggestionTopic')}
+            data-testid="select-suggestion-topic"
           >
             {topicOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -101,7 +103,8 @@ const SuggestionForm = () => {
         </div>
         <div className="flex flex-col gap-2">
           <Textarea
-            aria-label="textarea-suggestion-message"
+            aria-label={tA('suggestionMessage')}
+            data-testid="textarea-suggestion-message"
             className="focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 h-20 md:h-48 md:w-1/2"
             {...register('message', {
               required: true,

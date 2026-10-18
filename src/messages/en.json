@@ -72,7 +72,8 @@
     "resultsCount": "{count, plural, =0 {No movies} one {# movie} other {# movies}}",
     "noResults": "No movie matches “{search}”",
     "pageIndicator": "Page {page} of {totalPages}",
-    "paginationLabel": "Movies pagination"
+    "paginationLabel": "Movies pagination",
+    "emailInputLabel": "Email address to authorize"
   },
   "DashboardAnalytics": {
     "title": "Analytics",
@@ -206,7 +207,8 @@
     "subtitlesFR": "French",
     "subtitlesJP": "Japanese",
     "subtitlesEN": "English",
-    "genre": "Genre"
+    "genre": "Genre",
+    "searchLabel": "Search a movie"
   },
   "RessourcesPage": {
     "title": "Ressources",
@@ -227,7 +229,8 @@
   },
   "Search": {
     "searchLabel": "Search for users",
-    "loadingLabel": "Searching"
+    "loadingLabel": "Searching",
+    "searchPlaceholder": "Search users…"
   },
   "Upload": {
     "uploadSuccess": "File uploaded successfully",
@@ -252,5 +255,10 @@
     "changeFile": "Change",
     "uploadButton": "Upload Movie",
     "uploadingButton": "Uploading..."
+  },
+  "Accessibility": {
+    "skipToContent": "Skip to main content",
+    "suggestionTopic": "Suggestion topic",
+    "suggestionMessage": "Suggestion message"
   }
 }

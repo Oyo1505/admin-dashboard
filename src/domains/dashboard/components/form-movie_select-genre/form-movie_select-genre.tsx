@@ -41,7 +41,7 @@ const FormMovieSelectGenre = ({
         <legend className="sr-only">{genreLabel}</legend>
         <div className="flex flex-col items-center gap-5">
           <LabelForm
-            className="text-violet11  text-right text-[15px]"
+            className="text-right text-[15px]"
             titleLabel={genreLabel}
             htmlFor="genresIds"
             aria-hidden="true"
@@ -73,7 +73,7 @@ const FormMovieSelectGenre = ({
         <legend className="sr-only">{subtitlesLabel}</legend>
         <div className="flex flex-col items-center gap-5">
           <LabelForm
-            className="text-violet11  text-right text-[15px]"
+            className="text-right text-[15px]"
             titleLabel={subtitlesLabel}
             htmlFor="subtitles"
             aria-hidden="true"

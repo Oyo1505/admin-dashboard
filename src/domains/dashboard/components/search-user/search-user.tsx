@@ -3,10 +3,12 @@
 import { SearchIcon, Spinner } from '@/domains/ui/components/icons/icons';
 import { Input } from '@/domains/ui/components/input/input';
 import { URL_DASHBOARD_ROUTE } from '@/shared/route';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, useTransition } from 'react';
 
 const Search = (props: { value?: string }) => {
+  const t = useTranslations('Search');
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(props.value);
@@ -34,7 +36,8 @@ const Search = (props: { value?: string }) => {
     <div className="relative">
       <SearchIcon className="absolute left-2.5 top-3 h-4 w-4 text-gray-500" />
       <Input
-        aria-label="seatch-input-users"
+        aria-label={t('searchLabel')}
+        data-testid="search-input-users"
         ref={inputRef}
         value={value ?? ''}
         onInput={(e) => {
@@ -42,7 +45,7 @@ const Search = (props: { value?: string }) => {
         }}
         spellCheck={false}
         className="w-full bg-white text-background shadow-none appearance-none pl-8"
-        placeholder="Search users..."
+        placeholder={t('searchPlaceholder')}
       />
       {isPending && <Spinner />}
     </div>

@@ -6,7 +6,8 @@ import TanstackProvider from '@/providers/tanstack-provider';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getLocale, getMessages, getTranslations } from 'next-intl/server';
+import { toHtmlLang } from '@/shared/utils/locale/toHtmlLang';
 import { ReactNode, Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import './globals.css';
@@ -39,9 +40,10 @@ export default async function RootLayout({
 }) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const t = await getTranslations('Accessibility');
 
   return (
-    <html lang={locale}>
+    <html lang={toHtmlLang(locale)}>
       <head>
         <meta name="googlebot" content="noindex, nofollow"></meta>
         <meta name="robots" content="noindex, nofollow"></meta>
@@ -49,6 +51,12 @@ export default async function RootLayout({
       <body
         className={`h-full mb-14 mx-auto relative bg-background text-primary font-semibold `}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-background focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+        >
+          {t('skipToContent')}
+        </a>
         <ToastContainer />
         <NextIntlClientProvider messages={messages}>
           <TanstackProvider>
@@ -56,7 +64,9 @@ export default async function RootLayout({
               <Suspense fallback={null}>
                 <MenuHeader />
               </Suspense>
-              <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+              <main id="main-content" tabIndex={-1} className="outline-hidden">
+                <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+              </main>
             </LayoutLogic>
             <UploadProgressWrapper />
             <Analytics />

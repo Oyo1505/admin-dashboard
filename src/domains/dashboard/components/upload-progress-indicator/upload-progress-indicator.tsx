@@ -3,6 +3,7 @@
 import useTime from '@/hooks/use-time';
 import { UPLOAD_VISIBILITY } from '@/shared/constants/upload';
 import { useUploadStore } from '@/store/upload/upload-store';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { UploadProgressToast } from './upload-progress-toast';
 
@@ -24,6 +25,7 @@ import { UploadProgressToast } from './upload-progress-toast';
  */
 const UploadProgressIndicator = () => {
   // Get uploads from store
+  const t = useTranslations('Upload');
   const uploadsRecord = useUploadStore((state) => state.uploads);
   const time = useTime();
   // Convert Record to array
@@ -63,7 +65,7 @@ const UploadProgressIndicator = () => {
     <div
       className="fixed bottom-4 right-4 z-50 flex flex-col gap-2"
       role="region"
-      aria-label="Upload progress"
+      aria-label={t('uploadProgress')}
       aria-live="polite"
     >
       {visibleUploads.map((upload) => (

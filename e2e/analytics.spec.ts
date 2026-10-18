@@ -38,9 +38,9 @@ test.describe('Analytics Dashboard - Basic Rendering', () => {
     // Page should still load
     await page.waitForLoadState('networkidle');
 
-    // Main container should be visible
-    const container = page.locator('main, [role="main"]');
-    await expect(container.first()).toBeHidden();
+    // Main container should be visible (single <main id="main-content">)
+    const container = page.locator('main#main-content');
+    await expect(container).toBeVisible();
   });
 });
 

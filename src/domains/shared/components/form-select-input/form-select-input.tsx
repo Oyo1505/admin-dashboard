@@ -29,11 +29,12 @@ const FromSelectInput = ({
   return (
     <div className="mb-[15px] flex flex-col items-center gap-5">
       <LabelForm
-        className="text-violet11  text-right text-[15px]"
+        className="text-left w-full text-md"
         titleLabel={titleLabel}
         htmlFor={htmlFor}
       />
       <SelectInput
+        id={htmlFor}
         optionsList={optionsList}
         formData={formData}
         formDataKey={formDataKey}

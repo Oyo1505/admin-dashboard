@@ -18,7 +18,7 @@ const Toggle = ({
     <label className="inline-flex items-center cursor-pointer">
       <span className="sr-only">{t('togglePublished')}</span>
       <Input
-        aria-label="toggle-published-movie"
+        data-testid="toggle-published-movie"
         type="checkbox"
         checked={publish}
         disabled={isFetching}
