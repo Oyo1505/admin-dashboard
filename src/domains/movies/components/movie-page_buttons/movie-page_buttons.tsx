@@ -8,7 +8,7 @@ import { URL_DASHBOARD_MOVIE_EDIT } from '@/shared/route';
 import checkPermissions from '@/shared/utils/permissions/checkPermissons';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Activity, useTransition } from 'react';
+import { useTransition } from 'react';
 import { toast } from 'react-toastify';
 import { addOrRemoveToFavorite } from '../../actions/movie';
 
@@ -70,7 +70,7 @@ const MoviePageButtons = ({
           )}
         </Button>
       </form>
-      <Activity mode={hasPermission && movie?.id ? 'visible' : 'hidden'}>
+      {hasPermission && movie?.id ? (
         <Link
           className="inline-flex gap-2 rounded-md  p-3 h-10 min-w-16 px-4 py-2 bg-primary text-background  font-bold hover:bg-primary"
           href={URL_DASHBOARD_MOVIE_EDIT(movie?.id)}
@@ -78,7 +78,7 @@ const MoviePageButtons = ({
         >
           <EditMovieLogo /> {t('editMovie')}
         </Link>
-      </Activity>
+      ) : null}
     </div>
   );
 };

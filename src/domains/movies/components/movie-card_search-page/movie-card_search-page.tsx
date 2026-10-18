@@ -7,7 +7,6 @@ import { useLocale } from 'next-intl';
 import imageDefault from '@/assets/image/default-placeholder.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Activity } from 'react';
 
 interface IMovieCardSearchPage {
   movie: IMovie;
@@ -35,11 +34,11 @@ const MovieCardSearchPage = ({
       href={`${URL_MOVIE_ID(movie?.id)}`}
       key={`${movie?.id}-link`}
     >
-      <Activity mode={isFavorite(movie?.id) ? 'visible' : 'hidden'}>
+      {isFavorite(movie?.id) ? (
         <div className="absolute z-1 top-1 right-1">
           <Favorite fill />
         </div>
-      </Activity>
+      ) : null}
 
       <div className="flex relative w-full rounded-lg flex-col justify-between h-full">
         <div className="w-24 h-full md:w-full md:h-72 rounded-lg relative overflow-hidden">

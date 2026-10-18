@@ -10,7 +10,6 @@ import { useLocale } from 'next-intl';
 import imageDefault from '@/assets/image/default-placeholder.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Activity } from 'react';
 
 interface IMovieCardSearchPage {
   movie: IMovie;
@@ -30,13 +29,11 @@ const MovieCardSearchPageMobileView = ({
       href={`${URL_MOVIE_ID(movie?.id)}`}
       key={movie?.id}
     >
-      <Activity
-        mode={isFavorite({ id: movie?.id, user }) ? 'visible' : 'hidden'}
-      >
+      {isFavorite({ id: movie?.id, user }) ? (
         <div className="absolute z-1 top-1 right-1">
           <Favorite fill />
         </div>
-      </Activity>
+      ) : null}
 
       <div className="min-w-24 h-full rounded-lg relative overflow-hidden">
         <Image

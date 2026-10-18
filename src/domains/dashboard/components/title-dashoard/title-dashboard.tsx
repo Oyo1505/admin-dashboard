@@ -1,7 +1,6 @@
 'use client';
 import { useSession } from '@/lib/auth-client';
 import { useTranslations } from 'next-intl';
-import { Activity } from 'react';
 import ButtonAddMovie from '../button-add-movie/button-add-movie';
 
 const TitleDashboard = () => {
@@ -13,9 +12,7 @@ const TitleDashboard = () => {
       <h1 className="text-2xl text-primary">
         {t('welcome')}, {session?.user?.name} 👋
       </h1>
-      <Activity mode={session?.user?.role === 'ADMIN' ? 'visible' : 'hidden'}>
-        <ButtonAddMovie />
-      </Activity>
+      {session?.user?.role === 'ADMIN' ? <ButtonAddMovie /> : null}
     </div>
   );
 };

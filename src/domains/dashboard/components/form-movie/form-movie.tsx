@@ -3,7 +3,6 @@ import { Button } from '@/domains/ui/components/button/button';
 import Title from '@/domains/ui/components/title/title';
 import { IMovie } from '@/models/movie/movie';
 import { useLocale, useTranslations } from 'next-intl';
-import { Activity } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useMovieForm } from '../../hooks/useMovieForm';
 import { useMovieGenres } from '../../hooks/useMovieGenres';
@@ -118,14 +117,14 @@ const FormMovie = ({
 
           <FormMovieInputsNumbers register={register} />
           <FormMovieInputsDescription register={register} />
-          <Activity mode={formData?.idGoogleDive ? 'visible' : 'hidden'}>
+          {formData?.idGoogleDive ? (
             <iframe
               src={`https://drive.google.com/file/d/${formData?.idGoogleDive}/preview`}
               width="100%"
               height="150"
               allow="autoplay"
             />
-          </Activity>
+          ) : null}
 
           <div className="mt-[25px] flex justify-end">
             <Button

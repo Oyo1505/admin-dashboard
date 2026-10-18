@@ -2,7 +2,6 @@ import Container from '@/domains/ui/components/container/container';
 import LocaleSwitcher from '@/domains/ui/components/locale-switcher/locale-switcher';
 import { getServerSession } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { Activity } from 'react';
 import MenuHeaderItems from '../menu-header-items/menu-header-items';
 import MenuMobile from '../menu-mobile/menu-mobile';
 import { User } from '../menu-user-items/menu-user-items';
@@ -23,7 +22,7 @@ const MenuHeader = async () => {
   return (
     <>
       <MenuMobile isMobileView={Boolean(isMobileView)} />
-      <Activity mode={isMobileView ? 'hidden' : 'visible'}>
+      {!isMobileView ? (
         <header className="group fixed w-full top-0 md:flex h-15  pt-2 pb-2 items-center gap-4 bg-background z-20 justify-between lg:justify-between hidden">
           <Container className="flex flex-row items-center w-full justify-between gap-5">
             <MenuHeaderItems hasSession={hasSession} />
@@ -40,7 +39,7 @@ const MenuHeader = async () => {
             </div>
           </Container>
         </header>
-      </Activity>
+      ) : null}
     </>
   );
 };

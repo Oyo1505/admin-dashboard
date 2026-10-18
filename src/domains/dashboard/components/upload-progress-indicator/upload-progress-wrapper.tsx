@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Activity } from 'react';
 const UploadProgressIndicator = dynamic(
   () => import('./upload-progress-indicator'),
   { ssr: false }
@@ -18,11 +17,7 @@ const UploadProgressIndicator = dynamic(
  * provider conflicts in Next.js 15+ with React 19.
  */
 const UploadProgressWrapper = () => {
-  return (
-    <Activity mode="visible">
-      <UploadProgressIndicator />
-    </Activity>
-  );
+  return <UploadProgressIndicator />;
 };
 
 export default UploadProgressWrapper;
