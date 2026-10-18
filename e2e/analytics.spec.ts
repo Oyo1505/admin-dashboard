@@ -28,7 +28,7 @@ test.describe('Analytics Dashboard - Basic Rendering', () => {
 
     // Should have grid or card layout (flexible check)
     const layout = page.locator('[class*="grid"], [class*="space-y"]');
-    await expect(layout.first()).toBeHidden();
+    await expect(layout.first()).toBeVisible();
   });
 
   test('should be responsive on mobile', async ({ page }) => {
