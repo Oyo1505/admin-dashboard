@@ -1,4 +1,6 @@
 import { IMovieFormData } from '@/models/movie/movie';
+import { MoviePublishFilter } from '@/models/movie/movie-filters';
+import { Prisma } from '@prisma/client';
 
 /**
  * Helper functions for MovieData operations
@@ -77,5 +79,32 @@ export function buildMovieInclude() {
         },
       },
     },
+  };
+}
+
+const ADMIN_SEARCH_FIELDS = [
+  'title',
+  'originalTitle',
+  'titleEnglish',
+  'titleJapanese',
+  'director',
+] as const;
+
+/**
+ * Builds the admin movie table filter: case-insensitive text search
+ * on titles/director and publication status
+ */
+export function buildAdminMoviesWhere(
+  search?: string,
+  publish: MoviePublishFilter = 'all'
+): Prisma.MovieWhereInput {
+  const term = search?.trim();
+  return {
+    ...(term && {
+      OR: ADMIN_SEARCH_FIELDS.map((field) => ({
+        [field]: { contains: term, mode: 'insensitive' as const },
+      })),
+    }),
+    ...(publish !== 'all' && { publish: publish === 'published' }),
   };
 }

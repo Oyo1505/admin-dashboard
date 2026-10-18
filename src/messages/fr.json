@@ -60,7 +60,19 @@
     "previousPage": "Page précédente",
     "loading": "Chargement...",
     "userEmailAdded": "Email ajouté",
-    "deleting": "Suppression..."
+    "deleting": "Suppression...",
+    "titleColumn": "Titre",
+    "actions": "Actions",
+    "searchLabel": "Rechercher un film",
+    "searchPlaceholder": "Titre, titre original, réalisateur…",
+    "publishFilterLabel": "Statut",
+    "filterAll": "Tous",
+    "filterPublished": "Publiés",
+    "filterUnpublished": "Non publiés",
+    "resultsCount": "{count, plural, =0 {Aucun film} one {# film} other {# films}}",
+    "noResults": "Aucun film ne correspond à « {search} »",
+    "pageIndicator": "Page {page} / {totalPages}",
+    "paginationLabel": "Pagination des films"
   },
   "DashboardAnalytics": {
     "title": "Analytics",

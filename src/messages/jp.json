@@ -59,7 +59,19 @@
     "previousPage": "前のページ",
     "loading": "読み込み中...",
     "userEmailAdded": "Email 追加済み",
-    "deleting": "削除中..."
+    "deleting": "削除中...",
+    "titleColumn": "タイトル",
+    "actions": "操作",
+    "searchLabel": "映画を検索",
+    "searchPlaceholder": "タイトル、原題、監督…",
+    "publishFilterLabel": "ステータス",
+    "filterAll": "すべて",
+    "filterPublished": "公開済み",
+    "filterUnpublished": "非公開",
+    "resultsCount": "{count, plural, =0 {映画なし} other {#本の映画}}",
+    "noResults": "「{search}」に一致する映画はありません",
+    "pageIndicator": "{page} / {totalPages} ページ",
+    "paginationLabel": "映画のページ送り"
   },
   "DashboardAnalytics": {
     "title": "アナリティクス",
