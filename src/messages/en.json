@@ -60,7 +60,19 @@
     "previousPage": "Previous Page",
     "loading": "Loading...",
     "userEmailAdded": "User email added",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "titleColumn": "Title",
+    "actions": "Actions",
+    "searchLabel": "Search a movie",
+    "searchPlaceholder": "Title, original title, director…",
+    "publishFilterLabel": "Status",
+    "filterAll": "All",
+    "filterPublished": "Published",
+    "filterUnpublished": "Unpublished",
+    "resultsCount": "{count, plural, =0 {No movies} one {# movie} other {# movies}}",
+    "noResults": "No movie matches “{search}”",
+    "pageIndicator": "Page {page} of {totalPages}",
+    "paginationLabel": "Movies pagination"
   },
   "DashboardAnalytics": {
     "title": "Analytics",

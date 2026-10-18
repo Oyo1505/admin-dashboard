@@ -6,8 +6,13 @@ import {
   IMovie,
   IMovieFormData,
 } from '@/models/movie/movie';
+import {
+  IAdminMoviesQuery,
+  IAdminMoviesResponse,
+} from '@/models/movie/movie-filters';
 import HttpStatus from '@/shared/constants/httpStatus';
 import {
+  ADMIN_MOVIES_PAGE_SIZE,
   MAX_LATEST_MOVIES,
   MAX_MOVIES_BY_COUNTRY,
   MAX_MOVIES_BY_GENRE,
@@ -17,6 +22,7 @@ import { cache } from 'react';
 import 'server-only';
 import { handlePrismaError, logError } from '../errors';
 import {
+  buildAdminMoviesWhere,
   buildGenresConnectionForCreate,
   buildGenresConnectionForUpdate,
   buildMovieData,
@@ -411,6 +417,36 @@ export class MovieData {
       return { status: appError.statusCode };
     }
   });
+
+  /**
+   * Admin movie table: paginated movies matching an optional text search
+   * and publication filter, with the total count for pagination
+   */
+  static async findPaginatedForAdmin({
+    search,
+    publish = 'all',
+    page,
+  }: IAdminMoviesQuery): Promise<
+    Partial<IAdminMoviesResponse> & { status: number }
+  > {
+    try {
+      const where = buildAdminMoviesWhere(search, publish);
+      const [total, movies] = await prisma.$transaction([
+        prisma.movie.count({ where }),
+        prisma.movie.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: page * ADMIN_MOVIES_PAGE_SIZE,
+          take: ADMIN_MOVIES_PAGE_SIZE,
+        }),
+      ]);
+      return { movies, total, status: HttpStatus.OK };
+    } catch (error) {
+      logError(error, 'MovieData.findPaginatedForAdmin');
+      return { status: handlePrismaError(error).statusCode };
+    }
+  }
+
   static getAllMoviesWithGenres = cache(
     async (): Promise<{
       movieInDb?: IMovie[];
