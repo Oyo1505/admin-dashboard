@@ -66,10 +66,7 @@ const DROPZONE_ICONS = {
  * - Animated upload button
  * - Full accessibility support (WCAG 2.2 AA)
  */
-const ButtonAddMovie = () => {
-  if (process.env.NEXT_PUBLIC_GOOGLE_DRIVE_UPLOAD_ENABLED === 'false')
-    return null;
-
+const ButtonAddMovieContent = () => {
   const t = useTranslations('Upload');
   const { upload, isUploading } = useUploadToGoogleDrive();
   // Derived state selector to prevent re-renders from function calls
@@ -298,5 +295,12 @@ const ButtonAddMovie = () => {
     </form>
   );
 };
+
+const isUploadEnabled =
+  process.env.NEXT_PUBLIC_GOOGLE_DRIVE_UPLOAD_ENABLED !== 'false';
+
+// The feature flag check lives outside the hooks component (rules of hooks)
+const ButtonAddMovie = () =>
+  isUploadEnabled ? <ButtonAddMovieContent /> : null;
 
 export default ButtonAddMovie;

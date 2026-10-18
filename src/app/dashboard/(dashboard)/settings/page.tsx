@@ -41,16 +41,12 @@ export default async function SettingsPage() {
             rel="noreferrer"
             className="flex h-11 w-48 sm:w-32 items-center justify-start gap-4"
           >
-            <button className="w-full h-full flex items-center justify-center group rounded-lg bg-white group cursor-pointer">
+            <span className="w-full h-full flex items-center justify-center group rounded-lg bg-white cursor-pointer">
               <InstagramLogo />
               <span className="text-sm text-background font-bold">Oyo1505</span>
-            </button>
+            </span>
           </a>
-          <a
-            aria-label="Chat on WhatsApp"
-            href="https://wa.me/+33783067240"
-            className="h-11 w-full sm:w-48"
-          >
+          <a href="https://wa.me/+33783067240" className="h-11 w-full sm:w-48">
             <Image
               alt="Chat on WhatsApp"
               src={whatsapp}

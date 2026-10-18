@@ -1,4 +1,3 @@
-/* eslint-disable */
 enum HttpStatus {
   ACCEPTED = 202,
   BAD_GATEWAY = 502,

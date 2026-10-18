@@ -19,11 +19,11 @@ interface UseMovieFormProps {
 
 interface UseMovieFormReturn {
   form: UseFormReturn<MovieSchema>;
-  handleMovieSubmission: (e?: React.BaseSyntheticEvent) => Promise<void>; // eslint-disable-line no-unused-vars
+  handleMovieSubmission: (e?: React.BaseSyntheticEvent) => Promise<void>;
   subtitles: string[];
-  handleCheckboxChange: (value: string) => void; // eslint-disable-line no-unused-vars
-  handleLangageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line no-unused-vars
-  handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line no-unused-vars
+  handleCheckboxChange: (value: string) => void;
+  handleLangageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export const useMovieForm = ({

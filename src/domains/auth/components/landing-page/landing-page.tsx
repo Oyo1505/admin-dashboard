@@ -20,9 +20,11 @@ const LandingPage = () => {
     typeof document !== 'undefined' &&
     document.cookie.includes('playwright_test_mode=true');
 
+  // Hooks must run on every render: override the result in test mode
+  const sessionState = useSession();
   const { data: session, isPending } = isTestMode
     ? { data: null, isPending: false }
-    : useSession();
+    : sessionState;
 
   const t = useTranslations('LandingPage');
 

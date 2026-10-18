@@ -12,12 +12,12 @@ export function NavItem({
   children: React.ReactNode;
 }) {
   const segment = useSelectedLayoutSegment();
+  const isActive = segment ? href.includes(segment) : false;
 
   return (
     <Link
       href={href}
-      aria-label="Navigation Item"
-      aria-selected={segment ? href.includes(segment) : false}
+      aria-current={isActive ? 'page' : undefined}
       className={clsx(
         'flex items-center gap-3 rounded-lg px-3 py-2 text-white transition-colors hover:text-gray-400',
         {

@@ -1,16 +1,17 @@
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 
 interface LoadingSpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
 const LoadingSpinner = ({ className, ...props }: LoadingSpinnerProps) => {
+  const t = useTranslations('Dashboard');
   return (
     <div
       {...props}
       role="status"
       aria-live="polite"
-      aria-label="Chargement en cours"
       aria-busy="true"
       className={clsx(
         className,

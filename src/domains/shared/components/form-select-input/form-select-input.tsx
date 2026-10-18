@@ -12,7 +12,7 @@ type FromSelectInput = {
   formData: formData;
   optionsList: Array<{ value: string; label: Record<string, string> }>;
   formDataKey: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; // eslint-disable-line no-unused-vars
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   titleLabel: string;
   htmlFor: string;
 };

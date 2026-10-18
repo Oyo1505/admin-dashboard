@@ -7,7 +7,7 @@ import {
 import { useState } from 'react';
 
 interface UseErrorHandlerOptions extends ClientErrorOptions {
-  onError?: (error: unknown) => void; // eslint-disable-line no-unused-vars
+  onError?: (error: unknown) => void;
   resetOnSuccess?: boolean;
 }
 
@@ -15,14 +15,14 @@ interface UseErrorHandlerReturn {
   error: string | null;
   isError: boolean;
   clearError: () => void;
-  handleError: (error: unknown, options?: ClientErrorOptions) => void; // eslint-disable-line no-unused-vars
+  handleError: (error: unknown, options?: ClientErrorOptions) => void;
   handleApiResponse: <T>(
-    response: ApiResponse<T>, // eslint-disable-line no-unused-vars
-    options?: ClientErrorOptions // eslint-disable-line no-unused-vars
+    response: ApiResponse<T>,
+    options?: ClientErrorOptions
   ) => T | null;
   executeWithErrorHandling: <T>(
-    operation: () => Promise<T>, // eslint-disable-line no-unused-vars
-    options?: ClientErrorOptions // eslint-disable-line no-unused-vars
+    operation: () => Promise<T>,
+    options?: ClientErrorOptions
   ) => Promise<T | null>;
 }
 
@@ -101,7 +101,7 @@ export function useErrorHandler(
 }
 
 export function useApiCall<TArgs extends unknown[], TReturn>(
-  apiFunction: (...args: TArgs) => Promise<ApiResponse<TReturn>>, // eslint-disable-line no-unused-vars
+  apiFunction: (...args: TArgs) => Promise<ApiResponse<TReturn>>,
   options: UseErrorHandlerOptions = {}
 ) {
   const [isLoading, setIsLoading] = useState(false);

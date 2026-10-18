@@ -6,7 +6,7 @@ import {
   URL_MOVIES,
   URL_RESSOURCES,
 } from '@/shared/route';
-import { useEffect, useState } from 'react';
+import { useHydrated } from '@/shared/hooks/use-hydrated';
 import MenuHeaderItem from '../menu-header-item/menu-header-item';
 
 const MenuHeaderItems = ({ hasSession }: { hasSession: boolean }) => {
@@ -16,8 +16,7 @@ const MenuHeaderItems = ({ hasSession }: { hasSession: boolean }) => {
   // access). Rely on the server-computed `hasSession` for the very first
   // render (matching SSR exactly) and only switch to the live/reactive
   // value once mounted, so hydration never diffs against a moving target.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
   const showItems = mounted ? Boolean(session?.user) : hasSession;
 
   return (

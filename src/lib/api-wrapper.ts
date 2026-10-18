@@ -46,7 +46,7 @@ export function createErrorResponse<T = unknown>(
 }
 
 export function withErrorHandling<T extends unknown[], R>(
-  fn: (...args: T) => Promise<R>, // eslint-disable-line no-unused-vars
+  fn: (...args: T) => Promise<R>,
   context?: string
 ) {
   return async (...args: T): Promise<ApiResponse<R>> => {
@@ -87,7 +87,6 @@ export function validateString(
     );
   }
 }
-
 
 export function validateId(id: unknown): asserts id is string {
   validateString(id, 'id');

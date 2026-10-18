@@ -18,6 +18,7 @@ const ButtonDeleteAccount = ({
   className: string;
 }) => {
   const t = useTranslations(translationTheme);
+  const tA = useTranslations('Accessibility');
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -60,9 +61,10 @@ const ButtonDeleteAccount = ({
             <Dialog.Close asChild>
               <button
                 className="absolute text-black right-2.5 top-2.5 inline-flex size-6.25 appearance-none items-center justify-center rounded-full hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-background"
-                aria-label="Close"
+                type="button"
+                aria-label={tA('closeDialog')}
               >
-                X
+                <span aria-hidden="true">X</span>
               </button>
             </Dialog.Close>
           </Dialog.Content>

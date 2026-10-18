@@ -217,7 +217,11 @@
     "noRessource": "リソースが見つかりません"
   },
   "ErrorMessage": {
-    "notPermitted": "あなたはこのページにアクセスする権限がありません"
+    "notPermitted": "あなたはこのページにアクセスする権限がありません",
+    "title": "エラーが発生しました",
+    "description": "もう一度お試しください。問題が解決しない場合はお問い合わせください。",
+    "reference": "参照番号：{digest}",
+    "retry": "再試行"
   },
   "NotFound": {
     "pageNotFound": "ページが見つかりません",
@@ -261,6 +265,10 @@
   "Accessibility": {
     "skipToContent": "メインコンテンツへスキップ",
     "suggestionTopic": "提案の件名",
-    "suggestionMessage": "提案のメッセージ"
+    "suggestionMessage": "提案のメッセージ",
+    "openMenu": "ナビゲーションメニューを開く",
+    "closeMenu": "ナビゲーションメニューを閉じる",
+    "navigationMenu": "ナビゲーションメニュー",
+    "closeDialog": "閉じる"
   }
 }

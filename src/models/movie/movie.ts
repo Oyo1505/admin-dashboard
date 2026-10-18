@@ -64,7 +64,6 @@ export type SelectFiltersProps = {
   titleLabel: string;
   defaultValue?: string;
   displayedOptionValues: React.ReactNode;
-  // eslint-disable-next-line no-unused-vars
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   filters?: Partial<IFilters>;
   isClearing?: boolean;

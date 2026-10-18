@@ -7,7 +7,7 @@ interface IMovieTablePagination {
   page: number;
   totalPages: number;
   isPlaceholderData: boolean;
-  onPageChange: (page: number) => void; // eslint-disable-line no-unused-vars
+  onPageChange: (page: number) => void;
 }
 
 const MovieTablePagination = ({
